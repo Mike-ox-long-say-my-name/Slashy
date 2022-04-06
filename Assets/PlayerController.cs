@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UI;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -45,12 +41,12 @@ public class PlayerController : MonoBehaviour
             }
         }
         _velocity.y += gravity * Time.deltaTime;
-        
+
         characterController.Move(_velocity * Time.deltaTime);
 
         _velocity.x = 0;
         _velocity.z = 0;
-        
+
         var cameraPosition = followingCamera.transform.position;
         var newX = Mathf.SmoothDamp(cameraPosition.x, transform.position.x,
             ref _cameraFollowVelocity, followSmoothTime);

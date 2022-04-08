@@ -26,27 +26,46 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        HandleInput();
+        _velocity.y += gravity * Time.deltaTime;
+    }
+
+    private void HandleInput()
+    {
         var hor = Input.GetAxis("Horizontal");
         var ver = Input.GetAxis("Vertical");
-
-        var move = new Vector3(hor * horizontalMoveSpeed, 0, ver * verticalMoveSpeed);
-        _velocity += move;
 
         if (characterController.isGrounded)
         {
             _velocity.y = 0;
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButton("Jump"))
             {
                 _velocity.y = jumpStartVelocity;
             }
         }
-        _velocity.y += gravity * Time.deltaTime;
+        
+        _velocity.x = hor * horizontalMoveSpeed;
+        _velocity.z = ver * verticalMoveSpeed;
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            var direction = new Vector3(hor, 0, ver);
+            Dash(direction.normalized);
+        }
+    }
+
+    private void Dash(Vector3 direction)
+    {
+
+    }
+
+    private void Move()
+    {
         characterController.Move(_velocity * Time.deltaTime);
+    }
 
-        _velocity.x = 0;
-        _velocity.z = 0;
-
+    private void MoveCamera()
+    {
         var cameraPosition = followingCamera.transform.position;
         var newX = Mathf.SmoothDamp(cameraPosition.x, transform.position.x,
             ref _cameraFollowVelocity, followSmoothTime);

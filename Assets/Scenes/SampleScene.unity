@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 425705571}
   - component: {fileID: 425705570}
   - component: {fileID: 425705569}
+  - component: {fileID: 425705574}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Untagged
@@ -156,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  hurtbox: {fileID: 0}
   attackExecutor: {fileID: 1622195503}
 --- !u!136 &425705570
 CapsuleCollider:
@@ -236,6 +238,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &425705574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425705568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f78c46c62975f1c44842abbfbe9e5c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitboxCollider: {fileID: 0}
+  entity: {fileID: 0}
 --- !u!1 &445650707
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,6 +624,12 @@ MonoBehaviour:
   followingCamera: {fileID: 0}
   followSmoothTime: 0.15
   characterController: {fileID: 718829293}
+  player: {fileID: 0}
+  dashRecovery: 0
+  dashDistance: 0
+  dashTime: 0
+  dashInvincibilityStart: 0
+  dashInvincibilityEnd: 0
 --- !u!95 &718829297
 Animator:
   serializedVersion: 3
@@ -640,6 +662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 25
+  hurtbox: {fileID: 718829299}
   onHitReceived:
     m_PersistentCalls:
       m_Calls: []
@@ -1322,6 +1345,7 @@ GameObject:
   - component: {fileID: 1805337616}
   - component: {fileID: 1805337615}
   - component: {fileID: 1805337614}
+  - component: {fileID: 1805337619}
   m_Layer: 0
   m_Name: Enemy2
   m_TagString: Untagged
@@ -1342,6 +1366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  hurtbox: {fileID: 0}
   attackExecutor: {fileID: 2141504090}
 --- !u!136 &1805337615
 CapsuleCollider:
@@ -1422,6 +1447,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1805337619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805337613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f78c46c62975f1c44842abbfbe9e5c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitboxCollider: {fileID: 0}
+  entity: {fileID: 0}
 --- !u!1 &1895808097
 GameObject:
   m_ObjectHideFlags: 0

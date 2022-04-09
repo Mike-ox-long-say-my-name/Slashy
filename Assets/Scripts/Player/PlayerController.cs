@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerCharacter))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float gravity = -9.81f;
@@ -12,7 +14,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
 
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private PlayerCharacter player;
 
+    [SerializeField, Min(0)] private float dashRecovery;
+    [SerializeField, Min(0)] private float dashDistance;
+    [SerializeField, Min(0)] private float dashTime;
+
+    [SerializeField, Range(0, 1)] private float dashInvincibilityStart;
+    [SerializeField, Range(0, 1)] private float dashInvincibilityEnd;
+
+    public bool IsDashing { get; private set; }
+    public bool IsInvincible { get; private set; }
     private Vector3 _velocity;
     private float _cameraFollowVelocity;
 
@@ -27,6 +39,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
+        characterController.Move(_velocity * Time.deltaTime);
+        MoveCamera();
         _velocity.y += gravity * Time.deltaTime;
     }
 
@@ -47,7 +61,7 @@ public class PlayerController : MonoBehaviour
         _velocity.x = hor * horizontalMoveSpeed;
         _velocity.z = ver * verticalMoveSpeed;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !IsDashing)
         {
             var direction = new Vector3(hor, 0, ver);
             Dash(direction.normalized);
@@ -56,12 +70,35 @@ public class PlayerController : MonoBehaviour
 
     private void Dash(Vector3 direction)
     {
+        var step = direction * (dashDistance / dashTime);
+        IsDashing = true;
+        IEnumerator DashCoroutine()
+        {
+            var passedTime = 0f;
+            while (passedTime < dashTime)
+            {
+                passedTime += Time.deltaTime;
+                var fraction = passedTime / dashTime;
+                if (!IsInvincible && fraction >= dashInvincibilityStart && fraction < dashInvincibilityEnd)
+                {
+                    IsInvincible = true;
+                    player.Hurtbox.Disable();
+                }
+                else if (IsInvincible && fraction >= dashInvincibilityEnd)
+                {
+                    IsInvincible = false;
+                    player.Hurtbox.Enable();
+                }
 
-    }
+                characterController.Move(step);
+                yield return new WaitForEndOfFrame();
+            }
 
-    private void Move()
-    {
-        characterController.Move(_velocity * Time.deltaTime);
+            yield return new WaitForSeconds(dashRecovery);
+            IsDashing = false;
+        }
+
+        StartCoroutine(DashCoroutine());
     }
 
     private void MoveCamera()

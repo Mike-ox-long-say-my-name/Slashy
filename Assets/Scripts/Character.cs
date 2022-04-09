@@ -1,9 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Hurtbox))]
 public class Character : HittableEntity, IHitSource
 {
     [SerializeField, Min(0)] private float maxHealth;
+    [SerializeField] private Hurtbox hurtbox;
 
     public float MaxHealth => maxHealth;
     public float Health { get; private set; }
@@ -12,6 +14,8 @@ public class Character : HittableEntity, IHitSource
     {
         Health = maxHealth;
     }
+
+    public override Hurtbox Hurtbox => hurtbox;
 
     public override void ReceiveHit(IHitSource source, in HitInfo info)
     {

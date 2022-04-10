@@ -11,6 +11,7 @@ namespace Player.States
         public override void EnterState()
         {
             Debug.Log("Enter Idle");
+            Context.Animator.SetTrigger("idle");
         }
 
         public override void UpdateState()

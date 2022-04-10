@@ -13,7 +13,7 @@ namespace Player.States
         public override void EnterState()
         {
             Debug.Log("Enter Dash");
-        
+            Context.Animator.SetTrigger("dash");
             Dash(new Vector3(Context.MoveInput.x, 0, Context.MoveInput.y));
         }
 

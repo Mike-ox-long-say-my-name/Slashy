@@ -29,6 +29,8 @@ namespace Player.States
         [field: Space]
         [field: Header("Components")]
         [field: SerializeField] public CharacterController CharacterController { get; private set; } = null;
+
+        [field: SerializeField] public Animator Animator { get; private set; } = null;
         [field: SerializeField] public Hurtbox Hurtbox { get; private set; } = null;
 
         [field: Space]

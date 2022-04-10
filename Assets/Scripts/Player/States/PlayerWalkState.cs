@@ -11,6 +11,7 @@ namespace Player.States
         public override void EnterState()
         {
             Debug.Log("Enter Walk");
+            Context.Animator.SetTrigger("walk");
         }
 
         public override void UpdateState()

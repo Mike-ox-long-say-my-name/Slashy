@@ -777,7 +777,7 @@ Animator:
   m_GameObject: {fileID: 718829292}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 83afa3f486f208145937b29c53d81cff, type: 2}
+  m_Controller: {fileID: 9100000, guid: 45950b04c9d97334db325925feef5711, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -826,6 +826,7 @@ MonoBehaviour:
   followingCamera: {fileID: 0}
   followSmoothTime: 0.3
   <CharacterController>k__BackingField: {fileID: 718829293}
+  <Animator>k__BackingField: {fileID: 718829297}
   <Hurtbox>k__BackingField: {fileID: 918774746}
   <DashRecovery>k__BackingField: 0.3
   <DashDistance>k__BackingField: 2

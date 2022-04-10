@@ -830,7 +830,7 @@ MonoBehaviour:
   <Hurtbox>k__BackingField: {fileID: 918774746}
   <DashRecovery>k__BackingField: 0.3
   <DashDistance>k__BackingField: 2
-  <DashTime>k__BackingField: 0.3
+  <DashTime>k__BackingField: 0.2
   <ActionConfig>k__BackingField: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
 --- !u!114 &718829300
 MonoBehaviour:

@@ -10,7 +10,6 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Debug.Log("Enter Idle");
             Context.Animator.SetTrigger("idle");
         }
 
@@ -21,7 +20,6 @@ namespace Player.States
 
         public override void ExitState()
         {
-            Debug.Log("Exit Idle");
         }
 
         private void CheckStateSwitch()

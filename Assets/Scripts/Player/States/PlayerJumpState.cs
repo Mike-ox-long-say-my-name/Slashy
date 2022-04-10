@@ -12,7 +12,6 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Debug.Log("Enter Jump");
             Context.Animator.SetTrigger("jump");
             Context.AppliedVelocityY = Context.JumpStartVelocity;
         }
@@ -27,7 +26,6 @@ namespace Player.States
 
         public override void ExitState()
         {
-            Debug.Log("Exit Jump");
         }
 
         public virtual void CheckStateSwitch()

@@ -12,7 +12,14 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Debug.Log("Enter Grounded");
+            if (SubState.GetType() == typeof(PlayerWalkState))
+            {
+                Context.Animator.SetTrigger("walk");
+            }
+            else if (SubState.GetType() == typeof(PlayerIdleState))
+            {
+                Context.Animator.SetTrigger("idle");
+            }
         }
 
         public override void UpdateState()
@@ -24,16 +31,15 @@ namespace Player.States
 
         public override void ExitState()
         {
-            Debug.Log("Exit Grounded");
         }
 
         private void CheckStateSwitch()
         {
-            if (Context.IsDashPressed)
+            if (Context.IsDashPressed && Context.CanDash)
             {
                 SwitchState(Factory.Dashing());
             }
-            else if (Context.IsJumpPressed)
+            else if (Context.IsJumpPressed && Context.CanJump)
             {
                 SwitchState(Factory.Jump());
             }

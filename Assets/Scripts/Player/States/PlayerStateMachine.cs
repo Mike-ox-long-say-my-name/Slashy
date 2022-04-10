@@ -60,6 +60,9 @@ namespace Player.States
         public bool IsWalking => CurrentState.GetType() == typeof(PlayerWalkState);
         public bool IsIdle => CurrentState.GetType() == typeof(PlayerIdleState);
 
+        public bool CanDash { get; set; } = true;
+        public bool CanJump { get; set; } = true;
+
         private float _cameraFollowVelocity;
 
         private void Awake()

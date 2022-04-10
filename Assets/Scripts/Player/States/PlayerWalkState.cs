@@ -10,7 +10,6 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Debug.Log("Enter Walk");
             Context.Animator.SetTrigger("walk");
         }
 
@@ -24,7 +23,6 @@ namespace Player.States
 
         public override void ExitState()
         {
-            Debug.Log("Exit Walk");
         }
 
         private void CheckStateSwitch()

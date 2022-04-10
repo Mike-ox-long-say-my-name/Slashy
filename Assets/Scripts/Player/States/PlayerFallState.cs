@@ -11,7 +11,6 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Debug.Log("Enter Fall");
         }
 
         public override void UpdateState()
@@ -24,13 +23,14 @@ namespace Player.States
 
         public override void ExitState()
         {
-            Debug.Log("Exit Fall");
         }
 
         private void CheckStateSwitch()
         {
             if (Context.CharacterController.isGrounded)
             {
+                Context.AppliedVelocityX = 0;
+                Context.AppliedVelocityZ = 0;
                 SwitchState(Factory.Grounded());
             }
         }

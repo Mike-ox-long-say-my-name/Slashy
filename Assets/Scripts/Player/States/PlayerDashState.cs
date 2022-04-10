@@ -12,7 +12,6 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Debug.Log("Enter Dash");
             Context.Animator.SetTrigger("dash");
             Dash(new Vector3(Context.MoveInput.x, 0, Context.MoveInput.y));
         }
@@ -23,19 +22,25 @@ namespace Player.States
 
         public override void ExitState()
         {
-            Debug.Log("Exit Dash");
         }
 
         private void Dash(Vector3 direction)
         {
-            var step = direction * (Context.DashDistance / Context.DashTime);
+            Context.CanDash = false;
+            Context.CanJump = false;
+
+            var fullMove = direction * Context.DashDistance;
 
             IEnumerator DashCoroutine()
             {
                 var passedTime = 0f;
+                var lastMoveTime = Time.time;
                 while (passedTime < Context.DashTime)
                 {
-                    passedTime += Time.deltaTime;
+                    var timeStep = Time.time - lastMoveTime;
+                    passedTime += timeStep;
+                    lastMoveTime = Time.time;
+
                     var fraction = passedTime / Context.DashTime;
 
                     if (!Context.IsInvincible && fraction >= Context.ActionConfig.DashInvincibilityStart &&
@@ -47,16 +52,30 @@ namespace Player.States
                     {
                         DisableInvincibility();
                     }
-
-                    Context.CharacterController.Move(Time.deltaTime * step);
+                    
+                    Context.CharacterController.Move(fullMove * timeStep);
                     yield return new WaitForEndOfFrame();
                 }
 
-                yield return new WaitForSeconds(Context.DashRecovery);
+                Context.AppliedVelocityX = 0;
+                Context.AppliedVelocityZ = 0;
+
+                Context.StartCoroutine(RecoverFromDashRoutine(Context.DashRecovery));
+
                 SwitchState(Factory.Grounded());
             }
 
             Context.StartCoroutine(DashCoroutine());
+        }
+
+        private IEnumerator RecoverFromDashRoutine(float recoverTime)
+        {
+            // Иначе ломается анимация при моментальном прыжке после даша
+            yield return new WaitForEndOfFrame();
+            Context.CanJump = true;
+
+            yield return new WaitForSeconds(recoverTime);
+            Context.CanDash = true;
         }
 
         private void EnableInvincibility()

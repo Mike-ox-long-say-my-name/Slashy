@@ -1,17 +1,22 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class BaseHitbox : MonoBehaviour
+namespace Attacking
 {
-    [SerializeField] protected Collider hitboxCollider;
-
-    public virtual void Enable()
+    [RequireComponent(typeof(Collider))]
+    public class BaseHitbox : MonoBehaviour
     {
-        hitboxCollider.enabled = true;
-    }
+        [SerializeField] protected Collider hitboxCollider;
 
-    public virtual void Disable()
-    {
-        hitboxCollider.enabled = false;
+        public bool IsEnabled => hitboxCollider.enabled;
+
+        public virtual void Enable()
+        {
+            hitboxCollider.enabled = true;
+        }
+
+        public virtual void Disable()
+        {
+            hitboxCollider.enabled = false;
+        }
     }
 }

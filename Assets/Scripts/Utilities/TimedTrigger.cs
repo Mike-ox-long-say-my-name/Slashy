@@ -1,87 +1,90 @@
-public class TimedTrigger
+namespace Utilities
 {
-    private float _setTimeRemained;
-    private float _resetTimeRemained;
-
-    private readonly Trigger _trigger = new Trigger();
-
-    public bool IsSet => _trigger.IsSet;
-    public bool IsFree => _trigger.IsFree;
-
-    public void Set()
+    public class TimedTrigger
     {
-        _trigger.Set();
-        _setTimeRemained = 0;
-    }
+        private float _setTimeRemained;
+        private float _resetTimeRemained;
 
-    public void SetIn(float time)
-    {
-        _setTimeRemained = time;
-    }
+        private readonly Trigger _trigger = new Trigger();
 
-    public void SetFor(float time)
-    {
-        Set();
-        ResetIn(time);
-    }
+        public bool IsSet => _trigger.IsSet;
+        public bool IsFree => _trigger.IsFree;
 
-    public void Reset()
-    {
-        _trigger.Reset();
-        _resetTimeRemained = 0;
-    }
-
-    public void ResetIn(float time)
-    {
-        _resetTimeRemained = time;
-    }
-
-    public bool CheckAndReset()
-    {
-        if (IsSet)
+        public void Set()
         {
+            _trigger.Set();
+            _setTimeRemained = 0;
+        }
+
+        public void SetIn(float time)
+        {
+            _setTimeRemained = time;
+        }
+
+        public void SetFor(float time)
+        {
+            Set();
+            ResetIn(time);
+        }
+
+        public void Reset()
+        {
+            _trigger.Reset();
             _resetTimeRemained = 0;
         }
-        return _trigger.CheckAndReset();
-    }
 
-    public void Step(float timeStep)
-    {
-        StepReset(timeStep);
-        StepSet(timeStep);
-    }
-
-    private void StepSet(float timeStep)
-    {
-        if (_setTimeRemained <= 0 || IsSet)
+        public void ResetIn(float time)
         {
-            return;
+            _resetTimeRemained = time;
         }
 
-        _setTimeRemained -= timeStep;
-        if (_setTimeRemained > 0)
+        public bool CheckAndReset()
         {
-            return;
+            if (IsSet)
+            {
+                _resetTimeRemained = 0;
+            }
+            return _trigger.CheckAndReset();
         }
 
-        _setTimeRemained = 0;
-        Set();
-    }
-
-    private void StepReset(float timeStep)
-    {
-        if (_resetTimeRemained <= 0 || IsFree)
+        public void Step(float timeStep)
         {
-            return;
+            StepReset(timeStep);
+            StepSet(timeStep);
         }
 
-        _resetTimeRemained -= timeStep;
-        if (_resetTimeRemained > 0)
+        private void StepSet(float timeStep)
         {
-            return;
+            if (_setTimeRemained <= 0 || IsSet)
+            {
+                return;
+            }
+
+            _setTimeRemained -= timeStep;
+            if (_setTimeRemained > 0)
+            {
+                return;
+            }
+
+            _setTimeRemained = 0;
+            Set();
         }
 
-        _resetTimeRemained = 0;
-        Reset();
+        private void StepReset(float timeStep)
+        {
+            if (_resetTimeRemained <= 0 || IsFree)
+            {
+                return;
+            }
+
+            _resetTimeRemained -= timeStep;
+            if (_resetTimeRemained > 0)
+            {
+                return;
+            }
+
+            _resetTimeRemained = 0;
+            Reset();
+        }
     }
 }

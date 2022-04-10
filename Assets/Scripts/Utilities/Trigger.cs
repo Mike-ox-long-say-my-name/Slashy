@@ -1,23 +1,26 @@
-public class Trigger
+namespace Utilities
 {
-    public bool IsSet { get; private set; }
-
-    public bool IsFree => !IsSet;
-
-    public bool CheckAndReset()
+    public class Trigger
     {
-        var value = IsSet;
-        Reset();
-        return value;
-    }
+        public bool IsSet { get; private set; }
 
-    public void Set()
-    {
-        IsSet = true;
-    }
+        public bool IsFree => !IsSet;
 
-    public void Reset()
-    {
-        IsSet = false;
+        public bool CheckAndReset()
+        {
+            var value = IsSet;
+            Reset();
+            return value;
+        }
+
+        public void Set()
+        {
+            IsSet = true;
+        }
+
+        public void Reset()
+        {
+            IsSet = false;
+        }
     }
 }

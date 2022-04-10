@@ -2,44 +2,47 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackHitbox : BaseHitbox
+namespace Attacking
 {
-    private Action<Hurtbox> _onHit;
-
-    private readonly Dictionary<int, Hurtbox> _hurtboxes = new Dictionary<int, Hurtbox>();
-
-    public void ClearHits()
+    public class AttackHitbox : BaseHitbox
     {
-        _hurtboxes.Clear();
-    }
+        private Action<Hurtbox> _onHit;
 
-    public void EnableWith(Action<Hurtbox> onHit)
-    {
-        _onHit = onHit;
-        Enable();
-    }
+        private readonly Dictionary<int, Hurtbox> _hurtboxes = new Dictionary<int, Hurtbox>();
 
-    public void DisableAndClear()
-    {
-        Disable();
-        ClearHits();
-        _onHit = null;
-    }
-
-    private void OnTriggerStay(Collider target)
-    {
-        if (!target.TryGetComponent<Hurtbox>(out var hit))
+        public void ClearHits()
         {
-            return;
+            _hurtboxes.Clear();
         }
 
-        var hitId = hit.gameObject.GetInstanceID();
-        if (_hurtboxes.ContainsKey(hitId))
+        public void EnableWith(Action<Hurtbox> onHit)
         {
-            return;
+            _onHit = onHit;
+            Enable();
         }
 
-        _hurtboxes.Add(hitId, hit);
-        _onHit?.Invoke(hit);
+        public void DisableAndClear()
+        {
+            Disable();
+            ClearHits();
+            _onHit = null;
+        }
+
+        private void OnTriggerStay(Collider target)
+        {
+            if (!target.TryGetComponent<Hurtbox>(out var hit))
+            {
+                return;
+            }
+
+            var hitId = hit.gameObject.GetInstanceID();
+            if (_hurtboxes.ContainsKey(hitId))
+            {
+                return;
+            }
+
+            _hurtboxes.Add(hitId, hit);
+            _onHit?.Invoke(hit);
+        }
     }
 }

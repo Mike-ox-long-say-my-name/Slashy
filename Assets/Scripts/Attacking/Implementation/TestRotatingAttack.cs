@@ -1,30 +1,32 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
+using Utilities;
 
-public class TestRotatingAttack : AttackExecutor
+namespace Attacking.Implementation
 {
-    private readonly TimedTrigger _attackClearTrigger = new TimedTrigger();
-
-    protected override IEnumerator Execute(IHitSource source)
+    public class TestRotatingAttack : AttackExecutor
     {
-        Hitbox.EnableWith(hit =>
+        private readonly TimedTrigger _attackClearTrigger = new TimedTrigger();
+
+        protected override IEnumerator Execute(IHitSource source)
         {
-            hit.ReceiveHit(source, new HitInfo() { Damage = 10 });
-            _attackClearTrigger.SetIn(1);
-        });
-        
-        while (true)
-        {
-            _attackClearTrigger.Step(Time.deltaTime);
-            if (_attackClearTrigger.CheckAndReset())
+            Hitbox.EnableWith(hit =>
             {
-                Hitbox.ClearHits();
-            }
+                hit.ReceiveHit(source, new HitInfo() { Damage = 10 });
+                _attackClearTrigger.SetIn(1);
+            });
+        
+            while (true)
+            {
+                _attackClearTrigger.Step(Time.deltaTime);
+                if (_attackClearTrigger.CheckAndReset())
+                {
+                    Hitbox.ClearHits();
+                }
             
-            Hitbox.transform.RotateAround(source.Transform.position, Vector3.up, Time.deltaTime * 100);
-            yield return new WaitForEndOfFrame();
+                Hitbox.transform.RotateAround(source.Transform.position, Vector3.up, Time.deltaTime * 100);
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
 }

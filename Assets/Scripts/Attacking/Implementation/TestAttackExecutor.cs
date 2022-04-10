@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Attacking
+namespace Attacking.Implementation
 {
     public class TestAttackExecutor : AttackExecutor
     {

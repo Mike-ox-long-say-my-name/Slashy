@@ -2,61 +2,64 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public abstract class AttackExecutor : MonoBehaviour
+namespace Attacking
 {
-    private Coroutine _activeAttack;
-
-    [SerializeField] private AttackHitbox hitbox;
-
-    public AttackHitbox Hitbox => hitbox;
-    public bool IsAttacking => _activeAttack != null;
-
-    public void InterruptAttack()
+    public abstract class AttackExecutor : MonoBehaviour
     {
-        OnAttackInterrupted();
-        StopCoroutine(_activeAttack);
-        _activeAttack = null;
-    }
+        private Coroutine _activeAttack;
 
-    public void StartExecution(IHitSource source, Action attackCompleted)
-    {
-        if (IsAttacking)
+        [SerializeField] private AttackHitbox hitbox;
+
+        public AttackHitbox Hitbox => hitbox;
+        public bool IsAttacking => _activeAttack != null;
+
+        public void InterruptAttack()
         {
-            InterruptAttack();
+            OnAttackInterrupted();
+            StopCoroutine(_activeAttack);
+            _activeAttack = null;
         }
-        _activeAttack = StartCoroutine(ExecuteInternal(source, attackCompleted));
+
+        public void StartExecution(IHitSource source, Action attackCompleted)
+        {
+            if (IsAttacking)
+            {
+                InterruptAttack();
+            }
+            _activeAttack = StartCoroutine(ExecuteInternal(source, attackCompleted));
+        }
+
+        private IEnumerator ExecuteInternal(IHitSource source, Action attackCompleted)
+        {
+            yield return Execute(source);
+            attackCompleted?.Invoke();
+            hitbox.DisableAndClear();
+            _activeAttack = null;
+        }
+
+        protected abstract IEnumerator Execute(IHitSource source);
+
+        protected virtual void OnAttackInterrupted()
+        {
+            hitbox.DisableAndClear();
+        }
     }
 
-    private IEnumerator ExecuteInternal(IHitSource source, Action attackCompleted)
+    public class AttackInfo : ScriptableObject
     {
-        yield return Execute(source);
-        attackCompleted?.Invoke();
-        hitbox.DisableAndClear();
-        _activeAttack = null;
+        [Min(0)] public float baseDamageMultiplier = 1;
+        [Min(0)] public float flatDamageBonus;
     }
 
-    protected abstract IEnumerator Execute(IHitSource source);
-
-    protected virtual void OnAttackInterrupted()
+    public struct HitInfo
     {
-        hitbox.DisableAndClear();
+        public float Damage;
+        public float Balance;
     }
-}
 
-public class AttackInfo : ScriptableObject
-{
-    [Min(0)] public float baseDamageMultiplier = 1;
-    [Min(0)] public float flatDamageBonus;
-}
-
-public struct HitInfo
-{
-    public float Damage;
-    public float Balance;
-}
-
-public class PlayerAttackInfo : AttackInfo
-{
-    [Min(0)] public float staminaCost;
-    [Min(0)] public float healthCost;
+    public class PlayerAttackInfo : AttackInfo
+    {
+        [Min(0)] public float staminaCost;
+        [Min(0)] public float healthCost;
+    }
 }

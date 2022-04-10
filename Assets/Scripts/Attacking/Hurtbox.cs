@@ -1,14 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(HittableEntity))]
-public class Hurtbox : BaseHitbox, IHitReceiver
+namespace Attacking
 {
-    [SerializeField] private HittableEntity entity;
-
-    public void ReceiveHit(IHitSource source, in HitInfo info)
+    [RequireComponent(typeof(Rigidbody))]
+    public class Hurtbox : BaseHitbox, IHitReceiver
     {
-        entity.ReceiveHit(source, info);
+        [SerializeField] private HittableEntity entity;
+
+        public void ReceiveHit(IHitSource source, in HitInfo info)
+        {
+            if (entity)
+            {
+                entity.ReceiveHit(source, info);
+            }
+        }
     }
 }

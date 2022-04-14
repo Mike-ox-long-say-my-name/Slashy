@@ -16,6 +16,10 @@ namespace Player.States
             Dash(new Vector3(Context.MoveInput.x, 0, Context.MoveInput.y));
         }
 
+        public override void UpdateStates()
+        {
+        }
+
         public override void UpdateState()
         {
         }
@@ -28,6 +32,9 @@ namespace Player.States
         {
             Context.CanDash = false;
             Context.CanJump = false;
+
+            Context.AppliedVelocityX = 0;
+            Context.AppliedVelocityZ = 0;
 
             var fullMove = direction * Context.DashDistance;
 

@@ -18,7 +18,7 @@ public class TestEnemy : Character
     {
         if (!attackExecutor.IsAttacking)
         {
-            attackExecutor.StartExecution(this, null);
+            attackExecutor.StartExecution(this);
         }
     }
 }

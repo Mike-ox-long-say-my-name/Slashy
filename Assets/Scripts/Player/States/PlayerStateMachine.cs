@@ -13,39 +13,41 @@ namespace Player.States
 
         [field: Space]
         [field: Header("Movement")]
-        [field: SerializeField] public float Gravity { get; private set; } = -9.81f;
-        [field: SerializeField] public float GroundedGravity { get; private set; } = -0.2f;
-        [field: SerializeField, Min(0)] public float HorizontalMoveSpeed { get; private set; } = 5;
-        [field: SerializeField, Min(0)] public float VerticalMoveSpeed { get; private set; } = 2;
-        [field: SerializeField, Range(0, 1)] public float AirboneControlFactor { get; private set; } = 0.5f;
-        [field: SerializeField, Min(0)] public float JumpStartVelocity { get; private set; } = 5;
+        [field: SerializeField] public float Gravity { get; set; } = -9.81f;
+        [field: SerializeField] public float GroundedGravity { get; set; } = -0.2f;
+        [field: SerializeField, Min(0)] public float HorizontalMoveSpeed { get; set; } = 5;
+        [field: SerializeField, Min(0)] public float VerticalMoveSpeed { get; set; } = 2;
+        [field: SerializeField, Range(0, 1)] public float AirboneControlFactor { get; set; } = 0.5f;
+        [field: SerializeField, Min(0)] public float JumpStartVelocity { get; set; } = 5;
 
+        [Space]
         [SerializeField, Min(0)] private float jumpInputWaitTime = 0.2f;
         [SerializeField, Min(0)] private float dashInputWaitTime = 0.2f;
-
+        [SerializeField, Min(0)] private float attackInputWaitTime = 0.2f;
+        
+        [Space]
         [SerializeField] private Camera followingCamera;
         [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
 
         [field: Space]
         [field: Header("Components")]
-        [field: SerializeField] public CharacterController CharacterController { get; private set; } = null;
+        [field: SerializeField] public CharacterController CharacterController { get; set; }
+        [field: SerializeField] public AttackExecutor LightAttackExecutor { get; set; }
+        [field: SerializeField] public PlayerCharacter PlayerCharacter { get; set; }
 
-        [field: SerializeField] public Animator Animator { get; private set; } = null;
-        [field: SerializeField] public Hurtbox Hurtbox { get; private set; } = null;
+        [field: SerializeField] public Animator Animator { get; set; } = null;
+        [field: SerializeField] public Hurtbox Hurtbox { get; set; } = null;
 
         [field: Space]
         [field: Header("Dash")]
-        [field: SerializeField, Min(0)] public float DashRecovery { get; private set; } = 0.3f;
-        [field: SerializeField, Min(0)] public float DashDistance { get; private set; } = 3f;
-        [field: SerializeField, Min(0)] public float DashTime { get; private set; } = 0.4f;
+        [field: SerializeField, Min(0)] public float DashRecovery { get; set; } = 0.3f;
+        [field: SerializeField, Min(0)] public float DashDistance { get; set; } = 3f;
+        [field: SerializeField, Min(0)] public float DashTime { get; set; } = 0.4f;
 
-        [field: Space] [field: SerializeField] public PlayerActionConfig ActionConfig { get; private set; } = null;
+        [field: Space]
+        [field: SerializeField] public PlayerActionConfig ActionConfig { get; set; } = null;
 
-        public bool IsDashPressed { get; private set; }
-        public bool IsJumpPressed { get; private set; }
         public Vector2 MoveInput { get; private set; }
-
-        private Vector3 _appliedVelocity;
 
         public Vector3 AppliedVelocity { get => _appliedVelocity; set => _appliedVelocity = value; }
         public float AppliedVelocityX { get => _appliedVelocity.x; set => _appliedVelocity.x = value; }
@@ -63,10 +65,23 @@ namespace Player.States
         public bool CanDash { get; set; } = true;
         public bool CanJump { get; set; } = true;
 
+        private Vector3 _appliedVelocity;
         private float _cameraFollowVelocity;
+
+        private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
+
+        public TimedTrigger IsJumpPressed { get; private set; }
+        public TimedTrigger IsDashPressed { get; private set; }
+        public TimedTrigger IsLightAttackPressed { get; private set; }
+        public bool IsAttacking => LightAttackExecutor.IsAttacking;
+
 
         private void Awake()
         {
+            IsJumpPressed = _triggerFactory.Create();
+            IsDashPressed = _triggerFactory.Create();
+            IsLightAttackPressed = _triggerFactory.Create();
+
             StateFactory = new PlayerStateFactory(this);
             CurrentState = CharacterController.isGrounded ? StateFactory.Grounded() : StateFactory.Fall();
             CurrentState.EnterState();
@@ -87,10 +102,19 @@ namespace Player.States
             CharacterController.Move(Time.deltaTime * AppliedVelocity);
 
             MoveCamera();
+
+            if (Keyboard.current.iKey.wasPressedThisFrame)
+            {
+                print($"{CurrentState.GetType()}");
+            }
         }
 
         private void HandleRotation()
         {
+            if (IsDashing)
+            {
+                return;
+            }
             if (MoveInput.x > 0)
             {
                 transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -103,17 +127,7 @@ namespace Player.States
 
         private void HandleTriggers()
         {
-            _jumpInputResetTrigger.Step(Time.deltaTime);
-            _dashInputResetTrigger.Step(Time.deltaTime);
-
-            if (_jumpInputResetTrigger.CheckAndReset())
-            {
-                IsJumpPressed = false;
-            }
-            if (_dashInputResetTrigger.CheckAndReset())
-            {
-                IsDashPressed = false;
-            }
+            _triggerFactory.StepAll(Time.deltaTime);
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -127,8 +141,7 @@ namespace Player.States
             {
                 return;
             }
-            IsJumpPressed = true;
-            _jumpInputResetTrigger.SetIn(jumpInputWaitTime);
+            IsJumpPressed.SetFor(jumpInputWaitTime);
         }
 
         public void OnDash(InputAction.CallbackContext context)
@@ -137,12 +150,13 @@ namespace Player.States
             {
                 return;
             }
-            IsDashPressed = true;
-            _dashInputResetTrigger.SetIn(dashInputWaitTime);
+            IsDashPressed.SetFor(dashInputWaitTime);
         }
 
-        private readonly TimedTrigger _jumpInputResetTrigger = new TimedTrigger();
-        private readonly TimedTrigger _dashInputResetTrigger = new TimedTrigger();
+        public void OnAttack(InputAction.CallbackContext context)
+        {
+            IsLightAttackPressed.SetFor(attackInputWaitTime);
+        }
 
         private void MoveCamera()
         {
@@ -154,6 +168,11 @@ namespace Player.States
 
         private float _horizontalAirboneVelocity;
         private float _verticalAirboneVelocity;
+
+        public void ResetBufferedInput()
+        {
+            _triggerFactory.ResetAll();
+        }
 
         public void ApplyGravity()
         {

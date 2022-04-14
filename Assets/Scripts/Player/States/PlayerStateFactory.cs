@@ -14,7 +14,7 @@ namespace Player.States
             return new PlayerGroundedState(_stateMachine, this);
         }
 
-        public PlayerBaseState Dashing()
+        public PlayerBaseState Dash()
         {
             return new PlayerDashState(_stateMachine, this);
         }
@@ -37,6 +37,11 @@ namespace Player.States
         public PlayerBaseState Idle()
         {
             return new PlayerIdleState(_stateMachine, this);
+        }
+
+        public PlayerBaseState Attack()
+        {
+            return new PlayerAttackState(_stateMachine, this);
         }
     }
 }

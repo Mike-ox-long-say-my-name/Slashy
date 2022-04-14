@@ -38,6 +38,22 @@ namespace Player.States
             {
                 SwitchState(Factory.Fall());
             }
+            else if (Context.IsLightAttackPressed.CheckAndReset())
+            {
+                Context.ResetBufferedInput();
+            }
+        }
+
+        private void TryAttack()
+        {
+            if (Context.IsAttacking)
+            {
+                return;
+            }
+
+            // TODO: добавить атаку в прыжке
+            // SetSubState(Factory.Attack());
+            // SubState.EnterState();
         }
     }
 }

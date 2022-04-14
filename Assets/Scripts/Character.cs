@@ -16,7 +16,7 @@ public class Character : HittableEntity, IHitSource
 
     public override void ReceiveHit(IHitSource source, in HitInfo info)
     {
-        var damage = info.Damage;
+        var damage = info.damage;
         if (damage < 0)
         {
             throw new ArgumentException();

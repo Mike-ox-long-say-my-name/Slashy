@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Player.States
 {
     public class PlayerFallState : PlayerBaseState
@@ -33,6 +31,23 @@ namespace Player.States
                 Context.AppliedVelocityZ = 0;
                 SwitchState(Factory.Grounded());
             }
+            else if (Context.IsLightAttackPressed.CheckAndReset())
+            {
+                Context.ResetBufferedInput();
+                TryAttack();
+            }
+        }
+
+        private void TryAttack()
+        {
+            if (Context.LightAttackExecutor.IsAttacking)
+            {
+                return;
+            }
+            
+            // TODO: добавить атаку в прыжке
+            // SetSubState(Factory.Attack());
+            // SubState.EnterState();
         }
     }
 }

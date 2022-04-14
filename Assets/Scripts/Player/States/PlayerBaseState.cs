@@ -6,6 +6,7 @@ namespace Player.States
         protected PlayerStateFactory Factory { get; }
 
         protected bool IsRootState { get; set; }
+        public bool RootShouldNotSwitch { get; protected set; }
         protected PlayerBaseState SuperState { get; private set; }
         protected PlayerBaseState SubState { get; private set; }
 

@@ -12,14 +12,7 @@ namespace Player.States
 
         public override void EnterState()
         {
-            if (SubState.GetType() == typeof(PlayerWalkState))
-            {
-                Context.Animator.SetTrigger("walk");
-            }
-            else if (SubState.GetType() == typeof(PlayerIdleState))
-            {
-                Context.Animator.SetTrigger("idle");
-            }
+            SubState.EnterState();
         }
 
         public override void UpdateState()
@@ -35,18 +28,41 @@ namespace Player.States
 
         private void CheckStateSwitch()
         {
-            if (Context.IsDashPressed && Context.CanDash)
+            if (SubState is { RootShouldNotSwitch: true })
             {
-                SwitchState(Factory.Dashing());
+                return;
             }
-            else if (Context.IsJumpPressed && Context.CanJump)
+
+            if (Context.CanDash && Context.IsDashPressed.CheckAndReset())
             {
+                Context.ResetBufferedInput();
+                SwitchState(Factory.Dash());
+            }
+            else if (Context.CanJump && Context.IsJumpPressed.CheckAndReset())
+            {
+                Context.ResetBufferedInput();
                 SwitchState(Factory.Jump());
             }
             else if (!Context.CharacterController.isGrounded)
             {
                 SwitchState(Factory.Fall());
             }
+            else if (Context.IsLightAttackPressed.CheckAndReset())
+            {
+                Context.ResetBufferedInput();
+                TryAttack();
+            }
+        }
+
+        private void TryAttack()
+        {
+            if (Context.IsAttacking)
+            {
+                return;
+            }
+
+            SetSubState(Factory.Attack());
+            SubState.EnterState();
         }
     }
 }

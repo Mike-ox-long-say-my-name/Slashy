@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,26 +6,41 @@ namespace Attacking
 {
     public class AttackAnimationEventDispatcher : MonoBehaviour
     {
-        public UnityEvent AnimationShouldEnableHitbox { get; private set; } = new UnityEvent();
-        public UnityEvent AnimationShouldDisableHitbox { get; private set; } = new UnityEvent();
-        public UnityEvent AnimationShouldEndAttack { get; private set; } = new UnityEvent();
+        private Action _animationShouldEnableHitbox;
+        private Action _animationShouldDisableHitbox;
+        private Action _animationShouldEndAttack;
+
+        public void SetAnimationShouldEnableHitbox(Action action)
+        {
+            _animationShouldEnableHitbox = action;
+        }
+
+        public void SetAnimationShouldDisableHitbox(Action action)
+        {
+            _animationShouldDisableHitbox = action;
+        }
+
+        public void SetAnimationShouldEndAttack(Action action)
+        {
+            _animationShouldEndAttack = action;
+        }
 
         public void OnAnimationShouldEnableHitbox()
         {
-            AnimationShouldEnableHitbox.Invoke();
-            AnimationShouldEnableHitbox = new UnityEvent();
+            _animationShouldEnableHitbox?.Invoke();
+            _animationShouldEnableHitbox = null;
         }
 
         public void OnAnimationShouldDisableHitbox()
         {
-            AnimationShouldDisableHitbox.Invoke();
-            AnimationShouldDisableHitbox = new UnityEvent();
+            _animationShouldDisableHitbox?.Invoke();
+            _animationShouldDisableHitbox = null;
         }
 
         public void OnAnimationShouldEndAttack()
         {
-            AnimationShouldEndAttack.Invoke();
-            AnimationShouldEndAttack = new UnityEvent();
+            _animationShouldEndAttack?.Invoke();
+            _animationShouldEndAttack = null;
         }
     }
 

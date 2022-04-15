@@ -28,11 +28,6 @@ namespace Player.States
 
         private void CheckStateSwitch()
         {
-            if (SubState is { RootShouldNotSwitch: true })
-            {
-                return;
-            }
-
             if (Context.CanDash && Context.IsDashPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();

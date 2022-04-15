@@ -12,9 +12,11 @@ namespace Attacking
 
         protected override IEnumerator Execute(IHitSource source)
         {
-            eventDispatcher.AnimationShouldEnableHitbox.AddListener(() => OnShouldEnableHitbox(source));
-            eventDispatcher.AnimationShouldDisableHitbox.AddListener(() => OnShouldDisableHitbox(source));
-            eventDispatcher.AnimationShouldEndAttack.AddListener(OnShouldEndAttack);
+            _attackEnded.Reset();
+
+            eventDispatcher.SetAnimationShouldEnableHitbox(() => OnShouldEnableHitbox(source));
+            eventDispatcher.SetAnimationShouldDisableHitbox(() => OnShouldDisableHitbox(source));
+            eventDispatcher.SetAnimationShouldEndAttack(OnShouldEndAttack);
 
             while (!_attackEnded.CheckAndReset())
             {
@@ -25,7 +27,13 @@ namespace Attacking
         protected abstract void OnShouldEnableHitbox(IHitSource source);
 
         protected abstract void OnShouldDisableHitbox(IHitSource source);
-        
+
+        protected override void OnAttackEnded(bool interrupted)
+        {
+            base.OnAttackEnded(interrupted);
+            EndAttack();
+        }
+
         protected virtual void OnShouldEndAttack()
         {
             EndAttack();

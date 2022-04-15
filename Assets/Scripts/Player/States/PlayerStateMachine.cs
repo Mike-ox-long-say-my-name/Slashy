@@ -155,6 +155,10 @@ namespace Player.States
 
         public void OnAttack(InputAction.CallbackContext context)
         {
+            if (!context.action.IsPressed())
+            {
+                return;
+            }
             IsLightAttackPressed.SetFor(attackInputWaitTime);
         }
 

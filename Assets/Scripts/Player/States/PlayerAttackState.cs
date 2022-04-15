@@ -1,4 +1,6 @@
-﻿namespace Player.States
+﻿using UnityEngine;
+
+namespace Player.States
 {
     public class PlayerAttackState : PlayerBaseState
     {
@@ -20,8 +22,8 @@
                 SwitchState(Factory.Idle());
             }
 
-            Context.Animator.SetTrigger("attack-short");
             Context.LightAttackExecutor.StartExecution(Context.PlayerCharacter, AttackEnded);
+            Context.Animator.SetTrigger("attack-short");
         }
 
         public override void UpdateState()

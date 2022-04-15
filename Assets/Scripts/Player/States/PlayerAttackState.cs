@@ -19,6 +19,10 @@ namespace Player.States
             {
                 Context.CanDash = true;
                 Context.CanJump = true;
+                if (false)
+                {
+                    Context.Animator.SetTrigger("attack-long");
+                }
                 SwitchState(Factory.Idle());
             }
 

@@ -25,7 +25,7 @@ public class DamageTakenAnimator : MonoBehaviour
 
         IEnumerator AnimationRoutine()
         {
-
+            yield break;
         }
 
         _animationRoutine = StartCoroutine(AnimationRoutine());

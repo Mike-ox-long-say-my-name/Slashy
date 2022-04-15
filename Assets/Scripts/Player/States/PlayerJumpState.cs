@@ -41,6 +41,7 @@ namespace Player.States
             else if (Context.IsLightAttackPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
+                TryAttack();
             }
         }
 

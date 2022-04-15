@@ -15,10 +15,10 @@ namespace Player
         private void Awake()
         {
             var player = FindObjectOfType<PlayerCharacter>();
-            player.OnHealthChanged.AddListener(OnHeatlhChanged);
+            player.OnHealthChanged.AddListener(OnHealthChanged);
         }
 
-        public void OnHeatlhChanged(Character player)
+        public void OnHealthChanged(Character player)
         {
             var fill = player.Health / player.MaxHealth;
             frontLayerImage.fillAmount = fill;

@@ -17,11 +17,12 @@ namespace Attacking
             eventDispatcher.SetAnimationShouldEnableHitbox(() => OnShouldEnableHitbox(source));
             eventDispatcher.SetAnimationShouldDisableHitbox(() => OnShouldDisableHitbox(source));
             eventDispatcher.SetAnimationShouldEndAttack(OnShouldEndAttack);
-
+             
             while (!_attackEnded.CheckAndReset())
             {
                 yield return null;
             }
+            yield return new WaitForEndOfFrame();
         }
 
         protected abstract void OnShouldEnableHitbox(IHitSource source);

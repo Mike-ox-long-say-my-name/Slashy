@@ -28,6 +28,11 @@ namespace Player.States
 
         private void CheckStateSwitch()
         {
+            //if (Context.IsAttacking)
+            //{
+            //    return;
+            //}
+
             if (Context.CanDash && Context.IsDashPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
@@ -40,9 +45,10 @@ namespace Player.States
             }
             else if (!Context.CharacterController.isGrounded)
             {
+                Debug.Log("fall");
                 SwitchState(Factory.Fall());
             }
-            else if (Context.IsLightAttackPressed.CheckAndReset())
+            else if (Context.CanAttack && Context.IsLightAttackPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
                 TryAttack();

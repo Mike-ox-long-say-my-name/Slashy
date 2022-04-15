@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Player.States
 {
@@ -14,20 +15,32 @@ namespace Player.States
             Context.AppliedVelocityZ = 0;
             Context.CanDash = false;
             Context.CanJump = false;
+            Context.CanAttack = false;
 
-            void AttackEnded(bool _)
+            void AttackEnded1(bool interrupted)
+            {
+                if (Context.IsLightAttackPressed.CheckAndReset())
+                {
+                    Context.Animator.SetTrigger("attack-long");
+                    Context.LightAttackExecutor2.StartExecution(Context.PlayerCharacter, AttackEnded2);
+                }
+                else
+                {
+                    AttackEnded2(interrupted);
+                }
+            }
+
+            void AttackEnded2(bool _)
             {
                 Context.CanDash = true;
                 Context.CanJump = true;
-                if (false)
-                {
-                    Context.Animator.SetTrigger("attack-long");
-                }
+                Context.CanAttack = true;
                 SwitchState(Factory.Idle());
             }
-
-            Context.LightAttackExecutor.StartExecution(Context.PlayerCharacter, AttackEnded);
+            
+            Context.Animator.ResetTrigger("attack-long");
             Context.Animator.SetTrigger("attack-short");
+            Context.LightAttackExecutor1.StartExecution(Context.PlayerCharacter, AttackEnded1);
         }
 
         public override void UpdateState()

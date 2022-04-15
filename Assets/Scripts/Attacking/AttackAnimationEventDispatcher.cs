@@ -25,6 +25,11 @@ namespace Attacking
             _animationShouldEndAttack = action;
         }
 
+        private void Update()
+        {
+            return;
+        }
+
         public void OnAnimationShouldEnableHitbox()
         {
             _animationShouldEnableHitbox?.Invoke();

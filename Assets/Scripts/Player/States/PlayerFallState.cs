@@ -40,7 +40,7 @@ namespace Player.States
 
         private void TryAttack()
         {
-            if (Context.LightAttackExecutor.IsAttacking)
+            if (Context.LightAttackExecutor1.IsAttacking)
             {
                 return;
             }

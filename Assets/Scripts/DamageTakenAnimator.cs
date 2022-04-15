@@ -25,9 +25,25 @@ public class DamageTakenAnimator : MonoBehaviour
 
         IEnumerator AnimationRoutine()
         {
-            yield break;
+            var lastStepTime = Time.time;
+            var passedTime = 0f;
+            while (passedTime < fullWhiteOutTime)
+            {
+                var timeStep = Time.time - lastStepTime;
+                var fraction = passedTime / fullWhiteOutTime;
+
+                var color = spriteRenderer.color;
+                color.a = fraction;
+                spriteRenderer.color = color;
+
+                yield return new WaitForEndOfFrame();
+            }
         }
 
+        if (_animationRoutine != null)
+        {
+            StopCoroutine(_animationRoutine);
+        }
         _animationRoutine = StartCoroutine(AnimationRoutine());
     }
 }

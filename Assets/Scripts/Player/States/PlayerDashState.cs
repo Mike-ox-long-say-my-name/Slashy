@@ -12,12 +12,8 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("dash");
             Dash(new Vector3(Context.MoveInput.x, 0, Context.MoveInput.y));
-        }
-
-        public override void UpdateStates()
-        {
+            Context.Animator.SetTrigger("dash");
         }
 
         public override void UpdateState()
@@ -32,6 +28,7 @@ namespace Player.States
         {
             Context.CanDash = false;
             Context.CanJump = false;
+            Context.CanAttack = false;
 
             Context.AppliedVelocityX = 0;
             Context.AppliedVelocityZ = 0;
@@ -80,6 +77,7 @@ namespace Player.States
             // Иначе ломается анимация при моментальном прыжке после даша
             yield return new WaitForEndOfFrame();
             Context.CanJump = true;
+            Context.CanAttack = true;
 
             yield return new WaitForSeconds(recoverTime);
             Context.CanDash = true;

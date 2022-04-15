@@ -1,13 +1,27 @@
 ﻿using System;
 using Attacking;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Character : HittableEntity, IHitSource
 {
+    public UnityEvent<Character> OnHealthChanged { get; } = new UnityEvent<Character>();
+
     [SerializeField, Min(0)] private float maxHealth;
 
+    private float _health;
+
     public float MaxHealth => maxHealth;
-    public float Health { get; private set; }
+
+    public float Health
+    {
+        get => _health;
+        set
+        {
+            _health = value;
+            OnHealthChanged?.Invoke(this);
+        }
+    }
 
     protected virtual void Awake()
     {
@@ -23,6 +37,8 @@ public class Character : HittableEntity, IHitSource
         }
 
         Health = Mathf.Max(0, Health - damage);
+        base.ReceiveHit(source, info);
+
         if (Mathf.Abs(Health) < 1e-8)
         {
             OnDeath();

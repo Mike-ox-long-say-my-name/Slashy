@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Player
 {
-    public class PlayerHealthBar : MonoBehaviour
+    public class HealthBar : MonoBehaviour
     {
         [SerializeField] private Image frontLayerImage;
         [SerializeField] private Image middleLayerImage;
@@ -15,10 +15,10 @@ namespace Player
         private void Awake()
         {
             var player = FindObjectOfType<PlayerCharacter>();
-            player.onHitReceived.AddListener(OnPlayerHitReceived);
+            player.OnHealthChanged.AddListener(OnHeatlhChanged);
         }
 
-        public void OnPlayerHitReceived(PlayerCharacter player)
+        public void OnHeatlhChanged(Character player)
         {
             var fill = player.Health / player.MaxHealth;
             frontLayerImage.fillAmount = fill;

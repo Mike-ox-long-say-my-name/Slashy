@@ -12,6 +12,7 @@ namespace Player.States
 
         public override void EnterState()
         {
+            Context.PlayerCharacter.SpendStamina(Context.ActionConfig.JumpStaminaCost);
             Context.Animator.SetTrigger("jump");
             Context.AppliedVelocityY = Context.JumpStartVelocity;
         }

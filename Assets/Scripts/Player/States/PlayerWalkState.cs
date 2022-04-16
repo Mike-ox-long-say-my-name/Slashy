@@ -27,7 +27,7 @@ namespace Player.States
 
         private void CheckStateSwitch()
         {
-            if (Context.MoveInput.sqrMagnitude < 1e-8)
+            if (Mathf.Approximately(Context.MoveInput.sqrMagnitude, 0))
             {
                 SwitchState(Factory.Idle());
             }

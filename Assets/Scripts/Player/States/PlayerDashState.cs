@@ -12,6 +12,7 @@ namespace Player.States
 
         public override void EnterState()
         {
+            Context.PlayerCharacter.SpendStamina(Context.ActionConfig.DashStaminaCost);
             Dash(new Vector3(Context.MoveInput.x, 0, Context.MoveInput.y));
             Context.Animator.SetTrigger("dash");
         }
@@ -26,9 +27,9 @@ namespace Player.States
 
         private void Dash(Vector3 direction)
         {
-            Context.CanDash = false;
-            Context.CanJump = false;
-            Context.CanAttack = false;
+            Context.CanDash.Lock(this);
+            Context.CanJump.Lock(this);
+            Context.CanAttack.Lock(this);
 
             Context.AppliedVelocityX = 0;
             Context.AppliedVelocityZ = 0;
@@ -63,10 +64,9 @@ namespace Player.States
 
                 Context.AppliedVelocityX = 0;
                 Context.AppliedVelocityZ = 0;
-
-                Context.StartCoroutine(RecoverFromDashRoutine(Context.DashRecovery));
-
+                
                 SwitchState(Factory.Grounded());
+                Context.StartCoroutine(RecoverFromDashRoutine(Context.DashRecovery));
             }
 
             Context.StartCoroutine(DashCoroutine());
@@ -74,13 +74,13 @@ namespace Player.States
 
         private IEnumerator RecoverFromDashRoutine(float recoverTime)
         {
-            // Иначе ломается анимация при моментальном прыжке после даша
             yield return new WaitForEndOfFrame();
-            Context.CanJump = true;
-            Context.CanAttack = true;
-
+            Context.CanJump.TryUnlock(this);
+            Context.CanAttack.TryUnlock(this);
+            Context.CanDash.ReleaseOwnership(this);
+            
             yield return new WaitForSeconds(recoverTime);
-            Context.CanDash = true;
+            Context.CanDash.TryUnlock();
         }
 
         private void EnableInvincibility()

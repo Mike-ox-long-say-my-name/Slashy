@@ -28,24 +28,24 @@ namespace Player.States
 
         private void CheckStateSwitch()
         {
-            //if (Context.IsAttacking)
-            //{
-            //    return;
-            //}
-
             if (Context.CanDash && Context.IsDashPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
-                SwitchState(Factory.Dash());
+                if (Context.PlayerCharacter.HasStamina)
+                {
+                    SwitchState(Factory.Dash());
+                }
             }
             else if (Context.CanJump && Context.IsJumpPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
-                SwitchState(Factory.Jump());
+                if (Context.PlayerCharacter.HasStamina)
+                {
+                    SwitchState(Factory.Jump());
+                }
             }
             else if (!Context.CharacterController.isGrounded)
             {
-                Debug.Log("fall");
                 SwitchState(Factory.Fall());
             }
             else if (Context.CanAttack && Context.IsLightAttackPressed.CheckAndReset())
@@ -57,7 +57,7 @@ namespace Player.States
 
         private void TryAttack()
         {
-            if (Context.IsAttacking)
+            if (!Context.CanStartAttack)
             {
                 return;
             }

@@ -13,14 +13,23 @@ namespace Player.States
         {
             Context.AppliedVelocityX = 0;
             Context.AppliedVelocityZ = 0;
-            Context.CanDash = false;
-            Context.CanJump = false;
-            Context.CanAttack = false;
+
+            Context.CanDash.Lock(this);
+            Context.CanJump.Lock(this);
+            Context.CanAttack.Lock(this);
 
             void AttackEnded1(bool interrupted)
             {
                 if (Context.IsLightAttackPressed.CheckAndReset())
                 {
+                    Context.ResetBufferedInput();
+                    if (!Context.PlayerCharacter.HasStamina)
+                    {
+                        AttackEnded2(interrupted);
+                        return;
+                    }
+
+                    Context.PlayerCharacter.SpendStamina(Context.ActionConfig.LightAttack2StaminaCost);
                     Context.Animator.SetTrigger("attack-long");
                     Context.LightAttackExecutor2.StartExecution(Context.PlayerCharacter, AttackEnded2);
                 }
@@ -32,12 +41,21 @@ namespace Player.States
 
             void AttackEnded2(bool _)
             {
-                Context.CanDash = true;
-                Context.CanJump = true;
-                Context.CanAttack = true;
                 SwitchState(Factory.Idle());
+                Context.StartCoroutine(RecoveryRoutine());
+
+                IEnumerator RecoveryRoutine()
+                {
+                    // Иначе ломаются анимации
+                    yield return new WaitForSeconds(Context.AttackRecoveryTime);
+
+                    Context.CanDash.TryUnlock(this);
+                    Context.CanJump.TryUnlock(this);
+                    Context.CanAttack.TryUnlock(this);
+                }
             }
-            
+
+            Context.PlayerCharacter.SpendStamina(Context.ActionConfig.LightAttack1StaminaCost);
             Context.Animator.ResetTrigger("attack-long");
             Context.Animator.SetTrigger("attack-short");
             Context.LightAttackExecutor1.StartExecution(Context.PlayerCharacter, AttackEnded1);

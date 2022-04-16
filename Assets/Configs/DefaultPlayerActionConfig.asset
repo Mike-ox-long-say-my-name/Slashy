@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42075aaa1067ebc498b0d23d294d380c, type: 3}
   m_Name: DefaultPlayerActionConfig
   m_EditorClassIdentifier: 
-  <JumpStaminaCost>k__BackingField: 0
-  <DashStaminaCost>k__BackingField: 0
+  <JumpStaminaCost>k__BackingField: 15
+  <DashStaminaCost>k__BackingField: 10
   <DashInvincibilityStart>k__BackingField: 0.1
   <DashInvincibilityEnd>k__BackingField: 0.8
-  <StaminaRegeneration>k__BackingField: 0
-  <EmptyStaminaRegenerationDelay>k__BackingField: 0
+  <StaminaRegeneration>k__BackingField: 15
+  <StaminaRegenerationDelay>k__BackingField: 1
+  <EmptyStaminaAdditionalRegenerationDelay>k__BackingField: 1
+  <LightAttack1StaminaCost>k__BackingField: 15
+  <LightAttack2StaminaCost>k__BackingField: 15

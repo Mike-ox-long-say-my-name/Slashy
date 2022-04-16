@@ -1,26 +1,65 @@
-using Attacking;
+using Configs;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using Utilities;
 
 namespace Player
 {
     public class PlayerCharacter : Character
     {
-        [field: SerializeField, Min(0)] public float MaxStamina { get; private set; } = 0;
+        [field: SerializeField]
+        public UnityEvent<ICharacterResource> OnStaminaChanged { get; private set; }
+            = new UnityEvent<ICharacterResource>();
 
-        public float Stamina { get; private set; } = 0;
-        public bool HasStamina => Stamina > 0;
+        [SerializeField] private PlayerActionConfig actionConfig;
+        [SerializeField, Min(0)] private float maxStamina = 0;
+
+        private StaminaResource _staminaResource;
+        public ICharacterResource Stamina => _staminaResource;
+        public bool HasStamina => Stamina.Value > 0;
+
+        private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
+        private TimedTrigger _staminaRecoveryDelayed;
 
         protected override void Awake()
         {
             base.Awake();
-            Stamina = MaxStamina;
+            _staminaResource = new StaminaResource(this, maxStamina);
+            _staminaRecoveryDelayed = _triggerFactory.Create();
+        }
+
+        private void Update()
+        {
+            RecoverStamina();
+            _triggerFactory.StepAll(Time.deltaTime);
+        }
+
+        private void RecoverStamina()
+        {
+            if (_staminaRecoveryDelayed.IsSet)
+            {
+                return;
+            }
+
+            _staminaResource.Recover(actionConfig.StaminaRegeneration * Time.deltaTime);
+            OnStaminaChanged?.Invoke(Stamina);
         }
 
         public void SpendStamina(float amount)
         {
-            Stamina = Mathf.Max(0, Stamina - amount);
+            _staminaResource.Spend(amount);
+            if (_staminaResource.IsDepleted)
+            {
+                _staminaRecoveryDelayed.SetFor(
+                    actionConfig.StaminaRegenerationDelay + actionConfig.EmptyStaminaAdditionalRegenerationDelay);
+            }
+            else
+            {
+                _staminaRecoveryDelayed.SetFor(
+                    actionConfig.StaminaRegenerationDelay);
+            }
+            OnStaminaChanged?.Invoke(Stamina);
         }
 
         protected override void OnDeath()
@@ -28,5 +67,4 @@ namespace Player
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
-
 }

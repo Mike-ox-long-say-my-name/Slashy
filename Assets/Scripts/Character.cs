@@ -1,31 +1,26 @@
-﻿using System;
-using Attacking;
+﻿using Attacking;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Character : HittableEntity, IHitSource
 {
-    public UnityEvent<Character> OnHealthChanged { get; } = new UnityEvent<Character>();
+    [field: SerializeField]
+    public UnityEvent<ICharacterResource> OnHealthChanged { get; private set; }
+        = new UnityEvent<ICharacterResource>();
 
     [SerializeField, Min(0)] private float maxHealth;
+    [SerializeField] private bool canDie = true;
 
-    private float _health;
+    private HealthResource _healthResource;
+    public ICharacterResource Health => _healthResource;
 
-    public float MaxHealth => maxHealth;
-
-    public float Health
-    {
-        get => _health;
-        set
-        {
-            _health = value;
-            OnHealthChanged?.Invoke(this);
-        }
-    }
+    public Transform Transform => transform;
+    public HittableEntity Source => this;
 
     protected virtual void Awake()
     {
-        Health = maxHealth;
+        _healthResource = new HealthResource(this, maxHealth);
     }
 
     public override void ReceiveHit(IHitSource source, in HitInfo info)
@@ -36,10 +31,12 @@ public class Character : HittableEntity, IHitSource
             throw new ArgumentException();
         }
 
-        Health = Mathf.Max(0, Health - damage);
+        _healthResource.Spend(damage);
+        OnHealthChanged?.Invoke(Health);
+
         base.ReceiveHit(source, info);
 
-        if (Mathf.Abs(Health) < 1e-8)
+        if (canDie && _healthResource.IsDepleted)
         {
             OnDeath();
         }
@@ -49,7 +46,4 @@ public class Character : HittableEntity, IHitSource
     {
         Destroy(gameObject);
     }
-
-    public Transform Transform => transform;
-    public HittableEntity Source => this;
 }

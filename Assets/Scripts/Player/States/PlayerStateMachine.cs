@@ -35,6 +35,7 @@ namespace Player.States
         [field: SerializeField] public AttackExecutor LightAttackExecutor1 { get; set; }
         [field: SerializeField] public AttackExecutor LightAttackExecutor2 { get; set; }
         [field: SerializeField] public PlayerCharacter PlayerCharacter { get; set; }
+        [field: SerializeField] public float AttackRecoveryTime { get; private set; } = 0.1f;
 
         [field: SerializeField] public Animator Animator { get; set; } = null;
         [field: SerializeField] public Hurtbox Hurtbox { get; set; } = null;
@@ -63,8 +64,9 @@ namespace Player.States
         public bool IsWalking => CurrentState.GetType() == typeof(PlayerWalkState);
         public bool IsIdle => CurrentState.GetType() == typeof(PlayerIdleState);
 
-        public bool CanDash { get; set; } = true;
-        public bool CanJump { get; set; } = true;
+        public readonly PersistentLock CanDash = new PersistentLock();
+        public readonly PersistentLock CanJump = new PersistentLock();
+        public readonly PersistentLock CanAttack = new PersistentLock();
 
         private Vector3 _appliedVelocity;
         private float _cameraFollowVelocity;
@@ -75,7 +77,7 @@ namespace Player.States
         public TimedTrigger IsDashPressed { get; private set; }
         public TimedTrigger IsLightAttackPressed { get; private set; }
         public bool IsAttacking => LightAttackExecutor1.IsAttacking || LightAttackExecutor2.IsAttacking;
-        public bool CanAttack { get; set; } = true;
+        public bool CanStartAttack => !IsAttacking && PlayerCharacter.HasStamina;
 
 
         private void Awake()

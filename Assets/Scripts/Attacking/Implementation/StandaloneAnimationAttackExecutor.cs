@@ -6,6 +6,10 @@ namespace Attacking.Implementation
     {
         [SerializeField] private HitInfo hitInfo;
 
+        protected override void OnAttackTick(IHitSource source)
+        {
+        }
+
         protected override void OnShouldEnableHitbox(IHitSource source)
         {
             Hitbox.EnableWith(hit => hit.ReceiveHit(source, hitInfo));

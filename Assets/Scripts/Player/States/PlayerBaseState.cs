@@ -15,9 +15,17 @@ namespace Player.States
             Factory = factory;
         }
 
-        public abstract void EnterState();
-        public abstract void UpdateState();
-        public abstract void ExitState();
+        public virtual void EnterState()
+        {
+        }
+
+        public virtual void UpdateState()
+        {
+        }
+
+        public virtual void ExitState()
+        {
+        }
 
         public virtual void UpdateStates()
         {

@@ -1,5 +1,6 @@
 using Attacking;
 using Configs;
+using Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
@@ -11,50 +12,34 @@ namespace Player.States
         public PlayerStateFactory StateFactory { get; private set; }
         public PlayerBaseState CurrentState { get; set; }
 
-        [field: Space]
-        [field: Header("Movement")]
-        [field: SerializeField] public float Gravity { get; set; } = -9.81f;
-        [field: SerializeField] public float GroundedGravity { get; set; } = -0.2f;
-        [field: SerializeField, Min(0)] public float HorizontalMoveSpeed { get; set; } = 5;
-        [field: SerializeField, Min(0)] public float VerticalMoveSpeed { get; set; } = 2;
-        [field: SerializeField, Range(0, 1)] public float AirboneControlFactor { get; set; } = 0.5f;
-        [field: SerializeField, Min(0)] public float JumpStartVelocity { get; set; } = 5;
-
         [Space]
         [SerializeField, Min(0)] private float jumpInputWaitTime = 0.2f;
         [SerializeField, Min(0)] private float dashInputWaitTime = 0.2f;
         [SerializeField, Min(0)] private float attackInputWaitTime = 0.2f;
-        
+
         [Space]
         [SerializeField] private Camera followingCamera;
         [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
 
-        [field: Space]
-        [field: Header("Components")]
-        [field: SerializeField] public CharacterController CharacterController { get; set; }
-        [field: SerializeField] public AttackExecutor LightAttackExecutor1 { get; set; }
-        [field: SerializeField] public AttackExecutor LightAttackExecutor2 { get; set; }
-        [field: SerializeField] public PlayerCharacter PlayerCharacter { get; set; }
-        [field: SerializeField] public float AttackRecoveryTime { get; private set; } = 0.1f;
+        [Space]
+        [Header("Components")]
+        [SerializeField] private PlayerMovement movement;
+        [SerializeField] private AttackExecutor lightAttackFirst;
+        [SerializeField] private AttackExecutor lightAttackSecond;
+        [SerializeField] private PlayerCharacter playerCharacter;
+        [SerializeField] private Animator animator;
+        [SerializeField] private Hurtbox hurtbox;
 
-        [field: SerializeField] public Animator Animator { get; set; } = null;
-        [field: SerializeField] public Hurtbox Hurtbox { get; set; } = null;
+        [Space]
+        [Header("Dash")]
+        [SerializeField, Min(0)] private float dashRecovery = 0.3f;
+        [SerializeField, Min(0)] private float dashDistance = 3f;
+        [SerializeField, Min(0)] private float dashTime = 0.4f;
 
-        [field: Space]
-        [field: Header("Dash")]
-        [field: SerializeField, Min(0)] public float DashRecovery { get; set; } = 0.3f;
-        [field: SerializeField, Min(0)] public float DashDistance { get; set; } = 3f;
-        [field: SerializeField, Min(0)] public float DashTime { get; set; } = 0.4f;
-
-        [field: Space]
-        [field: SerializeField] public PlayerActionConfig ActionConfig { get; set; } = null;
+        [Space]
+        [SerializeField] private PlayerActionConfig actionConfig;
 
         public Vector2 MoveInput { get; private set; }
-
-        public Vector3 AppliedVelocity { get => _appliedVelocity; set => _appliedVelocity = value; }
-        public float AppliedVelocityX { get => _appliedVelocity.x; set => _appliedVelocity.x = value; }
-        public float AppliedVelocityY { get => _appliedVelocity.y; set => _appliedVelocity.y = value; }
-        public float AppliedVelocityZ { get => _appliedVelocity.z; set => _appliedVelocity.z = value; }
 
         public bool IsInvincible { get; set; }
         public bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
@@ -68,26 +53,80 @@ namespace Player.States
         public readonly PersistentLock CanJump = new PersistentLock();
         public readonly PersistentLock CanAttack = new PersistentLock();
 
-        private Vector3 _appliedVelocity;
         private float _cameraFollowVelocity;
+
+        public PlayerMovement Movement => movement;
 
         private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
 
         public TimedTrigger IsJumpPressed { get; private set; }
         public TimedTrigger IsDashPressed { get; private set; }
         public TimedTrigger IsLightAttackPressed { get; private set; }
-        public bool IsAttacking => LightAttackExecutor1.IsAttacking || LightAttackExecutor2.IsAttacking;
-        public bool CanStartAttack => !IsAttacking && PlayerCharacter.HasStamina;
+
+        public bool IsAttacking => lightAttackFirst.IsAttacking || lightAttackSecond.IsAttacking;
+        public bool CanStartAttack => !IsAttacking && playerCharacter.HasStamina;
+
+        public AttackExecutor LightAttackFirst => lightAttackFirst;
+
+        public AttackExecutor LightAttackSecond => lightAttackSecond;
+
+        public PlayerCharacter Player => playerCharacter;
+
+        public Animator AnimatorComponent => animator;
+
+        public Hurtbox HurtboxComponent => hurtbox;
+
+        public PlayerActionConfig ActionConfig => actionConfig;
+
+        public float DashRecovery => dashRecovery;
+
+        public float DashDistance => dashDistance;
+
+        public float DashTime => dashTime;
 
 
         private void Awake()
         {
+            if (movement == null)
+            {
+                Debug.LogWarning("Player Movement is not assigned", this);
+                enabled = false;
+            }
+            if (lightAttackFirst == null)
+            {
+                Debug.LogWarning("Light Attack First is not assigned", this);
+                enabled = false;
+            }
+            if (lightAttackSecond == null)
+            {
+                Debug.LogWarning("Light Attack Second is not assigned", this);
+                enabled = false;
+            }
+            if (playerCharacter == null)
+            {
+                Debug.LogWarning("Player Character is not assigned", this);
+                enabled = false;
+            }
+            if (hurtbox == null)
+            {
+                Debug.LogWarning("Hurtbox is not assigned", this);
+                enabled = false;
+            }
+
+            if (!enabled)
+            {
+                return;
+            }
+
             IsJumpPressed = _triggerFactory.Create();
             IsDashPressed = _triggerFactory.Create();
             IsLightAttackPressed = _triggerFactory.Create();
 
             StateFactory = new PlayerStateFactory(this);
-            CurrentState = CharacterController.isGrounded ? StateFactory.Grounded() : StateFactory.Fall();
+
+            // Для корректного определения того, что игрок на земле при загрузке
+            movement.MoveRaw(Vector3.down);
+            CurrentState = movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
             CurrentState.EnterState();
 
             if (followingCamera == null)
@@ -102,9 +141,6 @@ namespace Player.States
 
             HandleRotation();
             HandleTriggers();
-
-            CharacterController.Move(Time.deltaTime * AppliedVelocity);
-
             MoveCamera();
 
             if (Keyboard.current.iKey.wasPressedThisFrame)
@@ -174,27 +210,9 @@ namespace Player.States
             followingCamera.transform.position = new Vector3(newX, cameraPosition.y, cameraPosition.z);
         }
 
-        private float _horizontalAirboneVelocity;
-        private float _verticalAirboneVelocity;
-
         public void ResetBufferedInput()
         {
             _triggerFactory.ResetAll();
-        }
-
-        public void ApplyGravity()
-        {
-            AppliedVelocityY += (CharacterController.isGrounded ? GroundedGravity : Gravity) * Time.deltaTime;
-        }
-
-        public void ApplyAirboneMovement()
-        {
-            var targetHorizontalVelocity = HorizontalMoveSpeed * MoveInput.x;
-            var targetVerticalVelocity = VerticalMoveSpeed * MoveInput.y;
-            AppliedVelocityX = Mathf.SmoothDamp(AppliedVelocityX, targetHorizontalVelocity,
-                ref _horizontalAirboneVelocity, AirboneControlFactor);
-            AppliedVelocityZ = Mathf.SmoothDamp(AppliedVelocityZ, targetVerticalVelocity,
-                ref _verticalAirboneVelocity, AirboneControlFactor);
         }
     }
 }

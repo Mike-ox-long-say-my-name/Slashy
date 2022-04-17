@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Player.States
 {
     public class PlayerIdleState : PlayerBaseState
@@ -10,16 +8,12 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("idle");
+            Context.AnimatorComponent.SetTrigger("idle");
         }
 
         public override void UpdateState()
         {
             CheckStateSwitch();
-        }
-
-        public override void ExitState()
-        {
         }
 
         private void CheckStateSwitch()

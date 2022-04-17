@@ -7,28 +7,19 @@ namespace Player.States
             IsRootState = true;
         }
 
-        public override void EnterState()
-        {
-        }
-
         public override void UpdateState()
         {
-            Context.ApplyGravity();
-            Context.ApplyAirboneMovement();
+            Context.Movement.ApplyGravity();
+            Context.Movement.ApplyAirboneVelocity(Context.MoveInput);
 
             CheckStateSwitch();
         }
 
-        public override void ExitState()
-        {
-        }
-
         private void CheckStateSwitch()
         {
-            if (Context.CharacterController.isGrounded)
+            if (Context.Movement.IsGrounded)
             {
-                Context.AppliedVelocityX = 0;
-                Context.AppliedVelocityZ = 0;
+                Context.Movement.ResetXZVelocity();
                 SwitchState(Factory.Grounded());
             }
             else if (Context.IsLightAttackPressed.CheckAndReset())
@@ -40,11 +31,11 @@ namespace Player.States
 
         private void TryAttack()
         {
-            if (Context.LightAttackExecutor1.IsAttacking)
+            if (!Context.CanStartAttack)
             {
                 return;
             }
-            
+
             // TODO: добавить атаку в прыжке
             // SetSubState(Factory.Attack());
             // SubState.EnterState();

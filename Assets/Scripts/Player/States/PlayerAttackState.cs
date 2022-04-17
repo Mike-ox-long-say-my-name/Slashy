@@ -11,35 +11,34 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Context.AppliedVelocityX = 0;
-            Context.AppliedVelocityZ = 0;
+            Context.Movement.ResetXZVelocity();
 
             Context.CanDash.Lock(this);
             Context.CanJump.Lock(this);
             Context.CanAttack.Lock(this);
 
-            void AttackEnded1(bool interrupted)
+            void AttackEndedFirst(bool interrupted)
             {
                 if (Context.IsLightAttackPressed.CheckAndReset())
                 {
                     Context.ResetBufferedInput();
-                    if (!Context.PlayerCharacter.HasStamina)
+                    if (!Context.Player.HasStamina)
                     {
-                        AttackEnded2(interrupted);
+                        AttackEndedSecond(interrupted);
                         return;
                     }
 
-                    Context.PlayerCharacter.SpendStamina(Context.ActionConfig.LightAttack2StaminaCost);
-                    Context.Animator.SetTrigger("attack-long");
-                    Context.LightAttackExecutor2.StartExecution(Context.PlayerCharacter, AttackEnded2);
+                    Context.Player.SpendStamina(Context.ActionConfig.LightAttackSecondStaminaCost);
+                    Context.AnimatorComponent.SetTrigger("attack-long");
+                    Context.LightAttackSecond.StartExecution(Context.Player, AttackEndedSecond);
                 }
                 else
                 {
-                    AttackEnded2(interrupted);
+                    AttackEndedSecond(interrupted);
                 }
             }
 
-            void AttackEnded2(bool _)
+            void AttackEndedSecond(bool _)
             {
                 SwitchState(Factory.Idle());
                 Context.StartCoroutine(RecoveryRoutine());
@@ -47,7 +46,7 @@ namespace Player.States
                 IEnumerator RecoveryRoutine()
                 {
                     // Иначе ломаются анимации
-                    yield return new WaitForSeconds(Context.AttackRecoveryTime);
+                    yield return new WaitForSeconds(Context.ActionConfig.LightAttackRecovery);
 
                     Context.CanDash.TryUnlock(this);
                     Context.CanJump.TryUnlock(this);
@@ -55,18 +54,10 @@ namespace Player.States
                 }
             }
 
-            Context.PlayerCharacter.SpendStamina(Context.ActionConfig.LightAttack1StaminaCost);
-            Context.Animator.ResetTrigger("attack-long");
-            Context.Animator.SetTrigger("attack-short");
-            Context.LightAttackExecutor1.StartExecution(Context.PlayerCharacter, AttackEnded1);
-        }
-
-        public override void UpdateState()
-        {
-        }
-
-        public override void ExitState()
-        {
+            Context.Player.SpendStamina(Context.ActionConfig.LightAttackFirstStaminaCost);
+            Context.AnimatorComponent.ResetTrigger("attack-long");
+            Context.AnimatorComponent.SetTrigger("attack-short");
+            Context.LightAttackFirst.StartExecution(Context.Player, AttackEndedFirst);
         }
     }
 }

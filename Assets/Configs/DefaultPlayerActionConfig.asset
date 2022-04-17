@@ -19,5 +19,5 @@ MonoBehaviour:
   <StaminaRegeneration>k__BackingField: 15
   <StaminaRegenerationDelay>k__BackingField: 1
   <EmptyStaminaAdditionalRegenerationDelay>k__BackingField: 1
-  <LightAttack1StaminaCost>k__BackingField: 15
-  <LightAttack2StaminaCost>k__BackingField: 15
+  <LightAttackFirstStaminaCost>k__BackingField: 10
+  <LightAttackSecondStaminaCost>k__BackingField: 10

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 812809746802518413}
-  - component: {fileID: 812809746802518412}
+  - component: {fileID: 1161144045783392307}
   m_Layer: 0
-  m_Name: LightAttackExecutor
+  m_Name: LightAttackExecutor 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 812809748605883927}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &812809746802518412
+--- !u!114 &1161144045783392307
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 812809746802518411}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25f528eff8bb3e64bac0d5b5565afe78, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hitbox: {fileID: 812809746819271581}
@@ -49,6 +49,8 @@ MonoBehaviour:
   hitInfo:
     damage: 15
     balanceDamage: 0
+  moveDistance: 0.4
+  movement: {fileID: 239362066797731850}
 --- !u!1 &812809746819271580
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,9 +342,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 812809748315871441}
-  - component: {fileID: 812809748315871442}
+  - component: {fileID: 27388021579594124}
   m_Layer: 0
-  m_Name: LightAttackExecutor
+  m_Name: LightAttackExecutor 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,7 +365,7 @@ Transform:
   m_Father: {fileID: 812809748605883927}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &812809748315871442
+--- !u!114 &27388021579594124
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -372,7 +374,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 812809748315871440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25f528eff8bb3e64bac0d5b5565afe78, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hitbox: {fileID: 812809748012681078}
@@ -380,6 +382,8 @@ MonoBehaviour:
   hitInfo:
     damage: 10
     balanceDamage: 0
+  moveDistance: 0.4
+  movement: {fileID: 239362066797731850}
 --- !u!1 &812809748605883924
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,10 +398,11 @@ GameObject:
   - component: {fileID: 812809748605883913}
   - component: {fileID: 812809748605883914}
   - component: {fileID: 812809748605883915}
-  - component: {fileID: 812809748605883912}
+  - component: {fileID: 239362066797731850}
   - component: {fileID: 812809748605883916}
   - component: {fileID: 812809748605883917}
   - component: {fileID: 812809748605883919}
+  - component: {fileID: 812809748605883912}
   - component: {fileID: 812809748605883918}
   - component: {fileID: 812809748605883904}
   m_Layer: 9
@@ -526,9 +531,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8406f2d5f35d040b2ce7a1ff501403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <OnHealthChanged>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 25
   canDie: 1
-  <MaxStamina>k__BackingField: 0
+  <OnStaminaChanged>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  actionConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
+  maxStamina: 50
 --- !u!114 &812809748605883915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,28 +553,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029fcb92a2d6868408c0e1788b22d6bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Gravity>k__BackingField: -9.81
-  <GroundedGravity>k__BackingField: -0.2
-  <HorizontalMoveSpeed>k__BackingField: 5
-  <VerticalMoveSpeed>k__BackingField: 5
-  <AirboneControlFactor>k__BackingField: 0.5
-  <JumpStartVelocity>k__BackingField: 5
   jumpInputWaitTime: 0.2
   dashInputWaitTime: 0.2
   attackInputWaitTime: 0.2
   followingCamera: {fileID: 0}
   followSmoothTime: 0.3
-  <CharacterController>k__BackingField: {fileID: 812809748605883925}
-  <LightAttackExecutor1>k__BackingField: {fileID: 812809748315871442}
-  <LightAttackExecutor2>k__BackingField: {fileID: 812809746802518412}
-  <PlayerCharacter>k__BackingField: {fileID: 812809748605883914}
-  <AttackRecoveryTime>k__BackingField: 0.1
-  <Animator>k__BackingField: {fileID: 812809748605883913}
-  <Hurtbox>k__BackingField: {fileID: 812809748674757410}
-  <DashRecovery>k__BackingField: 0.3
-  <DashDistance>k__BackingField: 4
-  <DashTime>k__BackingField: 0.25
-  <ActionConfig>k__BackingField: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
+  movement: {fileID: 239362066797731850}
+  lightAttackFirst: {fileID: 27388021579594124}
+  lightAttackSecond: {fileID: 1161144045783392307}
+  playerCharacter: {fileID: 812809748605883914}
+  animator: {fileID: 812809748605883913}
+  hurtbox: {fileID: 812809748674757410}
+  dashRecovery: 0.3
+  dashDistance: 3
+  dashTime: 0.4
+  actionConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
+--- !u!114 &239362066797731850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812809748605883924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66665ee63782d1042bc15509307cfaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpStartVelocity: 5
+  gravity: -9.81
+  groundedGravity: -0.5
+  horizontalSpeed: 5
+  verticalSpeed: 5
+  airboneControlFactor: 0.6
+  maxVelocity: 20
+  minVelocity: -20
+  characterController: {fileID: 812809748605883925}
+--- !u!114 &812809748605883916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812809748605883924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7b5f95036be5a4781f56a7aca09d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowSprite: {fileID: 812809748093865559}
+  shadowCastMask:
+    serializedVersion: 2
+    m_Bits: 256
+  maxTransparency: 0.7
+  shadowAppearDistance: 2
+  hitPointOffset: {x: -0.05, y: 0.2, z: 0.03}
+--- !u!114 &812809748605883917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812809748605883924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ece35e635cbe542b93e564d800113d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &812809748605883919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812809748605883924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63988ca9b4fab0243a6c616ef6e3c9de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashTime: 0.5
+  minTransparency: 0.2
+  maxTransparency: 0.8
+  baseFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  zeroHpColor: {r: 0.43137255, g: 0, b: 0, a: 1}
+  changeColorBasedOnHealth: 1
+  entity: {fileID: 812809748605883914}
+  maskSpriteRenderer: {fileID: 812809748605883926}
+  spriteMask: {fileID: 812809748605883918}
+  animationSpriteRenderer: {fileID: 812809748169390576}
 --- !u!114 &812809748605883912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,59 +776,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &812809748605883916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812809748605883924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f7b5f95036be5a4781f56a7aca09d7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowSprite: {fileID: 812809748093865559}
-  shadowCastMask:
-    serializedVersion: 2
-    m_Bits: 256
-  maxTransparency: 0.7
-  shadowAppearDistance: 2
-  hitPointOffset: {x: -0.05, y: 0.2, z: 0.03}
---- !u!114 &812809748605883917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812809748605883924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09ece35e635cbe542b93e564d800113d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &812809748605883919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812809748605883924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63988ca9b4fab0243a6c616ef6e3c9de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flashTime: 0.5
-  minTransparency: 0.2
-  maxTransparency: 0.8
-  baseFlashColor: {r: 1, g: 1, b: 1, a: 1}
-  zeroHpColor: {r: 0.43137255, g: 0, b: 0, a: 1}
-  changeColorBasedOnHealth: 1
-  entity: {fileID: 812809748605883914}
-  maskSpriteRenderer: {fileID: 812809748605883926}
-  spriteMask: {fileID: 812809748605883918}
-  animationSpriteRenderer: {fileID: 812809748169390576}
 --- !u!331 &812809748605883918
 SpriteMask:
   m_ObjectHideFlags: 0

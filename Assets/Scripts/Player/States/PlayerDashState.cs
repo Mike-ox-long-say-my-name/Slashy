@@ -12,17 +12,9 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Context.PlayerCharacter.SpendStamina(Context.ActionConfig.DashStaminaCost);
+            Context.Player.SpendStamina(Context.ActionConfig.DashStaminaCost);
             Dash(new Vector3(Context.MoveInput.x, 0, Context.MoveInput.y));
-            Context.Animator.SetTrigger("dash");
-        }
-
-        public override void UpdateState()
-        {
-        }
-
-        public override void ExitState()
-        {
+            Context.AnimatorComponent.SetTrigger("dash");
         }
 
         private void Dash(Vector3 direction)
@@ -31,8 +23,7 @@ namespace Player.States
             Context.CanJump.Lock(this);
             Context.CanAttack.Lock(this);
 
-            Context.AppliedVelocityX = 0;
-            Context.AppliedVelocityZ = 0;
+            Context.Movement.ResetXZVelocity();
 
             var fullMove = direction * Context.DashDistance;
 
@@ -58,12 +49,9 @@ namespace Player.States
                         DisableInvincibility();
                     }
                     
-                    Context.CharacterController.Move(fullMove * timeStep);
+                    Context.Movement.MoveRaw(fullMove * timeStep);
                     yield return new WaitForEndOfFrame();
                 }
-
-                Context.AppliedVelocityX = 0;
-                Context.AppliedVelocityZ = 0;
                 
                 SwitchState(Factory.Grounded());
                 Context.StartCoroutine(RecoverFromDashRoutine(Context.DashRecovery));
@@ -86,18 +74,18 @@ namespace Player.States
         private void EnableInvincibility()
         {
             Context.IsInvincible = true;
-            if (Context.Hurtbox)
+            if (Context.HurtboxComponent != null)
             {
-                Context.Hurtbox.Disable();
+                Context.HurtboxComponent.Disable();
             }
         }
 
         private void DisableInvincibility()
         {
             Context.IsInvincible = false;
-            if (Context.Hurtbox)
+            if (Context.HurtboxComponent != null)
             {
-                Context.Hurtbox.Enable();
+                Context.HurtboxComponent.Enable();
             }
         }
     }

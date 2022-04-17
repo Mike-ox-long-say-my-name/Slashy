@@ -1,10 +1,7 @@
-using UnityEngine;
-
 namespace Player.States
 {
     public class PlayerJumpState : PlayerBaseState
     {
-
         public PlayerJumpState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
         {
             IsRootState = true;
@@ -12,30 +9,27 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Context.PlayerCharacter.SpendStamina(Context.ActionConfig.JumpStaminaCost);
-            Context.Animator.SetTrigger("jump");
-            Context.AppliedVelocityY = Context.JumpStartVelocity;
+            Context.Player.SpendStamina(Context.ActionConfig.JumpStaminaCost);
+            Context.AnimatorComponent.SetTrigger("jump");
+
+            Context.Movement.Jump();
         }
 
         public override void UpdateState()
         {
-            Context.ApplyGravity();
-            Context.ApplyAirboneMovement();
+            Context.Movement.ApplyGravity();
+            Context.Movement.ApplyAirboneVelocity(Context.MoveInput);
 
             CheckStateSwitch();
         }
 
-        public override void ExitState()
-        {
-        }
-
         public virtual void CheckStateSwitch()
         {
-            if (Context.CharacterController.isGrounded)
+            if (Context.Movement.IsGrounded)
             {
                 SwitchState(Factory.Grounded());
             }
-            else if (Context.AppliedVelocityY < 0)
+            else if (Context.Movement.Velocity.y < 0)
             {
                 SwitchState(Factory.Fall());
             }
@@ -48,7 +42,7 @@ namespace Player.States
 
         private void TryAttack()
         {
-            if (Context.IsAttacking)
+            if (!Context.CanStartAttack)
             {
                 return;
             }

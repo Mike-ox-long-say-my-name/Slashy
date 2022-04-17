@@ -20,10 +20,12 @@ namespace Attacking
              
             while (!_attackEnded.CheckAndReset())
             {
+                OnAttackTick(source);
                 yield return null;
             }
-            yield return new WaitForEndOfFrame();
         }
+
+        protected abstract void OnAttackTick(IHitSource source);
 
         protected abstract void OnShouldEnableHitbox(IHitSource source);
 

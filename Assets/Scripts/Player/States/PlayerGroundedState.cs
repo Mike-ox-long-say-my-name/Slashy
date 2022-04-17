@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Player.States
 {
     public class PlayerGroundedState : PlayerBaseState
@@ -7,23 +5,19 @@ namespace Player.States
         public PlayerGroundedState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
         {
             IsRootState = true;
-            SetSubState(Context.MoveInput.sqrMagnitude > 0 ? Factory.Walk() : Factory.Idle());
         }
 
         public override void EnterState()
         {
+            SetSubState(Context.MoveInput.sqrMagnitude > 0 ? Factory.Walk() : Factory.Idle());
             SubState.EnterState();
         }
 
         public override void UpdateState()
         {
-            Context.ApplyGravity();
+            Context.Movement.ApplyGravity();
 
             CheckStateSwitch();
-        }
-
-        public override void ExitState()
-        {
         }
 
         private void CheckStateSwitch()
@@ -31,7 +25,7 @@ namespace Player.States
             if (Context.CanDash && Context.IsDashPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
-                if (Context.PlayerCharacter.HasStamina)
+                if (Context.Player.HasStamina)
                 {
                     SwitchState(Factory.Dash());
                 }
@@ -39,12 +33,12 @@ namespace Player.States
             else if (Context.CanJump && Context.IsJumpPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
-                if (Context.PlayerCharacter.HasStamina)
+                if (Context.Player.HasStamina)
                 {
                     SwitchState(Factory.Jump());
                 }
             }
-            else if (!Context.CharacterController.isGrounded)
+            else if (!Context.Movement.IsGrounded)
             {
                 SwitchState(Factory.Fall());
             }

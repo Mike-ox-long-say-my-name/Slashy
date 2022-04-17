@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public abstract class BaseCharacterResource : ICharacterResource
@@ -7,7 +6,7 @@ public abstract class BaseCharacterResource : ICharacterResource
 
     public float MaxValue { get; }
     public float Value { get; protected set; }
-    
+
     protected BaseCharacterResource(Character character, float maxValue, float startValue)
     {
         Character = character;
@@ -23,7 +22,8 @@ public abstract class BaseCharacterResource : ICharacterResource
     {
         if (amount < 0)
         {
-            throw new ArgumentException();
+            Debug.LogWarning("Cannot spend negative resource amount");
+            return;
         }
         Value = Mathf.Max(0, Value - amount);
     }
@@ -32,7 +32,8 @@ public abstract class BaseCharacterResource : ICharacterResource
     {
         if (amount < 0)
         {
-            throw new ArgumentException();
+            Debug.LogWarning("Cannot spend negative resource amount");
+            return;
         }
         Value = Mathf.Min(MaxValue, Value + amount);
     }

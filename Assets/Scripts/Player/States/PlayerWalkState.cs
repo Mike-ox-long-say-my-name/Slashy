@@ -10,19 +10,13 @@ namespace Player.States
 
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("walk");
+            Context.AnimatorComponent.SetTrigger("walk");
         }
 
         public override void UpdateState()
         {
-            Context.AppliedVelocityX = Context.HorizontalMoveSpeed * Context.MoveInput.x;
-            Context.AppliedVelocityZ = Context.VerticalMoveSpeed * Context.MoveInput.y;
-
+            Context.Movement.Move(Context.MoveInput);
             CheckStateSwitch();
-        }
-
-        public override void ExitState()
-        {
         }
 
         private void CheckStateSwitch()

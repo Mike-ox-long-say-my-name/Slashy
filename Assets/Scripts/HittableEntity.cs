@@ -1,14 +1,15 @@
-﻿using System;
-using Attacking;
+﻿using Attacking;
 using UnityEngine;
 using UnityEngine.Events;
 
 public abstract class HittableEntity : MonoBehaviour, IHitReceiver
 {
-    public UnityEvent<HittableEntity> OnHitReceived { get; } = new UnityEvent<HittableEntity>();
+    [SerializeField] private UnityEvent<HittableEntity, HitInfo> onHitReceived;
 
-    public virtual void ReceiveHit(IHitSource source, in HitInfo info)
+    public UnityEvent<HittableEntity, HitInfo> OnHitReceived => onHitReceived;
+
+    public virtual void ReceiveHit(in HitInfo info)
     {
-        OnHitReceived?.Invoke(this);
+        OnHitReceived?.Invoke(this, info);
     }
 }

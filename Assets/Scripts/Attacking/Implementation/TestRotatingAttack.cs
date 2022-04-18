@@ -12,7 +12,7 @@ namespace Attacking.Implementation
         {
             Hitbox.EnableWith(hit =>
             {
-                hit.ReceiveHit(source, new HitInfo() { damage = 10 });
+                hit.ReceiveHit(new HitInfo() { DamageInfo = new DamageInfo(10, 0), HitSource = source});
                 _attackClearTrigger.SetIn(1);
             });
         
@@ -24,7 +24,7 @@ namespace Attacking.Implementation
                     Hitbox.ClearHits();
                 }
             
-                Hitbox.transform.RotateAround(source.Transform.position, Vector3.up, Time.deltaTime * 100);
+                Hitbox.transform.RotateAround(source.Transform.position, Vector3.up, Time.deltaTime * 125);
                 yield return new WaitForEndOfFrame();
             }
         }

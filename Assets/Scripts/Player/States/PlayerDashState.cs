@@ -17,6 +17,11 @@ namespace Player.States
             Context.AnimatorComponent.SetTrigger("dash");
         }
 
+        public override void UpdateStates()
+        {
+            UpdateState();
+        }
+
         private void Dash(Vector3 direction)
         {
             Context.CanDash.Lock(this);
@@ -39,25 +44,40 @@ namespace Player.States
 
                     var fraction = passedTime / Context.DashTime;
 
-                    if (!Context.IsInvincible && fraction >= Context.ActionConfig.DashInvincibilityStart &&
-                        fraction < Context.ActionConfig.DashInvincibilityEnd)
-                    {
-                        EnableInvincibility();
-                    }
-                    else if (Context.IsInvincible && fraction >= Context.ActionConfig.DashInvincibilityEnd)
-                    {
-                        DisableInvincibility();
-                    }
-                    
+                    ApplyInvincibilityLogic(fraction);
+                    TickDashEffectController(timeStep);
+
                     Context.Movement.MoveRaw(fullMove * timeStep);
                     yield return new WaitForEndOfFrame();
                 }
-                
+
+                Context.Movement.ResetXZVelocity();
                 SwitchState(Factory.Grounded());
                 Context.StartCoroutine(RecoverFromDashRoutine(Context.DashRecovery));
             }
 
             Context.StartCoroutine(DashCoroutine());
+        }
+
+        private void TickDashEffectController(float timeStep)
+        {
+            if (Context.HasDashEffectController && Context.HasSpriteRenderer)
+            {
+                Context.DashEffectController.Tick(Context.transform, Context.SpriteRenderer.sprite, timeStep);
+            }
+        }
+
+        private void ApplyInvincibilityLogic(float fraction)
+        {
+            if (!Context.IsInvincible && fraction >= Context.ActionConfig.DashInvincibilityStart &&
+                fraction < Context.ActionConfig.DashInvincibilityEnd)
+            {
+                EnableInvincibility();
+            }
+            else if (Context.IsInvincible && fraction >= Context.ActionConfig.DashInvincibilityEnd)
+            {
+                DisableInvincibility();
+            }
         }
 
         private IEnumerator RecoverFromDashRoutine(float recoverTime)
@@ -66,7 +86,7 @@ namespace Player.States
             Context.CanJump.TryUnlock(this);
             Context.CanAttack.TryUnlock(this);
             Context.CanDash.ReleaseOwnership(this);
-            
+
             yield return new WaitForSeconds(recoverTime);
             Context.CanDash.TryUnlock();
         }
@@ -74,7 +94,7 @@ namespace Player.States
         private void EnableInvincibility()
         {
             Context.IsInvincible = true;
-            if (Context.HurtboxComponent != null)
+            if (Context.HasHurtbox)
             {
                 Context.HurtboxComponent.Disable();
             }
@@ -83,7 +103,7 @@ namespace Player.States
         private void DisableInvincibility()
         {
             Context.IsInvincible = false;
-            if (Context.HurtboxComponent != null)
+            if (Context.HasHurtbox)
             {
                 Context.HurtboxComponent.Enable();
             }

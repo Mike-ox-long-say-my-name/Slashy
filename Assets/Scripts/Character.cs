@@ -1,5 +1,4 @@
 ﻿using Attacking;
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,18 +22,12 @@ public class Character : HittableEntity, IHitSource
         _healthResource = new HealthResource(this, maxHealth);
     }
 
-    public override void ReceiveHit(IHitSource source, in HitInfo info)
+    public override void ReceiveHit(in HitInfo info)
     {
-        var damage = info.damage;
-        if (damage < 0)
-        {
-            throw new ArgumentException();
-        }
-
-        _healthResource.Spend(damage);
+        _healthResource.Spend(info.DamageInfo.Damage);
         OnHealthChanged?.Invoke(Health);
 
-        base.ReceiveHit(source, info);
+        base.ReceiveHit(info);
 
         if (canDie && _healthResource.IsDepleted)
         {

@@ -1,4 +1,5 @@
 using System.Collections;
+using Attacking;
 using UnityEngine;
 
 public class DamageTakenAnimator : MonoBehaviour
@@ -13,19 +14,13 @@ public class DamageTakenAnimator : MonoBehaviour
 
     [Space]
     [Header("Components")]
-    [SerializeField] private HittableEntity entity;
     [SerializeField] private SpriteRenderer maskSpriteRenderer;
     [SerializeField] private SpriteMask spriteMask;
     [SerializeField] private SpriteRenderer animationSpriteRenderer;
     
     private Coroutine _animationRoutine;
 
-    private void Awake()
-    {
-        entity.OnHitReceived.AddListener(OnHitReceived);
-    }
-
-    private void OnHitReceived(HittableEntity _)
+    public void OnHitReceived(HittableEntity entity, HitInfo info)
     {
         if (_animationRoutine != null)
         {

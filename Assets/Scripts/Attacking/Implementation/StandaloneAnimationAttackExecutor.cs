@@ -4,7 +4,7 @@ namespace Attacking.Implementation
 {
     public class StandaloneAnimationAttackExecutor : AnimationAttackExecutor
     {
-        [SerializeField] private HitInfo hitInfo;
+        [SerializeField] private DamageInfo damageInfo;
 
         protected override void OnAttackTick(IHitSource source)
         {
@@ -12,7 +12,8 @@ namespace Attacking.Implementation
 
         protected override void OnShouldEnableHitbox(IHitSource source)
         {
-            Hitbox.EnableWith(hit => hit.ReceiveHit(source, hitInfo));
+            Hitbox.EnableWith(hit =>
+                hit.ReceiveHit(new HitInfo { DamageInfo = damageInfo, HitSource = source }));
         }
 
         protected override void OnShouldDisableHitbox(IHitSource source)

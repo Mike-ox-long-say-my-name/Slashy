@@ -11,7 +11,7 @@ namespace Attacking.Implementation
         {
             Hitbox.EnableWith(hit =>
             {
-                hit.ReceiveHit(source, new HitInfo() { damage = 5 });
+                hit.ReceiveHit(new HitInfo() { HitSource = source, DamageInfo = new DamageInfo(5, 0) });
             });
             weaponThing.SetActive(true); 
             yield return new WaitForSeconds(0.2f);

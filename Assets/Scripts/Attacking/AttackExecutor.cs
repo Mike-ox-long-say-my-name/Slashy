@@ -54,22 +54,25 @@ namespace Attacking
         }
     }
 
-    public class AttackInfo : ScriptableObject
+    [Serializable]
+    public struct DamageInfo
     {
-        [Min(0)] public float baseDamageMultiplier = 1;
-        [Min(0)] public float flatDamageBonus;
+        [SerializeField] private float damage;
+        [SerializeField] private float balanceDamage;
+
+        public DamageInfo(float damage, float balanceDamage = 0)
+        {
+            this.damage = damage;
+            this.balanceDamage = balanceDamage;
+        }
+
+        public float Damage => damage;
+        public float BalanceDamage => balanceDamage;
     }
 
-    [Serializable]
     public struct HitInfo
     {
-        public float damage;
-        public float balanceDamage;
-    }
-
-    public class PlayerAttackInfo : AttackInfo
-    {
-        [Min(0)] public float staminaCost;
-        [Min(0)] public float healthCost;
+        public IHitSource HitSource;
+        public DamageInfo DamageInfo;
     }
 }

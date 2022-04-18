@@ -1,6 +1,6 @@
 using Attacking;
 using Configs;
-using Core;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
@@ -23,6 +23,8 @@ namespace Player.States
 
         [Space]
         [Header("Components")]
+        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private DashCloneEffectController dashEffectController;
         [SerializeField] private PlayerMovement movement;
         [SerializeField] private AttackExecutor lightAttackFirst;
         [SerializeField] private AttackExecutor lightAttackSecond;
@@ -70,6 +72,10 @@ namespace Player.States
 
         public AttackExecutor LightAttackSecond => lightAttackSecond;
 
+        public SpriteRenderer SpriteRenderer => spriteRenderer;
+
+        public DashCloneEffectController DashEffectController => dashEffectController;
+
         public PlayerCharacter Player => playerCharacter;
 
         public Animator AnimatorComponent => animator;
@@ -84,6 +90,28 @@ namespace Player.States
 
         public float DashTime => dashTime;
 
+        public bool HasDashEffectController { get; private set; } = true;
+
+        public bool HasHurtbox { get; private set; } = true;
+
+        public bool HasSpriteRenderer { get; private set; } = true;
+
+
+        private IEnumerator Start()
+        {
+            if (!enabled)
+            {
+                yield break;
+            }
+
+            // Для корректного определения того, что игрок на земле при загрузке
+            movement.MoveRaw(Vector3.down);
+            CurrentState = movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
+            CurrentState.EnterState();
+            CurrentState.UpdateStates();
+
+            yield return new WaitForSeconds(0.3f);
+        }
 
         private void Awake()
         {
@@ -110,12 +138,17 @@ namespace Player.States
             if (hurtbox == null)
             {
                 Debug.LogWarning("Hurtbox is not assigned", this);
-                enabled = false;
+                HasHurtbox = false;
             }
-
-            if (!enabled)
+            if (dashEffectController == null)
             {
-                return;
+                Debug.LogWarning("Dash Clone Effect Controller is not assigned", this);
+                HasDashEffectController = false;
+            }
+            if (spriteRenderer == null)
+            {
+                Debug.LogWarning("Sprite Renderer is not assigned", this);
+                HasSpriteRenderer = false;
             }
 
             IsJumpPressed = _triggerFactory.Create();
@@ -123,11 +156,6 @@ namespace Player.States
             IsLightAttackPressed = _triggerFactory.Create();
 
             StateFactory = new PlayerStateFactory(this);
-
-            // Для корректного определения того, что игрок на земле при загрузке
-            movement.MoveRaw(Vector3.down);
-            CurrentState = movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
-            CurrentState.EnterState();
 
             if (followingCamera == null)
             {
@@ -137,6 +165,11 @@ namespace Player.States
 
         private void Update()
         {
+            if (CurrentState == null)
+            {
+                return;
+            }
+
             CurrentState.UpdateStates();
 
             HandleRotation();

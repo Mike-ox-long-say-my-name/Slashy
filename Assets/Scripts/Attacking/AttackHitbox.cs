@@ -37,7 +37,7 @@ namespace Attacking
             {
                 return;
             }
-;
+            
             if (ignored != null && target.gameObject == ignored.gameObject)
             {
                 return;

@@ -1,6 +1,7 @@
 using System.Collections;
+using Core;
+using Core.Utilities;
 using UnityEngine;
-using Utilities;
 
 namespace Attacking
 {

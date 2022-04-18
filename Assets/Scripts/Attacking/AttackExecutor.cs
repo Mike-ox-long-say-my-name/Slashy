@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Core;
 using UnityEngine;
 
 namespace Attacking
@@ -52,27 +53,5 @@ namespace Attacking
             _attackEnded?.Invoke(interrupted);
             hitbox.DisableAndClear();
         }
-    }
-
-    [Serializable]
-    public struct DamageInfo
-    {
-        [SerializeField] private float damage;
-        [SerializeField] private float balanceDamage;
-
-        public DamageInfo(float damage, float balanceDamage = 0)
-        {
-            this.damage = damage;
-            this.balanceDamage = balanceDamage;
-        }
-
-        public float Damage => damage;
-        public float BalanceDamage => balanceDamage;
-    }
-
-    public struct HitInfo
-    {
-        public IHitSource HitSource;
-        public DamageInfo DamageInfo;
     }
 }

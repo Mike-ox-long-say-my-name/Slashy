@@ -5,6 +5,8 @@ namespace Characters.Player.States
 {
     public class PlayerDashState : PlayerBaseState
     {
+        private Coroutine _dashRoutine;
+
         public PlayerDashState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
         {
             IsRootState = true;
@@ -20,6 +22,18 @@ namespace Characters.Player.States
         public override void UpdateStates()
         {
             UpdateState();
+        }
+
+        public override void OnStaggered()
+        {
+            Context.StopCoroutine(_dashRoutine);
+            Context.CanRotate.TryUnlock(this);
+            Context.CanJump.TryUnlock(this);
+            Context.CanAttack.TryUnlock(this);
+            Context.CanDash.TryUnlock(this);
+
+            SwitchState(Factory.Grounded());
+            Context.CurrentState.OnStaggered();
         }
 
         private void Dash(Vector3 direction)
@@ -44,7 +58,8 @@ namespace Characters.Player.States
                     ApplyInvincibilityLogic(fraction);
                     TickDashEffectController(timeStep);
 
-                    movement.MoveRaw(targetMove * timeStep);
+                    var move = targetMove * (timeStep / dashTime);
+                    movement.MoveRaw(move);
                     yield return null;
                 }
 
@@ -54,7 +69,7 @@ namespace Characters.Player.States
             }
             
             var fullMove = direction * Context.DashDistance;
-            Context.StartCoroutine(DashCoroutine(Context.Movement, Context.DashTime, fullMove, Context.DashRecovery));
+            _dashRoutine = Context.StartCoroutine(DashCoroutine(Context.Movement, Context.DashTime, fullMove, Context.DashRecovery));
         }
 
         private void TickDashEffectController(float timeStep)

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace Characters.Player.States
 {
-    public class PlayerStateMachine : MonoBehaviour
+    public class PlayerStateMachine : BasePlayerData
     {
         public PlayerStateFactory StateFactory { get; private set; }
         public PlayerBaseState CurrentState { get; set; }
@@ -45,13 +45,15 @@ namespace Characters.Player.States
 
         public Vector2 MoveInput { get; private set; }
 
-        public bool IsInvincible { get; set; }
-        public bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
-        public bool IsDashing => CurrentState.GetType() == typeof(PlayerDashState);
-        public bool IsFalling => CurrentState.GetType() == typeof(PlayerFallState);
-        public bool IsGrounded => CurrentState.GetType() == typeof(PlayerGroundedState);
-        public bool IsWalking => CurrentState.GetType() == typeof(PlayerWalkState);
-        public bool IsIdle => CurrentState.GetType() == typeof(PlayerIdleState);
+        public override bool IsInvincible { get; set; }
+        public override bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
+        public override bool IsDashing => CurrentState.GetType() == typeof(PlayerDashState);
+        public override bool IsFalling => CurrentState.GetType() == typeof(PlayerFallState);
+        public override bool IsGroundState => CurrentState.GetType() == typeof(PlayerGroundedState);
+        public override bool IsAttackState => CurrentState.SubState?.GetType() == typeof(PlayerAttackState);
+        public override bool IsWalking => CurrentState.SubState?.GetType() == typeof(PlayerWalkState);
+        public override bool IsIdle => CurrentState.SubState?.GetType() == typeof(PlayerIdleState);
+        public override bool IsStaggered => CurrentState.SubState?.GetType() == typeof(PlayerStaggerState);
 
         public readonly PersistentLock CanDash = new PersistentLock();
         public readonly PersistentLock CanJump = new PersistentLock();
@@ -60,7 +62,7 @@ namespace Characters.Player.States
 
         private float _cameraFollowVelocity;
 
-        public PlayerMovement Movement => movement;
+        public override PlayerMovement Movement => movement;
 
         private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
 
@@ -69,8 +71,7 @@ namespace Characters.Player.States
         public TimedTrigger IsLightAttackPressed { get; private set; }
         public TimedTrigger IsHealPressed { get; private set; }
 
-        public bool IsAttacking => lightAttackFirst.IsAttacking || lightAttackSecond.IsAttacking;
-        public bool CanStartAttack => !IsAttacking && playerCharacter.HasStamina;
+        public bool CanStartAttack => !IsAttackState && playerCharacter.HasStamina;
 
         public AttackExecutor LightAttackFirst => lightAttackFirst;
 
@@ -80,7 +81,7 @@ namespace Characters.Player.States
 
         public DashCloneEffectController DashEffectController => dashEffectController;
 
-        public PlayerCharacter Player => playerCharacter;
+        public override PlayerCharacter Player => playerCharacter;
 
         public Animator AnimatorComponent => animator;
 
@@ -103,12 +104,18 @@ namespace Characters.Player.States
 
         private IEnumerator Start()
         {
-            if (!enabled)
-            {
-                yield break;
-            }
-
             // Для корректного определения того, что игрок на земле при загрузке
+
+            playerCharacter.OnStaggered.AddListener(() =>
+            {
+                ResetBufferedInput();
+                if (movement.IsGrounded)
+                {
+                    movement.ResetXZVelocity();
+                }
+                CurrentState.OnStaggered();
+            });
+
             movement.MoveRaw(Vector3.down);
             CurrentState = movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
             CurrentState.EnterState();
@@ -121,7 +128,7 @@ namespace Characters.Player.States
         {
             if (movement == null)
             {
-                Debug.LogWarning("Player Movement is not assigned", this);
+                Debug.LogWarning("BasePlayerData Movement is not assigned", this);
                 enabled = false;
             }
             if (lightAttackFirst == null)
@@ -136,7 +143,7 @@ namespace Characters.Player.States
             }
             if (playerCharacter == null)
             {
-                Debug.LogWarning("Player Character is not assigned", this);
+                Debug.LogWarning("BasePlayerData Character is not assigned", this);
                 enabled = false;
             }
             if (hurtbox == null)
@@ -184,7 +191,7 @@ namespace Characters.Player.States
 
         private void HandleRotation()
         {
-            if (!CanRotate)
+            if (!CanRotate || IsStaggered)
             {
                 return;
             }
@@ -210,29 +217,26 @@ namespace Characters.Player.States
 
         public void OnJump(InputAction.CallbackContext context)
         {
-            if (!context.action.IsPressed())
+            if (context.action.IsPressed())
             {
-                return;
+                IsJumpPressed.SetFor(jumpInputWaitTime);
             }
-            IsJumpPressed.SetFor(jumpInputWaitTime);
         }
 
         public void OnDash(InputAction.CallbackContext context)
         {
-            if (!context.action.IsPressed())
+            if (context.action.IsPressed())
             {
-                return;
+                IsDashPressed.SetFor(dashInputWaitTime);
             }
-            IsDashPressed.SetFor(dashInputWaitTime);
         }
 
         public void OnAttack(InputAction.CallbackContext context)
         {
-            if (!context.action.IsPressed())
+            if (context.action.IsPressed())
             {
-                return;
+                IsLightAttackPressed.SetFor(attackInputWaitTime);
             }
-            IsLightAttackPressed.SetFor(attackInputWaitTime);
         }
 
         public void OnHeal(InputAction.CallbackContext context)

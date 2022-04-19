@@ -9,6 +9,7 @@ namespace Characters.Player
 {
     public class PlayerCharacter : Character
     {
+
         [field: SerializeField]
         public UnityEvent<ICharacterResource> OnStaminaChanged { get; private set; }
             = new UnityEvent<ICharacterResource>();

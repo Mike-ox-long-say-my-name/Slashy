@@ -6,8 +6,8 @@ namespace Characters.Player.States
         protected PlayerStateFactory Factory { get; }
 
         protected bool IsRootState { get; set; }
-        protected PlayerBaseState SuperState { get; private set; }
-        protected PlayerBaseState SubState { get; private set; }
+        public PlayerBaseState SuperState { get; private set; }
+        public PlayerBaseState SubState { get; private set; }
 
         protected PlayerBaseState(PlayerStateMachine context, PlayerStateFactory factory)
         {
@@ -37,6 +37,26 @@ namespace Characters.Player.States
         {
             ExitState();
             SubState?.ExitStates();
+        }
+
+        public virtual void OnStaggered()
+        {
+            if (IsRootState)
+            {
+                SubState?.OnStaggered();
+                SwitchSubState(Factory.Stagger());
+            }
+            else
+            {
+                SwitchState(Factory.Stagger());
+            }
+        }
+
+        protected virtual void SwitchSubState(PlayerBaseState newSubState)
+        {
+            SubState?.ExitState();
+            SetSubState(newSubState);
+            SubState.EnterState();
         }
 
         protected virtual void SwitchState(PlayerBaseState newState)

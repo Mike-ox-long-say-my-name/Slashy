@@ -13,7 +13,7 @@ namespace Characters.Player
         {
             if (movement == null)
             {
-                Debug.LogWarning("Player Movement is not assigned", this);
+                Debug.LogWarning("BasePlayerData Movement is not assigned", this);
                 enabled = false;
             }
         }

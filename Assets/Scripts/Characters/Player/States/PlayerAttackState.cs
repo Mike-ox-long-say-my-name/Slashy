@@ -9,8 +9,12 @@ namespace Characters.Player.States
         {
         }
 
+        private int _currentAttack;
+
         public override void EnterState()
         {
+            _currentAttack = 0;
+
             Context.Movement.ResetXZVelocity();
 
             Context.CanDash.Lock(this);
@@ -19,15 +23,16 @@ namespace Characters.Player.States
 
             void AttackEndedFirst(bool interrupted)
             {
-                if (Context.IsLightAttackPressed.CheckAndReset())
+                if (!interrupted && Context.IsLightAttackPressed.CheckAndReset())
                 {
                     Context.ResetBufferedInput();
                     if (!Context.Player.HasStamina)
                     {
-                        AttackEndedSecond(interrupted);
+                        AttackEndedSecond(false);
                         return;
                     }
-
+                    
+                    _currentAttack = 2;
                     Context.Player.SpendStamina(Context.ActionConfig.LightAttackSecondStaminaCost);
                     Context.AnimatorComponent.SetTrigger("attack-long");
                     Context.LightAttackSecond.StartExecution(Context.Player, AttackEndedSecond);
@@ -38,26 +43,53 @@ namespace Characters.Player.States
                 }
             }
 
-            void AttackEndedSecond(bool _)
+            void AttackEndedSecond(bool interrupted)
             {
-                SwitchState(Factory.Idle());
-                Context.StartCoroutine(RecoveryRoutine());
+                if (!interrupted)
+                {
+                    SwitchState(Factory.Idle());
+                    Context.StartCoroutine(RecoveryRoutine());
+                }
+                else
+                {
+                    UnlockActions();
+                }
 
                 IEnumerator RecoveryRoutine()
                 {
                     // Иначе ломаются анимации
                     yield return new WaitForSeconds(Context.ActionConfig.LightAttackRecovery);
-
-                    Context.CanDash.TryUnlock(this);
-                    Context.CanJump.TryUnlock(this);
-                    Context.CanAttack.TryUnlock(this);
+                    UnlockActions();
                 }
             }
 
             Context.Player.SpendStamina(Context.ActionConfig.LightAttackFirstStaminaCost);
             Context.AnimatorComponent.ResetTrigger("attack-long");
             Context.AnimatorComponent.SetTrigger("attack-short");
+
+            _currentAttack = 1;
             Context.LightAttackFirst.StartExecution(Context.Player, AttackEndedFirst);
+        }
+
+        public override void OnStaggered()
+        {
+            switch (_currentAttack)
+            {
+                case 1:
+                    Context.LightAttackFirst.InterruptAttack();
+                    break;
+                case 2:
+                    Context.LightAttackSecond.InterruptAttack();
+                    break;
+            }
+            base.OnStaggered();
+        }
+
+        private void UnlockActions()
+        {
+            Context.CanDash.TryUnlock(this);
+            Context.CanJump.TryUnlock(this);
+            Context.CanAttack.TryUnlock(this);
         }
     }
 }

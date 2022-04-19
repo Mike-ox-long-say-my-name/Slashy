@@ -10,13 +10,21 @@ namespace Characters.Player.States
         public override void UpdateState()
         {
             Context.Movement.ApplyGravity();
-            Context.Movement.ApplyAirboneVelocity(Context.MoveInput);
+
+            if (!Context.IsStaggered)
+            {
+                Context.Movement.ApplyAirboneVelocity(Context.MoveInput);
+            }
 
             CheckStateSwitch();
         }
 
         private void CheckStateSwitch()
         {
+            if (Context.IsStaggered)
+            {
+                return;
+            }
             if (Context.Movement.IsGrounded)
             {
                 Context.Movement.ResetXZVelocity();

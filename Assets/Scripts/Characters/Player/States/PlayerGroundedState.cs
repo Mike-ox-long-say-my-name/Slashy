@@ -1,3 +1,5 @@
+using Core;
+
 namespace Characters.Player.States
 {
     public class PlayerGroundedState : PlayerBaseState
@@ -22,6 +24,11 @@ namespace Characters.Player.States
 
         private void CheckStateSwitch()
         {
+            if (Context.IsStaggered || Context.IsAttackState)
+            {
+                return;
+            }
+
             if (!Context.Movement.IsGrounded)
             {
                 SwitchState(Factory.Fall());

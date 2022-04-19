@@ -1,10 +1,13 @@
 ﻿using System.Collections;
+using Core;
 using UnityEngine;
 
 namespace Characters.Player.States
 {
     public class PlayerHealState : PlayerBaseState
     {
+        private Coroutine _healRoutine;
+
         public PlayerHealState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
         {
             IsRootState = true;
@@ -17,8 +20,14 @@ namespace Characters.Player.States
 
             // TODO: проиграть анимацию хилирования
             // Context.AnimatorComponent.SetTrigger("heal");
-            Context.StartCoroutine(
+            _healRoutine = Context.StartCoroutine(
                 HealRoutine(Context.Player, Context.ActionConfig.ActiveHealRate, Context.ActionConfig.HealStaminaConsumption));
+        }
+
+        public override void OnStaggered()
+        {
+            Context.StopCoroutine(_healRoutine);
+            base.OnStaggered();
         }
 
         private IEnumerator HealRoutine(PlayerCharacter player, float healRate, float staminaConsumptionRate)

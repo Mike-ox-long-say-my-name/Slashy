@@ -6,25 +6,43 @@ namespace Core.Characters
     public class Character : HittableEntity
     {
         [SerializeField] private UnityEvent<ICharacterResource> onHealthChanged;
-
         public UnityEvent<ICharacterResource> OnHealthChanged => onHealthChanged;
 
+        [SerializeField] private UnityEvent onStaggered;
+        public UnityEvent OnStaggered => onStaggered;
+
         [SerializeField, Min(0)] private float maxHealth;
+        [SerializeField, Min(0)] private float maxBalance;
         [SerializeField] private bool freezeHealth = false;
         [SerializeField] private bool canDie = true;
-
+        
+        private BalanceResource _balanceResource;
         private HealthResource _healthResource;
         public ICharacterResource Health => _healthResource;
 
         protected virtual void Awake()
         {
             _healthResource = new HealthResource(this, maxHealth);
+            _balanceResource = new BalanceResource(this, maxBalance);
         }
 
         public override void ReceiveHit(HitInfo info)
         {
             base.ReceiveHit(info);
+            TakeBalanceDamage(info);
             TakeDamage(info);
+        }
+
+        public virtual void TakeBalanceDamage(HitInfo info)
+        {
+            _balanceResource.Spend(info.DamageInfo.BalanceDamage);
+            if (!_balanceResource.IsDepleted)
+            {
+                return;
+            }
+
+            OnStaggered?.Invoke();
+            _balanceResource.Recover(maxBalance);
         }
 
         public virtual void TakeDamage(HitInfo info)
@@ -57,6 +75,17 @@ namespace Core.Characters
         protected virtual void OnDeath()
         {
             Destroy(gameObject);
+        }
+    }
+
+    public class BalanceResource : BaseCharacterResource
+    {
+        public BalanceResource(Character character, float maxValue, float startValue) : base(character, maxValue, startValue)
+        {
+        }
+
+        public BalanceResource(Character character, float maxValue) : base(character, maxValue)
+        {
         }
     }
 }

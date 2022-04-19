@@ -15,7 +15,10 @@ namespace Characters.Player.States
 
         public override void UpdateState()
         {
-            Context.Movement.Move(Context.MoveInput);
+            if (Context.IsGroundState)
+            {
+                Context.Movement.Move(Context.MoveInput);
+            }
             CheckStateSwitch();
         }
 

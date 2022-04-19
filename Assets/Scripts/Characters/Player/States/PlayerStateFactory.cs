@@ -48,5 +48,10 @@ namespace Characters.Player.States
         {
             return new PlayerHealState(_stateMachine, this);
         }
+
+        public PlayerStaggerState Stagger()
+        {
+            return new PlayerStaggerState(_stateMachine, this);
+        }
     }
 }

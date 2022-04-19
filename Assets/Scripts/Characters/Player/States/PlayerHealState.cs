@@ -18,7 +18,7 @@ namespace Characters.Player.States
             Context.CanRotate.Lock(this);
             Context.Movement.ResetXZVelocity();
 
-            // TODO: проиграть анимацию хилирования
+            // TODO: проиграть анимацию хилирования + привязать к ней задержку
             // Context.AnimatorComponent.SetTrigger("heal");
             _healRoutine = Context.StartCoroutine(
                 HealRoutine(Context.Player, Context.ActionConfig.ActiveHealRate, Context.ActionConfig.HealStaminaConsumption));
@@ -26,8 +26,28 @@ namespace Characters.Player.States
 
         public override void OnStaggered()
         {
-            Context.StopCoroutine(_healRoutine);
+            StopHealing();
             base.OnStaggered();
+        }
+
+        public override void UpdateState()
+        {
+            if (!Context.IsStaggered && Context.MoveInput.sqrMagnitude > 0)
+            {
+                StopHealing();
+                SwitchState(Factory.Grounded());
+            }
+        }
+
+        private void StopHealing()
+        {
+            if (_healRoutine != null)
+            {
+                Context.StopCoroutine(_healRoutine);
+                _healRoutine = null;
+            }
+            // TODO: добавить анимацию + привязать к ней задержку
+            Context.CanRotate.TryUnlock(this);
         }
 
         private IEnumerator HealRoutine(PlayerCharacter player, float healRate, float staminaConsumptionRate)
@@ -39,7 +59,7 @@ namespace Characters.Player.States
                 yield return null;
             }
             
-            Context.CanRotate.TryUnlock(this);
+            StopHealing();
             SwitchState(Factory.Grounded());
         }
     }

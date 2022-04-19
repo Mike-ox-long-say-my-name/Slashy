@@ -10,7 +10,10 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            Context.AnimatorComponent.SetTrigger("walk");
+            if (Context.IsGroundState)
+            {
+                Context.AnimatorComponent.SetTrigger("walk");
+            }
         }
 
         public override void UpdateState()

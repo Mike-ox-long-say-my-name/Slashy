@@ -24,4 +24,5 @@ MonoBehaviour:
   <LightAttackRecovery>k__BackingField: 0.1
   <ActiveHealRate>k__BackingField: 10
   <HealStaminaConsumption>k__BackingField: 10
+  <StaggerTime>k__BackingField: 1
   <StaggerRecoveryTime>k__BackingField: 0.25

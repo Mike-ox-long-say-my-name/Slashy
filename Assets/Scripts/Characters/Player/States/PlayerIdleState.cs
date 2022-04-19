@@ -8,7 +8,10 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            Context.AnimatorComponent.SetTrigger("idle");
+            if (Context.IsGroundState)
+            {
+                Context.AnimatorComponent.SetTrigger("idle");
+            }
         }
 
         public override void UpdateState()

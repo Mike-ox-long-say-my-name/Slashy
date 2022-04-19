@@ -14,14 +14,29 @@ namespace Characters.Player.States
             // TODO: добавить аниме цию
             // Context.AnimatorComponent.SetTrigger("stagger");
 
-            IEnumerator RecoverRoutine(float recoverTime)
-            {
-                yield return new WaitForSeconds(recoverTime);
+            Context.CanAttack.Lock(this);
+            Context.CanDash.Lock(this);
+            Context.CanJump.Lock(this);
 
-                SwitchState(Factory.Idle());
+            Context.ResetBufferedInput();
+            if (Context.Movement.IsGrounded) 
+            {
+                Context.Movement.ResetXZVelocity();
             }
 
-            Context.StartCoroutine(RecoverRoutine(Context.ActionConfig.StaggerRecoveryTime));
+            IEnumerator RecoverRoutine(float staggerTime, float recoverTime)
+            {
+                yield return new WaitForSeconds(staggerTime);
+                
+                SwitchState(Factory.Idle());
+                
+                yield return new WaitForSeconds(recoverTime);
+                Context.CanAttack.TryUnlock(this);
+                Context.CanDash.TryUnlock(this);
+                Context.CanJump.TryUnlock(this);
+            }
+
+            Context.StartCoroutine(RecoverRoutine(Context.ActionConfig.StaggerTime, Context.ActionConfig.StaggerRecoveryTime));
         }
     }
 }

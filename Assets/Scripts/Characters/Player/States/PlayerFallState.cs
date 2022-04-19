@@ -21,16 +21,12 @@ namespace Characters.Player.States
 
         private void CheckStateSwitch()
         {
-            if (Context.IsStaggered)
-            {
-                return;
-            }
             if (Context.Movement.IsGrounded)
             {
                 Context.Movement.ResetXZVelocity();
                 SwitchState(Factory.Grounded());
             }
-            else if (Context.IsLightAttackPressed.CheckAndReset())
+            else if (!Context.IsStaggered && Context.IsLightAttackPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
                 TryAttack();

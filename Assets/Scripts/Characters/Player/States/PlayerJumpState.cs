@@ -28,10 +28,6 @@ namespace Characters.Player.States
 
         public virtual void CheckStateSwitch()
         {
-            if (Context.IsStaggered)
-            {
-                return;
-            }
             if (Context.Movement.IsGrounded)
             {
                 SwitchState(Factory.Grounded());
@@ -40,7 +36,7 @@ namespace Characters.Player.States
             {
                 SwitchState(Factory.Fall());
             }
-            else if (Context.IsLightAttackPressed.CheckAndReset())
+            else if (!Context.IsStaggered && Context.IsLightAttackPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
                 TryAttack();

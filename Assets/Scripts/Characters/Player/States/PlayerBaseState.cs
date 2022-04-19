@@ -66,7 +66,13 @@ namespace Characters.Player.States
 
             if (IsRootState)
             {
+                var subState = Context.CurrentState.SubState;
                 Context.CurrentState = newState;
+                if (subState != null)
+                {
+                    newState.SetSubState(subState);
+                    subState.SetSuperState(newState);
+                }
             }
             else
             {

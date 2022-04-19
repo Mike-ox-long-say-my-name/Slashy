@@ -1,5 +1,3 @@
-using Core;
-
 namespace Characters.Player.States
 {
     public class PlayerGroundedState : PlayerBaseState
@@ -11,8 +9,10 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            SetSubState(Context.MoveInput.sqrMagnitude > 0 ? Factory.Walk() : Factory.Idle());
-            SubState.EnterState();
+            if (!Context.IsStaggered)
+            {
+                SwitchSubState(Context.MoveInput.sqrMagnitude > 0 ? Factory.Walk() : Factory.Idle());
+            }
         }
 
         public override void UpdateState()

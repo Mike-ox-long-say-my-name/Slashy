@@ -106,15 +106,7 @@ namespace Characters.Player.States
         {
             // Для корректного определения того, что игрок на земле при загрузке
 
-            playerCharacter.OnStaggered.AddListener(() =>
-            {
-                ResetBufferedInput();
-                if (movement.IsGrounded)
-                {
-                    movement.ResetXZVelocity();
-                }
-                CurrentState.OnStaggered();
-            });
+            playerCharacter.OnStaggered.AddListener(() => CurrentState.OnStaggered());
 
             movement.MoveRaw(Vector3.down);
             CurrentState = movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();

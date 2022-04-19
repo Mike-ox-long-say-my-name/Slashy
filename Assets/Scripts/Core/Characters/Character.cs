@@ -27,7 +27,7 @@ namespace Core.Characters
             TakeDamage(info);
         }
 
-        protected virtual void TakeDamage(HitInfo info)
+        public virtual void TakeDamage(HitInfo info)
         {
             if (freezeHealth)
             {
@@ -41,6 +41,17 @@ namespace Core.Characters
             {
                 OnDeath();
             }
+        }
+
+        public virtual void Heal(float amount)
+        {
+            if (freezeHealth)
+            {
+                return;
+            }
+
+            _healthResource.Recover(amount);
+            OnHealthChanged?.Invoke(Health);
         }
 
         protected virtual void OnDeath()

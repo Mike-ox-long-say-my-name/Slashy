@@ -22,7 +22,11 @@ namespace Characters.Player.States
 
         private void CheckStateSwitch()
         {
-            if (Context.CanDash && Context.IsDashPressed.CheckAndReset())
+            if (!Context.Movement.IsGrounded)
+            {
+                SwitchState(Factory.Fall());
+            }
+            else if (Context.CanDash && Context.IsDashPressed.CheckAndReset())
             {
                 Context.ResetBufferedInput();
                 if (Context.Player.HasStamina)
@@ -38,9 +42,10 @@ namespace Characters.Player.States
                     SwitchState(Factory.Jump());
                 }
             }
-            else if (!Context.Movement.IsGrounded)
+            else if (Context.IsHealPressed.CheckAndReset())
             {
-                SwitchState(Factory.Fall());
+                Context.ResetBufferedInput();
+                SwitchState(Factory.Heal());
             }
             else if (Context.CanAttack && Context.IsLightAttackPressed.CheckAndReset())
             {

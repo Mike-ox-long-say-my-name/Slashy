@@ -16,7 +16,8 @@ namespace Characters.Player.States
         [Space]
         [SerializeField, Min(0)] private float jumpInputWaitTime = 0.2f;
         [SerializeField, Min(0)] private float dashInputWaitTime = 0.2f;
-        [SerializeField, Min(0)] private float attackInputWaitTime = 0.2f;
+        [SerializeField, Min(0)] private float attackInputWaitTime = 0.4f;
+        [SerializeField, Min(0)] private float healInputWaitTime = 0.4f;
 
         [Space]
         [SerializeField] private Camera followingCamera;
@@ -55,6 +56,7 @@ namespace Characters.Player.States
         public readonly PersistentLock CanDash = new PersistentLock();
         public readonly PersistentLock CanJump = new PersistentLock();
         public readonly PersistentLock CanAttack = new PersistentLock();
+        public readonly PersistentLock CanRotate = new PersistentLock();
 
         private float _cameraFollowVelocity;
 
@@ -65,6 +67,7 @@ namespace Characters.Player.States
         public TimedTrigger IsJumpPressed { get; private set; }
         public TimedTrigger IsDashPressed { get; private set; }
         public TimedTrigger IsLightAttackPressed { get; private set; }
+        public TimedTrigger IsHealPressed { get; private set; }
 
         public bool IsAttacking => lightAttackFirst.IsAttacking || lightAttackSecond.IsAttacking;
         public bool CanStartAttack => !IsAttacking && playerCharacter.HasStamina;
@@ -155,6 +158,7 @@ namespace Characters.Player.States
             IsJumpPressed = _triggerFactory.Create();
             IsDashPressed = _triggerFactory.Create();
             IsLightAttackPressed = _triggerFactory.Create();
+            IsHealPressed = _triggerFactory.Create();
 
             StateFactory = new PlayerStateFactory(this);
 
@@ -166,11 +170,6 @@ namespace Characters.Player.States
 
         private void Update()
         {
-            if (CurrentState == null)
-            {
-                return;
-            }
-
             CurrentState.UpdateStates();
 
             HandleRotation();
@@ -185,7 +184,7 @@ namespace Characters.Player.States
 
         private void HandleRotation()
         {
-            if (IsDashing)
+            if (!CanRotate)
             {
                 return;
             }
@@ -234,6 +233,14 @@ namespace Characters.Player.States
                 return;
             }
             IsLightAttackPressed.SetFor(attackInputWaitTime);
+        }
+
+        public void OnHeal(InputAction.CallbackContext context)
+        {
+            if (context.action.IsPressed())
+            {
+                IsHealPressed.SetFor(healInputWaitTime);
+            }
         }
 
         private void MoveCamera()

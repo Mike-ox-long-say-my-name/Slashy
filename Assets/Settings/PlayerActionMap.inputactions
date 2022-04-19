@@ -1,5 +1,5 @@
 {
-    "name": "Slashy",
+    "name": "PlayerActionMap",
     "maps": [
         {
             "name": "Player",
@@ -36,6 +36,15 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "386643a2-d93c-40e6-a516-51220972b95c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Heal",
+                    "type": "Button",
+                    "id": "dad76ca6-b2f1-4017-aeda-89f2504072be",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -249,6 +258,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "860df7f3-e55c-428a-aa25-1c659d787017",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Heal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

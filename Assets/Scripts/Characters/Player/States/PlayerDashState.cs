@@ -27,36 +27,34 @@ namespace Characters.Player.States
             Context.CanDash.Lock(this);
             Context.CanJump.Lock(this);
             Context.CanAttack.Lock(this);
+            Context.CanRotate.Lock(this);
 
             Context.Movement.ResetXZVelocity();
 
-            var fullMove = direction * Context.DashDistance;
-
-            IEnumerator DashCoroutine()
+            IEnumerator DashCoroutine(PlayerMovement movement, float dashTime, Vector3 targetMove, float recovery)
             {
                 var passedTime = 0f;
-                var lastMoveTime = Time.time;
-                while (passedTime < Context.DashTime)
+                while (passedTime < dashTime)
                 {
-                    var timeStep = Time.time - lastMoveTime;
+                    var timeStep = Time.deltaTime;
                     passedTime += timeStep;
-                    lastMoveTime = Time.time;
 
-                    var fraction = passedTime / Context.DashTime;
+                    var fraction = passedTime / dashTime;
 
                     ApplyInvincibilityLogic(fraction);
                     TickDashEffectController(timeStep);
 
-                    Context.Movement.MoveRaw(fullMove * timeStep);
-                    yield return new WaitForEndOfFrame();
+                    movement.MoveRaw(targetMove * timeStep);
+                    yield return null;
                 }
 
-                Context.Movement.ResetXZVelocity();
+                movement.ResetXZVelocity();
                 SwitchState(Factory.Grounded());
-                Context.StartCoroutine(RecoverFromDashRoutine(Context.DashRecovery));
+                Context.StartCoroutine(RecoverFromDashRoutine(recovery));
             }
-
-            Context.StartCoroutine(DashCoroutine());
+            
+            var fullMove = direction * Context.DashDistance;
+            Context.StartCoroutine(DashCoroutine(Context.Movement, Context.DashTime, fullMove, Context.DashRecovery));
         }
 
         private void TickDashEffectController(float timeStep)
@@ -82,6 +80,8 @@ namespace Characters.Player.States
 
         private IEnumerator RecoverFromDashRoutine(float recoverTime)
         {
+            Context.CanRotate.TryUnlock(this);
+
             yield return new WaitForEndOfFrame();
             Context.CanJump.TryUnlock(this);
             Context.CanAttack.TryUnlock(this);

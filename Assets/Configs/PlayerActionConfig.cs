@@ -15,5 +15,7 @@ namespace Configs
         [field: SerializeField, Min(0)] public float LightAttackFirstStaminaCost { get; private set; } = 0;
         [field: SerializeField, Min(0)] public float LightAttackSecondStaminaCost { get; private set; } = 0;
         [field: SerializeField, Min(0)] public float LightAttackRecovery { get; private set; } = 0.1f;
+        [field: SerializeField, Min(0)] public float ActiveHealRate { get; private set; } = 10f;
+        [field: SerializeField, Min(0)] public float HealStaminaConsumption { get; private set; } = 10f;
     }
 }

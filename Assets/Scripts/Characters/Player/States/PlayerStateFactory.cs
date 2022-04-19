@@ -43,5 +43,10 @@ namespace Characters.Player.States
         {
             return new PlayerAttackState(_stateMachine, this);
         }
+
+        public PlayerHealState Heal()
+        {
+            return new PlayerHealState(_stateMachine, this);
+        }
     }
 }

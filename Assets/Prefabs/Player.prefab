@@ -406,15 +406,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  <OnHealthChanged>k__BackingField:
+  onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 25
+  freezeHealth: 0
   canDie: 1
   <OnStaminaChanged>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
   actionConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
+  freezeStamina: 0
   maxStamina: 50
 --- !u!114 &812809748605883915
 MonoBehaviour:
@@ -431,6 +433,7 @@ MonoBehaviour:
   jumpInputWaitTime: 0.2
   dashInputWaitTime: 0.2
   attackInputWaitTime: 0.2
+  healInputWaitTime: 0.4
   followingCamera: {fileID: 0}
   followSmoothTime: 0.3
   spriteRenderer: {fileID: 812809748605883926}
@@ -607,6 +610,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9aaaa459-e87c-4166-ae64-542872eb0ebe
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 812809748605883915}
+        m_TargetAssemblyTypeName: Characters.Player.States.PlayerStateMachine, PlayerStates
+        m_MethodName: OnHeal
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: dad76ca6-b2f1-4017-aeda-89f2504072be
+    m_ActionName: Player/Heal[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -1005,11 +1024,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6439476025216424924, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
   m_PrefabInstance: {fileID: 8726660239229257501}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &879806135225366165 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8443932937041752456, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
-  m_PrefabInstance: {fileID: 8726660239229257501}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7629969459913761650 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1222810363967579247, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
@@ -1021,3 +1035,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0edaab1c2b568f344bd2027aa2f74a48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!198 &879806135225366165 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8443932937041752456, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
+  m_PrefabInstance: {fileID: 8726660239229257501}
+  m_PrefabAsset: {fileID: 0}

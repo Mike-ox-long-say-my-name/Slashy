@@ -10,10 +10,7 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            if (Context.IsGroundState)
-            {
-                Context.AnimatorComponent.SetTrigger("walk");
-            }
+            Context.AnimatorComponent.SetBool("is-walking", true);
         }
 
         public override void UpdateState()
@@ -23,6 +20,11 @@ namespace Characters.Player.States
                 Context.Movement.Move(Context.MoveInput);
             }
             CheckStateSwitch();
+        }
+
+        public override void ExitState()
+        {
+            Context.AnimatorComponent.SetBool("is-walking", false);
         }
 
         private void CheckStateSwitch()

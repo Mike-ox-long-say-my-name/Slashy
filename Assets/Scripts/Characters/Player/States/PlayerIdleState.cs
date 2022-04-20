@@ -6,14 +6,6 @@ namespace Characters.Player.States
         {
         }
 
-        public override void EnterState()
-        {
-            if (Context.IsGroundState)
-            {
-                Context.AnimatorComponent.SetTrigger("idle");
-            }
-        }
-
         public override void UpdateState()
         {
             CheckStateSwitch();

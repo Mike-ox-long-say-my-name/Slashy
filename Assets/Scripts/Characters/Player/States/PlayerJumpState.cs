@@ -11,6 +11,7 @@ namespace Characters.Player.States
         {
             Context.Player.SpendStamina(Context.ActionConfig.JumpStaminaCost);
             Context.AnimatorComponent.SetTrigger("jump");
+            Context.AnimatorComponent.SetBool("is-airbone", true);
 
             Context.Movement.Jump();
         }

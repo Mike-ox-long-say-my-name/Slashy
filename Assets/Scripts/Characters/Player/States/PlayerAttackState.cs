@@ -34,7 +34,6 @@ namespace Characters.Player.States
                     
                     _currentAttack = 2;
                     Context.Player.SpendStamina(Context.ActionConfig.LightAttackSecondStaminaCost);
-                    Context.AnimatorComponent.SetTrigger("attack-long");
                     Context.LightAttackSecond.StartExecution(Context.Player, AttackEndedSecond);
                 }
                 else
@@ -64,11 +63,18 @@ namespace Characters.Player.States
             }
 
             Context.Player.SpendStamina(Context.ActionConfig.LightAttackFirstStaminaCost);
-            Context.AnimatorComponent.ResetTrigger("attack-long");
-            Context.AnimatorComponent.SetTrigger("attack-short");
+            Context.AnimatorComponent.SetTrigger("attack");
 
             _currentAttack = 1;
             Context.LightAttackFirst.StartExecution(Context.Player, AttackEndedFirst);
+        }
+
+        public override void UpdateState()
+        {
+            if (Context.IsLightAttackPressed.CheckAndReset())
+            {
+                Context.AnimatorComponent.SetTrigger("attack");
+            }
         }
 
         public override void OnStaggered()

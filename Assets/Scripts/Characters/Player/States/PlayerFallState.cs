@@ -19,6 +19,11 @@ namespace Characters.Player.States
             CheckStateSwitch();
         }
 
+        public override void ExitState()
+        {
+            Context.AnimatorComponent.SetBool("is-airbone", false);
+        }
+
         private void CheckStateSwitch()
         {
             if (Context.Movement.IsGrounded)

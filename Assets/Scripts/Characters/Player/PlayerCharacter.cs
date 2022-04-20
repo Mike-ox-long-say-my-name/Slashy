@@ -1,3 +1,4 @@
+using System.Linq;
 using Configs;
 using Core.Characters;
 using Core.Utilities;

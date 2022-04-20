@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Core.Characters;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -22,7 +23,7 @@ namespace Characters.Player.States
                 HealRoutine(Context.PlayerCharacter, Context.PlayerConfig.ActiveHealRate, Context.PlayerConfig.HealStaminaConsumption));
         }
 
-        public override void InterruptState(StateInterruption interruption)
+        public override void InterruptState(CharacterInterruption interruption)
         {
             Context.StopCoroutine(_healRoutine);
             base.InterruptState(interruption);

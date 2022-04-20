@@ -1,12 +1,18 @@
-﻿namespace Characters.Enemies.States
-{
-    public abstract class EnemyBaseState
-    {
-        protected EnemyStateMachine Context { get; }
-        protected EnemyStateFactory Factory { get; }
+﻿using System;
+using Core.Characters;
 
-        protected EnemyBaseState(EnemyStateMachine context, EnemyStateFactory factory)
+namespace Characters.Enemies.States
+{
+    public abstract class EnemyBaseState<TContext>
+    {
+        private IStateHolder<TContext> _stateHolder;
+
+        protected TContext Context { get; private set; }
+        protected EnemyStateFactory<TContext> Factory { get; private set; }
+        
+        public void Init(IStateHolder<TContext> stateHolder, TContext context, EnemyStateFactory<TContext> factory)
         {
+            _stateHolder = stateHolder;
             Context = context;
             Factory = factory;
         }
@@ -23,16 +29,29 @@
         {
         }
 
-        public virtual void OnStaggered()
+        public virtual void InterruptState(CharacterInterruption interruption)
         {
-            SwitchState(Factory.Stagger());
+            switch (interruption)
+            {
+                case CharacterInterruption.Staggered:
+                    SwitchState(Factory.Stagger());
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(interruption), interruption, 
+                        $"Invalid interruption for state {this}");
+            }
         }
 
-        protected virtual void SwitchState(EnemyBaseState newState)
+        protected virtual void SwitchState(EnemyBaseState<TContext> newState)
         {
             ExitState();
+            _stateHolder.CurrentState = newState;
             newState.EnterState();
-            Context.CurrentState = newState;
+        }
+
+        public override string ToString()
+        {
+            return GetType().Name;
         }
     }
 }

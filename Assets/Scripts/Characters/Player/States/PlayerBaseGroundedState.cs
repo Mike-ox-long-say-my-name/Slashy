@@ -1,4 +1,5 @@
 using System;
+using Core.Characters;
 
 namespace Characters.Player.States
 {
@@ -13,11 +14,11 @@ namespace Characters.Player.States
             Context.Movement.ApplyGravity();
         }
 
-        public override void InterruptState(StateInterruption interruption)
+        public override void InterruptState(CharacterInterruption interruption)
         {
             switch (interruption)
             {
-                case StateInterruption.Staggered:
+                case CharacterInterruption.Staggered:
                     SwitchState(Factory.GroundStagger());
                     break;
                 default:

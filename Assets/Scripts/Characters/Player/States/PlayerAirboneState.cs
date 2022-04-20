@@ -1,4 +1,5 @@
 using System;
+using Core.Characters;
 
 namespace Characters.Player.States
 {
@@ -28,16 +29,15 @@ namespace Characters.Player.States
             Context.Movement.Move(Context.Input.MoveInput);
         }
 
-        public override void InterruptState(StateInterruption interruption)
+        public override void InterruptState(CharacterInterruption interruption)
         {
             switch (interruption)
             {
-                case StateInterruption.Staggered:
+                case CharacterInterruption.Staggered:
                     SwitchState(Factory.AirboneStagger());
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(
-                        nameof(interruption), interruption,
+                    throw new ArgumentOutOfRangeException(nameof(interruption), interruption,
                         $"Invalid interruption for state {this}");
             }
         }

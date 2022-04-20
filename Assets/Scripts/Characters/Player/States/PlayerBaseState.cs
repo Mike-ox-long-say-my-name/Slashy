@@ -1,3 +1,4 @@
+using Core.Characters;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -25,7 +26,7 @@ namespace Characters.Player.States
         {
         }
 
-        public virtual void InterruptState(StateInterruption interruption)
+        public virtual void InterruptState(CharacterInterruption interruption)
         {
         }
 
@@ -40,10 +41,5 @@ namespace Characters.Player.States
         {
             return GetType().Name;
         }
-    }
-
-    public enum StateInterruption
-    {
-        Staggered
     }
 }

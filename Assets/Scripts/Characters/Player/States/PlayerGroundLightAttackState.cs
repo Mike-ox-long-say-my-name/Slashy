@@ -1,4 +1,6 @@
-﻿namespace Characters.Player.States
+﻿using Core.Characters;
+
+namespace Characters.Player.States
 {
     public class PlayerGroundLightAttackState : PlayerBaseGroundedState
     {
@@ -57,7 +59,7 @@
             }
         }
 
-        public override void InterruptState(StateInterruption interruption)
+        public override void InterruptState(CharacterInterruption interruption)
         {
             switch (_currentAttack)
             {

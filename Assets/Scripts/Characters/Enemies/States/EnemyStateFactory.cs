@@ -1,32 +1,48 @@
-﻿namespace Characters.Enemies.States
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Characters.Enemies.States
 {
-    public class EnemyStateFactory
+    public class EnemyStateFactory<TContext>
     {
-        private readonly EnemyStateMachine _stateMachine;
+        private readonly IStateHolder<TContext> _stateHolder;
+        private readonly TContext _context;
+        private readonly Func<EnemyBaseState<TContext>>[] _stateBuilders;
 
-        public EnemyStateFactory(EnemyStateMachine stateMachine)
+        public EnemyStateFactory(IStateHolder<TContext> stateHolder, TContext context,
+            IEnumerable<Func<EnemyBaseState<TContext>>> stateBuilders)
         {
-            _stateMachine = stateMachine;
+            _stateHolder = stateHolder;
+            _context = context;
+            _stateBuilders = stateBuilders.ToArray();
         }
 
-        public EnemyStaggerState Stagger()
+        private EnemyBaseState<TContext> CreateState(int index)
         {
-            return new EnemyStaggerState(_stateMachine, this);
+            var state = _stateBuilders[index]();
+            state.Init(_stateHolder, _context, this);
+            return state;
         }
 
-        public EnemyIdleState Idle()
+        public EnemyBaseState<TContext> Idle()
         {
-            return new EnemyIdleState(_stateMachine, this);
+            return CreateState(0);
         }
 
-        public EnemyPursueState Pursue()
+        public EnemyBaseState<TContext> Pursue()
         {
-            return new EnemyPursueState(_stateMachine, this);
+            return CreateState(1);
         }
 
-        public EnemyAttackState Attack()
+        public EnemyBaseState<TContext> Attack()
         {
-            return new EnemyAttackState(_stateMachine, this);
+            return CreateState(2);
+        }
+
+        public EnemyBaseState<TContext> Stagger()
+        {
+            return CreateState(3);
         }
     }
 }

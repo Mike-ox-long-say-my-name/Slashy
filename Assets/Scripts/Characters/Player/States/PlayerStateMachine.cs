@@ -1,6 +1,7 @@
 using System.Collections;
 using Attacking;
 using Configs;
+using Core.Characters;
 using Core.Utilities;
 using Effects;
 using UnityEngine;
@@ -73,7 +74,7 @@ namespace Characters.Player.States
         private IEnumerator Start()
         {
             // Для корректного определения того, что игрок на земле при загрузке
-            playerCharacter.OnStaggered.AddListener(() => CurrentState.InterruptState(StateInterruption.Staggered));
+            playerCharacter.OnStaggered.AddListener(() => CurrentState.InterruptState(CharacterInterruption.Staggered));
 
             playerMovement.MoveRaw(Vector3.down);
             CurrentState = playerMovement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();

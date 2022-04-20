@@ -5,7 +5,6 @@ using UnityEngine;
 namespace Characters.Player.States
 {
     public class PlayerDashState : PlayerBaseGroundedState
-
     {
         private Coroutine _dashRoutine;
 
@@ -30,7 +29,7 @@ namespace Characters.Player.States
             Context.StartCoroutine(RecoverFromDashRoutine(Context.PlayerConfig.DashRecovery));
         }
 
-        public override void InterruptState(StateInterruption interruption)
+        public override void InterruptState(CharacterInterruption interruption)
         {
             Context.StopCoroutine(_dashRoutine);
             base.InterruptState(interruption);

@@ -1,6 +1,6 @@
 ﻿namespace Core.Utilities
 {
-    public class OwningLock
+    public class PersistentLock
     {
         private object _owner;
         
@@ -40,9 +40,9 @@
             return ReferenceEquals(owner, _owner);
         }
 
-        public static implicit operator bool(OwningLock owningLock)
+        public static implicit operator bool(PersistentLock persistentLock)
         {
-            return owningLock.IsUnlocked;
+            return persistentLock.IsUnlocked;
         }
     }
 }

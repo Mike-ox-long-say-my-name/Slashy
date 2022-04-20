@@ -1,28 +1,25 @@
 namespace Characters.Player.States
 {
-    public class PlayerJumpState : PlayerBaseState
+    public class PlayerJumpState : PlayerAirboneState
     {
         public PlayerJumpState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
         {
-            IsRootState = true;
         }
 
         public override void EnterState()
         {
-            Context.Player.SpendStamina(Context.ActionConfig.JumpStaminaCost);
-            Context.AnimatorComponent.SetTrigger("jump");
-            Context.AnimatorComponent.SetBool("is-airbone", true);
+            base.EnterState();
 
+            Context.AnimatorComponent.SetTrigger("jump");
+
+            Context.PlayerCharacter.SpendStamina(Context.PlayerConfig.JumpStaminaCost);
             Context.Movement.Jump();
         }
 
         public override void UpdateState()
         {
-            Context.Movement.ApplyGravity();
-            if (!Context.IsStaggered)
-            {
-                Context.Movement.ApplyAirboneVelocity(Context.MoveInput);
-            }
+            HandleGravity();
+            HandleAirboneControl();
 
             CheckStateSwitch();
         }
@@ -37,23 +34,10 @@ namespace Characters.Player.States
             {
                 SwitchState(Factory.Fall());
             }
-            else if (!Context.IsStaggered && Context.IsLightAttackPressed.CheckAndReset())
+            else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed.CheckAndReset())
             {
-                Context.ResetBufferedInput();
-                TryAttack();
+                // TODO: SwitchState(Factory.AirLightAttack());
             }
-        }
-
-        private void TryAttack()
-        {
-            if (!Context.CanStartAttack)
-            {
-                return;
-            }
-
-            // TODO: добавить атаку в прыжке
-            // SetSubState(Factory.Attack());
-            // SubState.EnterState();
         }
     }
 }

@@ -50,7 +50,8 @@ MonoBehaviour:
     damage: 13
     balanceDamage: 0
   moveDistance: 0.4
-  movement: {fileID: 239362066797731850}
+  playerMovement: {fileID: 239362066797731850}
+  customPlayerInput: {fileID: 4950135374432913508}
 --- !u!1 &812809746819271580
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +220,8 @@ MonoBehaviour:
     damage: 10
     balanceDamage: 0
   moveDistance: 0.4
-  movement: {fileID: 239362066797731850}
+  playerMovement: {fileID: 239362066797731850}
+  customPlayerInput: {fileID: 4950135374432913508}
 --- !u!1 &812809748605883924
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +241,7 @@ GameObject:
   - component: {fileID: 812809748605883918}
   - component: {fileID: 812809748605883904}
   - component: {fileID: 1318077341606312975}
+  - component: {fileID: 4950135374432913508}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -419,7 +422,7 @@ MonoBehaviour:
   <OnStaminaChanged>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  actionConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
+  config: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
   freezeStamina: 0
   maxStamina: 50
 --- !u!114 &239362066797731850
@@ -434,15 +437,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66665ee63782d1042bc15509307cfaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpStartVelocity: 5
   gravity: -9.81
   groundedGravity: -0.5
   horizontalSpeed: 5
   verticalSpeed: 5
-  airboneControlFactor: 0.6
   maxVelocity: 20
   minVelocity: -20
   characterController: {fileID: 812809748605883925}
+  jumpStartVelocity: 5
+  airboneControlFactor: 0.6
 --- !u!114 &812809748605883917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -678,24 +681,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e308ebd21bcc18a4f9689392c5fe067a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  followingCamera: {fileID: 0}
+  followSmoothTime: 0.3
+  customPlayerInput: {fileID: 4950135374432913508}
+  playerMovement: {fileID: 239362066797731850}
+  playerCharacter: {fileID: 812809748605883914}
+  lightAttackFirst: {fileID: 27388021579594124}
+  lightAttackSecond: {fileID: 1161144045783392307}
+  spriteRenderer: {fileID: 812809748605883926}
+  dashEffectController: {fileID: 6001828107465577190}
+  animator: {fileID: 812809748605883913}
+  hurtbox: {fileID: 812809748674757410}
+  playerConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
+--- !u!114 &4950135374432913508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812809748605883924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db83ca47ab8ea44daa14b533af357aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unityInput: {fileID: 812809748605883912}
   jumpInputWaitTime: 0.2
   dashInputWaitTime: 0.2
   attackInputWaitTime: 0.4
   healInputWaitTime: 0.4
-  followingCamera: {fileID: 0}
-  followSmoothTime: 0.3
-  spriteRenderer: {fileID: 812809748605883926}
-  dashEffectController: {fileID: 6001828107465577190}
-  movement: {fileID: 239362066797731850}
-  lightAttackFirst: {fileID: 27388021579594124}
-  lightAttackSecond: {fileID: 1161144045783392307}
-  playerCharacter: {fileID: 812809748605883914}
-  animator: {fileID: 812809748605883913}
-  hurtbox: {fileID: 812809748674757410}
-  dashRecovery: 0.3
-  dashDistance: 3
-  dashTime: 0.4
-  actionConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
 --- !u!1 &812809748674757408
 GameObject:
   m_ObjectHideFlags: 0

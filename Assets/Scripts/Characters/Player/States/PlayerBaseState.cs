@@ -1,13 +1,11 @@
+using UnityEngine;
+
 namespace Characters.Player.States
 {
     public abstract class PlayerBaseState
     {
         protected PlayerStateMachine Context { get; }
         protected PlayerStateFactory Factory { get; }
-
-        protected bool IsRootState { get; set; }
-        public PlayerBaseState SuperState { get; private set; }
-        public PlayerBaseState SubState { get; private set; }
 
         protected PlayerBaseState(PlayerStateMachine context, PlayerStateFactory factory)
         {
@@ -27,68 +25,25 @@ namespace Characters.Player.States
         {
         }
 
-        public virtual void UpdateStates()
+        public virtual void InterruptState(StateInterruption interruption)
         {
-            UpdateState();
-            SubState?.UpdateStates();
-        }
-
-        public virtual void ExitStates()
-        {
-            ExitState();
-            SubState?.ExitStates();
-        }
-
-        public virtual void OnStaggered()
-        {
-            if (IsRootState)
-            {
-                SubState?.OnStaggered();
-                SwitchSubState(Factory.Stagger());
-            }
-            else
-            {
-                SwitchState(Factory.Stagger());
-            }
-        }
-
-        protected virtual void SwitchSubState(PlayerBaseState newSubState)
-        {
-            SubState?.ExitState();
-            SetSubState(newSubState);
-            SubState.EnterState();
         }
 
         protected virtual void SwitchState(PlayerBaseState newState)
         {
             ExitState();
+            Context.CurrentState = newState;
             newState.EnterState();
-
-            if (IsRootState)
-            {
-                var subState = Context.CurrentState.SubState;
-                Context.CurrentState = newState;
-                if (subState != null)
-                {
-                    newState.SetSubState(subState);
-                    subState.SetSuperState(newState);
-                }
-            }
-            else
-            {
-                SuperState?.SetSubState(newState);
-            }
         }
 
-        protected void SetSubState(PlayerBaseState newSubState)
+        public override string ToString()
         {
-            SubState = newSubState;
-            newSubState.SetSuperState(this);
+            return GetType().Name;
         }
+    }
 
-        protected void SetSuperState(PlayerBaseState newSuperState)
-        {
-            SuperState = newSuperState;
-        }
+    public enum StateInterruption
+    {
+        Staggered
     }
 }

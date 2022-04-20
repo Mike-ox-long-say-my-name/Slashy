@@ -1,14 +1,13 @@
 {
-    "name": "PlayerStates",
+    "name": "Player",
     "rootNamespace": "",
     "references": [
-        "GUID:02f7ddda7df67874595b57a2ea17e86e",
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:8df75aa705f48954fb324b3a6c38b3be",
-        "GUID:a79e81e67e64ad04c8fc81409f27f4be",
         "GUID:c85678d10edf086498cac69a08606a8b",
+        "GUID:a79e81e67e64ad04c8fc81409f27f4be",
         "GUID:789f25cefda88d9408bf73e472367ba2",
-        "GUID:5ad45690417ddb8439c5f1e63c443f0f"
+        "GUID:529c280222769364b939535c617e5c2c",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:8df75aa705f48954fb324b3a6c38b3be"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

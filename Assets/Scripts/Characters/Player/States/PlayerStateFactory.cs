@@ -29,19 +29,9 @@ namespace Characters.Player.States
             return new PlayerFallState(_stateMachine, this);
         }
 
-        public PlayerBaseState Walk()
+        public PlayerBaseState GroundLightAttack()
         {
-            return new PlayerWalkState(_stateMachine, this);
-        }
-
-        public PlayerBaseState Idle()
-        {
-            return new PlayerIdleState(_stateMachine, this);
-        }
-
-        public PlayerBaseState Attack()
-        {
-            return new PlayerAttackState(_stateMachine, this);
+            return new PlayerGroundLightAttackState(_stateMachine, this);
         }
 
         public PlayerHealState Heal()
@@ -49,9 +39,14 @@ namespace Characters.Player.States
             return new PlayerHealState(_stateMachine, this);
         }
 
-        public PlayerStaggerState Stagger()
+        public PlayerGroundStaggerState GroundStagger()
         {
-            return new PlayerStaggerState(_stateMachine, this);
+            return new PlayerGroundStaggerState(_stateMachine, this);
+        }
+
+        public PlayerAirboneStaggerState AirboneStagger()
+        {
+            return new PlayerAirboneStaggerState(_stateMachine, this);
         }
     }
 }

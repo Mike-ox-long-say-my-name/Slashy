@@ -11,8 +11,7 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            // TODO: добавить аниме цию
-            // Context.AnimatorComponent.SetTrigger("stagger");
+            Context.AnimatorComponent.SetTrigger("hurt");
 
             Context.CanAttack.Lock(this);
             Context.CanDash.Lock(this);
@@ -21,6 +20,7 @@ namespace Characters.Player.States
             Context.ResetBufferedInput();
             if (Context.Movement.IsGrounded) 
             {
+                //TODO: move back
                 Context.Movement.ResetXZVelocity();
             }
 

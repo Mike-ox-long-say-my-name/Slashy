@@ -1,5 +1,4 @@
 ﻿using Core.Characters;
-using UnityEngine;
 
 namespace Characters.Enemies.States
 {
@@ -39,7 +38,7 @@ namespace Characters.Enemies.States
 
             var newState = new TState();
             newState.Init(_stateHolder, Context);
-                
+
             ExitState();
             IsValidState = false;
             _stateHolder.CurrentState = newState;

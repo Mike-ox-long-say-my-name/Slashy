@@ -40,7 +40,7 @@ namespace Attacking
             _onHit = null;
         }
 
-        private void OnTriggerStay(Collider target)
+        private void OnTriggerEnter(Collider target)
         {
             if (!target.TryGetComponent<Hurtbox>(out var hit))
             {

@@ -23,7 +23,7 @@ namespace Characters.Enemies
 
         protected override IEnumerator Execute(IHitSource source)
         {
-            yield return new WaitForSeconds(0.7f);
+            yield return new WaitForSeconds(0.4f);
 
             if (_hasParticles)
             {
@@ -35,7 +35,9 @@ namespace Characters.Enemies
                 DamageInfo = damageInfo,
                 HitSource = source
             }));
-            yield return new WaitForSeconds(0.1f);
+            
+            yield return new WaitForSeconds(1f);
+
             Hitbox.DisableAndClear();
         }
     }

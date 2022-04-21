@@ -12,9 +12,9 @@ TagManager:
   - Water
   - UI
   - 
-  - 
-  - RecieveShadows
   - Character
+  - RecieveShadows
+  - Hitbox
   - 
   - 
   - 

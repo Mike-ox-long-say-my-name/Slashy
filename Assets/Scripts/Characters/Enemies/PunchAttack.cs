@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using Attacking;
-using Codice.CM.SEIDInfo;
+﻿using Attacking;
 using Core;
+using System.Collections;
 using UnityEngine;
 
 namespace Characters.Enemies
@@ -22,7 +21,13 @@ namespace Characters.Enemies
             }));
             yield return new WaitForFixedUpdate();
             Hitbox.DisableAndClear();
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(1.2f);
+            cube.SetActive(false);
+        }
+
+        protected override void OnAttackEnded(bool interrupted)
+        {
+            base.OnAttackEnded(interrupted);
             cube.SetActive(false);
         }
     }

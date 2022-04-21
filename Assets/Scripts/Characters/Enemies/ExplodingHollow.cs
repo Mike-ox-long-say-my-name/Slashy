@@ -5,6 +5,7 @@ using Core.Utilities;
 using System;
 using System.Collections;
 using Characters.Player;
+using Core;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -15,7 +16,7 @@ namespace Characters.Enemies
         public override void UpdateState()
         {
             Context.Movement.ApplyGravity();
-            if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < 10)
+            if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < Context.AggroDistance)
             {
                 SwitchState<ExplodingHollowPursue>();
             }
@@ -86,7 +87,10 @@ namespace Characters.Enemies
             Context.Movement.ResetXZVelocity();
             Context.PunchAttack.StartExecution(Context.Character, inter =>
             {
-                if (!inter) SwitchState<ExplodingHollowPursue>();
+                if (!inter)
+                {
+                    SwitchState<ExplodingHollowPursue>();
+                }
             });
         }
 
@@ -99,37 +103,67 @@ namespace Characters.Enemies
 
     public class ExplodingHollowCharge : ExplodingHollowBaseState
     {
-        private readonly TimedTrigger _prepare = new TimedTrigger();
+        private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
+        private TimedTrigger _prepare;
+        private TimedTrigger _dot;
 
         public override void EnterState()
         {
+            _prepare = _triggerFactory.Create();
+            _dot = _triggerFactory.Create();
+
             Context.Movement.ResetXZVelocity();
-            _prepare.SetFor(3);
+            _prepare.SetFor(Context.ChargeTime);
+            _dot.Set();
         }
 
         public override void UpdateState()
         {
             Context.Movement.ApplyGravity();
 
+            _triggerFactory.StepAll();
+
             if (_prepare.IsSet)
             {
-                _prepare.Step(Time.deltaTime);
                 return;
+            }
+            
+            // TODO: cringe
+            Context.AnimatorComponent.SetTrigger("charge");
+
+            if (_dot.CheckAndReset())
+            {
+                Context.Character.ReceiveHit(new HitInfo
+                {
+                    DamageInfo = new DamageInfo
+                    {
+                        damage = Context.DotWhileCharging
+                    }
+                });
+                _dot.SetIn(Context.DotTickInterval);
             }
 
             var speedMultiplier = 3.5f;
             var player = Context.PlayerPosition;
             var self = Context.transform.position;
-            if (Vector3.Distance(player, self) > 1)
-            {
-                var direction = player - self;
-                direction.y = 0;
-                direction.Normalize();
+            var direction = player - self;
+            direction.y = 0;
 
+            if (direction.magnitude > 1.5)
+            {
+                direction.Normalize();
                 Context.Movement.Move(speedMultiplier * new Vector2(direction.x, direction.z));
+
+                var health = Context.Character.Health;
+                if (health.Value / health.MaxValue < 0.2f)
+                {
+                    SwitchState<ExplodingHollowExplosion>();
+                }
             }
             else
             {
+                direction.Normalize();
+                Context.Pushable.Push(direction, 1.4f, 0.3f);
                 SwitchState<ExplodingHollowExplosion>();
             }
         }
@@ -149,10 +183,7 @@ namespace Characters.Enemies
         {
             if (interruption.Type == CharacterInterruptionType.Death)
             {
-                if (Context.HasExplosionAttackExecutor && Context.ExplosionAttackExecutor.IsAttacking)
-                {
-                    Context.ExplosionAttackExecutor.InterruptAttack();
-                }
+                Context.ExplosionAttackExecutor.InterruptAttack();
             }
             base.InterruptState(interruption);
         }
@@ -161,11 +192,8 @@ namespace Characters.Enemies
         {
             Context.AnimatorComponent.SetTrigger("explode");
             Context.Movement.ResetXZVelocity();
-            if (Context.HasExplosionAttackExecutor)
-            {
-                Context.ExplosionAttackExecutor.StartExecution(Context.Character,
-                    _ => SwitchState<ExplodingHollowDeath>());
-            }
+            Context.ExplosionAttackExecutor.StartExecution(Context.Character,
+                _ => SwitchState<ExplodingHollowDeath>());
         }
     }
 
@@ -210,9 +238,8 @@ namespace Characters.Enemies
 
         public override void EnterState()
         {
-            Context.transform.eulerAngles += new Vector3(0, 0, 90);
-            Context.transform.position += Vector3.down * 0.5f;
-            Context.StartCoroutine(DieIn(2));
+            Context.Movement.ResetXZVelocity();
+            Context.StartCoroutine(DieIn(1));
         }
 
         private IEnumerator DieIn(float time)
@@ -224,14 +251,26 @@ namespace Characters.Enemies
 
     public class ExplodingHollow : EnemyStateMachine<ExplodingHollow>
     {
+        [SerializeField, Min(0)] private float aggroDistance = 5;
+        [SerializeField, Min(0)] private float chargeTime = 2;
+        [SerializeField, Min(0)] private float dotWhileCharging = 5f;
+        [SerializeField, Min(0)] private float dotTickInterval = 0.3f;
+
+        [SerializeField] private Pushable pushable;
         [SerializeField] private Animator animatorComponent;
         [SerializeField] private AttackExecutor punchAttack;
         [SerializeField] private AttackExecutor explosionAttackExecutor;
 
+        public float AggroDistance => aggroDistance;
+        public float ChargeTime => chargeTime;
+
+        public Pushable Pushable => pushable;
         public Animator AnimatorComponent => animatorComponent;
         public AttackExecutor ExplosionAttackExecutor => explosionAttackExecutor;
         public AttackExecutor PunchAttack => punchAttack;
-        public bool HasExplosionAttackExecutor { get; private set; } = true;
+
+        public float DotWhileCharging => dotWhileCharging;
+        public float DotTickInterval => dotTickInterval;
 
         protected override EnemyBaseState<ExplodingHollow> StartState()
         {
@@ -242,10 +281,25 @@ namespace Characters.Enemies
 
         protected override void Awake()
         {
+            if (pushable == null)
+            {
+                Debug.LogWarning("Pushable is not assigned", this);
+                enabled = false;
+            }
+            if (animatorComponent == null)
+            {
+                Debug.LogWarning("Animator is not assigned", this);
+                enabled = false;
+            }
+            if (punchAttack == null)
+            {
+                Debug.LogWarning("Explosion Attack Executor is not assigned", this);
+                enabled = false;
+            }
             if (explosionAttackExecutor == null)
             {
                 Debug.LogWarning("Explosion Attack Executor is not assigned", this);
-                HasExplosionAttackExecutor = false;
+                enabled = false;
             }
 
             base.Awake();

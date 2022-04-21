@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 namespace Core.Characters
 {
+    [RequireComponent(typeof(Pushable))]
     public class Character : HittableEntity
     {
         [SerializeField] private UnityEvent<ICharacterResource> onHealthChanged;
@@ -18,6 +19,8 @@ namespace Core.Characters
         [SerializeField, Min(0)] private float maxBalance;
         [SerializeField] private bool freezeHealth = false;
         [SerializeField] private bool canDie = true;
+
+        private Pushable _pushable;
         
         private BalanceResource _balanceResource;
         private HealthResource _healthResource;
@@ -25,6 +28,7 @@ namespace Core.Characters
 
         protected virtual void Awake()
         {
+            _pushable = GetComponent<Pushable>();
             _healthResource = new HealthResource(this, maxHealth);
             _balanceResource = new BalanceResource(this, maxBalance);
         }
@@ -41,12 +45,20 @@ namespace Core.Characters
 
         public virtual void TakeBalanceDamage(HitInfo info)
         {
-            _balanceResource.Spend(info.DamageInfo.BalanceDamage);
+            _balanceResource.Spend(info.DamageInfo.balanceDamage);
             if (!_balanceResource.IsDepleted)
             {
                 return;
             }
 
+            var source = info.HitSource;
+            if (source != null && info.DamageInfo.pushStrength > 0)
+            {
+                var direction = (transform.position - source.Transform.position).normalized;
+                _pushable.Push(direction, info.DamageInfo.pushStrength);
+            }
+
+            // TODO: добавить зависимость длительности стаггера от DamageInfo
             OnStaggered?.Invoke();
             _balanceResource.Recover(maxBalance);
         }
@@ -58,7 +70,7 @@ namespace Core.Characters
                 return;
             }
 
-            _healthResource.Spend(info.DamageInfo.Damage);
+            _healthResource.Spend(info.DamageInfo.damage);
             OnHealthChanged?.Invoke(Health);
 
             if (canDie && _healthResource.IsDepleted)

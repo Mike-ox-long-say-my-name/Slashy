@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using Core.Utilities;
+using UnityEngine;
 
 namespace Core.Characters
 {
+    [RequireComponent(typeof(CharacterController))]
     public class CharacterMovement : MonoBehaviour
     {
         [SerializeField] private float gravity = -9.81f;
@@ -11,7 +14,7 @@ namespace Core.Characters
         [SerializeField] private float maxVelocity = 20;
         [SerializeField] private float minVelocity = -20;
 
-        [SerializeField] private CharacterController characterController;
+        private CharacterController _characterController;
         
         private Vector3 _velocity;
 
@@ -21,7 +24,7 @@ namespace Core.Characters
             set => _velocity = value;
         }
 
-        public bool IsGrounded => characterController.isGrounded;
+        public bool IsGrounded => _characterController.isGrounded;
 
         public float HorizontalSpeed => horizontalSpeed;
 
@@ -29,11 +32,7 @@ namespace Core.Characters
 
         protected virtual void Awake()
         {
-            if (characterController == null)
-            {
-                Debug.LogWarning("Character Controller is not assigned", this);
-                enabled = false;
-            }
+            _characterController = GetComponent<CharacterController>();
         }
 
         public virtual void ApplyGravity()
@@ -71,7 +70,14 @@ namespace Core.Characters
 
         public void MoveRaw(Vector3 move)
         {
-            characterController.Move(move);
+            _characterController.Move(move);
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            _characterController.enabled = false;
+            transform.position = position;
+            _characterController.enabled = true;
         }
 
         protected virtual void Update()

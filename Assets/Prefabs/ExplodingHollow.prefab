@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2544072219351903593}
   - component: {fileID: 3223962008237598892}
   - component: {fileID: 256627415584427052}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 3286480423987348923}
   - component: {fileID: 3973482667709239375}
   - component: {fileID: 7166987687356544988}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,8 +187,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitbox: {fileID: 6762515546004859638}
   damageInfo:
-    damage: 100
-    balanceDamage: 10
+    damage: 60
+    balanceDamage: 25
+    pushStrength: 5
+    staggerTime: 2
   explosionParticles: {fileID: 7654683240622702213}
 --- !u!1 &3201571642360292638
 GameObject:
@@ -207,7 +209,8 @@ GameObject:
   - component: {fileID: 1923271603488492526}
   - component: {fileID: 7535212000625560699}
   - component: {fileID: 2334985179749139044}
-  m_Layer: 9
+  - component: {fileID: 4319159927007012086}
+  m_Layer: 7
   m_Name: ExplodingHollow
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -253,7 +256,6 @@ MonoBehaviour:
   verticalSpeed: 1
   maxVelocity: 20
   minVelocity: -20
-  characterController: {fileID: 1923271603488492526}
 --- !u!114 &3201571642360292635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,7 +304,7 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 100
+  maxHealth: 80
   maxBalance: 10
   freezeHealth: 0
   canDie: 1
@@ -347,7 +349,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ae3b52b9fca747e43a4bdb6f1347df30, type: 3}
-  m_Color: {r: 0.7830189, g: 0.309642, b: 0.2770114, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -450,6 +452,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 3201571642360292635}
   characterMovement: {fileID: 6606578509199633391}
+  aggroDistance: 5
+  chargeTime: 2
+  dotWhileCharging: 5
+  dotTickInterval: 0.3
+  pushable: {fileID: 4319159927007012086}
   animatorComponent: {fileID: 2334985179749139044}
   punchAttack: {fileID: 3689609341767066003}
   explosionAttackExecutor: {fileID: 2976861941872019505}
@@ -472,6 +479,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4319159927007012086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3201571642360292638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583a741cca6b5d04da6e8eaae121643e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pushFactor: 1
+  dampening: 0.2
+  pushTime: 0.3
 --- !u!1 &3201571642714666846
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,7 +506,7 @@ GameObject:
   - component: {fileID: 2996717530799470737}
   - component: {fileID: 2650697387611649930}
   - component: {fileID: 4374287652652543416}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +580,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8404303243326619854}
   - component: {fileID: 6762515546004859638}
-  - component: {fileID: 1413597256108327839}
+  - component: {fileID: 1801613997203179261}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Untagged
@@ -592,11 +614,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70f61fe1978c3b419c0cda58ed3cb8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitboxCollider: {fileID: 1413597256108327839}
+  hitboxCollider: {fileID: 1801613997203179261}
   disableOnAwake: 1
   ignored: {fileID: 0}
---- !u!135 &1413597256108327839
-SphereCollider:
+--- !u!65 &1801613997203179261
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -606,7 +628,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.7
+  m_Size: {x: 5, y: 5, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6936886714795400199
 GameObject:
@@ -618,7 +640,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3653944477113301927}
   - component: {fileID: 3689609341767066003}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PunchAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -656,8 +678,10 @@ MonoBehaviour:
   hitbox: {fileID: 256627415584427052}
   cube: {fileID: 439416776626350622}
   damageInfo:
-    damage: 5
+    damage: 10
     balanceDamage: 5
+    pushStrength: 1
+    staggerTime: 0.3
 --- !u!1 &8779506676871806820
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,7 +693,7 @@ GameObject:
   - component: {fileID: 2581695323376665513}
   - component: {fileID: 2967897055092038433}
   - component: {fileID: 7654683240622702213}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ExplosionEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5655,6 +5679,10 @@ PrefabInstance:
     - target: {fileID: 7782768709731216055, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
       propertyPath: m_Name
       value: DamageTakenParticles
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782768709731216055, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}

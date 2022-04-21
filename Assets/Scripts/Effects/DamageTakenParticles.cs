@@ -23,6 +23,11 @@ namespace Effects
 
         public void OnHitReceived(HittableEntity entity, HitInfo hitInfo)
         {
+            if (hitInfo.HitSource == null)
+            {
+                return;
+            }
+
             var offsetX = Random.Range(0, maxPositionOffset.x) + baseXOffset;
             var offsetY = Random.Range(0, maxPositionOffset.y);
 

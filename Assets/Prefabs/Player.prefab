@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 812809746802518413}
   - component: {fileID: 1161144045783392307}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LightAttackExecutor 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,6 +49,8 @@ MonoBehaviour:
   damageInfo:
     damage: 15
     balanceDamage: 7
+    pushStrength: 1.5
+    staggerTime: 0.3
   moveDistance: 0.4
   playerMovement: {fileID: 239362066797731850}
   customPlayerInput: {fileID: 4950135374432913508}
@@ -63,7 +65,7 @@ GameObject:
   - component: {fileID: 812809746819271583}
   - component: {fileID: 812809746819271582}
   - component: {fileID: 812809746819271581}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LightAttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +125,7 @@ GameObject:
   - component: {fileID: 812809748012681077}
   - component: {fileID: 812809748012681079}
   - component: {fileID: 812809748012681078}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LightAttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 812809748315871441}
   - component: {fileID: 27388021579594124}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LightAttackExecutor 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,6 +223,8 @@ MonoBehaviour:
   damageInfo:
     damage: 10
     balanceDamage: 5
+    pushStrength: 1
+    staggerTime: 0.3
   moveDistance: 0.4
   playerMovement: {fileID: 239362066797731850}
   customPlayerInput: {fileID: 4950135374432913508}
@@ -244,7 +248,8 @@ GameObject:
   - component: {fileID: 812809748605883904}
   - component: {fileID: 1318077341606312975}
   - component: {fileID: 4950135374432913508}
-  m_Layer: 9
+  - component: {fileID: 1976880865382898707}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -421,7 +426,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 150
-  maxBalance: 0
+  maxBalance: 10
   freezeHealth: 0
   canDie: 1
   <OnStaminaChanged>k__BackingField:
@@ -460,7 +465,6 @@ MonoBehaviour:
   verticalSpeed: 5
   maxVelocity: 20
   minVelocity: -20
-  characterController: {fileID: 812809748605883925}
   jumpStartVelocity: 5
   airboneControlFactor: 0.7
 --- !u!114 &812809748605883917
@@ -727,6 +731,20 @@ MonoBehaviour:
   dashInputWaitTime: 0.2
   attackInputWaitTime: 0.4
   healInputWaitTime: 0.4
+--- !u!114 &1976880865382898707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812809748605883924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583a741cca6b5d04da6e8eaae121643e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pushFactor: 1
+  dampening: 0.2
 --- !u!1 &812809748674757408
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +757,7 @@ GameObject:
   - component: {fileID: 812809748674757411}
   - component: {fileID: 812809748674757410}
   - component: {fileID: 812809748674757412}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PlauyerHurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

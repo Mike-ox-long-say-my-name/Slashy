@@ -1,50 +1,63 @@
-﻿using UnityEngine;
+﻿using Core.Utilities;
+using UnityEngine;
 
 namespace Core.Characters
 {
+    [RequireComponent(typeof(CharacterMovement))]
     public class Pushable : MonoBehaviour
     {
-        [SerializeField] private CharacterMovement movement;
-        [SerializeField, Range(0, 1)] private float dampening = 0.2f;
-        [SerializeField, Min(0)] private float minPushDistance = 0.03f;
+        [Range(0, 2)] public float pushFactor = 1;
+        [Min(0)] public float dampening = 0.2f;
+        [Range(0, 1)] public float pushTime = 0.3f;
 
+        private CharacterMovement _movement;
         private Vector3 _pushVelocity;
+
+        private readonly TimedTrigger _pushing = new TimedTrigger();
 
         private void Awake()
         {
-            if (movement == null)
-            {
-                Debug.LogWarning("Character Movement is not assigned", this);
-                enabled = false;
-            }
+            _movement = GetComponent<CharacterMovement>();
+        }
+        
+        public void Push(Vector3 direction, float force)
+        {
+            Push(direction, force, pushTime);
         }
 
-        public void Push(Vector3 force, bool overrideVelocity = false)
+        public void Push(Vector3 direction, float force, float time)
         {
-            _pushVelocity = overrideVelocity ? force : _pushVelocity + force;
+            _pushVelocity = direction * force * pushFactor;
+            _pushing.SetFor(time);
         }
 
         private void Update()
         {
-            if (_pushVelocity.magnitude < minPushDistance)
+            if (_pushing.IsFree)
             {
-                _pushVelocity = Vector3.zero;
+                return;
             }
-            else
-            {
-                ApplyVelocity();
-                ApplyDampening();
-            }
+
+            ApplyVelocity();
+            ApplyDampening();
+
+            _pushing.Step(Time.deltaTime);
         }
 
         private void ApplyDampening()
         {
-            _pushVelocity *= 1 - dampening;
+            _pushVelocity *= 1 - dampening * Time.deltaTime;
         }
 
         private void ApplyVelocity()
         {
-            movement.MoveRaw(_pushVelocity * Time.deltaTime);
+            var wasGrounded = _movement.IsGrounded;
+            _movement.MoveRaw(_pushVelocity * Time.deltaTime);
+
+            if (wasGrounded)
+            {
+                _movement.ApplyGravity();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core.Utilities
 {
@@ -18,6 +19,11 @@ namespace Core.Utilities
         public void Delete(TimedTrigger trigger)
         {
             _triggers.Remove(trigger);
+        }
+
+        public void StepAll()
+        {
+            StepAll(Time.deltaTime);
         }
 
         public void StepAll(float timeStep)

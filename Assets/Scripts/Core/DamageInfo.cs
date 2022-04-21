@@ -6,16 +6,9 @@ namespace Core
     [Serializable]
     public struct DamageInfo
     {
-        [SerializeField] private float damage;
-        [SerializeField] private float balanceDamage;
-
-        public DamageInfo(float damage, float balanceDamage = 0)
-        {
-            this.damage = damage;
-            this.balanceDamage = balanceDamage;
-        }
-
-        public float Damage => damage;
-        public float BalanceDamage => balanceDamage;
+        [Min(0)] public float damage;
+        [Min(0)] public float balanceDamage;
+        [Min(0)] public float pushStrength;
+        [Min(0)] public float staggerTime;
     }
 }

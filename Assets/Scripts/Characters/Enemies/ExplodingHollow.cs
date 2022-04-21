@@ -24,6 +24,16 @@ namespace Characters.Enemies
 
     public class ExplodingHollowPursue : ExplodingHollowBaseState
     {
+        public override void EnterState()
+        {
+            Context.AnimatorComponent.SetBool("is-walking", true);
+        }
+
+        public override void ExitState()
+        {
+            Context.AnimatorComponent.SetBool("is-walking", false);
+        }
+
         public override void UpdateState()
         {
             Context.Movement.ApplyGravity();
@@ -149,6 +159,7 @@ namespace Characters.Enemies
 
         public override void EnterState()
         {
+            Context.AnimatorComponent.SetTrigger("explode");
             Context.Movement.ResetXZVelocity();
             if (Context.HasExplosionAttackExecutor)
             {
@@ -164,7 +175,13 @@ namespace Characters.Enemies
 
         public override void EnterState()
         {
+            Context.AnimatorComponent.SetBool("is-staggered", true);
             _staggered.SetFor(0.5f);
+        }
+
+        public override void ExitState()
+        {
+            Context.AnimatorComponent.SetBool("is-staggered", false);
         }
 
         public override void UpdateState()
@@ -207,9 +224,11 @@ namespace Characters.Enemies
 
     public class ExplodingHollow : EnemyStateMachine<ExplodingHollow>
     {
+        [SerializeField] private Animator animatorComponent;
         [SerializeField] private AttackExecutor punchAttack;
         [SerializeField] private AttackExecutor explosionAttackExecutor;
 
+        public Animator AnimatorComponent => animatorComponent;
         public AttackExecutor ExplosionAttackExecutor => explosionAttackExecutor;
         public AttackExecutor PunchAttack => punchAttack;
         public bool HasExplosionAttackExecutor { get; private set; } = true;

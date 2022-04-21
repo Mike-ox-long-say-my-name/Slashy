@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 3201571642360292628}
   - component: {fileID: 1923271603488492526}
   - component: {fileID: 7535212000625560699}
+  - component: {fileID: 2334985179749139044}
   m_Layer: 9
   m_Name: ExplodingHollow
   m_TagString: Untagged
@@ -345,7 +346,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b6ed00515e636064aab24f6aefa6a8f1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ae3b52b9fca747e43a4bdb6f1347df30, type: 3}
   m_Color: {r: 0.7830189, g: 0.309642, b: 0.2770114, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -449,8 +450,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 3201571642360292635}
   characterMovement: {fileID: 6606578509199633391}
+  animatorComponent: {fileID: 2334985179749139044}
   punchAttack: {fileID: 3689609341767066003}
   explosionAttackExecutor: {fileID: 2976861941872019505}
+--- !u!95 &2334985179749139044
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3201571642360292638}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a919e5c4206377041b6c93e27f5849c4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3201571642714666846
 GameObject:
   m_ObjectHideFlags: 0
@@ -5564,6 +5585,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
+--- !u!4 &6556629070656580111 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
+  m_PrefabInstance: {fileID: 1610282237792663264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2131187632484520250 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 849949932376991706, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
@@ -5575,11 +5601,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63988ca9b4fab0243a6c616ef6e3c9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6556629070656580111 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
-  m_PrefabInstance: {fileID: 1610282237792663264}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7957166664719175104
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -33,7 +33,7 @@ namespace Characters.Enemies.States
             else
             {
                 character.OnHitReceived.AddListener((source, info) => 
-                    CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Hit, source)));
+                    CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Hit, info.HitSource)));
                 character.OnStaggered.AddListener(() =>
                     CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Staggered, null)));
                 character.OnDeath.AddListener(() => 

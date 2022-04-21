@@ -19,7 +19,7 @@ namespace Characters.Player
                 ref _verticalAirboneVelocity, airboneControlFactor);
             Velocity = velocity;
 
-            HandleRotation(input.x);
+            Rotate(input.x);
         }
 
         public override void Move(Vector2 input)

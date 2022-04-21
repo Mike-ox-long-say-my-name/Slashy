@@ -48,7 +48,7 @@ namespace Core.Characters
             _velocity.z = Mathf.Clamp(_velocity.z, minVelocity, maxVelocity);
         }
 
-        public virtual void HandleRotation(float direction)
+        public virtual void Rotate(float direction)
         {
             if (Mathf.Abs(direction) > 0)
             {
@@ -60,7 +60,7 @@ namespace Core.Characters
         {
             _velocity.x = horizontalSpeed * input.x;
             _velocity.z = verticalSpeed * input.y;
-            HandleRotation(input.x);
+            Rotate(input.x);
         }
 
         public void ResetXZVelocity()

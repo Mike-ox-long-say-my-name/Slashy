@@ -34,7 +34,7 @@ namespace Characters.Player
             if (_hasInput)
             {
                 var inputX = customPlayerInput.MoveInput.x;
-                playerMovement.HandleRotation(inputX);
+                playerMovement.Rotate(inputX);
             }
 
             var direction = playerMovement.transform.right;

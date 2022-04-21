@@ -4,6 +4,7 @@ using Core.Characters;
 using Core.Utilities;
 using System;
 using System.Collections;
+using Characters.Player;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -14,7 +15,7 @@ namespace Characters.Enemies
         public override void UpdateState()
         {
             Context.Movement.ApplyGravity();
-            if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < 4)
+            if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < 10)
             {
                 SwitchState<ExplodingHollowPursue>();
             }
@@ -29,17 +30,17 @@ namespace Characters.Enemies
 
             var player = Context.PlayerPosition;
             var self = Context.transform.position;
-            if (Vector3.Distance(player, self) > 1)
+            var direction = player - self;
+            direction.y = 0;
+            if (direction.magnitude > 1.5f)
             {
-                var direction = player - self;
-                direction.y = 0;
                 direction.Normalize();
-
                 Context.Movement.Move(new Vector2(direction.x, direction.z));
             }
             else
             {
-                //SwitchState<ExplodingHollowAttack>();
+                Context.Movement.Rotate(direction.x);
+                SwitchState<ExplodingHollowAttack>();
             }
         }
     }
@@ -50,14 +51,17 @@ namespace Characters.Enemies
         {
             switch (interruption.Type)
             {
-                case CharacterInterruptionType.Staggered:
-                    SwitchState<ExplodingHollowStagger>();
-                    break;
                 case CharacterInterruptionType.Death:
                     SwitchState<ExplodingHollowDeath>();
                     break;
                 case CharacterInterruptionType.Hit:
-                    SwitchState<ExplodingHollowCharge>();
+                    if (interruption.Source is PlayerCharacter)
+                    {
+                        SwitchState<ExplodingHollowCharge>();
+                    }
+                    break;
+                case CharacterInterruptionType.Staggered:
+                    SwitchState<ExplodingHollowStagger>();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(interruption), interruption, null);
@@ -67,6 +71,20 @@ namespace Characters.Enemies
 
     public class ExplodingHollowAttack : ExplodingHollowBaseState
     {
+        public override void EnterState()
+        {
+            Context.Movement.ResetXZVelocity();
+            Context.PunchAttack.StartExecution(Context.Character, inter =>
+            {
+                if (!inter) SwitchState<ExplodingHollowPursue>();
+            });
+        }
+
+        public override void InterruptState(CharacterInterruption interruption)
+        {
+            Context.PunchAttack.InterruptAttack();
+            base.InterruptState(interruption);
+        }
     }
 
     public class ExplodingHollowCharge : ExplodingHollowBaseState
@@ -75,6 +93,7 @@ namespace Characters.Enemies
 
         public override void EnterState()
         {
+            Context.Movement.ResetXZVelocity();
             _prepare.SetFor(3);
         }
 
@@ -88,7 +107,7 @@ namespace Characters.Enemies
                 return;
             }
 
-            var speedMultiplier = 3f;
+            var speedMultiplier = 3.5f;
             var player = Context.PlayerPosition;
             var self = Context.transform.position;
             if (Vector3.Distance(player, self) > 1)
@@ -125,6 +144,7 @@ namespace Characters.Enemies
                     Context.ExplosionAttackExecutor.InterruptAttack();
                 }
             }
+            base.InterruptState(interruption);
         }
 
         public override void EnterState()
@@ -133,7 +153,7 @@ namespace Characters.Enemies
             if (Context.HasExplosionAttackExecutor)
             {
                 Context.ExplosionAttackExecutor.StartExecution(Context.Character,
-                    _ => SwitchState<ExplodingHollowIdle>());
+                    _ => SwitchState<ExplodingHollowDeath>());
             }
         }
     }
@@ -187,9 +207,11 @@ namespace Characters.Enemies
 
     public class ExplodingHollow : EnemyStateMachine<ExplodingHollow>
     {
+        [SerializeField] private AttackExecutor punchAttack;
         [SerializeField] private AttackExecutor explosionAttackExecutor;
 
         public AttackExecutor ExplosionAttackExecutor => explosionAttackExecutor;
+        public AttackExecutor PunchAttack => punchAttack;
         public bool HasExplosionAttackExecutor { get; private set; } = true;
 
         protected override EnemyBaseState<ExplodingHollow> StartState()

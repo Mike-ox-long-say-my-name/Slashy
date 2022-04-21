@@ -96,10 +96,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashTime: 0.5
-  minTransparency: 0.2
-  maxTransparency: 0.8
+  minTransparency: 0.3
+  maxTransparency: 0.9
   baseFlashColor: {r: 1, g: 1, b: 1, a: 1}
-  zeroHpColor: {r: 0.43137255, g: 0, b: 0, a: 1}
+  zeroHpColor: {r: 0.9150943, g: 0.21927728, b: 0.27200556, a: 1}
   changeColorBasedOnHealth: 1
   maskSpriteRenderer: {fileID: 0}
   spriteMask: {fileID: 0}

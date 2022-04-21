@@ -47,7 +47,7 @@ MonoBehaviour:
   hitbox: {fileID: 812809746819271581}
   eventDispatcher: {fileID: 812809748605883917}
   damageInfo:
-    damage: 13
+    damage: 15
     balanceDamage: 7
   moveDistance: 0.4
   playerMovement: {fileID: 239362066797731850}
@@ -375,32 +375,20 @@ MonoBehaviour:
   onHitReceived:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 879806135225366165}
-        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 5487920448527286980}
         m_TargetAssemblyTypeName: DamageTakenAnimator, Assembly-CSharp
         m_MethodName: OnHitReceived
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 7629969459913761650}
-        m_TargetAssemblyTypeName: DamageTakenParticles, Assembly-CSharp
+        m_TargetAssemblyTypeName: Effects.DamageTakenParticles, Effects
         m_MethodName: OnHitReceived
         m_Mode: 0
         m_Arguments:
@@ -413,7 +401,19 @@ MonoBehaviour:
         m_CallState: 2
   onHealthChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ResourceBar, Assembly-CSharp
+        m_MethodName: OnResourceValueChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onStaggered:
     m_PersistentCalls:
       m_Calls: []
@@ -421,12 +421,24 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 150
-  maxBalance: 10
+  maxBalance: 0
   freezeHealth: 0
   canDie: 1
   <OnStaminaChanged>k__BackingField:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ResourceBar, Assembly-CSharp
+        m_MethodName: OnResourceValueChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   config: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
   freezeStamina: 0
   maxStamina: 50
@@ -450,7 +462,7 @@ MonoBehaviour:
   minVelocity: -20
   characterController: {fileID: 812809748605883925}
   jumpStartVelocity: 5
-  airboneControlFactor: 0.6
+  airboneControlFactor: 0.7
 --- !u!114 &812809748605883917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,7 +740,7 @@ GameObject:
   - component: {fileID: 812809748674757410}
   - component: {fileID: 812809748674757412}
   m_Layer: 0
-  m_Name: Hurtbox
+  m_Name: PlauyerHurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -969,6 +981,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
+--- !u!4 &812809748169390577 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
+  m_PrefabInstance: {fileID: 5179881087079343390}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5487920448527286980 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 849949932376991706, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
@@ -980,11 +997,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63988ca9b4fab0243a6c616ef6e3c9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &812809748169390577 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
-  m_PrefabInstance: {fileID: 5179881087079343390}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8726660239229257501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1058,8 +1070,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0edaab1c2b568f344bd2027aa2f74a48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!198 &879806135225366165 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8443932937041752456, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
-  m_PrefabInstance: {fileID: 8726660239229257501}
-  m_PrefabAsset: {fileID: 0}

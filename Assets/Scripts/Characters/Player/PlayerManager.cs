@@ -5,16 +5,24 @@ namespace Characters.Player
 {
     public class PlayerManager : PersistentSingleton<PlayerManager>
     {
-        public BasePlayerData BasePlayerData { get; private set; }
+        private BasePlayerData _playerData;
 
-        protected override void Awake()
+        public BasePlayerData PlayerData
         {
-            base.Awake();
-            BasePlayerData = FindObjectOfType<BasePlayerData>();
-
-            if (BasePlayerData == null)
+            get
             {
-                Debug.LogError("No player found", this);
+                if (_playerData != null)
+                {
+                    return _playerData;
+                }
+
+                _playerData = FindObjectOfType<BasePlayerData>();
+                if (_playerData == null)
+                {
+                    Debug.LogError("No player found", this);
+                }
+
+                return _playerData;
             }
         }
     }

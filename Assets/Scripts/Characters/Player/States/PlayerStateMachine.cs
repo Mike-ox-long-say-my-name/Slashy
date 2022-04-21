@@ -1,6 +1,7 @@
 using System.Collections;
 using Attacking;
 using Configs;
+using Core.Characters;
 using Core.Utilities;
 using Effects;
 using UnityEngine;
@@ -14,113 +15,86 @@ namespace Characters.Player.States
         public PlayerBaseState CurrentState { get; set; }
 
         [Space]
-        [SerializeField, Min(0)] private float jumpInputWaitTime = 0.2f;
-        [SerializeField, Min(0)] private float dashInputWaitTime = 0.2f;
-        [SerializeField, Min(0)] private float attackInputWaitTime = 0.4f;
-        [SerializeField, Min(0)] private float healInputWaitTime = 0.4f;
-
-        [Space]
+        [Header("Camera")]
         [SerializeField] private Camera followingCamera;
         [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
 
         [Space]
-        [Header("Components")]
-        [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private DashCloneEffectController dashEffectController;
-        [SerializeField] private PlayerMovement movement;
+        [Header("Player Components")]
+        [SerializeField] private CustomPlayerInput customPlayerInput;
+        [SerializeField] private PlayerMovement playerMovement;
+        [SerializeField] private PlayerCharacter playerCharacter;
         [SerializeField] private AttackExecutor lightAttackFirst;
         [SerializeField] private AttackExecutor lightAttackSecond;
-        [SerializeField] private PlayerCharacter playerCharacter;
+
+        [Space]
+        [Header("Base Components")]
+        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private DashCloneEffectController dashEffectController;
         [SerializeField] private Animator animator;
         [SerializeField] private Hurtbox hurtbox;
 
         [Space]
-        [Header("Dash")]
-        [SerializeField, Min(0)] private float dashRecovery = 0.3f;
-        [SerializeField, Min(0)] private float dashDistance = 3f;
-        [SerializeField, Min(0)] private float dashTime = 0.4f;
-
-        [Space]
-        [SerializeField] private PlayerActionConfig actionConfig;
-
-        public Vector2 MoveInput { get; private set; }
+        [SerializeField] private PlayerConfig playerConfig;
 
         public override bool IsInvincible { get; set; }
         public override bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
         public override bool IsDashing => CurrentState.GetType() == typeof(PlayerDashState);
         public override bool IsFalling => CurrentState.GetType() == typeof(PlayerFallState);
         public override bool IsGroundState => CurrentState.GetType() == typeof(PlayerGroundedState);
-        public override bool IsAttackState => CurrentState.SubState?.GetType() == typeof(PlayerAttackState);
-        public override bool IsWalking => CurrentState.SubState?.GetType() == typeof(PlayerWalkState);
-        public override bool IsIdle => CurrentState.SubState?.GetType() == typeof(PlayerIdleState);
-        public override bool IsStaggered => CurrentState.SubState?.GetType() == typeof(PlayerStaggerState);
+        public override bool IsAttackState => CurrentState.GetType() == typeof(PlayerGroundLightAttackState);
+        public override bool IsStaggered => CurrentState.GetType() == typeof(PlayerAirboneStaggerState)
+                                            || CurrentState.GetType() == typeof(PlayerGroundStaggerState);
 
-        public readonly PersistentLock CanDash = new PersistentLock();
-        public readonly PersistentLock CanJump = new PersistentLock();
-        public readonly PersistentLock CanAttack = new PersistentLock();
-        public readonly PersistentLock CanRotate = new PersistentLock();
+        public readonly OwningLock CanDash = new OwningLock();
+        public readonly OwningLock CanJump = new OwningLock();
+        public readonly OwningLock CanAttack = new OwningLock();
+        public readonly OwningLock CanHeal = new OwningLock();
+        
+        public override PlayerMovement Movement => playerMovement;
+        public AttackExecutor LightAttackFirst => lightAttackFirst;
+        public AttackExecutor LightAttackSecond => lightAttackSecond;
+        public SpriteRenderer SpriteRenderer => spriteRenderer;
+        public DashCloneEffectController DashEffectController => dashEffectController;
+        public override PlayerCharacter PlayerCharacter => playerCharacter;
+        public Animator AnimatorComponent => animator;
+        public Hurtbox HurtboxComponent => hurtbox;
+        public PlayerConfig PlayerConfig => playerConfig;
+        public CustomPlayerInput Input => customPlayerInput;
+
+        public bool HasDashEffectController { get; private set; } = true;
+        public bool HasHurtbox { get; private set; } = true;
+        public bool HasSpriteRenderer { get; private set; } = true;
 
         private float _cameraFollowVelocity;
 
-        public override PlayerMovement Movement => movement;
-
-        private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
-
-        public TimedTrigger IsJumpPressed { get; private set; }
-        public TimedTrigger IsDashPressed { get; private set; }
-        public TimedTrigger IsLightAttackPressed { get; private set; }
-        public TimedTrigger IsHealPressed { get; private set; }
-
-        public bool CanStartAttack => !IsAttackState && playerCharacter.HasStamina;
-
-        public AttackExecutor LightAttackFirst => lightAttackFirst;
-
-        public AttackExecutor LightAttackSecond => lightAttackSecond;
-
-        public SpriteRenderer SpriteRenderer => spriteRenderer;
-
-        public DashCloneEffectController DashEffectController => dashEffectController;
-
-        public override PlayerCharacter Player => playerCharacter;
-
-        public Animator AnimatorComponent => animator;
-
-        public Hurtbox HurtboxComponent => hurtbox;
-
-        public PlayerActionConfig ActionConfig => actionConfig;
-
-        public float DashRecovery => dashRecovery;
-
-        public float DashDistance => dashDistance;
-
-        public float DashTime => dashTime;
-
-        public bool HasDashEffectController { get; private set; } = true;
-
-        public bool HasHurtbox { get; private set; } = true;
-
-        public bool HasSpriteRenderer { get; private set; } = true;
+        public bool CanStartAttack => CanAttack && !IsAttackState && playerCharacter.HasStamina;
 
 
         private IEnumerator Start()
         {
             // Для корректного определения того, что игрок на земле при загрузке
+            playerCharacter.OnStaggered.AddListener(() => 
+                CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Staggered, null)));
 
-            playerCharacter.OnStaggered.AddListener(() => CurrentState.OnStaggered());
-
-            movement.MoveRaw(Vector3.down);
-            CurrentState = movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
+            playerMovement.MoveRaw(Vector3.down);
+            CurrentState = playerMovement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
             CurrentState.EnterState();
-            CurrentState.UpdateStates();
+            CurrentState.UpdateState();
 
             yield return new WaitForSeconds(0.3f);
         }
 
         private void Awake()
         {
-            if (movement == null)
+            if (customPlayerInput == null)
             {
-                Debug.LogWarning("BasePlayerData Movement is not assigned", this);
+                Debug.LogWarning("Player Input is not assigned", this);
+                enabled = false;
+            }
+            if (playerMovement == null)
+            {
+                Debug.LogWarning("Player Movement is not assigned", this);
                 enabled = false;
             }
             if (lightAttackFirst == null)
@@ -135,7 +109,7 @@ namespace Characters.Player.States
             }
             if (playerCharacter == null)
             {
-                Debug.LogWarning("BasePlayerData Character is not assigned", this);
+                Debug.LogWarning("Player Character is not assigned", this);
                 enabled = false;
             }
             if (hurtbox == null)
@@ -154,11 +128,6 @@ namespace Characters.Player.States
                 HasSpriteRenderer = false;
             }
 
-            IsJumpPressed = _triggerFactory.Create();
-            IsDashPressed = _triggerFactory.Create();
-            IsLightAttackPressed = _triggerFactory.Create();
-            IsHealPressed = _triggerFactory.Create();
-
             StateFactory = new PlayerStateFactory(this);
 
             if (followingCamera == null)
@@ -169,73 +138,12 @@ namespace Characters.Player.States
 
         private void Update()
         {
-            CurrentState.UpdateStates();
-
-            HandleRotation();
-            HandleTriggers();
+            CurrentState.UpdateState();
             MoveCamera();
 
             if (Keyboard.current.iKey.wasPressedThisFrame)
             {
-                print($"{CurrentState.GetType()}");
-            }
-        }
-
-        private void HandleRotation()
-        {
-            if (!CanRotate || IsStaggered)
-            {
-                return;
-            }
-            if (MoveInput.x > 0)
-            {
-                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-            }
-            else if (MoveInput.x < 0)
-            {
-                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-            }
-        }
-
-        private void HandleTriggers()
-        {
-            _triggerFactory.StepAll(Time.deltaTime);
-        }
-
-        public void OnMove(InputAction.CallbackContext context)
-        {
-            MoveInput = context.ReadValue<Vector2>();
-        }
-
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            if (context.action.IsPressed())
-            {
-                IsJumpPressed.SetFor(jumpInputWaitTime);
-            }
-        }
-
-        public void OnDash(InputAction.CallbackContext context)
-        {
-            if (context.action.IsPressed())
-            {
-                IsDashPressed.SetFor(dashInputWaitTime);
-            }
-        }
-
-        public void OnAttack(InputAction.CallbackContext context)
-        {
-            if (context.action.IsPressed())
-            {
-                IsLightAttackPressed.SetFor(attackInputWaitTime);
-            }
-        }
-
-        public void OnHeal(InputAction.CallbackContext context)
-        {
-            if (context.action.IsPressed())
-            {
-                IsHealPressed.SetFor(healInputWaitTime);
+                print(CurrentState);
             }
         }
 
@@ -245,11 +153,6 @@ namespace Characters.Player.States
             var newX = Mathf.SmoothDamp(cameraPosition.x, transform.position.x,
                 ref _cameraFollowVelocity, followSmoothTime);
             followingCamera.transform.position = new Vector3(newX, cameraPosition.y, cameraPosition.z);
-        }
-
-        public void ResetBufferedInput()
-        {
-            _triggerFactory.ResetAll();
         }
     }
 }

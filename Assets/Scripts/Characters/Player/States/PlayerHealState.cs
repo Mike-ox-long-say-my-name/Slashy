@@ -1,41 +1,39 @@
 ﻿using System.Collections;
-using Core;
+using Core.Characters;
 using UnityEngine;
 
 namespace Characters.Player.States
 {
-    public class PlayerHealState : PlayerBaseState
+    public class PlayerHealState : PlayerBaseGroundedState
     {
         private Coroutine _healRoutine;
 
         public PlayerHealState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
         {
-            IsRootState = true;
         }
 
         public override void EnterState()
         {
-            Context.CanRotate.Lock(this);
             Context.Movement.ResetXZVelocity();
 
             // TODO: проиграть анимацию хилирования + привязать к ней задержку
             // Context.AnimatorComponent.SetTrigger("heal");
+
             _healRoutine = Context.StartCoroutine(
-                HealRoutine(Context.Player, Context.ActionConfig.ActiveHealRate, Context.ActionConfig.HealStaminaConsumption));
+                HealRoutine(Context.PlayerCharacter, Context.PlayerConfig.ActiveHealRate, Context.PlayerConfig.HealStaminaConsumption));
         }
 
-        public override void OnStaggered()
+        public override void InterruptState(CharacterInterruption interruption)
         {
-            StopHealing();
-            base.OnStaggered();
+            Context.StopCoroutine(_healRoutine);
+            base.InterruptState(interruption);
         }
 
         public override void UpdateState()
         {
-            if (!Context.IsStaggered && Context.MoveInput.sqrMagnitude > 0)
+            if (Context.Input.MoveInput.sqrMagnitude > 0)
             {
                 StopHealing();
-                SwitchState(Factory.Grounded());
             }
         }
 
@@ -47,7 +45,7 @@ namespace Characters.Player.States
                 _healRoutine = null;
             }
             // TODO: добавить анимацию + привязать к ней задержку
-            Context.CanRotate.TryUnlock(this);
+            SwitchState(Factory.Grounded());
         }
 
         private IEnumerator HealRoutine(PlayerCharacter player, float healRate, float staminaConsumptionRate)
@@ -58,9 +56,8 @@ namespace Characters.Player.States
                 player.SpendStamina(staminaConsumptionRate * Time.deltaTime);
                 yield return null;
             }
-            
+
             StopHealing();
-            SwitchState(Factory.Grounded());
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Characters.Player
 {
     public abstract class BasePlayerData : MonoBehaviour
     {
-        public abstract PlayerCharacter Player { get; }
+        public abstract PlayerCharacter PlayerCharacter { get; }
         public abstract PlayerMovement Movement { get; }
 
         public abstract bool IsInvincible { get; set; }
@@ -13,8 +13,6 @@ namespace Characters.Player
         public abstract bool IsFalling { get; }
         public abstract bool IsGroundState { get; }
         public abstract bool IsAttackState { get; }
-        public abstract bool IsWalking { get; }
-        public abstract bool IsIdle { get; }
         public abstract bool IsStaggered { get; }
     }
 }

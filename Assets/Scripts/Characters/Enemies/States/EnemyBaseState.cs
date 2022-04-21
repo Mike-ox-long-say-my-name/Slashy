@@ -1,14 +1,19 @@
-﻿namespace Characters.Enemies.States
-{
-    public abstract class EnemyBaseState
-    {
-        protected EnemyStateMachine Context { get; }
-        protected EnemyStateFactory Factory { get; }
+﻿using Core.Characters;
+using UnityEngine;
 
-        protected EnemyBaseState(EnemyStateMachine context, EnemyStateFactory factory)
+namespace Characters.Enemies.States
+{
+    public abstract class EnemyBaseState<TContext>
+    {
+        private IStateHolder<TContext> _stateHolder;
+
+        protected bool IsValidState { get; private set; } = true;
+        protected TContext Context { get; private set; }
+
+        public void Init(IStateHolder<TContext> stateHolder, TContext context)
         {
+            _stateHolder = stateHolder;
             Context = context;
-            Factory = factory;
         }
 
         public virtual void EnterState()
@@ -23,16 +28,28 @@
         {
         }
 
-        public virtual void OnStaggered()
+        public abstract void InterruptState(CharacterInterruption interruption);
+
+        protected virtual void SwitchState<TState>() where TState : EnemyBaseState<TContext>, new()
         {
-            SwitchState(Factory.Stagger());
+            if (!IsValidState)
+            {
+                return;
+            }
+
+            var newState = new TState();
+            newState.Init(_stateHolder, Context);
+                
+            ExitState();
+            IsValidState = false;
+            _stateHolder.CurrentState = newState;
+
+            newState.EnterState();
         }
 
-        protected virtual void SwitchState(EnemyBaseState newState)
+        public override string ToString()
         {
-            ExitState();
-            newState.EnterState();
-            Context.CurrentState = newState;
+            return GetType().Name;
         }
     }
 }

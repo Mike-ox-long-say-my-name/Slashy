@@ -12,17 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42075aaa1067ebc498b0d23d294d380c, type: 3}
   m_Name: DefaultPlayerActionConfig
   m_EditorClassIdentifier: 
-  <JumpStaminaCost>k__BackingField: 15
-  <DashStaminaCost>k__BackingField: 10
-  <DashInvincibilityStart>k__BackingField: 0.1
-  <DashInvincibilityEnd>k__BackingField: 0.8
-  <StaminaRegeneration>k__BackingField: 15
-  <StaminaRegenerationDelay>k__BackingField: 1
-  <EmptyStaminaAdditionalRegenerationDelay>k__BackingField: 1
   <LightAttackFirstStaminaCost>k__BackingField: 10
   <LightAttackSecondStaminaCost>k__BackingField: 10
   <LightAttackRecovery>k__BackingField: 0.1
+  <StaggerTime>k__BackingField: 0.2
+  <StaggerFallTime>k__BackingField: 0.5
+  <JumpStaminaCost>k__BackingField: 15
+  <DashRecovery>k__BackingField: 0.3
+  <DashDistance>k__BackingField: 3
+  <DashTime>k__BackingField: 0.4
+  <DashInvincibilityStart>k__BackingField: 0.1
+  <DashInvincibilityEnd>k__BackingField: 0.8
+  <DashStaminaCost>k__BackingField: 10
+  <StaminaRegeneration>k__BackingField: 15
+  <StaminaRegenerationDelay>k__BackingField: 1
+  <EmptyStaminaAdditionalRegenerationDelay>k__BackingField: 1
   <ActiveHealRate>k__BackingField: 10
   <HealStaminaConsumption>k__BackingField: 10
-  <StaggerTime>k__BackingField: 0.13
-  <StaggerRecoveryTime>k__BackingField: 0.25

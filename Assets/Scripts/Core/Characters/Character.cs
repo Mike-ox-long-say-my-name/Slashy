@@ -10,6 +10,9 @@ namespace Core.Characters
 
         [SerializeField] private UnityEvent onStaggered;
         public UnityEvent OnStaggered => onStaggered;
+        
+        [SerializeField] private UnityEvent onDeath;
+        public UnityEvent OnDeath => onDeath;
 
         [SerializeField, Min(0)] private float maxHealth;
         [SerializeField, Min(0)] private float maxBalance;
@@ -29,8 +32,11 @@ namespace Core.Characters
         public override void ReceiveHit(HitInfo info)
         {
             base.ReceiveHit(info);
-            TakeBalanceDamage(info);
             TakeDamage(info);
+            if (!_healthResource.IsDepleted)
+            {
+                TakeBalanceDamage(info);
+            }
         }
 
         public virtual void TakeBalanceDamage(HitInfo info)
@@ -57,7 +63,7 @@ namespace Core.Characters
 
             if (canDie && _healthResource.IsDepleted)
             {
-                OnDeath();
+                Die();
             }
         }
 
@@ -72,20 +78,9 @@ namespace Core.Characters
             OnHealthChanged?.Invoke(Health);
         }
 
-        protected virtual void OnDeath()
+        protected virtual void Die()
         {
-            Destroy(gameObject);
-        }
-    }
-
-    public class BalanceResource : BaseCharacterResource
-    {
-        public BalanceResource(Character character, float maxValue, float startValue) : base(character, maxValue, startValue)
-        {
-        }
-
-        public BalanceResource(Character character, float maxValue) : base(character, maxValue)
-        {
+            OnDeath?.Invoke();
         }
     }
 }

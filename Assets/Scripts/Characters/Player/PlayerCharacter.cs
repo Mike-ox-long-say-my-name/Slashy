@@ -1,3 +1,4 @@
+using System.Linq;
 using Configs;
 using Core.Characters;
 using Core.Utilities;
@@ -9,12 +10,11 @@ namespace Characters.Player
 {
     public class PlayerCharacter : Character
     {
-
         [field: SerializeField]
         public UnityEvent<ICharacterResource> OnStaminaChanged { get; private set; }
             = new UnityEvent<ICharacterResource>();
 
-        [SerializeField] private PlayerActionConfig actionConfig;
+        [SerializeField] private PlayerConfig config;
         [SerializeField] private bool freezeStamina = false;
         [SerializeField, Min(0)] private float maxStamina = 0;
 
@@ -27,6 +27,12 @@ namespace Characters.Player
 
         protected override void Awake()
         {
+            if (config == null)
+            {
+                Debug.LogWarning("Config is not assigned", this);
+                enabled = false;
+            }
+
             base.Awake();
             _staminaResource = new StaminaResource(this, maxStamina);
             _staminaRecoveryDelayed = _triggerFactory.Create();
@@ -45,7 +51,7 @@ namespace Characters.Player
                 return;
             }
 
-            _staminaResource.Recover(actionConfig.StaminaRegeneration * Time.deltaTime);
+            _staminaResource.Recover(config.StaminaRegeneration * Time.deltaTime);
             OnStaminaChanged?.Invoke(Stamina);
         }
 
@@ -60,18 +66,19 @@ namespace Characters.Player
             if (_staminaResource.IsDepleted)
             {
                 _staminaRecoveryDelayed.SetFor(
-                    actionConfig.StaminaRegenerationDelay + actionConfig.EmptyStaminaAdditionalRegenerationDelay);
+                    config.StaminaRegenerationDelay + config.EmptyStaminaAdditionalRegenerationDelay);
             }
             else
             {
                 _staminaRecoveryDelayed.SetFor(
-                    actionConfig.StaminaRegenerationDelay);
+                    config.StaminaRegenerationDelay);
             }
             OnStaminaChanged?.Invoke(Stamina);
         }
 
-        protected override void OnDeath()
+        protected override void Die()
         {
+            base.Die();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }

@@ -79,6 +79,9 @@ namespace Characters.Player
         protected override void OnDeath()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            var save = SavingMachine.Instance.GetSave(false);
+            
+            _staminaResource.Value = save.Stamina;
         }
     }
 }

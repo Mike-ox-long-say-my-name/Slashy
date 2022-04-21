@@ -1,3 +1,6 @@
+using System.Threading;
+using UnityEngine;
+
 namespace Core.Utilities
 {
     public class TimedTrigger
@@ -51,6 +54,12 @@ namespace Core.Utilities
         {
             StepReset(timeStep);
             StepSet(timeStep);
+        }
+        
+        public void Step()
+        {
+            StepReset(Time.deltaTime);
+            StepSet(Time.deltaTime);
         }
 
         private void StepSet(float timeStep)

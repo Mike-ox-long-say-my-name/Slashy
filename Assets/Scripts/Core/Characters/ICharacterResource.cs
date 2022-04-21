@@ -5,6 +5,6 @@ namespace Core.Characters
         Character Character { get; }
 
         float MaxValue { get; }
-        float Value { get; }
+        float Value { get; set; }
     }
 }

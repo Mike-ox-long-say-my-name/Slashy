@@ -7,7 +7,7 @@ namespace Core.Characters
         public Character Character { get; }
 
         public float MaxValue { get; }
-        public float Value { get; protected set; }
+        public float Value { get; set; }
 
         protected BaseCharacterResource(Character character, float maxValue, float startValue)
         {

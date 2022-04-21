@@ -1,7 +1,14 @@
 namespace Core.Characters
 {
-    public enum CharacterInterruption
+    public class CharacterInterruption
     {
-        Staggered
+        public CharacterInterruptionType Type { get; }
+        public HittableEntity Source { get; }
+
+        public CharacterInterruption(CharacterInterruptionType type, HittableEntity source)
+        {
+            Type = type;
+            Source = source;
+        }
     }
 }

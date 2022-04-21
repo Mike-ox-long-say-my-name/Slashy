@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Characters;
+﻿using Core.Characters;
 
 namespace Characters.Enemies.States
 {
@@ -7,14 +6,13 @@ namespace Characters.Enemies.States
     {
         private IStateHolder<TContext> _stateHolder;
 
+        protected bool IsValidState { get; private set; } = true;
         protected TContext Context { get; private set; }
-        protected EnemyStateFactory<TContext> Factory { get; private set; }
-        
-        public void Init(IStateHolder<TContext> stateHolder, TContext context, EnemyStateFactory<TContext> factory)
+
+        public void Init(IStateHolder<TContext> stateHolder, TContext context)
         {
             _stateHolder = stateHolder;
             Context = context;
-            Factory = factory;
         }
 
         public virtual void EnterState()
@@ -29,23 +27,22 @@ namespace Characters.Enemies.States
         {
         }
 
-        public virtual void InterruptState(CharacterInterruption interruption)
-        {
-            switch (interruption)
-            {
-                case CharacterInterruption.Staggered:
-                    SwitchState(Factory.Stagger());
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(interruption), interruption, 
-                        $"Invalid interruption for state {this}");
-            }
-        }
+        public abstract void InterruptState(CharacterInterruption interruption);
 
-        protected virtual void SwitchState(EnemyBaseState<TContext> newState)
+        protected virtual void SwitchState<TState>() where TState : EnemyBaseState<TContext>, new()
         {
+            if (!IsValidState)
+            {
+                return;
+            }
+
+            var newState = new TState();
+            newState.Init(_stateHolder, Context);
+                
             ExitState();
+            IsValidState = false;
             _stateHolder.CurrentState = newState;
+
             newState.EnterState();
         }
 

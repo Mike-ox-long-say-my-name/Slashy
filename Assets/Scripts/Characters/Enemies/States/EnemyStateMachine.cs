@@ -1,13 +1,11 @@
-﻿using Core.Characters;
-using System.Collections;
-using Characters.Player;
+﻿using Characters.Player;
+using Core.Characters;
 using UnityEngine;
 
 namespace Characters.Enemies.States
 {
     public abstract class EnemyStateMachine<T> : MonoBehaviour, IStateHolder<T>
     {
-        protected EnemyStateFactory<T> EnemyStateFactory { get; set; }
         public EnemyBaseState<T> CurrentState { get; set; }
 
         [SerializeField] private Character character;
@@ -18,7 +16,7 @@ namespace Characters.Enemies.States
         public BasePlayerData PlayerData => PlayerManager.Instance.PlayerData;
         public Vector3 PlayerPosition => PlayerData.Movement.transform.position;
 
-        protected abstract EnemyStateFactory<T> CreateFactory();
+        protected abstract EnemyBaseState<T> StartState();
 
         protected virtual void Awake()
         {
@@ -34,20 +32,16 @@ namespace Characters.Enemies.States
             }
             else
             {
-                character.OnStaggered.AddListener(() => CurrentState.InterruptState(CharacterInterruption.Staggered));
+                character.OnHitReceived.AddListener((source, info) => 
+                    CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Hit, source)));
+                character.OnStaggered.AddListener(() =>
+                    CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Staggered, null)));
+                character.OnDeath.AddListener(() => 
+                    CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Death, null)));
             }
-        }
 
-        protected virtual IEnumerator Start()
-        {
-            characterMovement.MoveRaw(Vector3.down);
-
-            EnemyStateFactory = CreateFactory();
-            CurrentState = EnemyStateFactory.Idle();
+            CurrentState = StartState();
             CurrentState.EnterState();
-            CurrentState.UpdateState();
-
-            yield break;
         }
 
         protected virtual void Update()

@@ -1,17 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Attacking
 {
     public class AttackHitbox : BaseHitbox
     {
+        [SerializeField] private bool disableOnAwake = true;
         [SerializeField] private Hurtbox ignored;
 
         private Action<Hurtbox> _onHit;
 
         private readonly Dictionary<int, Hurtbox> _hurtboxes = new Dictionary<int, Hurtbox>();
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (HitboxCollider != null && disableOnAwake)
+            {
+                Disable();
+            }
+        }
 
         public void ClearHits()
         {
@@ -37,7 +46,7 @@ namespace Attacking
             {
                 return;
             }
-            
+
             if (ignored != null && target.gameObject == ignored.gameObject)
             {
                 return;

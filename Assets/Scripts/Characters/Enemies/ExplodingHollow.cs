@@ -1,27 +1,35 @@
 using Attacking;
 using Characters.Enemies.States;
+using Core.Characters;
+using Core.Utilities;
+using System;
+using System.Collections;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Characters.Enemies
 {
-    public class ExplodingHollowIdle : EnemyBaseState<ExplodingHollow>
+    public class ExplodingHollowIdle : ExplodingHollowBaseState
     {
         public override void UpdateState()
         {
+            Context.Movement.ApplyGravity();
             if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < 4)
             {
-                SwitchState(Factory.Pursue());
+                SwitchState<ExplodingHollowPursue>();
             }
         }
     }
 
-    public class ExplodingHollowPursue : EnemyBaseState<ExplodingHollow>
+    public class ExplodingHollowPursue : ExplodingHollowBaseState
     {
         public override void UpdateState()
         {
+            Context.Movement.ApplyGravity();
+
             var player = Context.PlayerPosition;
             var self = Context.transform.position;
-            if (Vector3.Distance(player, self) > 2)
+            if (Vector3.Distance(player, self) > 1)
             {
                 var direction = player - self;
                 direction.y = 0;
@@ -31,29 +39,149 @@ namespace Characters.Enemies
             }
             else
             {
-                SwitchState(Factory.Attack());
+                //SwitchState<ExplodingHollowAttack>();
             }
         }
     }
 
-    public class ExplodingHollowAttack : EnemyBaseState<ExplodingHollow>
+    public abstract class ExplodingHollowBaseState : EnemyBaseState<ExplodingHollow>
     {
+        public override void InterruptState(CharacterInterruption interruption)
+        {
+            switch (interruption.Type)
+            {
+                case CharacterInterruptionType.Staggered:
+                    SwitchState<ExplodingHollowStagger>();
+                    break;
+                case CharacterInterruptionType.Death:
+                    SwitchState<ExplodingHollowDeath>();
+                    break;
+                case CharacterInterruptionType.Hit:
+                    SwitchState<ExplodingHollowCharge>();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(interruption), interruption, null);
+            }
+        }
+    }
+
+    public class ExplodingHollowAttack : ExplodingHollowBaseState
+    {
+    }
+
+    public class ExplodingHollowCharge : ExplodingHollowBaseState
+    {
+        private readonly TimedTrigger _prepare = new TimedTrigger();
+
+        public override void EnterState()
+        {
+            _prepare.SetFor(3);
+        }
+
+        public override void UpdateState()
+        {
+            Context.Movement.ApplyGravity();
+
+            if (_prepare.IsSet)
+            {
+                _prepare.Step(Time.deltaTime);
+                return;
+            }
+
+            var speedMultiplier = 3f;
+            var player = Context.PlayerPosition;
+            var self = Context.transform.position;
+            if (Vector3.Distance(player, self) > 1)
+            {
+                var direction = player - self;
+                direction.y = 0;
+                direction.Normalize();
+
+                Context.Movement.Move(speedMultiplier * new Vector2(direction.x, direction.z));
+            }
+            else
+            {
+                SwitchState<ExplodingHollowExplosion>();
+            }
+        }
+
+        public override void InterruptState(CharacterInterruption interruption)
+        {
+            if (interruption.Type == CharacterInterruptionType.Death)
+            {
+                SwitchState<ExplodingHollowDeath>();
+            }
+        }
+    }
+
+    public class ExplodingHollowExplosion : ExplodingHollowBaseState
+    {
+        public override void InterruptState(CharacterInterruption interruption)
+        {
+            if (interruption.Type == CharacterInterruptionType.Death)
+            {
+                if (Context.HasExplosionAttackExecutor && Context.ExplosionAttackExecutor.IsAttacking)
+                {
+                    Context.ExplosionAttackExecutor.InterruptAttack();
+                }
+            }
+        }
+
         public override void EnterState()
         {
             Context.Movement.ResetXZVelocity();
             if (Context.HasExplosionAttackExecutor)
             {
                 Context.ExplosionAttackExecutor.StartExecution(Context.Character,
-                    _ => SwitchState(Factory.Idle()));
+                    _ => SwitchState<ExplodingHollowIdle>());
             }
         }
     }
 
-    public class ExplodingHollowStagger : EnemyBaseState<ExplodingHollow>
+    public class ExplodingHollowStagger : ExplodingHollowBaseState
     {
+        private readonly TimedTrigger _staggered = new TimedTrigger();
+
         public override void EnterState()
         {
-            SwitchState(Factory.Pursue());
+            _staggered.SetFor(0.5f);
+        }
+
+        public override void UpdateState()
+        {
+            if (_staggered.IsFree)
+            {
+                SwitchState<ExplodingHollowPursue>();
+            }
+            _staggered.Step(Time.deltaTime);
+        }
+
+        public override void InterruptState(CharacterInterruption interruption)
+        {
+            if (interruption.Type != CharacterInterruptionType.Hit)
+            {
+                base.InterruptState(interruption);
+            }
+        }
+    }
+
+    public class ExplodingHollowDeath : ExplodingHollowBaseState
+    {
+        public override void InterruptState(CharacterInterruption interruption)
+        {
+        }
+
+        public override void EnterState()
+        {
+            Context.transform.eulerAngles += new Vector3(0, 0, 90);
+            Context.transform.position += Vector3.down * 0.5f;
+            Context.StartCoroutine(DieIn(2));
+        }
+
+        private IEnumerator DieIn(float time)
+        {
+            yield return new WaitForSeconds(time);
+            Object.Destroy(Context.gameObject);
         }
     }
 
@@ -64,24 +192,22 @@ namespace Characters.Enemies
         public AttackExecutor ExplosionAttackExecutor => explosionAttackExecutor;
         public bool HasExplosionAttackExecutor { get; private set; } = true;
 
+        protected override EnemyBaseState<ExplodingHollow> StartState()
+        {
+            var state = new ExplodingHollowIdle();
+            state.Init(this, this);
+            return state;
+        }
+
         protected override void Awake()
         {
-            base.Awake();
             if (explosionAttackExecutor == null)
             {
                 Debug.LogWarning("Explosion Attack Executor is not assigned", this);
                 HasExplosionAttackExecutor = false;
             }
-        }
 
-        protected override EnemyStateFactory<ExplodingHollow> CreateFactory()
-        {
-            return new EnemyStateFactoryBuilder<ExplodingHollow>()
-                .Idle<ExplodingHollowIdle>()
-                .Pursue<ExplodingHollowPursue>()
-                .Attack<ExplodingHollowAttack>()
-                .Stagger<ExplodingHollowStagger>()
-                .Build(this, this);
+            base.Awake();
         }
     }
 }

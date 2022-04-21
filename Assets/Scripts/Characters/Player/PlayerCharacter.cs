@@ -76,8 +76,9 @@ namespace Characters.Player
             OnStaminaChanged?.Invoke(Stamina);
         }
 
-        protected override void OnDeath()
+        protected override void Die()
         {
+            base.Die();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }

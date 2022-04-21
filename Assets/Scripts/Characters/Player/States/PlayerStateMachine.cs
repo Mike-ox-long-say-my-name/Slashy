@@ -74,7 +74,8 @@ namespace Characters.Player.States
         private IEnumerator Start()
         {
             // Для корректного определения того, что игрок на земле при загрузке
-            playerCharacter.OnStaggered.AddListener(() => CurrentState.InterruptState(CharacterInterruption.Staggered));
+            playerCharacter.OnStaggered.AddListener(() => 
+                CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Staggered, null)));
 
             playerMovement.MoveRaw(Vector3.down);
             CurrentState = playerMovement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();

@@ -48,7 +48,7 @@ MonoBehaviour:
   eventDispatcher: {fileID: 812809748605883917}
   damageInfo:
     damage: 13
-    balanceDamage: 0
+    balanceDamage: 7
   moveDistance: 0.4
   playerMovement: {fileID: 239362066797731850}
   customPlayerInput: {fileID: 4950135374432913508}
@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitboxCollider: {fileID: 812809746819271582}
+  disableOnAwake: 1
   ignored: {fileID: 812809748674757410}
 --- !u!1 &812809748012681076
 GameObject:
@@ -169,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitboxCollider: {fileID: 812809748012681079}
+  disableOnAwake: 1
   ignored: {fileID: 812809748674757410}
 --- !u!1 &812809748315871440
 GameObject:
@@ -218,7 +220,7 @@ MonoBehaviour:
   eventDispatcher: {fileID: 812809748605883917}
   damageInfo:
     damage: 10
-    balanceDamage: 0
+    balanceDamage: 5
   moveDistance: 0.4
   playerMovement: {fileID: 239362066797731850}
   customPlayerInput: {fileID: 4950135374432913508}
@@ -415,8 +417,11 @@ MonoBehaviour:
   onStaggered:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 25
-  maxBalance: 0
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  maxHealth: 150
+  maxBalance: 10
   freezeHealth: 0
   canDie: 1
   <OnStaminaChanged>k__BackingField:

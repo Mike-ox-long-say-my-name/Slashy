@@ -433,6 +433,9 @@ MonoBehaviour:
   onStaggered:
     m_PersistentCalls:
       m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 10
   maxBalance: 0
   freezeHealth: 1
@@ -1697,6 +1700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitboxCollider: {fileID: 1622195502}
+  disableOnAwake: 1
   ignored: {fileID: 0}
 --- !u!65 &1622195502
 BoxCollider:
@@ -1910,6 +1914,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onStaggered:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeath:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 10
@@ -2646,6 +2653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitboxCollider: {fileID: 2141504092}
+  disableOnAwake: 1
   ignored: {fileID: 0}
 --- !u!65 &2141504092
 BoxCollider:
@@ -2732,7 +2740,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 812809748605883914, guid: 55ca5d56a4a4fea419acaa2c8b6f41f1, type: 3}
       propertyPath: maxHealth
-      value: 45
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 812809748605883914, guid: 55ca5d56a4a4fea419acaa2c8b6f41f1, type: 3}
       propertyPath: maxStamina

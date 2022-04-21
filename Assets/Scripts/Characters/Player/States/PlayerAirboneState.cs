@@ -31,9 +31,9 @@ namespace Characters.Player.States
 
         public override void InterruptState(CharacterInterruption interruption)
         {
-            switch (interruption)
+            switch (interruption.Type)
             {
-                case CharacterInterruption.Staggered:
+                case CharacterInterruptionType.Staggered:
                     SwitchState(Factory.AirboneStagger());
                     break;
                 default:

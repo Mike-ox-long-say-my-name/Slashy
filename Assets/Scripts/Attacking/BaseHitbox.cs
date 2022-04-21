@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Attacking
@@ -5,9 +6,19 @@ namespace Attacking
     [RequireComponent(typeof(Collider))]
     public class BaseHitbox : MonoBehaviour
     {
-        [SerializeField] protected Collider hitboxCollider;
+        [SerializeField] private Collider hitboxCollider;
 
         public bool IsEnabled => hitboxCollider.enabled;
+        public Collider HitboxCollider => hitboxCollider;
+
+        protected virtual void Awake()
+        {
+            if (hitboxCollider == null)
+            {
+                Debug.LogWarning("Hitbox Collider is not assigned", this);
+                enabled = false;
+            }
+        }
 
         public virtual void Enable()
         {

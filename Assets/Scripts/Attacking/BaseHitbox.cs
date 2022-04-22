@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Attacking
@@ -13,11 +12,7 @@ namespace Attacking
 
         protected virtual void Awake()
         {
-            if (hitboxCollider == null)
-            {
-                Debug.LogWarning("Hitbox Collider is not assigned", this);
-                enabled = false;
-            }
+            hitboxCollider = GetComponent<Collider>();
         }
 
         public virtual void Enable()

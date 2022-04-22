@@ -36,7 +36,7 @@ namespace Characters.Enemies
                 HitSource = source
             }));
             
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
             Hitbox.DisableAndClear();
         }

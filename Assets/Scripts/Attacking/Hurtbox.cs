@@ -9,12 +9,18 @@ namespace Attacking
     {
         [SerializeField] private HittableEntity entity;
 
+        protected override void Awake()
+        {
+            if (entity == null)
+            {
+                Debug.LogWarning("Entity is not assigned", this);
+                enabled = false;
+            }
+        }
+
         public void ReceiveHit(HitInfo info)
         {
-            if (entity != null)
-            {
-                entity.ReceiveHit(info);
-            }
+            entity.ReceiveHit(info);
         }
     }
 }

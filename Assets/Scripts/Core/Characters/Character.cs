@@ -54,7 +54,9 @@ namespace Core.Characters
             var source = info.HitSource;
             if (source != null && info.DamageInfo.pushStrength > 0)
             {
-                var direction = (transform.position - source.Transform.position).normalized;
+                var direction = (transform.position - source.Transform.position);
+                direction.y = 0;
+                direction.Normalize();
                 _pushable.Push(direction, info.DamageInfo.pushStrength);
             }
 

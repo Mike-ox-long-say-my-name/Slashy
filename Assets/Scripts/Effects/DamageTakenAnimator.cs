@@ -32,15 +32,13 @@ namespace Effects
 
             IEnumerator AnimationRoutine()
             {
-                var lastStepTime = Time.time;
                 var passedTime = 0f;
 
                 while (passedTime < flashTime)
                 {
                     spriteMask.sprite = maskSpriteRenderer.sprite;
 
-                    passedTime += Time.time - lastStepTime;
-                    lastStepTime = Time.time;
+                    passedTime += Time.deltaTime;
                     var fraction = passedTime / flashTime;
 
                     var color = animationSpriteRenderer.color;
@@ -54,7 +52,7 @@ namespace Effects
 
                     animationSpriteRenderer.color = color;
 
-                    yield return new WaitForEndOfFrame();
+                    yield return null;
                 }
 
                 var fullTransparencyColor = baseFlashColor;

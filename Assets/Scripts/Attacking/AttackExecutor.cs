@@ -23,6 +23,10 @@ namespace Attacking
 
         public void InterruptAttack()
         {
+            if (_activeAttack == null)
+            {
+                return;
+            }
             OnAttackEnded(true);
             StopCoroutine(_activeAttack);
             ResetState();

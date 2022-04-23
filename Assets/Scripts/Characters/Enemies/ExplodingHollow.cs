@@ -106,6 +106,7 @@ namespace Characters.Enemies
         private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
         private TimedTrigger _prepare;
         private TimedTrigger _dot;
+        private bool _started = false;
 
         public override void EnterState()
         {
@@ -127,9 +128,17 @@ namespace Characters.Enemies
             {
                 return;
             }
+
+            if (!_started)
+            {
+                Context.AnimatorComponent.SetTrigger("charge");
+                if (Context.ChargeBurnParticles != null)
+                {
+                    Context.ChargeBurnParticles.Play();
+                }
+                _started = true;
+            }
             
-            // TODO: cringe
-            Context.AnimatorComponent.SetTrigger("charge");
 
             if (_dot.CheckAndReset())
             {
@@ -181,11 +190,6 @@ namespace Characters.Enemies
     {
         public override void InterruptState(CharacterInterruption interruption)
         {
-            if (interruption.Type == CharacterInterruptionType.Death)
-            {
-                Context.ExplosionAttackExecutor.InterruptAttack();
-            }
-            base.InterruptState(interruption);
         }
 
         public override void EnterState()
@@ -260,6 +264,7 @@ namespace Characters.Enemies
         [SerializeField] private Animator animatorComponent;
         [SerializeField] private AttackExecutor punchAttack;
         [SerializeField] private AttackExecutor explosionAttackExecutor;
+        [SerializeField] private ParticleSystem chargeBurnParticles;
 
         public float AggroDistance => aggroDistance;
         public float ChargeTime => chargeTime;
@@ -271,6 +276,8 @@ namespace Characters.Enemies
 
         public float DotWhileCharging => dotWhileCharging;
         public float DotTickInterval => dotTickInterval;
+
+        public ParticleSystem ChargeBurnParticles => chargeBurnParticles;
 
         protected override EnemyBaseState<ExplodingHollow> StartState()
         {

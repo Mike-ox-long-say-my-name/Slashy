@@ -18,6 +18,7 @@ namespace Environment
 
             _spriteRenderer = GetComponent<SpriteRenderer>();
             ResizeSpriteToScreen();
+            
         }
 
         public void ResizeSpriteToScreen()

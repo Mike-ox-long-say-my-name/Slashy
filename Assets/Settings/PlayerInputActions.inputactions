@@ -1,5 +1,5 @@
 {
-    "name": "PlayerActionMap",
+    "name": "PlayerInputActions",
     "maps": [
         {
             "name": "Player",
@@ -364,6 +364,15 @@
                     "type": "PassThrough",
                     "id": "9aaaa459-e87c-4166-ae64-542872eb0ebe",
                     "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "be67204b-ea64-4e5e-bffe-13979df684fc",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -785,6 +794,17 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26e76578-1a29-4a79-812a-a3663fee6ef2",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

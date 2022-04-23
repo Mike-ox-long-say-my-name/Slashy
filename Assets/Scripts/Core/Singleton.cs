@@ -2,11 +2,11 @@
 
 namespace Core
 {
-    public class PersistentSingleton<T> : MonoBehaviour where T : Component
+    public class Singleton<T> : MonoBehaviour where T : Component
     {
         private static T _instance;
 
-        public static T Instance
+        protected static T Instance
         {
             get
             {
@@ -20,7 +20,7 @@ namespace Core
 
         private static void CreateInstance()
         {
-            var instanceObject = new GameObject($"PersistentSingleton - {typeof(T).Name}")
+            var instanceObject = new GameObject($"Singleton - {typeof(T).Name}")
             {
                 hideFlags = HideFlags.HideAndDontSave
             };
@@ -32,10 +32,10 @@ namespace Core
             if (_instance == null)
             {
                 _instance = this as T;
-                DontDestroyOnLoad(this);
             }
-            else
+            else if (_instance != this)
             {
+                Debug.LogWarning($"Multiple instances of {typeof(T).Name} are present in scene", this);
                 Destroy(gameObject);
             }
         }

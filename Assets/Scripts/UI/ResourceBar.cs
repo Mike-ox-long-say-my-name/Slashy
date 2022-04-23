@@ -1,6 +1,5 @@
-using System.Collections;
-using Core;
 using Core.Characters;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 

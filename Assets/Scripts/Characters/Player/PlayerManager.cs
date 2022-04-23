@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Characters.Player
 {
-    public class PlayerManager : PersistentSingleton<PlayerManager>
+    public class PlayerManager : PublicSingleton<PlayerManager>
     {
         private BasePlayerData _playerData;
 

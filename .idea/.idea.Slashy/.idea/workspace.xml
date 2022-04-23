@@ -3,13 +3,23 @@
   <component name="ChangeListManager">
     <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/States/PlayerAttackState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/States/PlayerAttackState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/.enemy-0.kra-autosave.kra" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0.kra" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0.kra" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/large-stone-0.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/large-stone-0.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/player/.all.kra-autosave.kra" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/player/all.kra" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/player/all.kra" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/player/all.kra~" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/player/all.kra~" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c0b1a99a69f44c7d8cbe9502c41e881018200/ef/3fdc2238/CharacterController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.3.0/InputSystem/Actions/InputAction.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -58,6 +68,7 @@
       <option name="presentableId" value="Default" />
       <updated>1650001245728</updated>
       <workItem from="1650001260719" duration="1049000" />
+      <workItem from="1650520120207" duration="926000" />
     </task>
     <servers />
   </component>

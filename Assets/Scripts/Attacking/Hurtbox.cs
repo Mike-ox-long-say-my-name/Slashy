@@ -1,18 +1,26 @@
+using Core;
+using Core.Characters;
 using UnityEngine;
 
 namespace Attacking
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Hurtbox : BaseHitbox, IHitReceiver
+    public class Hurtbox : BaseHitbox
     {
         [SerializeField] private HittableEntity entity;
 
-        public void ReceiveHit(IHitSource source, in HitInfo info)
+        protected override void Awake()
         {
-            if (entity)
+            if (entity == null)
             {
-                entity.ReceiveHit(source, info);
+                Debug.LogWarning("Entity is not assigned", this);
+                enabled = false;
             }
+        }
+
+        public void ReceiveHit(HitInfo info)
+        {
+            entity.ReceiveHit(info);
         }
     }
 }

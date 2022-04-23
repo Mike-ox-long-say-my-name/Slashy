@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Core;
 using UnityEngine;
 
 namespace Attacking
@@ -22,6 +23,10 @@ namespace Attacking
 
         public void InterruptAttack()
         {
+            if (_activeAttack == null)
+            {
+                return;
+            }
             OnAttackEnded(true);
             StopCoroutine(_activeAttack);
             ResetState();
@@ -52,24 +57,5 @@ namespace Attacking
             _attackEnded?.Invoke(interrupted);
             hitbox.DisableAndClear();
         }
-    }
-
-    public class AttackInfo : ScriptableObject
-    {
-        [Min(0)] public float baseDamageMultiplier = 1;
-        [Min(0)] public float flatDamageBonus;
-    }
-
-    [Serializable]
-    public struct HitInfo
-    {
-        public float damage;
-        public float balanceDamage;
-    }
-
-    public class PlayerAttackInfo : AttackInfo
-    {
-        [Min(0)] public float staminaCost;
-        [Min(0)] public float healthCost;
     }
 }

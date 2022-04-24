@@ -1,100 +1,118 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using Core.Attacking;
+using UnityEngine;
 
 namespace Core.Characters
 {
-    [RequireComponent(typeof(Pushable))]
-    public class Character : HittableEntity
+    public class Character : ICharacter
     {
-        [SerializeField] private UnityEvent<ICharacterResource> onHealthChanged;
-        public UnityEvent<ICharacterResource> OnHealthChanged => onHealthChanged;
+        public GameObject Object { get; }
 
-        [SerializeField] private UnityEvent onStaggered;
-        public UnityEvent OnStaggered => onStaggered;
-        
-        [SerializeField] private UnityEvent onDeath;
-        public UnityEvent OnDeath => onDeath;
+        public ICharacterMovement Movement { get; }
+        public IPushable Pushable { get; }
 
-        [SerializeField, Min(0)] private float maxHealth;
-        [SerializeField, Min(0)] private float maxBalance;
-        [SerializeField] private bool freezeHealth = false;
-        [SerializeField] private bool canDie = true;
+        public ICharacterResource Health => _health;
+        public ICharacterResource Balance => _balance;
 
-        private Pushable _pushable;
-        
-        private BalanceResource _balanceResource;
-        private HealthResource _healthResource;
-        public ICharacterResource Health => _healthResource;
+        private readonly ICharacterStats _stats;
+        private readonly ICharacterEventDispatcher _dispatcher;
 
-        protected virtual void Awake()
+        private readonly HealthResource _health;
+        private readonly BalanceResource _balance;
+
+        public Character(ICharacterMovement movement, IPushable pushable, ICharacterStats stats, ICharacterEventDispatcher eventDispatcher)
         {
-            _pushable = GetComponent<Pushable>();
-            _healthResource = new HealthResource(this, maxHealth);
-            _balanceResource = new BalanceResource(this, maxBalance);
+            Guard.NotNull(movement);
+            Guard.NotNull(pushable);
+            Guard.NotNull(stats);
+            Guard.NotNull(eventDispatcher);
+
+            Object = movement.Controller.gameObject;
+
+            Movement = movement;
+            Pushable = pushable;
+
+            _stats = stats;
+            _dispatcher = eventDispatcher;
+
+            _health = new HealthResource(this, _stats.MaxHealth);
+            _balance = new BalanceResource(this, _stats.MaxBalance);
         }
 
-        public override void ReceiveHit(HitInfo info)
+        public virtual void ReceiveHit(HitInfo info)
         {
-            base.ReceiveHit(info);
-            TakeDamage(info);
-            if (!_healthResource.IsDepleted)
+            var dead = TakeDamage(info);
+            var staggered = TakeBalanceDamage(info);
+
+            if (staggered && !dead)
             {
-                TakeBalanceDamage(info);
+                var source = info.Source;
+                if (source.Character != null && info.DamageInfo.pushStrength > 0)
+                {
+                    var sourcePosition = source.Character.Movement.Transform.position;
+                    var direction = (Movement.Transform.position - sourcePosition);
+                    direction.y = 0;
+                    direction.Normalize();
+                    Pushable.Push(direction, info.DamageInfo.pushStrength);
+                }
+
+                _balance.Recover(_stats.MaxBalance);
+            }
+
+            _dispatcher.OnHitReceived(this, info);
+
+            if (dead)
+            {
+                Die(info);
+            }
+            else if (staggered)
+            {
+                _dispatcher.OnStaggered(this, info);
+            }
+            else
+            {
+                _dispatcher.OnHitReceivedExclusive(this, info);
             }
         }
 
-        public virtual void TakeBalanceDamage(HitInfo info)
+        protected virtual bool TakeBalanceDamage(HitInfo info)
         {
-            _balanceResource.Spend(info.DamageInfo.balanceDamage);
-            if (!_balanceResource.IsDepleted)
-            {
-                return;
-            }
-
-            var source = info.HitSource;
-            if (source != null && info.DamageInfo.pushStrength > 0)
-            {
-                var direction = (transform.position - source.Transform.position);
-                direction.y = 0;
-                direction.Normalize();
-                _pushable.Push(direction, info.DamageInfo.pushStrength);
-            }
-
-            // TODO: добавить зависимость длительности стаггера от DamageInfo
-            OnStaggered?.Invoke();
-            _balanceResource.Recover(maxBalance);
+            _balance.Spend(info.DamageInfo.balanceDamage);
+            return _balance.IsDepleted;
         }
 
-        public virtual void TakeDamage(HitInfo info)
+        protected virtual bool TakeDamage(HitInfo info)
         {
-            if (freezeHealth)
+            if (_stats.FreezeHealth)
             {
-                return;
+                return false;
             }
 
-            _healthResource.Spend(info.DamageInfo.damage);
-            OnHealthChanged?.Invoke(Health);
+            _health.Spend(info.DamageInfo.damage);
+            _dispatcher.OnHealthChanged(this, Health);
 
-            if (canDie && _healthResource.IsDepleted)
-            {
-                Die();
-            }
+            return _stats.CanDie && _health.IsDepleted;
         }
 
         public virtual void Heal(float amount)
         {
-            if (freezeHealth)
+            if (_stats.FreezeHealth)
             {
                 return;
             }
 
-            _healthResource.Recover(amount);
-            OnHealthChanged?.Invoke(Health);
+            _health.Recover(amount);
+            _dispatcher.OnHealthChanged(this, Health);
         }
 
-        protected virtual void Die()
+        public virtual void Tick(float deltaTime)
         {
-            OnDeath?.Invoke();
+            Movement.Tick(deltaTime);
+            Pushable.Tick(deltaTime);
+        }
+
+        protected virtual void Die(HitInfo info)
+        {
+            _dispatcher.OnDeath(this, info);
         }
     }
 }

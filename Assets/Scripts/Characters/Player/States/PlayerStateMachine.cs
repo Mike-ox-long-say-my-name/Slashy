@@ -1,15 +1,16 @@
-using System.Collections;
-using Attacking;
+using Attacks;
 using Configs;
+using Core.Attacking;
 using Core.Characters;
 using Core.Utilities;
 using Effects;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Characters.Player.States
 {
-    public class PlayerStateMachine : BasePlayerData
+    public class PlayerStateMachine : MonoBehaviour, IPlayer
     {
         public PlayerStateFactory StateFactory { get; private set; }
         public PlayerBaseState CurrentState { get; set; }
@@ -20,47 +21,38 @@ namespace Characters.Player.States
         [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
 
         [Space]
-        [Header("Player Components")]
-        [SerializeField] private CustomPlayerInput customPlayerInput;
-        [SerializeField] private PlayerMovement playerMovement;
-        [SerializeField] private PlayerCharacter playerCharacter;
-        [SerializeField] private AttackExecutor lightAttackFirst;
-        [SerializeField] private AttackExecutor lightAttackSecond;
-
-        [Space]
-        [Header("Base Components")]
-        [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private DashCloneEffectController dashEffectController;
-        [SerializeField] private Animator animator;
-        [SerializeField] private Hurtbox hurtbox;
+        [Header("Attacks")]
+        [SerializeField] private MonoAttackHandler lightMonoAttackFirst;
+        [SerializeField] private MonoAttackHandler lightMonoAttackSecond;
 
         [Space]
         [SerializeField] private PlayerConfig playerConfig;
 
-        public override bool IsInvincible { get; set; }
-        public override bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
-        public override bool IsDashing => CurrentState.GetType() == typeof(PlayerDashState);
-        public override bool IsFalling => CurrentState.GetType() == typeof(PlayerFallState);
-        public override bool IsGroundState => CurrentState.GetType() == typeof(PlayerGroundedState);
-        public override bool IsAttackState => CurrentState.GetType() == typeof(PlayerGroundLightAttackState);
-        public override bool IsStaggered => CurrentState.GetType() == typeof(PlayerAirboneStaggerState)
+        public bool IsInvincible { get; set; }
+        public bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
+        public bool IsDashing => CurrentState.GetType() == typeof(PlayerDashState);
+        public bool IsFalling => CurrentState.GetType() == typeof(PlayerFallState);
+        public bool IsGroundState => CurrentState.GetType() == typeof(PlayerGroundedState);
+        public bool IsAttackState => CurrentState.GetType() == typeof(PlayerGroundLightAttackState);
+        public bool IsStaggered => CurrentState.GetType() == typeof(PlayerAirboneStaggerState)
                                             || CurrentState.GetType() == typeof(PlayerGroundStaggerState);
 
         public readonly OwningLock CanDash = new OwningLock();
         public readonly OwningLock CanJump = new OwningLock();
         public readonly OwningLock CanAttack = new OwningLock();
         public readonly OwningLock CanHeal = new OwningLock();
-        
-        public override PlayerMovement Movement => playerMovement;
-        public AttackExecutor LightAttackFirst => lightAttackFirst;
-        public AttackExecutor LightAttackSecond => lightAttackSecond;
-        public SpriteRenderer SpriteRenderer => spriteRenderer;
-        public DashCloneEffectController DashEffectController => dashEffectController;
-        public override PlayerCharacter PlayerCharacter => playerCharacter;
-        public Animator AnimatorComponent => animator;
-        public Hurtbox HurtboxComponent => hurtbox;
+
+        public IPlayerMovement Movement => Character.Movement;
+        public SpriteRenderer SpriteRenderer { get; private set; }
+        public DashCloneEffectController DashEffectController { get; private set; }
+        public IPlayerCharacter Character { get; private set; }
+        public Animator AnimatorComponent { get; private set; }
+        public IHurtbox Hurtbox { get; private set; }
+        public IAutoPlayerInput Input { get; private set; }
+
+        public IAttackExecutor LightMonoAttackFirst => lightMonoAttackFirst.Executor;
+        public IAttackExecutor LightMonoAttackSecond => lightMonoAttackSecond.Executor;
         public PlayerConfig PlayerConfig => playerConfig;
-        public CustomPlayerInput Input => customPlayerInput;
 
         public bool HasDashEffectController { get; private set; } = true;
         public bool HasHurtbox { get; private set; } = true;
@@ -68,63 +60,34 @@ namespace Characters.Player.States
 
         private float _cameraFollowVelocity;
 
-        public bool CanStartAttack => CanAttack && !IsAttackState && playerCharacter.HasStamina;
-
-
-        private IEnumerator Start()
-        {
-            // Для корректного определения того, что игрок на земле при загрузке
-            playerCharacter.OnStaggered.AddListener(() => 
-                CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Staggered, null)));
-
-            playerMovement.MoveRaw(Vector3.down);
-            CurrentState = playerMovement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
-            CurrentState.EnterState();
-            CurrentState.UpdateState();
-
-            yield return new WaitForSeconds(0.3f);
-        }
+        public bool CanStartAttack => CanAttack && !IsAttackState && Character.HasStamina();
 
         private void Awake()
         {
-            if (customPlayerInput == null)
-            {
-                Debug.LogWarning("Player Input is not assigned", this);
-                enabled = false;
-            }
-            if (playerMovement == null)
-            {
-                Debug.LogWarning("Player Movement is not assigned", this);
-                enabled = false;
-            }
-            if (lightAttackFirst == null)
+            Input = GetComponent<IAutoPlayerInput>();
+
+            SpriteRenderer = GetComponent<SpriteRenderer>();
+            AnimatorComponent = GetComponent<Animator>();
+            DashEffectController = GetComponentInChildren<DashCloneEffectController>();
+
+            if (lightMonoAttackFirst == null)
             {
                 Debug.LogWarning("Light Attack First is not assigned", this);
                 enabled = false;
             }
-            if (lightAttackSecond == null)
+            if (lightMonoAttackSecond == null)
             {
                 Debug.LogWarning("Light Attack Second is not assigned", this);
                 enabled = false;
             }
-            if (playerCharacter == null)
+            if (DashEffectController == null)
             {
-                Debug.LogWarning("Player Character is not assigned", this);
-                enabled = false;
-            }
-            if (hurtbox == null)
-            {
-                Debug.LogWarning("Hurtbox is not assigned", this);
-                HasHurtbox = false;
-            }
-            if (dashEffectController == null)
-            {
-                Debug.LogWarning("Dash Clone Effect Controller is not assigned", this);
+                Debug.LogWarning("Dash Clone Effect Controller not found", this);
                 HasDashEffectController = false;
             }
-            if (spriteRenderer == null)
+            if (SpriteRenderer == null)
             {
-                Debug.LogWarning("Sprite Renderer is not assigned", this);
+                Debug.LogWarning("Sprite Renderer not found", this);
                 HasSpriteRenderer = false;
             }
 
@@ -134,6 +97,31 @@ namespace Characters.Player.States
             {
                 followingCamera = Camera.main;
             }
+        }
+
+        private IEnumerator Start()
+        {
+            Hurtbox = GetComponentInChildren<IMonoHurtbox>()?.Native;
+
+            if (Hurtbox == null)
+            {
+                Debug.LogWarning("Hurtbox not found", this);
+                HasHurtbox = false;
+            }
+            
+            var character = GetComponent<IMonoPlayerCharacter>();
+            character.OnHitReceived.AddListener((_, info) => CurrentState.OnHitReceived(info));
+            character.OnStaggered.AddListener((_, info) => CurrentState.OnStaggered(info));
+            character.OnDeath.AddListener((_, info) => CurrentState.OnDeath(info));
+            Character = character.Native;
+
+            // Для корректного определения того, что игрок на земле при загрузке
+            Movement.MoveRaw(Vector3.down);
+            CurrentState = Movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
+            CurrentState.EnterState();
+            CurrentState.UpdateState();
+
+            yield return new WaitForSeconds(0.3f);
         }
 
         private void Update()

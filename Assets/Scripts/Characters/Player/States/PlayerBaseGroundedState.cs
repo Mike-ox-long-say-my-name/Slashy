@@ -1,5 +1,4 @@
-using System;
-using Core.Characters;
+using Core.Attacking;
 
 namespace Characters.Player.States
 {
@@ -9,22 +8,9 @@ namespace Characters.Player.States
         {
         }
 
-        protected void HandleGravity()
+        public override void OnStaggered(HitInfo info)
         {
-            Context.Movement.ApplyGravity();
-        }
-
-        public override void InterruptState(CharacterInterruption interruption)
-        {
-            switch (interruption.Type)
-            {
-                case CharacterInterruptionType.Staggered:
-                    SwitchState(Factory.GroundStagger());
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(interruption), interruption,
-                        $"Invalid interruption for state {GetType().Name}");
-            }
+            SwitchState(Factory.GroundStagger());
         }
     }
 }

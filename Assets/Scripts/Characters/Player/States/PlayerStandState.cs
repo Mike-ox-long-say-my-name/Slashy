@@ -8,13 +8,10 @@ namespace Characters.Player.States
 
         public override void UpdateState()
         {
-            HandleGravity();
+            HandleControl();
 
-            var input = Context.Input.MoveInput;
-            Context.AnimatorComponent.SetBool("is-walking", input.sqrMagnitude > 0);
+            Context.AnimatorComponent.SetBool("is-walking", Context.Input.MoveInput.sqrMagnitude > 0);
 
-            Context.Movement.Move(input);
-            
             CheckStateSwitch();
         }
 
@@ -24,26 +21,30 @@ namespace Characters.Player.States
             {
                 SwitchState(Factory.Fall());
             }
-            else if (Context.CanDash && Context.Input.IsDashPressed.CheckAndReset())
+            else if (Context.CanDash && Context.Input.IsDashPressed)
             {
-                if (Context.PlayerCharacter.HasStamina)
+                Context.Input.ResetBufferedInput();
+                if (Context.Character.HasStamina())
                 {
                     SwitchState(Factory.Dash());
                 }
             }
-            else if (Context.CanJump && Context.Input.IsJumpPressed.CheckAndReset())
+            else if (Context.CanJump && Context.Input.IsJumpPressed)
             {
-                if (Context.PlayerCharacter.HasStamina)
+                Context.Input.ResetBufferedInput();
+                if (Context.Character.HasStamina())
                 {
                     SwitchState(Factory.Jump());
                 }
             }
-            else if (Context.CanHeal && Context.Input.IsHealPressed.CheckAndReset())
+            else if (Context.CanHeal && Context.Input.IsHealPressed)
             {
+                Context.Input.ResetBufferedInput();
                 SwitchState(Factory.Heal());
             }
-            else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed.CheckAndReset())
+            else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed)
             {
+                Context.Input.ResetBufferedInput();
                 SwitchState(Factory.GroundLightAttack());
             }
         }

@@ -1,4 +1,4 @@
-using Core;
+using Core.Attacking;
 using Core.Characters;
 using UnityEngine;
 
@@ -12,27 +12,34 @@ namespace Effects
         [SerializeField, Min(0)] private float maxYDirectionOffset = 1f;
         [SerializeField] private ParticleSystem bloodParticleSystem;
 
-        private void Awake()
+        public void OnHitReceived(IHitReceiver entity, HitInfo hitInfo)
         {
             if (bloodParticleSystem == null)
             {
-                Debug.LogWarning("Particle System is not assigned", this);
-                enabled = false;
+                Debug.LogWarning("Blood Particle System not found", this);
+                return;
             }
-        }
 
-        public void OnHitReceived(HittableEntity entity, HitInfo hitInfo)
-        {
-            if (hitInfo.HitSource == null)
+            if (hitInfo.Source.Character == null)
             {
                 return;
             }
 
+            if (!(entity is ICharacter character))
+            {
+                return;
+            }
+
+            PlayParticles(character.Movement.Transform, hitInfo.Source.Character.Movement.Transform);
+        }
+
+        private void PlayParticles(Transform receiver, Transform source)
+        {
             var offsetX = Random.Range(0, maxPositionOffset.x) + baseXOffset;
             var offsetY = Random.Range(0, maxPositionOffset.y);
 
             // Ќаправление по Y вли€ет на угол полета крови
-            var direction = (transform.position - hitInfo.HitSource.Transform.position);
+            var direction = (transform.position - source.position);
             direction.y = Random.Range(-maxYDirectionOffset, maxYDirectionOffset);
             direction.Normalize();
 
@@ -43,7 +50,7 @@ namespace Effects
             offsetY *= -Mathf.Sign(direction.y);
 
             shape.position = new Vector3(offsetX, offsetY, 0);
-            shape.rotation = (Quaternion.LookRotation(direction) * entity.transform.rotation).eulerAngles;
+            shape.rotation = (Quaternion.LookRotation(direction) * receiver.rotation).eulerAngles;
 
             bloodParticleSystem.Play();
         }

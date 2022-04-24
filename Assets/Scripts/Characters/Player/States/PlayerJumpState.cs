@@ -12,14 +12,13 @@ namespace Characters.Player.States
 
             Context.AnimatorComponent.SetTrigger("jump");
 
-            Context.PlayerCharacter.SpendStamina(Context.PlayerConfig.JumpStaminaCost);
+            Context.Character.SpendStamina(Context.PlayerConfig.JumpStaminaCost);
             Context.Movement.Jump();
         }
 
         public override void UpdateState()
         {
-            HandleGravity();
-            HandleAirboneControl();
+            HandleControl();
 
             CheckStateSwitch();
         }
@@ -30,12 +29,13 @@ namespace Characters.Player.States
             {
                 SwitchState(Factory.Grounded());
             }
-            else if (Context.Movement.Velocity.y < 0)
+            else if (Context.Movement.IsFalling)
             {
                 SwitchState(Factory.Fall());
             }
-            else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed.CheckAndReset())
+            else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed)
             {
+                Context.Input.ResetBufferedInput();
                 // TODO: SwitchState(Factory.AirLightAttack());
             }
         }

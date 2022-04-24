@@ -1,11 +1,9 @@
-using Attacking;
+using Attacks;
 using Characters.Enemies.States;
-using Core.Characters;
-using Core.Utilities;
-using System;
-using System.Collections;
 using Characters.Player;
-using Core;
+using Core.Attacking;
+using Core.Utilities;
+using System.Collections;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -15,7 +13,6 @@ namespace Characters.Enemies
     {
         public override void UpdateState()
         {
-            Context.Movement.ApplyGravity();
             if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < Context.AggroDistance)
             {
                 SwitchState<ExplodingHollowPursue>();
@@ -37,8 +34,6 @@ namespace Characters.Enemies
 
         public override void UpdateState()
         {
-            Context.Movement.ApplyGravity();
-
             var player = Context.PlayerPosition;
             var self = Context.transform.position;
             var direction = player - self;
@@ -46,7 +41,7 @@ namespace Characters.Enemies
             if (direction.magnitude > 1.5f)
             {
                 direction.Normalize();
-                Context.Movement.Move(new Vector2(direction.x, direction.z));
+                Context.Movement.Move(new Vector3(direction.x, 0, direction.z));
             }
             else
             {
@@ -58,25 +53,22 @@ namespace Characters.Enemies
 
     public abstract class ExplodingHollowBaseState : EnemyBaseState<ExplodingHollow>
     {
-        public override void InterruptState(CharacterInterruption interruption)
+        public override void OnDeath(HitInfo info)
         {
-            switch (interruption.Type)
+            SwitchState<ExplodingHollowDeath>();
+        }
+
+        public override void OnHitReceived(HitInfo info)
+        {
+            if (info.Source.Character is MonoPlayerCharacter)
             {
-                case CharacterInterruptionType.Death:
-                    SwitchState<ExplodingHollowDeath>();
-                    break;
-                case CharacterInterruptionType.Hit:
-                    if (interruption.Source is PlayerCharacter)
-                    {
-                        SwitchState<ExplodingHollowCharge>();
-                    }
-                    break;
-                case CharacterInterruptionType.Staggered:
-                    SwitchState<ExplodingHollowStagger>();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(interruption), interruption, null);
+                SwitchState<ExplodingHollowCharge>();
             }
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
+            SwitchState<ExplodingHollowStagger>();
         }
     }
 
@@ -84,8 +76,9 @@ namespace Characters.Enemies
     {
         public override void EnterState()
         {
-            Context.Movement.ResetXZVelocity();
-            Context.PunchAttack.StartExecution(Context.Character, inter =>
+            Context.Movement.Stop();
+
+            Context.PunchAttack.StartAttack(inter =>
             {
                 if (!inter)
                 {
@@ -94,10 +87,25 @@ namespace Characters.Enemies
             });
         }
 
-        public override void InterruptState(CharacterInterruption interruption)
+        public override void OnDeath(HitInfo info)
         {
             Context.PunchAttack.InterruptAttack();
-            base.InterruptState(interruption);
+            base.OnDeath(info);
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
+            Context.PunchAttack.InterruptAttack();
+            base.OnStaggered(info);
+        }
+
+        public override void OnHitReceived(HitInfo info)
+        {
+            if (info.Source.Character is IPlayerCharacter)
+            {
+                Context.PunchAttack.InterruptAttack();
+            }
+            base.OnHitReceived(info);
         }
     }
 
@@ -110,18 +118,17 @@ namespace Characters.Enemies
 
         public override void EnterState()
         {
+            Context.Movement.Stop();
+
             _prepare = _triggerFactory.Create();
             _dot = _triggerFactory.Create();
 
-            Context.Movement.ResetXZVelocity();
             _prepare.SetFor(Context.ChargeTime);
             _dot.Set();
         }
 
         public override void UpdateState()
         {
-            Context.Movement.ApplyGravity();
-
             _triggerFactory.StepAll();
 
             if (_prepare.IsSet)
@@ -138,7 +145,7 @@ namespace Characters.Enemies
                 }
                 _started = true;
             }
-            
+
 
             if (_dot.CheckAndReset())
             {
@@ -161,7 +168,7 @@ namespace Characters.Enemies
             if (direction.magnitude > 1.5)
             {
                 direction.Normalize();
-                Context.Movement.Move(speedMultiplier * new Vector2(direction.x, direction.z));
+                Context.Movement.Move(speedMultiplier * new Vector3(direction.x, 0, direction.z));
 
                 var health = Context.Character.Health;
                 if (health.Value / health.MaxValue < 0.2f)
@@ -177,36 +184,49 @@ namespace Characters.Enemies
             }
         }
 
-        public override void InterruptState(CharacterInterruption interruption)
+        public override void OnHitReceived(HitInfo info)
         {
-            if (interruption.Type == CharacterInterruptionType.Death)
-            {
-                SwitchState<ExplodingHollowDeath>();
-            }
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
         }
     }
 
     public class ExplodingHollowExplosion : ExplodingHollowBaseState
     {
-        public override void InterruptState(CharacterInterruption interruption)
+        public override void EnterState()
+        {
+            Context.Movement.Stop();
+
+            Context.AnimatorComponent.SetTrigger("explode");
+            Context.ExplosionAttack.StartAttack(_ => SwitchState<ExplodingHollowDeath>());
+        }
+
+        public override void OnHitReceived(HitInfo info)
         {
         }
 
-        public override void EnterState()
+        public override void OnStaggered(HitInfo info)
         {
-            Context.AnimatorComponent.SetTrigger("explode");
-            Context.Movement.ResetXZVelocity();
-            Context.ExplosionAttackExecutor.StartExecution(Context.Character,
-                _ => SwitchState<ExplodingHollowDeath>());
+        }
+
+        public override void OnDeath(HitInfo info)
+        {
+            Context.ExplosionAttack.InterruptAttack();
+            base.OnDeath(info);
         }
     }
 
     public class ExplodingHollowStagger : ExplodingHollowBaseState
     {
         private readonly TimedTrigger _staggered = new TimedTrigger();
+        private bool _wasHit;
 
         public override void EnterState()
         {
+            Context.Movement.Stop();
+
             Context.AnimatorComponent.SetBool("is-staggered", true);
             _staggered.SetFor(0.5f);
         }
@@ -220,29 +240,39 @@ namespace Characters.Enemies
         {
             if (_staggered.IsFree)
             {
-                SwitchState<ExplodingHollowPursue>();
+                if (_wasHit)
+                {
+                    SwitchState<ExplodingHollowCharge>();
+                }
+                else
+                {
+                    SwitchState<ExplodingHollowIdle>();
+                }
             }
+
             _staggered.Step(Time.deltaTime);
         }
 
-        public override void InterruptState(CharacterInterruption interruption)
+        public override void OnHitReceived(HitInfo info)
         {
-            if (interruption.Type != CharacterInterruptionType.Hit)
+            if (info.Source.Character is IPlayerCharacter)
             {
-                base.InterruptState(interruption);
+                _wasHit = true;
             }
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
         }
     }
 
     public class ExplodingHollowDeath : ExplodingHollowBaseState
     {
-        public override void InterruptState(CharacterInterruption interruption)
-        {
-        }
-
         public override void EnterState()
         {
-            Context.Movement.ResetXZVelocity();
+            Context.Hurtbox.Disable();
+            Context.Movement.Stop();
+
             Context.StartCoroutine(DieIn(1));
         }
 
@@ -250,6 +280,18 @@ namespace Characters.Enemies
         {
             yield return new WaitForSeconds(time);
             Object.Destroy(Context.gameObject);
+        }
+
+        public override void OnHitReceived(HitInfo info)
+        {
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
+        }
+
+        public override void OnDeath(HitInfo info)
+        {
         }
     }
 
@@ -260,19 +302,17 @@ namespace Characters.Enemies
         [SerializeField, Min(0)] private float dotWhileCharging = 5f;
         [SerializeField, Min(0)] private float dotTickInterval = 0.3f;
 
-        [SerializeField] private Pushable pushable;
-        [SerializeField] private Animator animatorComponent;
-        [SerializeField] private AttackExecutor punchAttack;
-        [SerializeField] private AttackExecutor explosionAttackExecutor;
+        [SerializeField] private MonoAttackHandler explosionMonoAttackHandler;
+        [SerializeField] private MonoAttackHandler punchMonoAttack;
         [SerializeField] private ParticleSystem chargeBurnParticles;
 
         public float AggroDistance => aggroDistance;
         public float ChargeTime => chargeTime;
 
-        public Pushable Pushable => pushable;
-        public Animator AnimatorComponent => animatorComponent;
-        public AttackExecutor ExplosionAttackExecutor => explosionAttackExecutor;
-        public AttackExecutor PunchAttack => punchAttack;
+        public Animator AnimatorComponent { get; private set; }
+
+        public IAttackExecutor ExplosionAttack => explosionMonoAttackHandler.Executor;
+        public IAttackExecutor PunchAttack => punchMonoAttack.Executor;
 
         public float DotWhileCharging => dotWhileCharging;
         public float DotTickInterval => dotTickInterval;
@@ -286,30 +326,25 @@ namespace Characters.Enemies
             return state;
         }
 
-        protected override void Awake()
+        private void Awake()
         {
-            if (pushable == null)
+            AnimatorComponent = GetComponent<Animator>();
+
+            if (AnimatorComponent == null)
             {
-                Debug.LogWarning("Pushable is not assigned", this);
-                enabled = false;
-            }
-            if (animatorComponent == null)
-            {
-                Debug.LogWarning("Animator is not assigned", this);
-                enabled = false;
-            }
-            if (punchAttack == null)
-            {
-                Debug.LogWarning("Explosion Attack Executor is not assigned", this);
-                enabled = false;
-            }
-            if (explosionAttackExecutor == null)
-            {
-                Debug.LogWarning("Explosion Attack Executor is not assigned", this);
-                enabled = false;
+                Debug.LogWarning("Animator not found", this);
             }
 
-            base.Awake();
+            if (punchMonoAttack == null)
+            {
+                Debug.LogWarning("Explosion Attack Executor is not assigned", this);
+                enabled = false;
+            }
+            if (explosionMonoAttackHandler == null)
+            {
+                Debug.LogWarning("Explosion Attack Executor is not assigned", this);
+                enabled = false;
+            }
         }
     }
 }

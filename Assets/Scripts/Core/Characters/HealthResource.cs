@@ -2,7 +2,7 @@ namespace Core.Characters
 {
     public class HealthResource : BaseCharacterResource
     {
-        public HealthResource(Character character, float maxHealth) : base(character, maxHealth)
+        public HealthResource(ICharacter character, float maxHealth) : base(character, maxHealth)
         {
         }
     }

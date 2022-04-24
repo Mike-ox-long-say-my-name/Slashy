@@ -30,12 +30,6 @@ namespace Configs
         [field: SerializeField, Min(0)] public float DashStaminaCost { get; private set; } = 0;
 
         [field: Space]
-        [field: Header("Stamina")]
-        [field: SerializeField, Min(0)] public float StaminaRegeneration { get; private set; } = 0;
-        [field: SerializeField, Min(0)] public float StaminaRegenerationDelay { get; private set; } = 0;
-        [field: SerializeField, Min(0)] public float EmptyStaminaAdditionalRegenerationDelay { get; private set; } = 0;
-
-        [field: Space]
         [field: Header("Heal")]
         [field: SerializeField, Min(0)] public float ActiveHealRate { get; private set; } = 10f;
         [field: SerializeField, Min(0)] public float HealStaminaConsumption { get; private set; } = 10f;

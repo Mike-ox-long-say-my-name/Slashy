@@ -3,37 +3,38 @@ using UnityEngine;
 
 namespace Core.Characters
 {
-    [RequireComponent(typeof(CharacterMovement))]
-    public class Pushable : MonoBehaviour
+    public class Pushable : IPushable
     {
-        [Range(0, 2)] public float pushFactor = 1;
-        [Min(0)] public float dampening = 0.2f;
-        [Range(0, 1)] public float pushTime = 0.3f;
+        public float PushFactor { get; set; } = 1;
+        public float Dampening { get; set; } = 0.2f;
+        public float PushTime { get; set; } = 0.3f;
 
-        private CharacterMovement _movement;
-        private Vector3 _pushVelocity;
+        private readonly IRawMovement _movement;
 
         private readonly TimedTrigger _pushing = new TimedTrigger();
+        private Vector3 _pushVelocity;
 
-        private void Awake()
+        public Pushable(IRawMovement movement)
         {
-            _movement = GetComponent<CharacterMovement>();
+            _movement = movement;
         }
-        
+
+        public bool IsPushing => _pushing.IsSet;
+
         public void Push(Vector3 direction, float force)
         {
-            Push(direction, force, pushTime);
+            Push(direction, force, PushTime);
         }
 
         public void Push(Vector3 direction, float force, float time)
         {
-            _pushVelocity = direction * force * pushFactor;
+            _pushVelocity = direction * (force * PushFactor);
             _pushing.SetFor(time);
         }
 
-        private void Update()
+        public void Tick(float deltaTime)
         {
-            if (_pushing.IsFree)
+            if (!IsPushing)
             {
                 return;
             }
@@ -46,18 +47,12 @@ namespace Core.Characters
 
         private void ApplyDampening()
         {
-            _pushVelocity *= 1 - dampening * Time.deltaTime;
+            _pushVelocity *= 1 - Dampening * Time.deltaTime;
         }
 
         private void ApplyVelocity()
         {
-            var wasGrounded = _movement.IsGrounded;
             _movement.MoveRaw(_pushVelocity * Time.deltaTime);
-
-            if (wasGrounded)
-            {
-                _movement.ApplyGravity();
-            }
         }
     }
 }

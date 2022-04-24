@@ -1,4 +1,4 @@
-using Core;
+using Core.Attacking;
 using Core.Characters;
 using System.Collections;
 using UnityEngine;
@@ -23,48 +23,48 @@ namespace Effects
 
         private Coroutine _animationRoutine;
 
-        public void OnHitReceived(HittableEntity entity, HitInfo info)
+        public void OnHitReceived(IHitReceiver entity, HitInfo info)
         {
             if (_animationRoutine != null)
             {
                 StopCoroutine(_animationRoutine);
             }
 
-            IEnumerator AnimationRoutine()
-            {
-                var passedTime = 0f;
-
-                while (passedTime < flashTime)
-                {
-                    spriteMask.sprite = maskSpriteRenderer.sprite;
-
-                    passedTime += Time.deltaTime;
-                    var fraction = passedTime / flashTime;
-
-                    var color = animationSpriteRenderer.color;
-                    if (changeColorBasedOnHealth && entity is Character character)
-                    {
-                        var healthFraction = character.Health.Value / character.Health.MaxValue;
-                        color = Color.Lerp(baseFlashColor, zeroHpColor, 1 - healthFraction);
-                    }
-
-                    color.a = minTransparency + maxTransparency * (1 - minTransparency) * (1 - fraction);
-
-                    animationSpriteRenderer.color = color;
-
-                    yield return null;
-                }
-
-                var fullTransparencyColor = baseFlashColor;
-                fullTransparencyColor.a = 0;
-                animationSpriteRenderer.color = fullTransparencyColor;
-            }
-
             if (_animationRoutine != null)
             {
                 StopCoroutine(_animationRoutine);
             }
-            _animationRoutine = StartCoroutine(AnimationRoutine());
+            _animationRoutine = StartCoroutine(AnimationRoutine(entity));
+        }
+
+        private IEnumerator AnimationRoutine(IHitReceiver entity)
+        {
+            var passedTime = 0f;
+
+            while (passedTime < flashTime)
+            {
+                spriteMask.sprite = maskSpriteRenderer.sprite;
+
+                passedTime += Time.deltaTime;
+                var fraction = passedTime / flashTime;
+
+                var color = animationSpriteRenderer.color;
+                if (changeColorBasedOnHealth && entity is ICharacter character)
+                {
+                    var healthFraction = character.Health.Value / character.Health.MaxValue;
+                    color = Color.Lerp(baseFlashColor, zeroHpColor, 1 - healthFraction);
+                }
+
+                color.a = minTransparency + maxTransparency * (1 - minTransparency) * (1 - fraction);
+
+                animationSpriteRenderer.color = color;
+
+                yield return null;
+            }
+
+            var fullTransparencyColor = baseFlashColor;
+            fullTransparencyColor.a = 0;
+            animationSpriteRenderer.color = fullTransparencyColor;
         }
     }
 }

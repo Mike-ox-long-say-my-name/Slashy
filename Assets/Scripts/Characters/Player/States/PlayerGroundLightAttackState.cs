@@ -1,4 +1,5 @@
-﻿using Core.Characters;
+﻿using Attacks;
+using Core.Attacking;
 
 namespace Characters.Player.States
 {
@@ -13,15 +14,15 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            Context.AnimatorComponent.SetTrigger("attack");
+            Context.Movement.Stop();
 
-            Context.Movement.ResetXZVelocity();
-            Context.PlayerCharacter.SpendStamina(Context.PlayerConfig.LightAttackFirstStaminaCost);
+            Context.AnimatorComponent.SetTrigger("attack");
+            Context.Character.SpendStamina(Context.PlayerConfig.LightAttackFirstStaminaCost);
 
             _currentAttack = 1;
             _shouldContinueAttack = false;
 
-            Context.LightAttackFirst.StartExecution(Context.PlayerCharacter, AttackEndedFirst);
+            Context.LightMonoAttackFirst.StartAttack(AttackEndedFirst);
         }
 
         private void AttackEndedFirst(bool interrupted)
@@ -29,8 +30,8 @@ namespace Characters.Player.States
             if (!interrupted && _shouldContinueAttack)
             {
                 _currentAttack = 2;
-                Context.PlayerCharacter.SpendStamina(Context.PlayerConfig.LightAttackSecondStaminaCost);
-                Context.LightAttackSecond.StartExecution(Context.PlayerCharacter, AttackEndedSecond);
+                Context.Character.SpendStamina(Context.PlayerConfig.LightAttackSecondStaminaCost);
+                Context.LightMonoAttackSecond.StartAttack(AttackEndedSecond);
             }
             else
             {
@@ -40,7 +41,7 @@ namespace Characters.Player.States
 
         public override void UpdateState()
         {
-            if (!_shouldContinueAttack && Context.PlayerCharacter.HasStamina && Context.Input.IsLightAttackPressed.CheckAndReset())
+            if (!_shouldContinueAttack && Context.Character.HasStamina() && Context.Input.IsLightAttackPressed)
             {
                 Context.AnimatorComponent.SetTrigger("attack");
                 _shouldContinueAttack = true;
@@ -59,18 +60,29 @@ namespace Characters.Player.States
             }
         }
 
-        public override void InterruptState(CharacterInterruption interruption)
+        private void InterruptCurrentAttack()
         {
             switch (_currentAttack)
             {
                 case 1:
-                    Context.LightAttackFirst.InterruptAttack();
+                    Context.LightMonoAttackFirst.InterruptAttack();
                     break;
                 case 2:
-                    Context.LightAttackSecond.InterruptAttack();
+                    Context.LightMonoAttackSecond.InterruptAttack();
                     break;
             }
-            base.InterruptState(interruption);
+        }
+
+        public override void OnDeath(HitInfo info)
+        {
+            InterruptCurrentAttack();
+            base.OnDeath(info);
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
+            InterruptCurrentAttack();
+            base.OnStaggered(info);
         }
     }
 }

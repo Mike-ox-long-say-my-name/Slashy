@@ -8,8 +8,7 @@ namespace Characters.Player.States
 
         public override void UpdateState()
         {
-            HandleGravity();
-            HandleAirboneControl();
+            HandleControl();
 
             CheckStateSwitch();
         }
@@ -18,10 +17,9 @@ namespace Characters.Player.States
         {
             if (Context.Movement.IsGrounded)
             {
-                Context.Movement.ResetXZVelocity();
                 SwitchState(Factory.Grounded());
             }
-            else if (Context.CanAttack && Context.CanStartAttack && Context.Input.IsLightAttackPressed.CheckAndReset())
+            else if (Context.CanAttack && Context.CanStartAttack && Context.Input.IsLightAttackPressed)
             {
                 Context.Input.ResetBufferedInput();
                 // TODO: SwitchState(Factory.AirLightAttack());

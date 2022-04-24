@@ -1,12 +1,12 @@
-using Attacking;
+using Attacks;
 using Core.Characters;
 using UnityEngine;
 
 namespace Characters.Enemies
 {
-    public class TestEnemy : Character
+    public class TestEnemy : MonoCharacter
     {
-        [SerializeField] private AttackExecutor attackExecutor;
+        [SerializeField] private MonoAttackHandler monoAttackHandler;
 
         protected override void Awake()
         {
@@ -16,9 +16,9 @@ namespace Characters.Enemies
 
         private void DoAttack()
         {
-            if (!attackExecutor.IsAttacking)
+            if (!monoAttackHandler.Executor.IsAttacking)
             {
-                attackExecutor.StartExecution(this);
+                monoAttackHandler.Executor.StartAttack(null);
             }
         }
     }

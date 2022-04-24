@@ -1,4 +1,5 @@
 using System;
+using Core.Attacking;
 using Core.Characters;
 
 namespace Characters.Player.States
@@ -19,27 +20,9 @@ namespace Characters.Player.States
             Context.AnimatorComponent.SetBool("is-airbone", false);
         }
 
-        protected void HandleGravity()
+        public override void OnStaggered(HitInfo info)
         {
-            Context.Movement.ApplyGravity();
-        }
-
-        protected void HandleAirboneControl()
-        {
-            Context.Movement.Move(Context.Input.MoveInput);
-        }
-
-        public override void InterruptState(CharacterInterruption interruption)
-        {
-            switch (interruption.Type)
-            {
-                case CharacterInterruptionType.Staggered:
-                    SwitchState(Factory.AirboneStagger());
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(interruption), interruption,
-                        $"Invalid interruption for state {this}");
-            }
+            SwitchState(Factory.AirboneStagger());
         }
     }
 }

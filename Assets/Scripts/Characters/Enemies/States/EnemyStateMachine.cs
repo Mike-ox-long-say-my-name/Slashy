@@ -1,4 +1,5 @@
 ﻿using Characters.Player;
+using Core.Attacking;
 using Core.Characters;
 using UnityEngine;
 
@@ -8,37 +9,26 @@ namespace Characters.Enemies.States
     {
         public EnemyBaseState<T> CurrentState { get; set; }
 
-        [SerializeField] private Character character;
-        [SerializeField] private CharacterMovement characterMovement;
+        public ICharacter Character { get; private set; }
+        public ICharacterMovement Movement => Character.Movement;
+        public IPushable Pushable => Character.Pushable;
+        public IHurtbox Hurtbox { get; private set; }
 
-        public Character Character => character;
-        public CharacterMovement Movement => characterMovement;
-        public BasePlayerData PlayerData => PlayerManager.Instance.PlayerData;
-        public Vector3 PlayerPosition => PlayerData.Movement.transform.position;
+        public IPlayer Player => PlayerManager.Instance.Player;
+        public Vector3 PlayerPosition => Player.Character.Movement.Transform.position;
 
         protected abstract EnemyBaseState<T> StartState();
 
-        protected virtual void Awake()
+        protected virtual void Start()
         {
-            if (Character == null)
-            {
-                Debug.LogWarning("Character is not assigned", this);
-                enabled = false;
-            }
-            if (characterMovement == null)
-            {
-                Debug.LogWarning("Character Movement is not assigned", this);
-                enabled = false;
-            }
-            else
-            {
-                character.OnHitReceived.AddListener((source, info) => 
-                    CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Hit, info.HitSource)));
-                character.OnStaggered.AddListener(() =>
-                    CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Staggered, null)));
-                character.OnDeath.AddListener(() => 
-                    CurrentState.InterruptState(new CharacterInterruption(CharacterInterruptionType.Death, null)));
-            }
+            Hurtbox = GetComponent<IMonoHurtbox>()?.Native;
+            var character = GetComponent<IMonoCharacter>();
+
+            character.OnHitReceivedExclusive.AddListener((_, info) => CurrentState.OnHitReceived(info));
+            character.OnStaggered.AddListener((_, info) => CurrentState.OnStaggered(info));
+            character.OnDeath.AddListener((_, info) => CurrentState.OnDeath(info));
+
+            Character = character.Native;
 
             CurrentState = StartState();
             CurrentState.EnterState();

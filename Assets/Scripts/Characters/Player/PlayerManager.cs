@@ -1,23 +1,24 @@
-﻿using Core;
+﻿using Characters.Player.States;
+using Core;
 using UnityEngine;
 
 namespace Characters.Player
 {
     public class PlayerManager : PublicSingleton<PlayerManager>
     {
-        private BasePlayerData _playerData;
+        private IPlayer _playerData;
 
-        public BasePlayerData PlayerData
+        public IPlayer Player
         {
             get
             {
-                if (_playerData != null)
+                if ((Object)_playerData != null)
                 {
                     return _playerData;
                 }
+                _playerData = FindObjectOfType<PlayerStateMachine>();
 
-                _playerData = FindObjectOfType<BasePlayerData>();
-                if (_playerData == null)
+                if ((Object)_playerData == null)
                 {
                     Debug.LogError("No player found", this);
                 }

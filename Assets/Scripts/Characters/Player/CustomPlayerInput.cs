@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Characters.Player
 {
-    public class CustomPlayerInput : MonoBehaviour
+    public class CustomPlayerInput : MonoBehaviour, IAutoPlayerInput
     {
         [SerializeField, Min(0)] private float jumpInputWaitTime = 0.2f;
         [SerializeField, Min(0)] private float dashInputWaitTime = 0.2f;
@@ -14,10 +14,15 @@ namespace Characters.Player
 
         private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
 
-        public TimedTrigger IsJumpPressed { get; private set; }
-        public TimedTrigger IsDashPressed { get; private set; }
-        public TimedTrigger IsLightAttackPressed { get; private set; }
-        public TimedTrigger IsHealPressed { get; private set; }
+        public TimedTrigger IsJumpPressedTrigger { get; private set; }
+        public TimedTrigger IsDashPressedTrigger { get; private set; }
+        public TimedTrigger IsLightAttackPressedTrigger { get; private set; }
+        public TimedTrigger IsHealPressedTrigger { get; private set; }
+
+        public bool IsJumpPressed => IsJumpPressedTrigger.IsSet;
+        public bool IsDashPressed => IsDashPressedTrigger.IsSet;
+        public bool IsLightAttackPressed => IsLightAttackPressedTrigger.IsSet;
+        public bool IsHealPressed => IsHealPressedTrigger.IsSet;
 
         public Vector2 MoveInput { get; private set; }
 
@@ -36,10 +41,10 @@ namespace Characters.Player
 
         private void Awake()
         {
-            IsJumpPressed = _triggerFactory.Create();
-            IsDashPressed = _triggerFactory.Create();
-            IsLightAttackPressed = _triggerFactory.Create();
-            IsHealPressed = _triggerFactory.Create();
+            IsJumpPressedTrigger = _triggerFactory.Create();
+            IsDashPressedTrigger = _triggerFactory.Create();
+            IsLightAttackPressedTrigger = _triggerFactory.Create();
+            IsHealPressedTrigger = _triggerFactory.Create();
 
             ConnectToUnityInput();
         }
@@ -62,25 +67,25 @@ namespace Characters.Player
         private void OnJump(InputAction.CallbackContext context)
         {
             ResetBufferedInput();
-            IsJumpPressed.SetFor(jumpInputWaitTime);
+            IsJumpPressedTrigger.SetFor(jumpInputWaitTime);
         }
 
         private void OnDash(InputAction.CallbackContext context)
         {
             ResetBufferedInput();
-            IsDashPressed.SetFor(dashInputWaitTime);
+            IsDashPressedTrigger.SetFor(dashInputWaitTime);
         }
 
         private void OnAttack(InputAction.CallbackContext context)
         {
             ResetBufferedInput();
-            IsLightAttackPressed.SetFor(attackInputWaitTime);
+            IsLightAttackPressedTrigger.SetFor(attackInputWaitTime);
         }
 
         private void OnHeal(InputAction.CallbackContext context)
         {
             ResetBufferedInput();
-            IsHealPressed.SetFor(healInputWaitTime);
+            IsHealPressedTrigger.SetFor(healInputWaitTime);
         }
     }
 }

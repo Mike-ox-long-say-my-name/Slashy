@@ -1,4 +1,4 @@
-using Core.Characters;
+using Core.Attacking;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -14,6 +14,13 @@ namespace Characters.Player.States
             Factory = factory;
         }
 
+        protected virtual void HandleControl()
+        {
+            var input = Context.Input.MoveInput;
+            var move = new Vector3(input.x, 0, input.y);
+            Context.Movement.Move(move.normalized);
+        }
+
         public virtual void EnterState()
         {
         }
@@ -26,7 +33,15 @@ namespace Characters.Player.States
         {
         }
 
-        public virtual void InterruptState(CharacterInterruption interruption)
+        public virtual void OnDeath(HitInfo info)
+        {
+        }
+
+        public virtual void OnHitReceived(HitInfo info)
+        {
+        }
+
+        public virtual void OnStaggered(HitInfo info)
         {
         }
 

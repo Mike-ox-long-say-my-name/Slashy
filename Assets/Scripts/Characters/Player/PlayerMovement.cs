@@ -3,42 +3,44 @@ using UnityEngine;
 
 namespace Characters.Player
 {
-    public class PlayerMovement : CharacterMovement
+    public class PlayerMovement : CharacterMovement, IPlayerMovement
     {
-        [SerializeField, Min(0)] private float jumpStartVelocity = 5;
-        [SerializeField, Range(0, 1)] private float airboneControlFactor;
+        public IPushable Pushable { get; }
 
+        private readonly IPlayerMovementConfig _config;
         private float _horizontalAirboneVelocity, _verticalAirboneVelocity;
-
-        private void MoveAirbone(Vector2 input)
+        
+        public PlayerMovement(CharacterController controller, IPlayerMovementConfig config) : base(controller, config)
         {
-            var velocity = Velocity;
-            velocity.x = Mathf.SmoothDamp(velocity.x, HorizontalSpeed * input.x,
-                ref _horizontalAirboneVelocity, airboneControlFactor);
-            velocity.z = Mathf.SmoothDamp(velocity.z, VerticalSpeed * input.y,
-                ref _verticalAirboneVelocity, airboneControlFactor);
-            Velocity = velocity;
-
-            Rotate(input.x);
+            _config = config;
+            Pushable = new Pushable(this);
         }
 
-        public override void Move(Vector2 input)
+        private void MoveAirbone(Vector3 direction)
+        {
+            Velocity.x = Mathf.SmoothDamp(Velocity.x, _config.HorizontalSpeed * direction.x,
+                ref _horizontalAirboneVelocity, _config.AirboneControlFactor);
+            Velocity.z = Mathf.SmoothDamp(Velocity.z, _config.VerticalSpeed * direction.z,
+                ref _verticalAirboneVelocity, _config.AirboneControlFactor);
+
+            Rotate(direction.x);
+        }
+
+        public override void Move(Vector3 direction)
         {
             if (IsGrounded)
             {
-                base.Move(input);
+                base.Move(direction);
             }
             else
             {
-                MoveAirbone(input);
+                MoveAirbone(direction);
             }
         }
 
         public void Jump()
         {
-            var velocity = Velocity;
-            velocity.y = jumpStartVelocity;
-            Velocity = velocity;
+            Velocity.y = _config.JumpStartVelocity;
         }
     }
 }

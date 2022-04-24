@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Core.Characters;
+using Core.Attacking;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -14,19 +14,23 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            Context.Movement.ResetXZVelocity();
+            Context.Movement.Stop();
 
             // TODO: проиграть анимацию хилирования + привязать к ней задержку
             // Context.AnimatorComponent.SetTrigger("heal");
 
             _healRoutine = Context.StartCoroutine(
-                HealRoutine(Context.PlayerCharacter, Context.PlayerConfig.ActiveHealRate, Context.PlayerConfig.HealStaminaConsumption));
+                HealRoutine(
+                    Context.Character,
+                    Context.PlayerConfig.ActiveHealRate,
+                    Context.PlayerConfig.HealStaminaConsumption)
+                );
         }
 
-        public override void InterruptState(CharacterInterruption interruption)
+        public override void OnStaggered(HitInfo info)
         {
             Context.StopCoroutine(_healRoutine);
-            base.InterruptState(interruption);
+            base.OnStaggered(info);
         }
 
         public override void UpdateState()
@@ -48,7 +52,7 @@ namespace Characters.Player.States
             SwitchState(Factory.Grounded());
         }
 
-        private IEnumerator HealRoutine(PlayerCharacter player, float healRate, float staminaConsumptionRate)
+        private IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)
         {
             while (player.Health.Value < player.Health.MaxValue)
             {

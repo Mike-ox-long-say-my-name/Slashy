@@ -4,19 +4,19 @@ namespace Core.Characters
 {
     public abstract class BaseCharacterResource : ICharacterResource
     {
-        public Character Character { get; }
+        public ICharacter Character { get; }
 
         public float MaxValue { get; }
         public float Value { get; protected set; }
 
-        protected BaseCharacterResource(Character character, float maxValue, float startValue)
+        protected BaseCharacterResource(ICharacter character, float maxValue, float startValue)
         {
             Character = character;
             MaxValue = maxValue;
             Value = startValue;
         }
 
-        protected BaseCharacterResource(Character character, float maxValue) : this(character, maxValue, maxValue)
+        protected BaseCharacterResource(ICharacter character, float maxValue) : this(character, maxValue, maxValue)
         {
         }
 

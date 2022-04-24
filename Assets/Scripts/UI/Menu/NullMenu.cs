@@ -1,4 +1,5 @@
 ﻿using Core;
+using UnityEngine;
 
 namespace UI.Menu
 {
@@ -13,5 +14,9 @@ namespace UI.Menu
         public void ShowSubMenu(IMenu subMenu) => Report();
 
         public void OnSubMenuClosed(IMenu subMenu) => Report();
+
+        public NullMenu(Object context) : base(context)
+        {
+        }
     }
 }

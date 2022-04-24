@@ -51,11 +51,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdda5cbebf644bb4c8fb5b11ce8590ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
   onHitReceived:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7908643522208775509}
-        m_TargetAssemblyTypeName: DamageTakenParticles, Assembly-CSharp
+        m_TargetAssemblyTypeName: Effects.DamageTakenParticles, Effects
         m_MethodName: OnHitReceived
         m_Mode: 0
         m_Arguments:
@@ -67,7 +70,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1064989014271854016}
-        m_TargetAssemblyTypeName: DamageTakenAnimator, Assembly-CSharp
+        m_TargetAssemblyTypeName: Effects.DamageTakenAnimator, Effects
         m_MethodName: OnHitReceived
         m_Mode: 0
         m_Arguments:
@@ -78,11 +81,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  <OnHealthChanged>k__BackingField:
+  onHitReceivedExclusive:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 250
-  canDie: 0
+  onStaggered:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  movementConfig: {fileID: 11400000, guid: 4134a00af62dcf04e90ad7da87885ff9, type: 2}
+  characterStats: {fileID: 11400000, guid: a8ac0e164dc33f644af321206472867a, type: 2}
 --- !u!212 &4556132590720217570
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -284,11 +293,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4556132591540151204}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78c46c62975f1c44842abbfbe9e5c2f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c63591abacf43049a32b2381cc006fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitboxCollider: {fileID: 4234118905478573163}
-  entity: {fileID: 4556132590720217569}
+  colliders:
+  - {fileID: 4234118905478573163}
 --- !u!1001 &363728515908805146
 PrefabInstance:
   m_ObjectHideFlags: 0

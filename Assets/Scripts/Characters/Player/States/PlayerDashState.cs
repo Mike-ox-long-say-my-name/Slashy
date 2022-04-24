@@ -1,4 +1,5 @@
 using System.Collections;
+using Core.Attacking;
 using Core.Characters;
 using UnityEngine;
 
@@ -14,9 +15,11 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
+            Context.Movement.Stop();
+
             Context.AnimatorComponent.SetBool("is-dashing", true);
 
-            Context.PlayerCharacter.SpendStamina(Context.PlayerConfig.DashStaminaCost);
+            Context.Character.SpendStamina(Context.PlayerConfig.DashStaminaCost);
             var direction = new Vector3(Context.Input.MoveInput.x, 0, Context.Input.MoveInput.y);
             Dash(direction);
         }
@@ -24,22 +27,24 @@ namespace Characters.Player.States
         public override void ExitState()
         {
             Context.AnimatorComponent.SetBool("is-dashing", false);
-
-            Context.Movement.ResetXZVelocity();
             Context.StartCoroutine(RecoverFromDashRoutine(Context.PlayerConfig.DashRecovery));
         }
 
-        public override void InterruptState(CharacterInterruption interruption)
+        public override void OnDeath(HitInfo info)
         {
             Context.StopCoroutine(_dashRoutine);
-            base.InterruptState(interruption);
+            base.OnDeath(info);
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
+            Context.StopCoroutine(_dashRoutine);
+            base.OnStaggered(info);
         }
 
         private void Dash(Vector3 direction)
         {
-            Context.Movement.ResetXZVelocity();
-
-            IEnumerator DashCoroutine(CharacterMovement movement, float dashTime, Vector3 targetMove)
+            IEnumerator DashCoroutine(IRawMovement movement, float dashTime, Vector3 targetMove)
             {
                 var passedTime = 0f;
                 while (passedTime < dashTime)
@@ -98,7 +103,7 @@ namespace Characters.Player.States
             Context.IsInvincible = true;
             if (Context.HasHurtbox)
             {
-                Context.HurtboxComponent.Disable();
+                Context.Hurtbox.Disable();
             }
         }
 
@@ -107,7 +112,7 @@ namespace Characters.Player.States
             Context.IsInvincible = false;
             if (Context.HasHurtbox)
             {
-                Context.HurtboxComponent.Enable();
+                Context.Hurtbox.Enable();
             }
         }
     }

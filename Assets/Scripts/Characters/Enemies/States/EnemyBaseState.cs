@@ -1,4 +1,4 @@
-﻿using Core.Characters;
+﻿using Core.Attacking;
 
 namespace Characters.Enemies.States
 {
@@ -27,7 +27,17 @@ namespace Characters.Enemies.States
         {
         }
 
-        public abstract void InterruptState(CharacterInterruption interruption);
+        public virtual void OnDeath(HitInfo info)
+        {
+        }
+
+        public virtual void OnHitReceived(HitInfo info)
+        {
+        }
+
+        public virtual void OnStaggered(HitInfo info)
+        {
+        }
 
         protected virtual void SwitchState<TState>() where TState : EnemyBaseState<TContext>, new()
         {

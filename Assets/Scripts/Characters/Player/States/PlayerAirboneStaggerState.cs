@@ -22,8 +22,6 @@ namespace Characters.Player.States
 
         public override void UpdateState()
         {
-            HandleGravity();
-
             CheckStateSwitch();
         }
 
@@ -36,7 +34,7 @@ namespace Characters.Player.States
         {
             if (Context.Movement.IsGrounded && _recoverFromStaggerFallRoutine == null)
             {
-                Context.Movement.ResetXZVelocity();
+                Context.Movement.Stop();
                 _recoverFromStaggerFallRoutine =
                     Context.StartCoroutine(RecoverFromStaggerFall(Context.PlayerConfig.StaggerFallTime));
             }

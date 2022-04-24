@@ -44,16 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitbox: {fileID: 812809746819271581}
-  eventDispatcher: {fileID: 812809748605883917}
+  isEnvironmental: 0
   damageInfo:
     damage: 15
     balanceDamage: 7
     pushStrength: 1.5
     staggerTime: 0.3
   moveDistance: 0.4
-  playerMovement: {fileID: 239362066797731850}
-  customPlayerInput: {fileID: 4950135374432913508}
 --- !u!1 &812809746819271580
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +92,7 @@ BoxCollider:
   m_GameObject: {fileID: 812809746819271580}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.76, y: 1, z: 1.7}
   m_Center: {x: 0, y: 0, z: 0}
@@ -108,12 +105,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 812809746819271580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b70f61fe1978c3b419c0cda58ed3cb8b, type: 3}
+  m_Script: {fileID: 11500000, guid: 853873c8992799b4aab768b3f2403005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitboxCollider: {fileID: 812809746819271582}
+  colliders:
+  - {fileID: 812809746819271582}
   disableOnAwake: 1
-  ignored: {fileID: 812809748674757410}
+  ignored:
+  - {fileID: 7872327175356220165}
 --- !u!1 &812809748012681076
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +154,7 @@ BoxCollider:
   m_GameObject: {fileID: 812809748012681076}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.74, y: 0.81, z: 1.7}
   m_Center: {x: 0, y: 0, z: 0}
@@ -168,12 +167,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 812809748012681076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b70f61fe1978c3b419c0cda58ed3cb8b, type: 3}
+  m_Script: {fileID: 11500000, guid: 853873c8992799b4aab768b3f2403005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitboxCollider: {fileID: 812809748012681079}
+  colliders:
+  - {fileID: 812809748012681079}
   disableOnAwake: 1
-  ignored: {fileID: 812809748674757410}
+  ignored:
+  - {fileID: 7872327175356220165}
 --- !u!1 &812809748315871440
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,16 +219,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitbox: {fileID: 812809748012681078}
-  eventDispatcher: {fileID: 812809748605883917}
+  isEnvironmental: 0
   damageInfo:
     damage: 10
     balanceDamage: 5
     pushStrength: 1
     staggerTime: 0.3
   moveDistance: 0.4
-  playerMovement: {fileID: 239362066797731850}
-  customPlayerInput: {fileID: 4950135374432913508}
 --- !u!1 &812809748605883924
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,15 +238,13 @@ GameObject:
   - component: {fileID: 812809748605883926}
   - component: {fileID: 812809748605883925}
   - component: {fileID: 812809748605883913}
-  - component: {fileID: 812809748605883914}
-  - component: {fileID: 239362066797731850}
   - component: {fileID: 812809748605883917}
   - component: {fileID: 812809748605883912}
   - component: {fileID: 812809748605883918}
   - component: {fileID: 812809748605883904}
   - component: {fileID: 1318077341606312975}
   - component: {fileID: 4950135374432913508}
-  - component: {fileID: 1976880865382898707}
+  - component: {fileID: 2771107643404270013}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -365,108 +361,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &812809748605883914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812809748605883924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d8406f2d5f35d040b2ce7a1ff501403, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onHitReceived:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5487920448527286980}
-        m_TargetAssemblyTypeName: DamageTakenAnimator, Assembly-CSharp
-        m_MethodName: OnHitReceived
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 7629969459913761650}
-        m_TargetAssemblyTypeName: Effects.DamageTakenParticles, Effects
-        m_MethodName: OnHitReceived
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onHealthChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ResourceBar, Assembly-CSharp
-        m_MethodName: OnResourceValueChanged
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onStaggered:
-    m_PersistentCalls:
-      m_Calls: []
-  onDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  maxHealth: 150
-  maxBalance: 10
-  freezeHealth: 0
-  canDie: 1
-  <OnStaminaChanged>k__BackingField:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ResourceBar, Assembly-CSharp
-        m_MethodName: OnResourceValueChanged
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  config: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
-  freezeStamina: 0
-  maxStamina: 50
---- !u!114 &239362066797731850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812809748605883924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66665ee63782d1042bc15509307cfaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gravity: -9.81
-  groundedGravity: -0.5
-  horizontalSpeed: 5
-  verticalSpeed: 5
-  maxVelocity: 20
-  minVelocity: -20
-  jumpStartVelocity: 5
-  airboneControlFactor: 0.7
 --- !u!114 &812809748605883917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,6 +518,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: dad76ca6-b2f1-4017-aeda-89f2504072be
     m_ActionName: Player/Heal[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: be67204b-ea64-4e5e-bffe-13979df684fc
+    m_ActionName: UI/Menu[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -704,15 +602,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followingCamera: {fileID: 0}
   followSmoothTime: 0.3
-  customPlayerInput: {fileID: 4950135374432913508}
-  playerMovement: {fileID: 239362066797731850}
-  playerCharacter: {fileID: 812809748605883914}
-  lightAttackFirst: {fileID: 27388021579594124}
-  lightAttackSecond: {fileID: 1161144045783392307}
-  spriteRenderer: {fileID: 812809748605883926}
-  dashEffectController: {fileID: 6001828107465577190}
-  animator: {fileID: 812809748605883913}
-  hurtbox: {fileID: 812809748674757410}
+  lightMonoAttackFirst: {fileID: 27388021579594124}
+  lightMonoAttackSecond: {fileID: 1161144045783392307}
   playerConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
 --- !u!114 &4950135374432913508
 MonoBehaviour:
@@ -726,12 +617,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db83ca47ab8ea44daa14b533af357aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unityInput: {fileID: 812809748605883912}
   jumpInputWaitTime: 0.2
   dashInputWaitTime: 0.2
   attackInputWaitTime: 0.4
   healInputWaitTime: 0.4
---- !u!114 &1976880865382898707
+--- !u!114 &2771107643404270013
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -740,11 +630,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 812809748605883924}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 583a741cca6b5d04da6e8eaae121643e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d8406f2d5f35d040b2ce7a1ff501403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushFactor: 1
-  dampening: 0.2
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onHitReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5487920448527286980}
+        m_TargetAssemblyTypeName: Effects.DamageTakenAnimator, Effects
+        m_MethodName: OnHitReceived
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7629969459913761650}
+        m_TargetAssemblyTypeName: Effects.DamageTakenParticles, Effects
+        m_MethodName: OnHitReceived
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHitReceivedExclusive:
+    m_PersistentCalls:
+      m_Calls: []
+  onStaggered:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onStaminaChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  stats: {fileID: 11400000, guid: 1c12ad17d6bddbb46ab588dd090c54a7, type: 2}
+  config: {fileID: 11400000, guid: 02ef6402b53e6cf4ba9e17506dc07f09, type: 2}
 --- !u!1 &812809748674757408
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,10 +687,10 @@ GameObject:
   m_Component:
   - component: {fileID: 812809748674757409}
   - component: {fileID: 812809748674757411}
-  - component: {fileID: 812809748674757410}
-  - component: {fileID: 812809748674757412}
+  - component: {fileID: 4842745369504938378}
+  - component: {fileID: 7872327175356220165}
   m_Layer: 9
-  m_Name: PlauyerHurtbox
+  m_Name: PlayerHurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -791,21 +723,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &812809748674757410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812809748674757408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78c46c62975f1c44842abbfbe9e5c2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitboxCollider: {fileID: 812809748674757411}
-  entity: {fileID: 812809748605883914}
---- !u!54 &812809748674757412
+--- !u!54 &4842745369504938378
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -816,11 +734,24 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7872327175356220165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812809748674757408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c63591abacf43049a32b2381cc006fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders: []
 --- !u!1 &6529360737305819375
 GameObject:
   m_ObjectHideFlags: 0

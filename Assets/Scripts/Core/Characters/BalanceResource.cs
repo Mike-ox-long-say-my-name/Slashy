@@ -2,11 +2,11 @@
 {
     public class BalanceResource : BaseCharacterResource
     {
-        public BalanceResource(Character character, float maxValue, float startValue) : base(character, maxValue, startValue)
+        public BalanceResource(ICharacter character, float maxValue, float startValue) : base(character, maxValue, startValue)
         {
         }
 
-        public BalanceResource(Character character, float maxValue) : base(character, maxValue)
+        public BalanceResource(ICharacter character, float maxValue) : base(character, maxValue)
         {
         }
     }

@@ -11,11 +11,11 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
+            Context.Movement.Stop();
+
             Context.AnimatorComponent.SetBool("is-staggered", true);
 
             Context.Input.ResetBufferedInput();
-            Context.Movement.ResetXZVelocity();
-
             Context.StartCoroutine(RecoverRoutine(Context.PlayerConfig.StaggerTime));
         }
 

@@ -1,51 +1,52 @@
-﻿using Attacking;
-using Core;
+﻿using Attacks;
+using Core.Attacking;
+using Core.Characters;
 using UnityEngine;
 
 namespace Characters.Player
 {
-    public class PlayerLightAttackExecutor : StandaloneAnimationAttackExecutor
+    public class PlayerLightAttackExecutor : MonoAnimationAttackExecutor
     {
+        private struct AttackContext
+        {
+            public IAutoPlayerInput Input { get; set; }
+            public IPlayerMovement Movement { get; set; }
+            public float MoveDistance { get; set; }
+        }
+
+        private class PlayerLightAttack : AnimationAttackExecutor
+        {
+            private readonly AttackContext _context;
+
+            public PlayerLightAttack(AttackContext context, ICoroutineHost host, IAttackbox attackbox) : base(host, attackbox)
+            {
+                _context = context;
+            }
+
+            public override void OnEnableHitbox()
+            {
+                base.OnEnableHitbox();
+                var inputX = _context.Input.MoveInput.x;
+                _context.Movement.Rotate(inputX);
+
+                var direction = _context.Movement.Transform.right;
+                _context.Movement.MoveRaw(direction * _context.MoveDistance);
+            }
+        }
+
         [SerializeField, Min(0)] private float moveDistance = 0.4f;
-        [SerializeField] private PlayerMovement playerMovement;
-        [SerializeField] private CustomPlayerInput customPlayerInput;
 
-        private bool _hasInput = true;
-
-        private void Awake()
+        protected override IAttackExecutor CreateExecutor(ICoroutineHost host, IAttackbox attackbox)
         {
-            if (playerMovement == null)
+            var playerMovement = GetComponentInParent<IMonoPlayerMovement>()?.Movement;
+            var playerInput = GetComponentInParent<IAutoPlayerInput>();
+            var context = new AttackContext
             {
-                Debug.LogWarning("Player Movement is not assigned", this);
-                enabled = false;
-            }
-
-            if (customPlayerInput == null)
-            {
-                Debug.LogWarning("Player Input is not assigned", this);
-                _hasInput = false;
-            }
-        }
-
-        protected override void OnShouldEnableHitbox(IHitSource source)
-        {
-            base.OnShouldEnableHitbox(source);
-            
-            if (_hasInput)
-            {
-                var inputX = customPlayerInput.MoveInput.x;
-                playerMovement.Rotate(inputX);
-            }
-
-            var direction = playerMovement.transform.right;
-            playerMovement.MoveRaw(direction * moveDistance);
-        }
-
-        protected override void OnShouldDisableHitbox(IHitSource source)
-        {
-            base.OnShouldDisableHitbox(source);
-
-            playerMovement.ResetXZVelocity();
+                Input = playerInput,
+                Movement = playerMovement,
+                MoveDistance = moveDistance
+            };
+            return new PlayerLightAttack(context, host, attackbox);
         }
     }
 }

@@ -1,89 +1,83 @@
-﻿using System;
-using Core.Utilities;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core.Characters
 {
-    [RequireComponent(typeof(CharacterController))]
-    public class CharacterMovement : MonoBehaviour
+    public class CharacterMovement : ICharacterMovement
     {
-        [SerializeField] private float gravity = -9.81f;
-        [SerializeField] private float groundedGravity = -0.5f;
-        [SerializeField] private float horizontalSpeed = 5f;
-        [SerializeField] private float verticalSpeed = 5f;
-        [SerializeField] private float maxVelocity = 20;
-        [SerializeField] private float minVelocity = -20;
+        public Transform Transform { get; }
+        public CharacterController Controller { get; }
 
-        private CharacterController _characterController;
-        
-        private Vector3 _velocity;
+        protected Vector3 Velocity;
+        Vector3 ICharacterMovement.Velocity => Velocity;
 
-        public Vector3 Velocity
+        private readonly ICharacterMovementConfig _config;
+        private readonly IPushable _pushable;
+
+        public CharacterMovement(CharacterController controller, ICharacterMovementConfig config)
         {
-            get => _velocity;
-            set => _velocity = value;
+            Controller = controller;
+            Transform = controller.transform;
+            _config = config;
+            _pushable = new Pushable(this);
         }
 
-        public bool IsGrounded => _characterController.isGrounded;
-
-        public float HorizontalSpeed => horizontalSpeed;
-
-        public float VerticalSpeed => verticalSpeed;
-
-        protected virtual void Awake()
+        public void MoveRaw(Vector3 move)
         {
-            _characterController = GetComponent<CharacterController>();
+            Controller.Move(move);
         }
 
-        public virtual void ApplyGravity()
+        public void SetPosition(Vector3 position)
         {
-            _velocity.y += (IsGrounded ? groundedGravity : gravity) * Time.deltaTime;
+            Controller.enabled = false;
+            Transform.position = position;
+            Controller.enabled = true;
         }
 
-        private void ClampVelocity()
+        public bool IsGrounded => Controller.isGrounded;
+        public bool IsFalling => Velocity.y < 0;
+
+        public virtual void Move(Vector3 direction)
         {
-            _velocity.x = Mathf.Clamp(_velocity.x, minVelocity, maxVelocity);
-            _velocity.y = Mathf.Clamp(_velocity.y, minVelocity, maxVelocity);
-            _velocity.z = Mathf.Clamp(_velocity.z, minVelocity, maxVelocity);
+            Velocity.x = direction.x * _config.HorizontalSpeed;
+            Velocity.z = direction.z * _config.VerticalSpeed;
+        }
+
+        public virtual void Stop()
+        {
+            Velocity.x = 0;
+            Velocity.z = 0;
         }
 
         public virtual void Rotate(float direction)
         {
             if (Mathf.Abs(direction) > 0)
             {
-                transform.eulerAngles = new Vector3(0, direction > 0 ? 0 : 180, 0);
+                Transform.eulerAngles = new Vector3(0, direction > 0 ? 0 : 180, 0);
             }
         }
 
-        public virtual void Move(Vector2 input)
+        public virtual void Tick(float deltaTime)
         {
-            _velocity.x = horizontalSpeed * input.x;
-            _velocity.z = verticalSpeed * input.y;
-            Rotate(input.x);
-        }
+            if (_pushable.IsPushing)
+            {
+                _pushable.Tick(deltaTime);
+                return;
+            }
 
-        public void ResetXZVelocity()
-        {
-            _velocity.x = 0;
-            _velocity.z = 0;
-        }
-
-        public void MoveRaw(Vector3 move)
-        {
-            _characterController.Move(move);
-        }
-
-        public void SetPosition(Vector3 position)
-        {
-            _characterController.enabled = false;
-            transform.position = position;
-            _characterController.enabled = true;
-        }
-
-        protected virtual void Update()
-        {
+            Velocity.y += (IsGrounded ? _config.GroundedGravity : _config.Gravity) * deltaTime;
             ClampVelocity();
-            MoveRaw(_velocity * Time.deltaTime);
+            MoveRaw(Velocity * deltaTime);
         }
+
+        private void ClampVelocity()
+        {
+            var minVelocity = _config.MinVelocity;
+            var maxVelocity = _config.MaxVelocity;
+
+            Velocity.x = Mathf.Clamp(Velocity.x, minVelocity, maxVelocity);
+            Velocity.y = Mathf.Clamp(Velocity.y, minVelocity, maxVelocity);
+            Velocity.z = Mathf.Clamp(Velocity.z, minVelocity, maxVelocity);
+        }
+
     }
 }

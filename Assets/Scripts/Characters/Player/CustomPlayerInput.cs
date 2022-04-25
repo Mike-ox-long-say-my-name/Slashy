@@ -1,4 +1,5 @@
-﻿using Core.Utilities;
+﻿using Core.Player.Interfaces;
+using Core.Utilities;
 using Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;

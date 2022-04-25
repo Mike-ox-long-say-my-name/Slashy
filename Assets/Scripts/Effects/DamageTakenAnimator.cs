@@ -1,6 +1,7 @@
 using Core.Attacking;
-using Core.Characters;
 using System.Collections;
+using Core.Attacking.Interfaces;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Effects
@@ -22,6 +23,18 @@ namespace Effects
         [SerializeField] private SpriteRenderer animationSpriteRenderer;
 
         private Coroutine _animationRoutine;
+        
+        private void OnEnable()
+        {
+            var character = GetComponentInParent<IMonoCharacter>();
+            character?.OnHitReceived.AddListener(OnHitReceived);
+        }
+
+        private void OnDisable()
+        {
+            var character = GetComponentInParent<IMonoCharacter>();
+            character?.OnHitReceived.RemoveListener(OnHitReceived);
+        }
 
         public void OnHitReceived(IHitReceiver entity, HitInfo info)
         {

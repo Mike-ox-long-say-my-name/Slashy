@@ -1,9 +1,10 @@
-using Attacks;
 using Characters.Enemies.States;
-using Characters.Player;
 using Core.Attacking;
 using Core.Utilities;
 using System.Collections;
+using Core.Attacking.Interfaces;
+using Core.Attacking.Mono;
+using Core.Player.Interfaces;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -60,7 +61,7 @@ namespace Characters.Enemies
 
         public override void OnHitReceived(HitInfo info)
         {
-            if (info.Source.Character is MonoPlayerCharacter)
+            if (info.Source.Character is IPlayerCharacter)
             {
                 SwitchState<ExplodingHollowCharge>();
             }
@@ -68,7 +69,10 @@ namespace Characters.Enemies
 
         public override void OnStaggered(HitInfo info)
         {
-            SwitchState<ExplodingHollowStagger>();
+            if (!(info.Source.Character is IPlayerCharacter))
+            {
+                SwitchState<ExplodingHollowStagger>();
+            }
         }
     }
 
@@ -89,19 +93,25 @@ namespace Characters.Enemies
 
         public override void OnDeath(HitInfo info)
         {
-            Context.PunchAttack.InterruptAttack();
+            if (Context.PunchAttack.IsAttacking)
+            {
+                Context.PunchAttack.InterruptAttack();
+            }
             base.OnDeath(info);
         }
 
         public override void OnStaggered(HitInfo info)
         {
-            Context.PunchAttack.InterruptAttack();
+            if (Context.PunchAttack.IsAttacking)
+            {
+                Context.PunchAttack.InterruptAttack();
+            }
             base.OnStaggered(info);
         }
 
         public override void OnHitReceived(HitInfo info)
         {
-            if (info.Source.Character is IPlayerCharacter)
+            if (info.Source.Character is IPlayerCharacter && Context.PunchAttack.IsAttacking)
             {
                 Context.PunchAttack.InterruptAttack();
             }
@@ -136,6 +146,12 @@ namespace Characters.Enemies
                 return;
             }
 
+            if (Context.DotWhileCharging >= Context.Character.Health.Value)
+            {
+                SwitchState<ExplodingHollowExplosion>();
+                return;
+            }
+
             if (!_started)
             {
                 Context.AnimatorComponent.SetTrigger("charge");
@@ -145,7 +161,6 @@ namespace Characters.Enemies
                 }
                 _started = true;
             }
-
 
             if (_dot.CheckAndReset())
             {
@@ -186,6 +201,8 @@ namespace Characters.Enemies
 
         public override void OnHitReceived(HitInfo info)
         {
+            Debug.LogWarning(info.DamageInfo.damage);
+            Debug.LogWarning(Context.Character.Health.Value);
         }
 
         public override void OnStaggered(HitInfo info)
@@ -266,7 +283,7 @@ namespace Characters.Enemies
         }
     }
 
-    public class ExplodingHollowDeath : ExplodingHollowBaseState
+    public class ExplodingHollowDeath : EnemyBaseState<ExplodingHollow>
     {
         public override void EnterState()
         {
@@ -280,18 +297,6 @@ namespace Characters.Enemies
         {
             yield return new WaitForSeconds(time);
             Object.Destroy(Context.gameObject);
-        }
-
-        public override void OnHitReceived(HitInfo info)
-        {
-        }
-
-        public override void OnStaggered(HitInfo info)
-        {
-        }
-
-        public override void OnDeath(HitInfo info)
-        {
         }
     }
 
@@ -311,8 +316,8 @@ namespace Characters.Enemies
 
         public Animator AnimatorComponent { get; private set; }
 
-        public IAttackExecutor ExplosionAttack => explosionMonoAttackHandler.Executor;
-        public IAttackExecutor PunchAttack => punchMonoAttack.Executor;
+        public IAttackExecutor ExplosionAttack => explosionMonoAttackHandler.Resolve();
+        public IAttackExecutor PunchAttack => punchMonoAttack.Resolve();
 
         public float DotWhileCharging => dotWhileCharging;
         public float DotTickInterval => dotTickInterval;
@@ -326,8 +331,10 @@ namespace Characters.Enemies
             return state;
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             AnimatorComponent = GetComponent<Animator>();
 
             if (AnimatorComponent == null)

@@ -1,6 +1,6 @@
-using System.Collections;
 using Core.Attacking;
-using Core.Characters;
+using Core.Characters.Interfaces;
+using System.Collections;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -101,19 +101,13 @@ namespace Characters.Player.States
         private void EnableInvincibility()
         {
             Context.IsInvincible = true;
-            if (Context.HasHurtbox)
-            {
-                Context.Hurtbox.Disable();
-            }
+            Context.Hurtbox.Disable();
         }
 
         private void DisableInvincibility()
         {
             Context.IsInvincible = false;
-            if (Context.HasHurtbox)
-            {
-                Context.Hurtbox.Enable();
-            }
+            Context.Hurtbox.Enable();
         }
     }
 }

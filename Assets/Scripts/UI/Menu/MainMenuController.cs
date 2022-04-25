@@ -13,8 +13,8 @@ namespace UI.Menu
 
         private void Awake()
         {
-            _mainMenu = FindObjectOfType<MainMenu>() as IMenu ?? new NullMenu<MainMenu>(this);
-            _settingsMenu = FindObjectOfType<SettingsMenu>() as IMenu ?? new NullMenu<SettingsMenu>(this);
+            _mainMenu = FindObjectOfType<MainMenu>();
+            _settingsMenu = FindObjectOfType<SettingsMenu>();
             _gameLoader = GameLoader.Instance;
         }
 

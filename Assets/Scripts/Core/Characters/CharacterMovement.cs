@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Core.Characters.Interfaces;
+using UnityEngine;
 
 namespace Core.Characters
 {
@@ -40,6 +41,8 @@ namespace Core.Characters
         {
             Velocity.x = direction.x * _config.HorizontalSpeed;
             Velocity.z = direction.z * _config.VerticalSpeed;
+
+            Rotate(direction.x);
         }
 
         public virtual void Stop()

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Core.Characters;
+using Core.Attacking.Interfaces;
+using Core.Utilities;
 using UnityEngine;
 
 namespace Core.Attacking

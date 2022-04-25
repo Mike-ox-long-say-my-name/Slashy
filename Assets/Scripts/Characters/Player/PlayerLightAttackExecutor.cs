@@ -1,6 +1,9 @@
-﻿using Attacks;
+﻿using Core;
 using Core.Attacking;
-using Core.Characters;
+using Core.Attacking.Interfaces;
+using Core.Attacking.Mono;
+using Core.Characters.Interfaces;
+using Core.Player.Interfaces;
 using UnityEngine;
 
 namespace Characters.Player
@@ -38,7 +41,7 @@ namespace Characters.Player
 
         protected override IAttackExecutor CreateExecutor(ICoroutineHost host, IAttackbox attackbox)
         {
-            var playerMovement = GetComponentInParent<IMonoPlayerMovement>()?.Movement;
+            var playerMovement = GetComponentInParent<IMonoPlayerCharacter>()?.Resolve()?.Movement;
             var playerInput = GetComponentInParent<IAutoPlayerInput>();
             var context = new AttackContext
             {

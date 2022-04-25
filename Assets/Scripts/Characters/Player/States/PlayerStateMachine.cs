@@ -1,16 +1,17 @@
-using Attacks;
 using Configs;
-using Core.Attacking;
-using Core.Characters;
 using Core.Utilities;
 using Effects;
 using System.Collections;
+using Core.Attacking.Interfaces;
+using Core.Attacking.Mono;
+using Core.Characters.Interfaces;
+using Core.Player.Interfaces;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Characters.Player.States
 {
-    public class PlayerStateMachine : MonoBehaviour, IPlayer
+    public class PlayerStateMachine : MonoBehaviour, IMonoPlayerInfoProvider
     {
         public PlayerStateFactory StateFactory { get; private set; }
         public PlayerBaseState CurrentState { get; set; }
@@ -32,10 +33,13 @@ namespace Characters.Player.States
         public bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
         public bool IsDashing => CurrentState.GetType() == typeof(PlayerDashState);
         public bool IsFalling => CurrentState.GetType() == typeof(PlayerFallState);
-        public bool IsGroundState => CurrentState.GetType() == typeof(PlayerGroundedState);
-        public bool IsAttackState => CurrentState.GetType() == typeof(PlayerGroundLightAttackState);
         public bool IsStaggered => CurrentState.GetType() == typeof(PlayerAirboneStaggerState)
                                             || CurrentState.GetType() == typeof(PlayerGroundStaggerState);
+
+        public bool IsAttacking => CurrentState.GetType() == typeof(PlayerGroundLightAttackState);
+
+        private IMonoPlayerCharacter _player;
+        public IMonoPlayerCharacter Player => _player ??= GetComponent<IMonoPlayerCharacter>();
 
         public readonly OwningLock CanDash = new OwningLock();
         public readonly OwningLock CanJump = new OwningLock();
@@ -50,17 +54,16 @@ namespace Characters.Player.States
         public IHurtbox Hurtbox { get; private set; }
         public IAutoPlayerInput Input { get; private set; }
 
-        public IAttackExecutor LightMonoAttackFirst => lightMonoAttackFirst.Executor;
-        public IAttackExecutor LightMonoAttackSecond => lightMonoAttackSecond.Executor;
+        public IAttackExecutor LightMonoAttackFirst { get; private set; }
+        public IAttackExecutor LightMonoAttackSecond { get; private set; }
         public PlayerConfig PlayerConfig => playerConfig;
 
         public bool HasDashEffectController { get; private set; } = true;
-        public bool HasHurtbox { get; private set; } = true;
         public bool HasSpriteRenderer { get; private set; } = true;
 
         private float _cameraFollowVelocity;
 
-        public bool CanStartAttack => CanAttack && !IsAttackState && Character.HasStamina();
+        public bool CanStartAttack => CanAttack && !IsAttacking && Character.HasStamina();
 
         private void Awake()
         {
@@ -97,24 +100,21 @@ namespace Characters.Player.States
             {
                 followingCamera = Camera.main;
             }
+
+            LightMonoAttackFirst = lightMonoAttackFirst.Resolve();
+            LightMonoAttackSecond = lightMonoAttackSecond.Resolve();
+
+            Hurtbox = GetComponentInChildren<IMonoHurtbox>()?.Resolve();
+
+            var character = Player;
+            character.OnHitReceived.AddListener((_, info) => CurrentState.OnHitReceived(info));
+            character.OnStaggered.AddListener((_, info) => CurrentState.OnStaggered(info));
+            character.OnDeath.AddListener((_, info) => CurrentState.OnDeath(info));
+            Character = character.Resolve();
         }
 
         private IEnumerator Start()
         {
-            Hurtbox = GetComponentInChildren<IMonoHurtbox>()?.Native;
-
-            if (Hurtbox == null)
-            {
-                Debug.LogWarning("Hurtbox not found", this);
-                HasHurtbox = false;
-            }
-            
-            var character = GetComponent<IMonoPlayerCharacter>();
-            character.OnHitReceived.AddListener((_, info) => CurrentState.OnHitReceived(info));
-            character.OnStaggered.AddListener((_, info) => CurrentState.OnStaggered(info));
-            character.OnDeath.AddListener((_, info) => CurrentState.OnDeath(info));
-            Character = character.Native;
-
             // Для корректного определения того, что игрок на земле при загрузке
             Movement.MoveRaw(Vector3.down);
             CurrentState = Movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();

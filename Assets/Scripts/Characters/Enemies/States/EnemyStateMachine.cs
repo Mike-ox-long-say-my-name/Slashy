@@ -1,6 +1,7 @@
-﻿using Characters.Player;
-using Core.Attacking;
-using Core.Characters;
+﻿using Core.Attacking.Interfaces;
+using Core.Characters.Interfaces;
+using Core.Player;
+using Core.Player.Interfaces;
 using UnityEngine;
 
 namespace Characters.Enemies.States
@@ -9,26 +10,30 @@ namespace Characters.Enemies.States
     {
         public EnemyBaseState<T> CurrentState { get; set; }
 
+        public IMonoCharacter MonoCharacter { get; private set; }
         public ICharacter Character { get; private set; }
         public ICharacterMovement Movement => Character.Movement;
         public IPushable Pushable => Character.Pushable;
         public IHurtbox Hurtbox { get; private set; }
 
-        public IPlayer Player => PlayerManager.Instance.Player;
-        public Vector3 PlayerPosition => Player.Character.Movement.Transform.position;
+        public IMonoPlayerInfoProvider MonoPlayerInfo => PlayerManager.Instance.PlayerInfo;
+        public IMonoPlayerCharacter MonoPlayer => MonoPlayerInfo.Player;
+        public IPlayerCharacter Player => MonoPlayer.Resolve();
+
+        public Vector3 PlayerPosition => Player.Movement.Transform.position;
 
         protected abstract EnemyBaseState<T> StartState();
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
-            Hurtbox = GetComponent<IMonoHurtbox>()?.Native;
-            var character = GetComponent<IMonoCharacter>();
+            Hurtbox = GetComponentInChildren<IMonoHurtbox>()?.Resolve();
 
+            var character = MonoCharacter = GetComponent<IMonoCharacter>();
             character.OnHitReceivedExclusive.AddListener((_, info) => CurrentState.OnHitReceived(info));
             character.OnStaggered.AddListener((_, info) => CurrentState.OnStaggered(info));
             character.OnDeath.AddListener((_, info) => CurrentState.OnDeath(info));
 
-            Character = character.Native;
+            Character = character.Resolve();
 
             CurrentState = StartState();
             CurrentState.EnterState();

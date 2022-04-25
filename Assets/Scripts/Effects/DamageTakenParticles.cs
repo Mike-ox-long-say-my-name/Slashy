@@ -1,16 +1,28 @@
 using Core.Attacking;
-using Core.Characters;
+using Core.Attacking.Interfaces;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Effects
 {
-    [RequireComponent(typeof(ParticleSystem))]
     public class DamageTakenParticles : MonoBehaviour
     {
         [SerializeField] private float baseXOffset = 0.1f;
         [SerializeField] private Vector2 maxPositionOffset = new Vector2(0.2f, 0.4f);
         [SerializeField, Min(0)] private float maxYDirectionOffset = 1f;
         [SerializeField] private ParticleSystem bloodParticleSystem;
+
+        private void OnEnable()
+        {
+            var character = GetComponentInParent<IMonoCharacter>();
+            character?.OnHitReceived.AddListener(OnHitReceived);
+        }
+
+        private void OnDisable()
+        {
+            var character = GetComponentInParent<IMonoCharacter>();
+            character?.OnHitReceived.RemoveListener(OnHitReceived);
+        }
 
         public void OnHitReceived(IHitReceiver entity, HitInfo hitInfo)
         {

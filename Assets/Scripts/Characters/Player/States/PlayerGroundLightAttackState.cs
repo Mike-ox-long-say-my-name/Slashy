@@ -1,5 +1,4 @@
-﻿using Attacks;
-using Core.Attacking;
+﻿using Core.Attacking;
 
 namespace Characters.Player.States
 {

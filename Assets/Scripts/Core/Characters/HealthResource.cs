@@ -1,3 +1,5 @@
+using Core.Characters.Interfaces;
+
 namespace Core.Characters
 {
     public class HealthResource : BaseCharacterResource

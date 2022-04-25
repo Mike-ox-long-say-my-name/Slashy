@@ -1,5 +1,7 @@
 using Core.Attacking;
 using Core.Characters;
+using Core.Characters.Interfaces;
+using Core.Player.Interfaces;
 using Core.Utilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;

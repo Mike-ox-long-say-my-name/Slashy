@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Environment
+namespace Environemnt
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class ParallaxBackground : MonoBehaviour

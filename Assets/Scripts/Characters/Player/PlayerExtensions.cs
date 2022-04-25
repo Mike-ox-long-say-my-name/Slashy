@@ -1,3 +1,5 @@
+using Core.Player.Interfaces;
+
 namespace Characters.Player
 {
     public static class PlayerExtensions

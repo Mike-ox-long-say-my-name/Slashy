@@ -1,4 +1,6 @@
-using Core.Characters;
+using Core.Characters.Interfaces;
+using Core.Characters.Mono;
+using Core.Player.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,11 +11,14 @@ namespace Characters.Player
     {
         [SerializeField] private UnityEvent<IPlayerCharacter, ICharacterResource> onStaminaChanged;
         public UnityEvent<IPlayerCharacter, ICharacterResource> OnStaminaChanged => onStaminaChanged;
+        
+        public IPlayerCharacter Resolve()
+        {
+            return ((IMonoCharacter)this).Resolve() as IPlayerCharacter;
+        }
 
         [SerializeField] private PlayerStats stats;
         [SerializeField] private PlayerMovementConfig config;
-
-        IPlayerCharacter IMonoPlayerCharacter.Native => Native as IPlayerCharacter;
 
         protected override ICharacter CreateCharacter()
         {

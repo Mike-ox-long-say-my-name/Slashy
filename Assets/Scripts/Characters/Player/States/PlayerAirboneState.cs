@@ -1,6 +1,4 @@
-using System;
 using Core.Attacking;
-using Core.Characters;
 
 namespace Characters.Player.States
 {

@@ -1,4 +1,6 @@
 ﻿using Core.Attacking;
+using Core.Characters.Interfaces;
+using Core.Utilities;
 using UnityEngine;
 
 namespace Core.Characters

@@ -12,8 +12,8 @@ namespace UI.Menu
 
         private void Awake()
         {
-            _mainMenu = FindObjectOfType<InGameMainMenu>() as IMenu ?? new NullMenu<InGameMainMenu>(this);
-            _settingsMenu = FindObjectOfType<SettingsMenu>() as IMenu ?? new NullMenu<SettingsMenu>(this);
+            _mainMenu = GetComponentInChildren<InGameMainMenu>();
+            _settingsMenu = GetComponentInChildren<SettingsMenu>();
             _gameLoader = GameLoader.Instance;
         }
 

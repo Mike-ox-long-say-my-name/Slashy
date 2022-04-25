@@ -1,4 +1,5 @@
-using Core.Characters;
+using Core.Characters.Mono;
+using Core.Player.Interfaces;
 using UnityEngine;
 
 namespace Characters.Player

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Attacks
+namespace Core
 {
     public interface ICoroutineHost
     {

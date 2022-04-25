@@ -1,6 +1,9 @@
-﻿using Attacks;
-using Attacks.Implementations;
+﻿using Core;
 using Core.Attacking;
+using Core.Attacking.Interfaces;
+using Core.Attacking.Mono;
+using Core.DependencyInjection;
+using Miscellaneous;
 using System.Collections;
 using UnityEngine;
 
@@ -31,7 +34,8 @@ namespace Characters.Enemies
 
                 CreateBloodFires();
 
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForFixedUpdate();
+                yield return new WaitForSeconds(0.2f);
 
                 Attackbox.Disable();
             }
@@ -55,7 +59,7 @@ namespace Characters.Enemies
                     {
                         var fireObject = Instantiate(config.BloodFirePrefab,
                             _data.Transform.position + groundOffset + direction * distance,
-                            Quaternion.identity);
+                            Quaternion.identity).Resolve();
 
                         var lifeTime = Random.Range(config.MinFireLifeTime, config.MaxFireLifeTime);
                         fireObject.GetComponent<GroundBloodFire>().Fire(lifeTime);

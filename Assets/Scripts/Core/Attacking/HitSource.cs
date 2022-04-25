@@ -1,4 +1,4 @@
-using Core.Characters;
+using Core.Characters.Interfaces;
 
 namespace Core.Attacking
 {

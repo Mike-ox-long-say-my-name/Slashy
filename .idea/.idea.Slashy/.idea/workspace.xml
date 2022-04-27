@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/.enemy-0.kra-autosave.kra" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0.kra" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0.kra" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/large-stone-0.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/large-stone-0.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/player/.all.kra-autosave.kra" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/player/all.kra" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/player/all.kra" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/player/all.kra~" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/player/all.kra~" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/player/attack-short.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/player/attack-short.anim" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +62,7 @@
       <updated>1650001245728</updated>
       <workItem from="1650001260719" duration="1049000" />
       <workItem from="1650520120207" duration="926000" />
+      <workItem from="1650605822927" duration="460000" />
     </task>
     <servers />
   </component>

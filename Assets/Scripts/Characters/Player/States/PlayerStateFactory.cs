@@ -34,6 +34,11 @@ namespace Characters.Player.States
             return new PlayerGroundLightAttackState(_stateMachine, this);
         }
 
+        public PlayerBaseState AirLightAttack()
+        {
+            return new PlayerAirboneAttackState(_stateMachine, this);
+        }
+
         public PlayerHealState Heal()
         {
             return new PlayerHealState(_stateMachine, this);

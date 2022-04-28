@@ -23,8 +23,9 @@ namespace Characters.Player.States
 
         [Space]
         [Header("Attacks")]
-        [SerializeField] private MonoAttackHandler lightMonoAttackFirst;
-        [SerializeField] private MonoAttackHandler lightMonoAttackSecond;
+        [SerializeField] private MonoAttackHandler lightAttackFirst;
+        [SerializeField] private MonoAttackHandler lightAttackSecond;
+        [SerializeField] private MonoAttackHandler lightAirboneAttack;
 
         [Space]
         [SerializeField] private PlayerConfig playerConfig;
@@ -36,7 +37,7 @@ namespace Characters.Player.States
         public bool IsStaggered => CurrentState.GetType() == typeof(PlayerAirboneStaggerState)
                                             || CurrentState.GetType() == typeof(PlayerGroundStaggerState);
 
-        public bool IsAttacking => CurrentState.GetType() == typeof(PlayerGroundLightAttackState);
+        public bool IsAttacking { get; set; }
 
         private IMonoPlayerCharacter _player;
         public IMonoPlayerCharacter Player => _player ??= GetComponent<IMonoPlayerCharacter>();
@@ -56,6 +57,8 @@ namespace Characters.Player.States
 
         public IAttackExecutor LightMonoAttackFirst { get; private set; }
         public IAttackExecutor LightMonoAttackSecond { get; private set; }
+        public IAttackExecutor LightAirboneAttack { get; private set; }
+
         public PlayerConfig PlayerConfig => playerConfig;
 
         public bool HasDashEffectController { get; private set; } = true;
@@ -64,6 +67,7 @@ namespace Characters.Player.States
         private float _cameraFollowVelocity;
 
         public bool CanStartAttack => CanAttack && !IsAttacking && Character.HasStamina();
+        public bool AttackedAtThisAirTime { get; set; }
 
         private void Awake()
         {
@@ -73,14 +77,19 @@ namespace Characters.Player.States
             AnimatorComponent = GetComponent<Animator>();
             DashEffectController = GetComponentInChildren<DashCloneEffectController>();
 
-            if (lightMonoAttackFirst == null)
+            if (lightAttackFirst == null)
             {
                 Debug.LogWarning("Light Attack First is not assigned", this);
                 enabled = false;
             }
-            if (lightMonoAttackSecond == null)
+            if (lightAttackSecond == null)
             {
                 Debug.LogWarning("Light Attack Second is not assigned", this);
+                enabled = false;
+            }
+            if (lightAirboneAttack == null)
+            {
+                Debug.LogWarning("Light Airbone Attack is not assigned", this);
                 enabled = false;
             }
             if (DashEffectController == null)
@@ -101,8 +110,9 @@ namespace Characters.Player.States
                 followingCamera = Camera.main;
             }
 
-            LightMonoAttackFirst = lightMonoAttackFirst.Resolve();
-            LightMonoAttackSecond = lightMonoAttackSecond.Resolve();
+            LightMonoAttackFirst = lightAttackFirst.Resolve();
+            LightMonoAttackSecond = lightAttackSecond.Resolve();
+            LightAirboneAttack = lightAirboneAttack.Resolve();
 
             Hurtbox = GetComponentInChildren<IMonoHurtbox>()?.Resolve();
 

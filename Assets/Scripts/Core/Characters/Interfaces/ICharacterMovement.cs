@@ -10,6 +10,7 @@ namespace Core.Characters.Interfaces
         bool IsGrounded { get; }
         bool IsFalling { get; }
 
+        void ResetGravity();
         void Move(Vector3 direction);
         void Stop();
         void Rotate(float direction);

@@ -16,9 +16,8 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             Context.Movement.Stop();
-
-            // TODO: проиграть анимацию хилирования + привязать к ней задержку
-            // Context.AnimatorComponent.SetTrigger("heal");
+            
+            Context.AnimatorComponent.SetBool("is-healing", true);
 
             _healRoutine = Context.StartCoroutine(
                 HealRoutine(
@@ -34,12 +33,23 @@ namespace Characters.Player.States
             base.OnStaggered(info);
         }
 
+        public override void OnDeath(HitInfo info)
+        {
+            Context.StopCoroutine(_healRoutine);
+            base.OnDeath(info);
+        }
+
         public override void UpdateState()
         {
             if (Context.Input.MoveInput.sqrMagnitude > 0)
             {
                 StopHealing();
             }
+        }
+
+        public override void ExitState()
+        {
+            Context.AnimatorComponent.SetBool("is-healing", false);
         }
 
         private void StopHealing()

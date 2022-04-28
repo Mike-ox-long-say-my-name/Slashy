@@ -39,7 +39,7 @@ namespace Characters.Enemies
             var self = Context.transform.position;
             var direction = player - self;
             direction.y = 0;
-            if (direction.magnitude > 1.5f)
+            if (direction.magnitude > 1.2f)
             {
                 direction.Normalize();
                 Context.Movement.Move(new Vector3(direction.x, 0, direction.z));
@@ -63,7 +63,7 @@ namespace Characters.Enemies
         {
             if (info.Source.Character is IPlayerCharacter)
             {
-                SwitchState<ExplodingHollowCharge>();
+                SwitchState<ExplodingHollowCharging>();
             }
         }
 
@@ -85,6 +85,7 @@ namespace Characters.Enemies
 
             Context.PunchAttack.StartAttack(inter =>
             {
+                Debug.Log("end");
                 if (!inter)
                 {
                     SwitchState<ExplodingHollowPursue>();
@@ -120,65 +121,35 @@ namespace Characters.Enemies
         }
     }
 
-    public class ExplodingHollowCharge : ExplodingHollowBaseState
+    public class ExplodingHollowRunning : ExplodingHollowBaseState
     {
-        private readonly TimedTriggerFactory _triggerFactory = new TimedTriggerFactory();
-        private TimedTrigger _prepare;
-        private TimedTrigger _dot;
-        private bool _started = false;
+        private readonly TimedTrigger _dotTrigger = new TimedTrigger();
 
         public override void EnterState()
         {
-            Context.Movement.Stop();
+            _dotTrigger.Reset();
 
-            _prepare = _triggerFactory.Create();
-            _dot = _triggerFactory.Create();
-            
-            Context.AnimatorComponent.SetTrigger("charge");
-            Context.AnimatorComponent.SetBool("is-angry", true);
-            
-            _prepare.SetFor(Context.ChargeTime);
-            _dot.Set();
+            Context.AnimatorComponent.SetTrigger("charge-end");
+            if (Context.ChargeBurnParticles != null)
+            {
+                Context.ChargeBurnParticles.Play();
+            }
         }
 
         public override void UpdateState()
         {
-            _triggerFactory.StepAll();
-
-            if (_prepare.IsSet)
-            {
-                return;
-            }
-
-            if (Context.DotWhileCharging >= Context.Character.Health.Value)
-            {
-                SwitchState<ExplodingHollowExplosion>();
-                return;
-            }
-
-            if (!_started)
-            {
-                Context.AnimatorComponent.SetTrigger("charge-end");
-                if (Context.ChargeBurnParticles != null)
-                {
-                    Context.ChargeBurnParticles.Play();
-                }
-                _started = true;
-            }
-
-            if (_dot.CheckAndReset())
+            _dotTrigger.Step(Time.deltaTime);
+            if (_dotTrigger.CheckAndReset())
             {
                 Context.Character.ReceiveHit(new HitInfo
                 {
                     DamageInfo = new DamageInfo
                     {
-                        damage = Context.DotWhileCharging
+                        damage = Context.DotWhileRunning
                     }
                 });
-                _dot.SetIn(Context.DotTickInterval);
+                _dotTrigger.SetIn(Context.DotTickInterval);
             }
-            
-            Context.AnimatorComponent.SetBool("is-walking", true);
 
             var speedMultiplier = 3.5f;
             var player = Context.PlayerPosition;
@@ -204,11 +175,52 @@ namespace Characters.Enemies
                 SwitchState<ExplodingHollowExplosion>();
             }
         }
-
+        
         public override void OnHitReceived(HitInfo info)
         {
-            Debug.LogWarning(info.DamageInfo.damage);
-            Debug.LogWarning(Context.Character.Health.Value);
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
+        }
+    }
+
+    public class ExplodingHollowCharging : ExplodingHollowBaseState
+    {
+        private readonly TimedTrigger _prepare = new TimedTrigger();
+
+        public override void EnterState()
+        {
+            Context.Movement.Stop();
+
+            _prepare.Reset();
+            
+            Context.AnimatorComponent.SetTrigger("charge");
+            
+            _prepare.SetIn(Context.ChargeTime);
+        }
+
+        public override void UpdateState()
+        {
+            _prepare.Step(Time.deltaTime);
+            if (!_prepare.CheckAndReset())
+            {
+                return;
+            }
+            
+            // ≈сли персонаж не переживет 1 тик урона, то сразу взрываемс€
+            if (Context.DotWhileRunning >= Context.Character.Health.Value)
+            {
+                SwitchState<ExplodingHollowExplosion>();
+            }
+            else
+            {
+                SwitchState<ExplodingHollowRunning>();
+            }
+        }
+        
+        public override void OnHitReceived(HitInfo info)
+        {
         }
 
         public override void OnStaggered(HitInfo info)
@@ -222,7 +234,7 @@ namespace Characters.Enemies
         {
             Context.Movement.Stop();
 
-            Context.AnimatorComponent.SetTrigger("death");
+            Context.AnimatorComponent.SetTrigger("explode");
             Context.ExplosionAttack.StartAttack(_ => SwitchState<ExplodingHollowDeath>());
         }
 
@@ -265,7 +277,7 @@ namespace Characters.Enemies
             {
                 if (_wasHit)
                 {
-                    SwitchState<ExplodingHollowCharge>();
+                    SwitchState<ExplodingHollowCharging>();
                 }
                 else
                 {
@@ -296,7 +308,9 @@ namespace Characters.Enemies
             Context.Hurtbox.Disable();
             Context.Movement.Stop();
             Context.AnimatorComponent.SetTrigger("death");
-            Context.StartCoroutine(DieIn(1));
+
+            // ѕочти не захардкожено
+            Context.StartCoroutine(DieIn(0.3f));
         }
 
         private IEnumerator DieIn(float time)
@@ -310,7 +324,7 @@ namespace Characters.Enemies
     {
         [SerializeField, Min(0)] private float aggroDistance = 5;
         [SerializeField, Min(0)] private float chargeTime = 2;
-        [SerializeField, Min(0)] private float dotWhileCharging = 5f;
+        [SerializeField, Min(0)] private float dotWhileRunning = 5f;
         [SerializeField, Min(0)] private float dotTickInterval = 0.3f;
 
         [SerializeField] private MonoAttackHandler explosionMonoAttackHandler;
@@ -325,7 +339,7 @@ namespace Characters.Enemies
         public IAttackExecutor ExplosionAttack => explosionMonoAttackHandler.Resolve();
         public IAttackExecutor PunchAttack => punchMonoAttack.Resolve();
 
-        public float DotWhileCharging => dotWhileCharging;
+        public float DotWhileRunning => dotWhileRunning;
         public float DotTickInterval => dotTickInterval;
 
         public ParticleSystem ChargeBurnParticles => chargeBurnParticles;
@@ -340,7 +354,6 @@ namespace Characters.Enemies
         protected override void Awake()
         {
             base.Awake();
-
             AnimatorComponent = GetComponent<Animator>();
 
             if (AnimatorComponent == null)
@@ -350,7 +363,7 @@ namespace Characters.Enemies
 
             if (punchMonoAttack == null)
             {
-                Debug.LogWarning("Explosion Attack Executor is not assigned", this);
+                Debug.LogWarning("Punch Attack Executor is not assigned", this);
                 enabled = false;
             }
             if (explosionMonoAttackHandler == null)

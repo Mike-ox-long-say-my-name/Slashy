@@ -270,6 +270,7 @@ Transform:
   - {fileID: 812809748169390577}
   - {fileID: 2325772842012138689}
   - {fileID: 2623061745442241507}
+  - {fileID: 4553024811509310712}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -590,8 +591,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followingCamera: {fileID: 0}
   followSmoothTime: 0.3
-  lightMonoAttackFirst: {fileID: 27388021579594124}
-  lightMonoAttackSecond: {fileID: 1161144045783392307}
+  lightAttackFirst: {fileID: 27388021579594124}
+  lightAttackSecond: {fileID: 1161144045783392307}
+  lightAirboneAttack: {fileID: 3443966890626358407}
   playerConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
 --- !u!114 &4950135374432913508
 MonoBehaviour:
@@ -714,6 +716,119 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colliders:
   - {fileID: 812809748674757411}
+--- !u!1 &2174685387874637135
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7949651355276834080}
+  - component: {fileID: 3601963403562516412}
+  - component: {fileID: 6037228690400032685}
+  m_Layer: 9
+  m_Name: LightAttackHitbox 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7949651355276834080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174685387874637135}
+  m_LocalRotation: {x: 0, y: 0, z: 0.3553109, w: 0.93474823}
+  m_LocalPosition: {x: 0.41, y: 0.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4553024811509310712}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 41.625}
+--- !u!65 &3601963403562516412
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174685387874637135}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.76, y: 1, z: 1.7}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6037228690400032685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174685387874637135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 853873c8992799b4aab768b3f2403005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders:
+  - {fileID: 3601963403562516412}
+  disableOnAwake: 1
+  ignored:
+  - {fileID: 7872327175356220165}
+--- !u!1 &6490604781185489133
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4553024811509310712}
+  - component: {fileID: 3443966890626358407}
+  m_Layer: 9
+  m_Name: LightAirboneAttackExecutor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4553024811509310712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490604781185489133}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7949651355276834080}
+  m_Father: {fileID: 812809748605883927}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3443966890626358407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490604781185489133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnvironmental: 0
+  damageInfo:
+    damage: 17
+    balanceDamage: 10
+    pushStrength: 1.5
+    staggerTime: 0.3
+  moveDistance: 0.4
 --- !u!1 &6529360737305819375
 GameObject:
   m_ObjectHideFlags: 0

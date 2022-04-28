@@ -22,6 +22,11 @@ namespace Core.Characters
             _pushable = new Pushable(this);
         }
 
+        public void ResetGravity()
+        {
+            Velocity.y = 0;
+        }
+
         public void MoveRaw(Vector3 move)
         {
             Controller.Move(move);

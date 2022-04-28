@@ -6,6 +6,11 @@ namespace Characters.Player.States
         {
         }
 
+        public override void EnterState()
+        {
+            Context.AttackedAtThisAirTime = false;
+        }
+
         public override void UpdateState()
         {
             HandleControl();

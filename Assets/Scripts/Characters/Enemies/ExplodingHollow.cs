@@ -81,6 +81,7 @@ namespace Characters.Enemies
         public override void EnterState()
         {
             Context.Movement.Stop();
+            Context.AnimatorComponent.SetTrigger("attack");
 
             Context.PunchAttack.StartAttack(inter =>
             {
@@ -132,7 +133,10 @@ namespace Characters.Enemies
 
             _prepare = _triggerFactory.Create();
             _dot = _triggerFactory.Create();
-
+            
+            Context.AnimatorComponent.SetTrigger("charge");
+            Context.AnimatorComponent.SetBool("is-angry", true);
+            
             _prepare.SetFor(Context.ChargeTime);
             _dot.Set();
         }
@@ -154,7 +158,7 @@ namespace Characters.Enemies
 
             if (!_started)
             {
-                Context.AnimatorComponent.SetTrigger("charge");
+                Context.AnimatorComponent.SetTrigger("charge-end");
                 if (Context.ChargeBurnParticles != null)
                 {
                     Context.ChargeBurnParticles.Play();
@@ -173,6 +177,8 @@ namespace Characters.Enemies
                 });
                 _dot.SetIn(Context.DotTickInterval);
             }
+            
+            Context.AnimatorComponent.SetBool("is-walking", true);
 
             var speedMultiplier = 3.5f;
             var player = Context.PlayerPosition;
@@ -216,7 +222,7 @@ namespace Characters.Enemies
         {
             Context.Movement.Stop();
 
-            Context.AnimatorComponent.SetTrigger("explode");
+            Context.AnimatorComponent.SetTrigger("death");
             Context.ExplosionAttack.StartAttack(_ => SwitchState<ExplodingHollowDeath>());
         }
 
@@ -289,7 +295,7 @@ namespace Characters.Enemies
         {
             Context.Hurtbox.Disable();
             Context.Movement.Stop();
-
+            Context.AnimatorComponent.SetTrigger("death");
             Context.StartCoroutine(DieIn(1));
         }
 

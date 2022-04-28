@@ -1,29 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/expl_hol_animator.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/expl_hol_animator.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/explode.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/explode.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/hurt.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/hurt.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/idle.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/idle.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/walk-9.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/walk-9.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/ExplodingHollow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/ExplodingHollow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-0.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-0.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-1.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-1.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-3.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-3.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-4.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-4.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-5.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-5.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-a-0.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-a-0.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-a-1.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-a-1.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-a-2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-a-2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-a-3.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-a-3.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-death-1.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-death-1.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-death-2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-death-2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-hurt.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/enemies/enemy-0/enemy-0-hurt.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TimeManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TimeManager.asset" afterDir="false" />
-    </list>
+    <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,7 +60,7 @@
       <workItem from="1650001260719" duration="1049000" />
       <workItem from="1650520120207" duration="926000" />
       <workItem from="1650605822927" duration="460000" />
-      <workItem from="1651139852033" duration="1917000" />
+      <workItem from="1651139852033" duration="2179000" />
     </task>
     <servers />
   </component>

@@ -1,15 +1,12 @@
 using Core.Attacking.Interfaces;
-using Core.DependencyInjection;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody))]
-    public class MonoHurtbox : MonoBaseHitbox, IMonoHurtbox
+    public class MonoHurtbox : MonoBaseHitbox
     {
-        private IHurtbox _hurtbox;
-
         private void Awake()
         {
             var rigidBody = GetComponent<Rigidbody>();
@@ -23,19 +20,12 @@ namespace Core.Attacking.Mono
             rigidBody.constraints = RigidbodyConstraints.FreezeAll;
             rigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         }
-        
-        [AutoResolve]
-        public IHurtbox Resolve()
+
+        public IHurtbox Hurtbox => Hitbox as IHurtbox;
+
+        protected override IHitbox CreateHitbox()
         {
-            if (_hurtbox != null)
-            {
-                return _hurtbox;
-            }
-
-            var hitReceiver = GetComponentInParent<IMonoHitReceiver>()?.Resolve();
-            _hurtbox = new Hurtbox(transform, hitReceiver, Colliders);
-
-            return _hurtbox;
+            return new Hurtbox(transform, Colliders);
         }
     }
 }

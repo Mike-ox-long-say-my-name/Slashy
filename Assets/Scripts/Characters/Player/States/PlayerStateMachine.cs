@@ -39,8 +39,21 @@ namespace Characters.Player.States
 
         public bool IsAttacking { get; set; }
 
-        private IMonoPlayerCharacter _player;
-        public IMonoPlayerCharacter Player => _player ??= GetComponent<IMonoPlayerCharacter>();
+        private IPlayerCharacter _player;
+
+        public IPlayerCharacter Player
+        {
+            get
+            {
+                if (_player != null)
+                {
+                    return _player;
+                }
+
+                _player = GetComponent<MonoPlayerCharacter>().Player;
+                return _player;
+            }
+        }
 
         public readonly OwningLock CanDash = new OwningLock();
         public readonly OwningLock CanJump = new OwningLock();
@@ -110,17 +123,17 @@ namespace Characters.Player.States
                 followingCamera = Camera.main;
             }
 
-            LightMonoAttackFirst = lightAttackFirst.Resolve();
-            LightMonoAttackSecond = lightAttackSecond.Resolve();
-            LightAirboneAttack = lightAirboneAttack.Resolve();
+            LightMonoAttackFirst = lightAttackFirst.Executor;
+            LightMonoAttackSecond = lightAttackSecond.Executor;
+            LightAirboneAttack = lightAirboneAttack.Executor;
 
-            Hurtbox = GetComponentInChildren<IMonoHurtbox>()?.Resolve();
+            Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
 
             var character = Player;
-            character.OnHitReceived.AddListener((_, info) => CurrentState.OnHitReceived(info));
-            character.OnStaggered.AddListener((_, info) => CurrentState.OnStaggered(info));
-            character.OnDeath.AddListener((_, info) => CurrentState.OnDeath(info));
-            Character = character.Resolve();
+            character.OnHitReceived += (_, info) => CurrentState.OnHitReceived(info);
+            character.OnStaggered += (_, info) => CurrentState.OnStaggered(info);
+            character.OnDeath += (_, info) => CurrentState.OnDeath(info);
+            Character = character;
         }
 
         private IEnumerator Start()

@@ -16,7 +16,7 @@ namespace Core.Characters.Mono
             var movement = new CharacterMovement(controller, movementConfig);
             var pushable = new Pushable(movement);
 
-            return new Character(movement, pushable, characterStats, this);
+            return new Character(movement, pushable, characterStats);
         }
     }
 }

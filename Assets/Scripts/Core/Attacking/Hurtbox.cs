@@ -6,16 +6,15 @@ namespace Core.Attacking
 {
     public class Hurtbox : BaseHitbox, IHurtbox
     {
-        public IHitReceiver AttachedTo { get; }
-
-        public Hurtbox(Transform transform, IHitReceiver receiver, params Collider[] colliders) : base(transform, colliders)
+        public Hurtbox(Transform transform, params Collider[] colliders) : base(transform, colliders)
         {
-            AttachedTo = receiver ?? throw new ArgumentNullException(nameof(receiver));
         }
 
-        public void Dispatch(HitInfo info)
+        public event Action<HitInfo> OnHit;
+
+        public void ProcessHit(HitInfo info)
         {
-            AttachedTo.ReceiveHit(info);
+            OnHit?.Invoke(info);
         }
     }
 }

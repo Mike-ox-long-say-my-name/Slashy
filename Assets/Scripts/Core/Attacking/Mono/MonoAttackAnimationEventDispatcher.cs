@@ -13,7 +13,7 @@ namespace Core.Attacking.Mono
         private void Awake()
         {
             _receivers = GetComponentsInChildren<IMonoAttackAnimationEventReceiver>()
-                .Select(receiver => receiver.Resolve()).ToList();
+                .Select(receiver => receiver.Receiver).ToList();
         }
 
         public void OnAnimationShouldEnableHitbox()

@@ -1,8 +1,7 @@
-﻿using Core.DependencyInjection;
-
-namespace Core.Attacking.Interfaces
+﻿namespace Core.Attacking.Interfaces
 {
-    public interface IMonoHitReceiver : IMonoWrapper<IHitReceiver>
+    public interface IMonoHitReceiver
     {
+        IHitReceiver HitReceiver { get; }
     }
 }

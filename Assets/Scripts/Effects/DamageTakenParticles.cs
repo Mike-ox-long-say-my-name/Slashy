@@ -1,11 +1,12 @@
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
+using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Effects
 {
-    public class DamageTakenParticles : MonoBehaviour
+    public class DamageTakenParticles : BaseCharacterHitListener
     {
         [SerializeField] private float baseXOffset = 0.1f;
         [SerializeField] private Vector2 maxPositionOffset = new Vector2(0.2f, 0.4f);
@@ -14,17 +15,15 @@ namespace Effects
 
         private void OnEnable()
         {
-            var character = GetComponentInParent<IMonoCharacter>();
-            character?.OnHitReceived.AddListener(OnHitReceived);
+            Subscribe();
         }
 
         private void OnDisable()
         {
-            var character = GetComponentInParent<IMonoCharacter>();
-            character?.OnHitReceived.RemoveListener(OnHitReceived);
+            Unsubscribe();
         }
 
-        public void OnHitReceived(IHitReceiver entity, HitInfo hitInfo)
+        protected override void OnHitReceived(IHitReceiver entity, HitInfo hitInfo)
         {
             if (bloodParticleSystem == null)
             {

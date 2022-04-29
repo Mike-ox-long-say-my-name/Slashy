@@ -1,5 +1,6 @@
 ﻿using Core.Attacking;
 using Core.Attacking.Interfaces;
+using Core.Attacking.Mono;
 using UnityEngine;
 
 namespace Miscellaneous
@@ -39,7 +40,7 @@ namespace Miscellaneous
 
         private void Awake()
         {
-            _attackExecutor = GetComponent<IMonoDotAttackExecutor>()?.Resolve();
+            _attackExecutor = GetComponent<MonoDotAttackHandler>().Executor;
             if (fireEffect != null)
             {
                 fireEffect.gameObject.SetActive(false);

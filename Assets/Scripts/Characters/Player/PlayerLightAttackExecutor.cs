@@ -41,7 +41,7 @@ namespace Characters.Player
 
         protected override IAttackExecutor CreateExecutor(ICoroutineHost host, IAttackbox attackbox)
         {
-            var playerMovement = GetComponentInParent<IMonoPlayerCharacter>()?.Resolve()?.Movement;
+            var playerMovement = GetComponentInParent<MonoPlayerCharacter>().Player.Movement;
             var playerInput = GetComponentInParent<IAutoPlayerInput>();
             var context = new AttackContext
             {

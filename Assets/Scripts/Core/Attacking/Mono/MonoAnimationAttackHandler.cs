@@ -6,16 +6,13 @@ using UnityEngine;
 namespace Core.Attacking.Mono
 {
     [DisallowMultipleComponent]
-    public class MonoAnimationAttackExecutor : MonoAttackHandler, IMonoAttackAnimationEventReceiver
+    public class MonoAnimationAttackExecutor : MonoAttackHandler
     {
         protected override IAttackExecutor CreateExecutor(ICoroutineHost host, IAttackbox attackbox)
         {
             return new AnimationAttackExecutor(host, attackbox);
         }
 
-        IAttackAnimationEventReceiver IMonoWrapper<IAttackAnimationEventReceiver>.Resolve()
-        {
-            return Resolve() as IAttackAnimationEventReceiver;
-        }
+        public IAttackAnimationEventReceiver Receiver => Executor as IAttackAnimationEventReceiver;
     }
 }

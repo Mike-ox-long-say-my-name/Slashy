@@ -1,5 +1,7 @@
 ﻿using Core.Attacking.Interfaces;
+using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
+using Core.Characters.Mono;
 using Core.Player;
 using Core.Player.Interfaces;
 using UnityEngine;
@@ -9,16 +11,14 @@ namespace Characters.Enemies.States
     public abstract class EnemyStateMachine<T> : MonoBehaviour, IStateHolder<T>
     {
         public EnemyBaseState<T> CurrentState { get; set; }
-
-        public IMonoCharacter MonoCharacter { get; private set; }
+        
         public ICharacter Character { get; private set; }
         public ICharacterMovement Movement => Character.Movement;
         public IPushable Pushable => Character.Pushable;
         public IHurtbox Hurtbox { get; private set; }
 
         public IMonoPlayerInfoProvider MonoPlayerInfo => PlayerManager.Instance.PlayerInfo;
-        public IMonoPlayerCharacter MonoPlayer => MonoPlayerInfo.Player;
-        public IPlayerCharacter Player => MonoPlayer.Resolve();
+        public IPlayerCharacter Player => MonoPlayerInfo.Player;
 
         public Vector3 PlayerPosition => Player.Movement.Transform.position;
 
@@ -26,14 +26,12 @@ namespace Characters.Enemies.States
 
         protected virtual void Awake()
         {
-            Hurtbox = GetComponentInChildren<IMonoHurtbox>()?.Resolve();
+            Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
 
-            var character = MonoCharacter = GetComponent<IMonoCharacter>();
-            character.OnHitReceivedExclusive.AddListener((_, info) => CurrentState.OnHitReceived(info));
-            character.OnStaggered.AddListener((_, info) => CurrentState.OnStaggered(info));
-            character.OnDeath.AddListener((_, info) => CurrentState.OnDeath(info));
-
-            Character = character.Resolve();
+            var character = Character = GetComponent<MonoCharacter>().Character;
+            character.OnHitReceivedExclusive += (_, info) => CurrentState.OnHitReceived(info);
+            character.OnStaggered += (_, info) => CurrentState.OnStaggered(info);
+            character.OnDeath += (_, info) => CurrentState.OnDeath(info);
 
             CurrentState = StartState();
             CurrentState.EnterState();

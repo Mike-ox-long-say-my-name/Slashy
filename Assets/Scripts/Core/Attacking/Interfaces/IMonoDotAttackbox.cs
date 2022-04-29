@@ -2,7 +2,8 @@
 
 namespace Core.Attacking.Interfaces
 {
-    public interface IMonoDotAttackbox : IMonoWrapper<IDotAttackbox>
+    public interface IMonoDotAttackbox
     {
+        IDotAttackbox Attackbox { get; }
     }
 }

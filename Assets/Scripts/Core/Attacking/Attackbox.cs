@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using Core.Attacking.Interfaces;
-using Core.Utilities;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Core.Attacking
@@ -9,26 +9,17 @@ namespace Core.Attacking
     {
         public List<IHurtbox> Ignored { get; set; } = new List<IHurtbox>();
 
-        private readonly HashSet<IHurtbox> _hits = new HashSet<IHurtbox>();
+        protected readonly HashSet<IHurtbox> Hits = new HashSet<IHurtbox>();
 
-        private readonly IMonoHitEventReceiver _receiver;
+        public event Action<IAttackbox, IHurtbox> OnHit;
 
-        public Attackbox(Transform transform, IMonoHitEventReceiver receiver, bool disable = true, params Collider[] colliders)
-            : base(transform, colliders)
+        public Attackbox(Transform transform, params Collider[] colliders) : base(transform, colliders)
         {
-            Guard.NotNull(receiver);
-
-            _receiver = receiver;
-
-            if (disable)
-            {
-                base.Disable();
-            }
         }
 
         public virtual void ClearHits()
         {
-            _hits.Clear();
+            Hits.Clear();
         }
 
         public override void Disable()
@@ -44,13 +35,13 @@ namespace Core.Attacking
                 return;
             }
 
-            _hits.Add(hit);
-            _receiver.OnHit(this, hit);
+            Hits.Add(hit);
+            OnHit?.Invoke(this, hit);
         }
 
         protected virtual bool ShouldDispatch(IHurtbox hit)
         {
-            return !_hits.Contains(hit) && !Ignored.Contains(hit);
+            return !Hits.Contains(hit) && !Ignored.Contains(hit);
         }
     }
 }

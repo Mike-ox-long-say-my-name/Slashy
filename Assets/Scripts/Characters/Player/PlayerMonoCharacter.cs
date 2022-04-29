@@ -1,3 +1,4 @@
+using System;
 using Core.Attacking;
 using Core.Characters;
 using Core.Characters.Interfaces;
@@ -11,19 +12,19 @@ namespace Characters.Player
     public class PlayerCharacter : Character, IPlayerCharacter
     {
         private readonly IPlayerStats _stats;
-        private readonly IPlayerEventDispatcher _eventDispatcher;
         private readonly StaminaResource _staminaResource;
+
+        public event Action<IPlayerCharacter, ICharacterResource> OnStaminaChanged;
 
         IPlayerMovement IPlayerCharacter.Movement => (IPlayerMovement)Movement;
         public ICharacterResource Stamina => _staminaResource;
 
         private readonly TimedTrigger _staminaRecoveryDelayed = new TimedTrigger();
 
-        public PlayerCharacter(IPlayerMovement movement, IPlayerStats stats, IPlayerEventDispatcher eventDispatcher)
-            : base(movement, movement?.Pushable, stats, eventDispatcher)
+        public PlayerCharacter(IPlayerMovement movement, IPlayerStats stats)
+            : base(movement, movement?.Pushable, stats)
         {
             _stats = stats;
-            _eventDispatcher = eventDispatcher;
             _staminaResource = new StaminaResource(this, stats.MaxStamina);
         }
 
@@ -43,7 +44,7 @@ namespace Characters.Player
             }
 
             _staminaResource.Recover(_stats.StaminaRegeneration * Time.deltaTime);
-            _eventDispatcher.OnStaminaChanged(this, Stamina);
+            OnStaminaChanged?.Invoke(this, Stamina);
         }
 
         public void SpendStamina(float amount)
@@ -65,7 +66,7 @@ namespace Characters.Player
                 _staminaRecoveryDelayed.SetFor(delay);
             }
 
-            _eventDispatcher.OnStaminaChanged(this, Stamina);
+            OnStaminaChanged?.Invoke(this, Stamina);
         }
 
         protected override void Die(HitInfo info)

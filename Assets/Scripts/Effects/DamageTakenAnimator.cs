@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Effects
 {
-    public class DamageTakenAnimator : MonoBehaviour
+    public class DamageTakenAnimator : BaseCharacterHitListener
     {
         [Header("Animation")]
         [SerializeField, Min(0)] private float flashTime;
@@ -26,17 +26,15 @@ namespace Effects
         
         private void OnEnable()
         {
-            var character = GetComponentInParent<IMonoCharacter>();
-            character?.OnHitReceived.AddListener(OnHitReceived);
+            Subscribe();
         }
 
         private void OnDisable()
         {
-            var character = GetComponentInParent<IMonoCharacter>();
-            character?.OnHitReceived.RemoveListener(OnHitReceived);
+            Unsubscribe();
         }
 
-        public void OnHitReceived(IHitReceiver entity, HitInfo info)
+        protected override void OnHitReceived(IHitReceiver entity, HitInfo info)
         {
             if (_animationRoutine != null)
             {

@@ -1,29 +1,15 @@
+using Core.Attacking.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Attacking.Interfaces;
-using Core.Utilities;
 using UnityEngine;
 
 namespace Core.Attacking
 {
-    public class DotAttackbox : BaseHitbox, IDotAttackbox
+    public class DotAttackbox : Attackbox, IDotAttackbox
     {
-        private int _damageGroup;
         private float _hitInterval = 1f;
 
-        public int DamageGroup
-        {
-            get => _damageGroup;
-            set
-            {
-                if (value < 0)
-                {
-                    return;
-                }
-
-                _damageGroup = value;
-            }
-        }
+        public readonly int DamageGroup;
 
         public float HitInterval
         {
@@ -32,6 +18,7 @@ namespace Core.Attacking
             {
                 if (value <= 0)
                 {
+                    Debug.LogWarning("Hit Interval must be positive");
                     return;
                 }
 
@@ -39,59 +26,77 @@ namespace Core.Attacking
             }
         }
 
-        public List<IHurtbox> Ignored { get; set; } = new List<IHurtbox>();
+        private readonly Dictionary<IHurtbox, float> _hitTimes = new Dictionary<IHurtbox, float>();
 
-        private readonly Dictionary<IHurtbox, float> _hits = new Dictionary<IHurtbox, float>();
-        private readonly IMonoHitEventReceiver _receiver;
+        private static readonly Dictionary<IHurtbox, HashSet<int>> GlobalHits = new Dictionary<IHurtbox, HashSet<int>>();
 
-        public DotAttackbox(Transform transform, IMonoHitEventReceiver receiver, bool disable = true, params Collider[] colliders)
-            : base(transform, colliders)
+        public DotAttackbox(Transform transform, int damageGroup, params Collider[] colliders) : base(transform, colliders)
         {
-            Guard.NotNull(receiver);
-
-            _receiver = receiver;
-            if (disable)
+            if (damageGroup < 0)
             {
-                base.Disable();
+                Debug.LogWarning("Damage Group must be non-negative");
+                damageGroup = 0;
+            }
+
+            DamageGroup = damageGroup;
+        }
+
+        private static void EnsureGlobalHitExist(IHurtbox hit)
+        {
+            if (!GlobalHits.ContainsKey(hit))
+            {
+                GlobalHits[hit] = new HashSet<int>();
             }
         }
 
-        public void ProcessHit(IHurtbox hit)
+        public override void ProcessHit(IHurtbox hit)
         {
+            EnsureGlobalHitExist(hit);
             if (!ShouldDispatch(hit))
             {
                 return;
             }
 
-            _hits.Add(hit, _hitInterval);
-            _receiver.OnHit(this, hit);
-        }
+            _hitTimes.Add(hit, HitInterval);
+            GlobalHits[hit].Add(DamageGroup);
 
-        private bool ShouldDispatch(IHurtbox hit)
-        {
-            return !_hits.ContainsKey(hit) && !Ignored.Contains(hit);
+            base.ProcessHit(hit);
         }
 
         private void UpdateTimes(float deltaTime)
         {
-            var keys = _hits.Keys.ToList();
+            var keys = _hitTimes.Keys.ToList();
             foreach (var hit in keys)
             {
-                _hits[hit] -= deltaTime;
+                _hitTimes[hit] -= deltaTime;
             }
+        }
+
+        protected override bool ShouldDispatch(IHurtbox hit)
+        {
+            var hasSameGroupHit = GlobalHits.TryGetValue(hit, out var groups) && groups.Contains(DamageGroup);
+            return !hasSameGroupHit &&  base.ShouldDispatch(hit);
         }
 
         private void ClearDeadHits()
         {
-            var toRemove = _hits
+            var toRemove = _hitTimes
                 .Where(pair => pair.Value <= 0)
                 .Select(pair => pair.Key)
                 .ToList();
 
             foreach (var removeHit in toRemove)
             {
-                _hits.Remove(removeHit);
+                _hitTimes.Remove(removeHit);
+                GlobalHits[removeHit].Remove(DamageGroup);
+                Hits.Remove(removeHit);
             }
+        }
+
+        public override void ClearHits()
+        {
+            _hitTimes.Clear();
+            base.ClearHits();
         }
 
         public void Tick(float deltaTime)

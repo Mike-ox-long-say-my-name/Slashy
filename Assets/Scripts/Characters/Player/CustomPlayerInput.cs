@@ -19,10 +19,12 @@ namespace Characters.Player
         public TimedTrigger IsDashPressedTrigger { get; private set; }
         public TimedTrigger IsLightAttackPressedTrigger { get; private set; }
         public TimedTrigger IsHealPressedTrigger { get; private set; }
+        public TimedTrigger IsStrongAttackPressedTrigger { get; private set; }
 
         public bool IsJumpPressed => IsJumpPressedTrigger.IsSet;
         public bool IsDashPressed => IsDashPressedTrigger.IsSet;
         public bool IsLightAttackPressed => IsLightAttackPressedTrigger.IsSet;
+        public bool IsStrongAttackPressed => IsStrongAttackPressedTrigger.IsSet;
         public bool IsHealPressed => IsHealPressedTrigger.IsSet;
 
         public Vector2 MoveInput { get; private set; }
@@ -38,6 +40,7 @@ namespace Characters.Player
             actions.Player.Move.started += OnMove;
             actions.Player.Move.canceled += OnMove;
             actions.Player.Fire.performed += OnAttack;
+            actions.Player.Fire2.performed += OnStrongAttack;
         }
 
         private void Awake()
@@ -46,6 +49,7 @@ namespace Characters.Player
             IsDashPressedTrigger = _triggerFactory.Create();
             IsLightAttackPressedTrigger = _triggerFactory.Create();
             IsHealPressedTrigger = _triggerFactory.Create();
+            IsStrongAttackPressedTrigger = _triggerFactory.Create();
 
             ConnectToUnityInput();
         }
@@ -81,6 +85,12 @@ namespace Characters.Player
         {
             ResetBufferedInput();
             IsLightAttackPressedTrigger.SetFor(attackInputWaitTime);
+        }
+
+        private void OnStrongAttack(InputAction.CallbackContext context)
+        {
+            ResetBufferedInput();
+            IsStrongAttackPressedTrigger.SetFor(attackInputWaitTime);
         }
 
         private void OnHeal(InputAction.CallbackContext context)

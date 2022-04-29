@@ -101,5 +101,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   maxTransparency: 0.7
-  shadowAppearDistance: 2
+  shadowAppearDistance: 3
   hitPointOffset: {x: -0.05, y: 0.2, z: 0.03}

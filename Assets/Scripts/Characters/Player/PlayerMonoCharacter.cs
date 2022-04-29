@@ -1,11 +1,9 @@
-using System;
-using Core.Attacking;
 using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Player.Interfaces;
 using Core.Utilities;
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Characters.Player
 {
@@ -68,12 +66,6 @@ namespace Characters.Player
             }
 
             OnStaminaChanged?.Invoke(this, Stamina);
-        }
-
-        protected override void Die(HitInfo info)
-        {
-            base.Die(info);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

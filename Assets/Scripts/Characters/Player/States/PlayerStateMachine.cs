@@ -1,12 +1,12 @@
-using Configs;
-using Core.Utilities;
-using Effects;
-using System.Collections;
+using Configs.Player;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
 using Core.Player.Interfaces;
+using Core.Utilities;
+using Effects;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +26,8 @@ namespace Characters.Player.States
         [SerializeField] private MonoAttackHandler lightAttackFirst;
         [SerializeField] private MonoAttackHandler lightAttackSecond;
         [SerializeField] private MonoAttackHandler lightAirboneAttack;
+        [SerializeField] private MonoAttackHandler firstStrongAttack;
+        [SerializeField] private MonoAttackHandler secondStrongAttack;
 
         [Space]
         [SerializeField] private PlayerConfig playerConfig;
@@ -68,9 +70,11 @@ namespace Characters.Player.States
         public IHurtbox Hurtbox { get; private set; }
         public IAutoPlayerInput Input { get; private set; }
 
-        public IAttackExecutor LightMonoAttackFirst { get; private set; }
-        public IAttackExecutor LightMonoAttackSecond { get; private set; }
-        public IAttackExecutor LightAirboneAttack { get; private set; }
+        public IAttackExecutor FirstLightAttack { get; private set; }
+        public IAttackExecutor SecondLightAttack { get; private set; }
+        public IAttackExecutor AirboneLightAttack { get; private set; }
+        public IAttackExecutor FirstStrongAttack => firstStrongAttack.Executor;
+        public IAttackExecutor SecondStrongAttack => secondStrongAttack.Executor;
 
         public PlayerConfig PlayerConfig => playerConfig;
 
@@ -122,9 +126,9 @@ namespace Characters.Player.States
                 followingCamera = Camera.main;
             }
 
-            LightMonoAttackFirst = lightAttackFirst.Executor;
-            LightMonoAttackSecond = lightAttackSecond.Executor;
-            LightAirboneAttack = lightAirboneAttack.Executor;
+            FirstLightAttack = lightAttackFirst.Executor;
+            SecondLightAttack = lightAttackSecond.Executor;
+            AirboneLightAttack = lightAirboneAttack.Executor;
 
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
 
@@ -140,7 +144,7 @@ namespace Characters.Player.States
             // Для корректного определения того, что игрок на земле при загрузке
             VelocityMovement.Movement.Move(Vector3.down);
 
-            var startState = VelocityMovement.Movement.IsGrounded 
+            var startState = VelocityMovement.Movement.IsGrounded
                 ? new PlayerGroundedState() : (PlayerBaseState)new PlayerFallState();
             startState.Construct(this);
 

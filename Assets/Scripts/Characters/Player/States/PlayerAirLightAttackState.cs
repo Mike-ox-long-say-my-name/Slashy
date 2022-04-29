@@ -10,18 +10,9 @@ namespace Characters.Player.States
             base.EnterState();
             Context.AttackedAtThisAirTime = true;
 
+            Context.Character.SpendStamina(Context.PlayerConfig.LightAirAttackStaminaCost);
             Context.AnimatorComponent.SetTrigger("attack");
-
-            var inputX = Context.Input.MoveInput.x;
-            var push = Vector3.up;
-            if (!Mathf.Approximately(inputX, 0))
-            {
-                var moveDirection = Mathf.Sign(inputX);
-                push += Vector3.right * moveDirection;
-            }
-
-            Context.Character.PlayerMovement.Pushable.Push(push, 5, 0.1f);
-            Context.LightAirboneAttack.StartAttack(OnAttackEnded);
+            Context.AirboneLightAttack.StartAttack(OnAttackEnded);
         }
 
         private void OnAttackEnded(bool _)
@@ -38,13 +29,13 @@ namespace Characters.Player.States
 
         public override void OnStaggered(HitInfo info)
         {
-            Context.LightAirboneAttack.InterruptAttack();
+            Context.AirboneLightAttack.InterruptAttack();
             base.OnStaggered(info);
         }
 
         public override void OnDeath(HitInfo info)
         {
-            Context.LightAirboneAttack.InterruptAttack();
+            Context.AirboneLightAttack.InterruptAttack();
             base.OnDeath(info);
         }
     }

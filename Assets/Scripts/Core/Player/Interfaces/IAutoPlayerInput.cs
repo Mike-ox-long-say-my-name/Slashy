@@ -9,6 +9,7 @@ namespace Core.Player.Interfaces
         bool IsJumpPressed { get; }
         bool IsDashPressed { get; }
         bool IsLightAttackPressed { get; }
+        bool IsStrongAttackPressed { get; }
         bool IsHealPressed { get; }
 
         Vector2 MoveInput { get; }

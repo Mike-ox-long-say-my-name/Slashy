@@ -48,6 +48,11 @@ namespace Characters.Player.States
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerGroundLightAttackState>();
             }
+            else if (Context.CanStartAttack && Context.Input.IsStrongAttackPressed)
+            {
+                Context.Input.ResetBufferedInput();
+                SwitchState<PlayerGroundStrongAttackState>();
+            }
         }
     }
 }

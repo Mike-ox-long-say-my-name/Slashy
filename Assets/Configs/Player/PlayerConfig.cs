@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Configs
+namespace Configs.Player
 {
     [CreateAssetMenu]
     public class PlayerConfig : ScriptableObject
@@ -10,10 +10,13 @@ namespace Configs
         [field: SerializeField, Min(0)] public float LightAttackFirstStaminaCost { get; private set; } = 0;
         [field: SerializeField, Min(0)] public float LightAttackSecondStaminaCost { get; private set; } = 0;
         [field: SerializeField, Min(0)] public float LightAttackRecovery { get; private set; } = 0.1f;
+        [field: SerializeField, Min(0)] public float LightAirAttackStaminaCost { get; private set; } = 10;
+        [field: SerializeField, Min(0)] public float FirstStrongAttackStaminaCost { get; private set; } = 20;
+        [field: SerializeField, Min(0)] public float SecondStrongAttackStaminaCost { get; private set; } = 20;
+        [field: SerializeField, Min(0)] public float FirstStrongAttackHealthCost { get; private set; } = 20;
         
         [field: Space]
         [field: Header("Stagger")]
-        [field: SerializeField, Min(0)] public float StaggerTime { get; private set; } = 0.15f;
         [field: SerializeField, Min(0)] public float StaggerFallTime { get; private set; } = 0.5f;
         
         [field: Space]

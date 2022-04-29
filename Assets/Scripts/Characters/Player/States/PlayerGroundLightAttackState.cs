@@ -17,7 +17,7 @@ namespace Characters.Player.States
             _currentAttack = 1;
             _shouldContinueAttack = false;
 
-            Context.LightMonoAttackFirst.StartAttack(AttackEndedFirst);
+            Context.FirstLightAttack.StartAttack(AttackEndedFirst);
         }
 
         private void AttackEndedFirst(bool interrupted)
@@ -26,7 +26,7 @@ namespace Characters.Player.States
             {
                 _currentAttack = 2;
                 Context.Character.SpendStamina(Context.PlayerConfig.LightAttackSecondStaminaCost);
-                Context.LightMonoAttackSecond.StartAttack(AttackEndedSecond);
+                Context.SecondLightAttack.StartAttack(AttackEndedSecond);
             }
             else
             {
@@ -60,10 +60,10 @@ namespace Characters.Player.States
             switch (_currentAttack)
             {
                 case 1:
-                    Context.LightMonoAttackFirst.InterruptAttack();
+                    Context.FirstLightAttack.InterruptAttack();
                     break;
                 case 2:
-                    Context.LightMonoAttackSecond.InterruptAttack();
+                    Context.SecondLightAttack.InterruptAttack();
                     break;
             }
         }

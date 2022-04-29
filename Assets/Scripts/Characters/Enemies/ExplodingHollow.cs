@@ -1,10 +1,10 @@
 using Characters.Enemies.States;
 using Core.Attacking;
-using Core.Utilities;
-using System.Collections;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Player.Interfaces;
+using Core.Utilities;
+using System.Collections;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -85,10 +85,7 @@ namespace Characters.Enemies
 
             Context.PunchAttack.StartAttack(inter =>
             {
-                if (!inter)
-                {
-                    SwitchState<ExplodingHollowPursue>();
-                }
+                SwitchState<ExplodingHollowPursue>();
             });
         }
 
@@ -173,7 +170,7 @@ namespace Characters.Enemies
                 SwitchState<ExplodingHollowExplosion>();
             }
         }
-        
+
         public override void OnHitReceived(HitInfo info)
         {
         }
@@ -192,9 +189,9 @@ namespace Characters.Enemies
             Context.VelocityMovement.Stop();
 
             _prepare.Reset();
-            
+
             Context.AnimatorComponent.SetTrigger("charge");
-            
+
             _prepare.SetIn(Context.ChargeTime);
         }
 
@@ -205,7 +202,7 @@ namespace Characters.Enemies
             {
                 return;
             }
-            
+
             // Если персонаж не переживет 1 тик урона, то сразу взрываемся
             if (Context.DotWhileRunning >= Context.Character.Health.Value)
             {
@@ -216,7 +213,7 @@ namespace Characters.Enemies
                 SwitchState<ExplodingHollowRunning>();
             }
         }
-        
+
         public override void OnHitReceived(HitInfo info)
         {
         }

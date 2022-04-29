@@ -7,7 +7,7 @@ namespace Core.Player.Interfaces
     {
         event Action<IPlayerCharacter, ICharacterResource> OnStaminaChanged;
 
-        new IPlayerMovement Movement { get; }
+        IPlayerMovement PlayerMovement { get; }
 
         ICharacterResource Stamina { get; }
 

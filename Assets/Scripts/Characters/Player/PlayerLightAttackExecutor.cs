@@ -13,7 +13,7 @@ namespace Characters.Player
         private struct AttackContext
         {
             public IAutoPlayerInput Input { get; set; }
-            public IPlayerMovement Movement { get; set; }
+            public IMovement Movement { get; set; }
             public float MoveDistance { get; set; }
         }
 
@@ -21,7 +21,8 @@ namespace Characters.Player
         {
             private readonly AttackContext _context;
 
-            public PlayerLightAttack(AttackContext context, ICoroutineHost host, IAttackbox attackbox) : base(host, attackbox)
+            public PlayerLightAttack(AttackContext context, ICoroutineHost host, IAttackbox attackbox)
+                : base(host, attackbox)
             {
                 _context = context;
             }
@@ -33,20 +34,20 @@ namespace Characters.Player
                 _context.Movement.Rotate(inputX);
 
                 var direction = _context.Movement.Transform.right;
-                _context.Movement.MoveRaw(direction * _context.MoveDistance);
+                _context.Movement.Move(direction * _context.MoveDistance);
             }
         }
 
         [SerializeField, Min(0)] private float moveDistance = 0.4f;
 
-        protected override IAttackExecutor CreateExecutor(ICoroutineHost host, IAttackbox attackbox)
+        protected override AnimationAttackExecutor CreateAnimationAttackExecutor(ICoroutineHost host, IAttackbox attackbox)
         {
-            var playerMovement = GetComponentInParent<MonoPlayerCharacter>().Player.Movement;
+            var playerMovement = GetComponentInParent<MonoPlayerCharacter>().Player.PlayerMovement;
             var playerInput = GetComponentInParent<IAutoPlayerInput>();
             var context = new AttackContext
             {
                 Input = playerInput,
-                Movement = playerMovement,
+                Movement = playerMovement.Movement,
                 MoveDistance = moveDistance
             };
             return new PlayerLightAttack(context, host, attackbox);

@@ -32,9 +32,9 @@ namespace Characters.Player.States
 
         private void CheckStateSwitch()
         {
-            if (Context.Movement.IsGrounded && _recoverFromStaggerFallRoutine == null)
+            if (Context.VelocityMovement.Movement.IsGrounded && _recoverFromStaggerFallRoutine == null)
             {
-                Context.Movement.Stop();
+                Context.VelocityMovement.Stop();
                 _recoverFromStaggerFallRoutine =
                     Context.StartCoroutine(RecoverFromStaggerFall(Context.PlayerConfig.StaggerFallTime));
             }

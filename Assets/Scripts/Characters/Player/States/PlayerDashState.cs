@@ -15,7 +15,7 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            Context.Movement.Stop();
+            Context.VelocityMovement.Stop();
 
             Context.AnimatorComponent.SetBool("is-dashing", true);
 
@@ -44,7 +44,7 @@ namespace Characters.Player.States
 
         private void Dash(Vector3 direction)
         {
-            IEnumerator DashCoroutine(IRawMovement movement, float dashTime, Vector3 targetMove)
+            IEnumerator DashCoroutine(IMovement movement, float dashTime, Vector3 targetMove)
             {
                 var passedTime = 0f;
                 while (passedTime < dashTime)
@@ -58,7 +58,7 @@ namespace Characters.Player.States
                     TickDashEffectController(timeStep);
 
                     var move = targetMove * (timeStep / dashTime);
-                    movement.MoveRaw(move);
+                    movement.Move(move);
                     yield return null;
                 }
 
@@ -66,7 +66,8 @@ namespace Characters.Player.States
             }
 
             var fullMove = direction * Context.PlayerConfig.DashDistance;
-            _dashRoutine = Context.StartCoroutine(DashCoroutine(Context.Movement, Context.PlayerConfig.DashTime, fullMove));
+            _dashRoutine = Context.StartCoroutine(
+                DashCoroutine(Context.VelocityMovement.Movement, Context.PlayerConfig.DashTime, fullMove));
         }
 
         private void TickDashEffectController(float timeStep)

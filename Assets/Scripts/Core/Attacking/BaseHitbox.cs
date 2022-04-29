@@ -19,7 +19,7 @@ namespace Core.Attacking
             _colliders = colliders != null ? colliders.ToArray() : Array.Empty<Collider>();
         }
 
-        public bool IsEnabled { get; private set; }
+        public bool IsEnabled { get; private set; } = true;
 
         public virtual void Enable()
         {

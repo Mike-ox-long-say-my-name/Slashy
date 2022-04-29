@@ -44,12 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnvironmental: 0
-  damageInfo:
-    damage: 15
-    balanceDamage: 7
-    pushStrength: 1.5
-    staggerTime: 0.3
   moveDistance: 0.4
 --- !u!1 &812809746819271580
 GameObject:
@@ -110,9 +104,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colliders:
   - {fileID: 812809746819271582}
-  disableOnAwake: 1
+  disableOnInit: 1
   ignored:
   - {fileID: 7872327175356220165}
+  isEnvironmental: 0
+  monoDamageMultipliers: {fileID: 11400000, guid: aa4ff69b9f83daf4897bc5bea1577a91, type: 2}
 --- !u!1 &812809748012681076
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,9 +168,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colliders:
   - {fileID: 812809748012681079}
-  disableOnAwake: 1
+  disableOnInit: 1
   ignored:
   - {fileID: 7872327175356220165}
+  isEnvironmental: 0
+  monoDamageMultipliers: {fileID: 11400000, guid: c60485669e2db9846b5d05a8ec0bcd91, type: 2}
 --- !u!1 &812809748315871440
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,12 +217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnvironmental: 0
-  damageInfo:
-    damage: 10
-    balanceDamage: 5
-    pushStrength: 1
-    staggerTime: 0.3
   moveDistance: 0.4
 --- !u!1 &812809748605883924
 GameObject:
@@ -623,11 +615,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8406f2d5f35d040b2ce7a1ff501403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onStaminaChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  stats: {fileID: 11400000, guid: 1c12ad17d6bddbb46ab588dd090c54a7, type: 2}
-  config: {fileID: 11400000, guid: 02ef6402b53e6cf4ba9e17506dc07f09, type: 2}
+  monoMovementConfig: {fileID: 11400000, guid: 6c93564d38db11e459c240a7694ab244, type: 2}
+  monoCharacterStats: {fileID: 11400000, guid: 2390c2c64c752c44c87e3c28a27b899d, type: 2}
+  monoDamageStats: {fileID: 11400000, guid: 5cf35f2ec99f28747b27cc04e697ea91, type: 2}
+  monoPlayerStats: {fileID: 11400000, guid: 6a2138fdf5be8d44184173915516e15b, type: 2}
+  monoPlayerConfig: {fileID: 11400000, guid: 97e56c902ceefc3449039ecb39a23b6d, type: 2}
 --- !u!114 &7804759398765068738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,9 +767,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colliders:
   - {fileID: 3601963403562516412}
-  disableOnAwake: 1
+  disableOnInit: 1
   ignored:
   - {fileID: 7872327175356220165}
+  isEnvironmental: 0
+  monoDamageMultipliers: {fileID: 11400000, guid: 9a917d2992fecff438a93415c4e57c69, type: 2}
 --- !u!1 &6490604781185489133
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,12 +816,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnvironmental: 0
-  damageInfo:
-    damage: 17
-    balanceDamage: 10
-    pushStrength: 1.5
-    staggerTime: 0.3
   moveDistance: 0.4
 --- !u!1 &6529360737305819375
 GameObject:

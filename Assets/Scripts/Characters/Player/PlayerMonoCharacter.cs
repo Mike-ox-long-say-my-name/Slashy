@@ -11,21 +11,22 @@ namespace Characters.Player
 {
     public class PlayerCharacter : Character, IPlayerCharacter
     {
-        private readonly IPlayerStats _stats;
+        public PlayerStats PlayerStats { get; set; }
+
         private readonly StaminaResource _staminaResource;
 
         public event Action<IPlayerCharacter, ICharacterResource> OnStaminaChanged;
 
-        IPlayerMovement IPlayerCharacter.Movement => (IPlayerMovement)Movement;
+        IPlayerMovement IPlayerCharacter.PlayerMovement => (IPlayerMovement)VelocityMovement;
         public ICharacterResource Stamina => _staminaResource;
 
         private readonly TimedTrigger _staminaRecoveryDelayed = new TimedTrigger();
 
-        public PlayerCharacter(IPlayerMovement movement, IPlayerStats stats)
-            : base(movement, movement?.Pushable, stats)
+        public PlayerCharacter(IPlayerMovement movement, DamageStats damageStats, CharacterStats characterStats, PlayerStats playerStats)
+            : base(movement, damageStats, characterStats)
         {
-            _stats = stats;
-            _staminaResource = new StaminaResource(this, stats.MaxStamina);
+            PlayerStats = playerStats;
+            _staminaResource = new StaminaResource(this, playerStats.MaxStamina);
         }
 
         public override void Tick(float deltaTime)
@@ -38,18 +39,18 @@ namespace Characters.Player
 
         private void RecoverStamina()
         {
-            if (_staminaRecoveryDelayed.IsSet || _stats.FreezeStamina)
+            if (_staminaRecoveryDelayed.IsSet || PlayerStats.FreezeStamina)
             {
                 return;
             }
 
-            _staminaResource.Recover(_stats.StaminaRegeneration * Time.deltaTime);
+            _staminaResource.Recover(PlayerStats.StaminaRegeneration * Time.deltaTime);
             OnStaminaChanged?.Invoke(this, Stamina);
         }
 
         public void SpendStamina(float amount)
         {
-            if (_stats.FreezeStamina)
+            if (PlayerStats.FreezeStamina)
             {
                 return;
             }
@@ -57,12 +58,12 @@ namespace Characters.Player
             _staminaResource.Spend(amount);
             if (_staminaResource.IsDepleted)
             {
-                var delay = _stats.StaminaRegenerationDelay + _stats.EmptyStaminaAdditionalRegenerationDelay;
+                var delay = PlayerStats.StaminaRegenerationDelay + PlayerStats.EmptyStaminaAdditionalRegenerationDelay;
                 _staminaRecoveryDelayed.SetFor(delay);
             }
             else
             {
-                var delay = _stats.StaminaRegenerationDelay;
+                var delay = PlayerStats.StaminaRegenerationDelay;
                 _staminaRecoveryDelayed.SetFor(delay);
             }
 

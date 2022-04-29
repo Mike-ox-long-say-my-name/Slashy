@@ -13,14 +13,15 @@ namespace Characters.Enemies.States
         public EnemyBaseState<T> CurrentState { get; set; }
         
         public ICharacter Character { get; private set; }
-        public ICharacterMovement Movement => Character.Movement;
-        public IPushable Pushable => Character.Pushable;
+        public IVelocityMovement VelocityMovement => Character.VelocityMovement;
+        public IMovement Movement => VelocityMovement.Movement;
+        public IPushable Pushable => VelocityMovement.Pushable;
         public IHurtbox Hurtbox { get; private set; }
 
         public IMonoPlayerInfoProvider MonoPlayerInfo => PlayerManager.Instance.PlayerInfo;
         public IPlayerCharacter Player => MonoPlayerInfo.Player;
 
-        public Vector3 PlayerPosition => Player.Movement.Transform.position;
+        public Vector3 PlayerPosition => Player.PlayerMovement.Movement.Transform.position;
 
         protected abstract EnemyBaseState<T> StartState();
 

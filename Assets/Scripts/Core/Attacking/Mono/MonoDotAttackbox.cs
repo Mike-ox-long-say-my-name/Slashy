@@ -9,19 +9,14 @@ namespace Core.Attacking.Mono
         [SerializeField, Range(0.01f, 5)] private float hitInterval = 1f;
         [SerializeField, Min(0)] private int damageGroup;
 
-        protected override IHitbox CreateHitbox()
+        protected override IAttackbox CreateAttackbox(Collider[] colliders, HitInfo hitInfo)
         {
-            var colliders = GetComponentsInChildren<Collider>();
             var attackbox = new DotAttackbox(transform, damageGroup, colliders)
             {
                 HitInterval = hitInterval,
+                HitInfo = hitInfo,
                 Ignored = Ignored.Select(hurtbox => hurtbox.Hurtbox).ToList()
             };
-
-            if (DisableOnInit)
-            {
-                attackbox.Disable();
-            }
 
             return attackbox;
         }

@@ -11,11 +11,13 @@ namespace Core.Characters.Interfaces
         event Action<ICharacter, HitInfo> OnStaggered;
         event Action<ICharacter, HitInfo> OnDeath;
 
-        ICharacterMovement Movement { get; }
-        IPushable Pushable { get; }
+        IVelocityMovement VelocityMovement { get; }
 
         ICharacterResource Health { get; }
         ICharacterResource Balance { get; }
+
+        CharacterStats CharacterStats { get; set; }
+        DamageStats DamageStats { get; set; }
 
         void Heal(float amount);
         void Tick(float deltaTime);

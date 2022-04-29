@@ -1,35 +1,32 @@
 ﻿using Core.Characters;
 using Core.Characters.Interfaces;
+using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Characters.Player
 {
     public class PlayerMovement : CharacterMovement, IPlayerMovement
     {
-        public IPushable Pushable { get; }
-
-        private readonly IPlayerMovementConfig _config;
+        public PlayerMovementConfig PlayerMovementConfig { get; set; }
         private float _horizontalAirboneVelocity, _verticalAirboneVelocity;
         
-        public PlayerMovement(CharacterController controller, IPlayerMovementConfig config) : base(controller, config)
+        public PlayerMovement(IMovement movement, MovementConfig movementConfig,
+            PlayerMovementConfig playerMovementConfig) : base(movement, movementConfig)
         {
-            _config = config;
-            Pushable = new Pushable(this);
+            PlayerMovementConfig = playerMovementConfig;
         }
 
         private void MoveAirbone(Vector3 direction)
         {
-            Velocity.x = Mathf.SmoothDamp(Velocity.x, _config.HorizontalSpeed * direction.x,
-                ref _horizontalAirboneVelocity, _config.AirboneControlFactor);
-            Velocity.z = Mathf.SmoothDamp(Velocity.z, _config.VerticalSpeed * direction.z,
-                ref _verticalAirboneVelocity, _config.AirboneControlFactor);
-
-            Rotate(direction.x);
+            Velocity.x = Mathf.SmoothDamp(Velocity.x, MovementConfig.HorizontalSpeed * direction.x,
+                ref _horizontalAirboneVelocity, PlayerMovementConfig.AirboneControlFactor);
+            Velocity.z = Mathf.SmoothDamp(Velocity.z, MovementConfig.VerticalSpeed * direction.z,
+                ref _verticalAirboneVelocity, PlayerMovementConfig.AirboneControlFactor);
         }
 
         public override void Move(Vector3 direction)
         {
-            if (IsGrounded)
+            if (Movement.IsGrounded)
             {
                 base.Move(direction);
             }
@@ -41,7 +38,7 @@ namespace Characters.Player
 
         public void Jump()
         {
-            Velocity.y = _config.JumpStartVelocity;
+            Velocity.y = PlayerMovementConfig.JumpStartVelocity;
         }
     }
 }

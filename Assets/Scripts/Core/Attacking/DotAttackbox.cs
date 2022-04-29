@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Core.Attacking
 {
-    public class DotAttackbox : Attackbox, IDotAttackbox
+    public sealed class DotAttackbox : Attackbox, IDotAttackbox
     {
         private float _hitInterval = 1f;
 
@@ -52,7 +52,7 @@ namespace Core.Attacking
         public override void ProcessHit(IHurtbox hit)
         {
             EnsureGlobalHitExist(hit);
-            if (!ShouldDispatch(hit))
+            if (!ShouldDispatchGlobal(hit))
             {
                 return;
             }
@@ -72,10 +72,11 @@ namespace Core.Attacking
             }
         }
 
-        protected override bool ShouldDispatch(IHurtbox hit)
+        private bool ShouldDispatchGlobal(IHurtbox hit)
         {
             var hasSameGroupHit = GlobalHits.TryGetValue(hit, out var groups) && groups.Contains(DamageGroup);
-            return !hasSameGroupHit &&  base.ShouldDispatch(hit);
+            // TODO: подумать
+            return /*!hasSameGroupHit &&*/ ShouldDispatch(hit);
         }
 
         private void ClearDeadHits()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Core.Attacking.Interfaces;
 using Core.Utilities;
@@ -8,7 +9,7 @@ namespace Core.Attacking
     public abstract class AttackExecutor : IAttackExecutor
     {
         private Coroutine _runningAttack;
-        private IAttackEndEventReceiver _endReceiver;
+        private Action<bool> _attackEnded;
 
         protected ICoroutineHost Host { get; }
         protected IAttackbox Attackbox { get; }
@@ -19,7 +20,7 @@ namespace Core.Attacking
         {
             Guard.NotNull(host);
             Guard.NotNull(attackbox);
-
+            
             Host = host;
             Attackbox = attackbox;
         }
@@ -35,10 +36,10 @@ namespace Core.Attacking
             OnAttackEnded(true);
             Host.Stop(_runningAttack);
             _runningAttack = null;
-            _endReceiver = null;
+            _attackEnded = null;
         }
 
-        public void StartAttack(IAttackEndEventReceiver endReceiver)
+        public void StartAttack(Action<bool> attackEnded)
         {
             if (IsAttacking)
             {
@@ -46,14 +47,8 @@ namespace Core.Attacking
                 return;
             }
 
-            _endReceiver = endReceiver;
+            _attackEnded = attackEnded;
             _runningAttack = Host.Start(ExecuteInternal());
-        }
-
-
-        public virtual bool InterceptHit(IHurtbox hit)
-        {
-            return true;
         }
 
         private IEnumerator ExecuteInternal()
@@ -62,15 +57,15 @@ namespace Core.Attacking
             
             OnAttackEnded(false);
             _runningAttack = null;
-            _endReceiver = null;
+            _attackEnded = null;
         }
 
         protected abstract IEnumerator Execute();
 
         protected virtual void OnAttackEnded(bool interrupted)
         {
-            _endReceiver?.OnAttackEnded(interrupted);
-            _endReceiver = null;
+            _attackEnded?.Invoke(interrupted);
+            _attackEnded = null;
         }
     }
 }

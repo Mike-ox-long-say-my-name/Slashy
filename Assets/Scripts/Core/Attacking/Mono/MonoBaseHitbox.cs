@@ -7,8 +7,6 @@ namespace Core.Attacking.Mono
     {
         [SerializeField] private Collider[] colliders;
 
-        protected Collider[] Colliders => colliders;
-
         private IHitbox _hitbox;
 
         public IHitbox Hitbox
@@ -20,11 +18,11 @@ namespace Core.Attacking.Mono
                     return _hitbox;
                 }
 
-                _hitbox = CreateHitbox();
+                _hitbox = CreateHitbox(colliders);
                 return _hitbox;
             }
         }
 
-        protected abstract IHitbox CreateHitbox();
+        protected abstract IHitbox CreateHitbox(Collider[] colliders);
     }
 }

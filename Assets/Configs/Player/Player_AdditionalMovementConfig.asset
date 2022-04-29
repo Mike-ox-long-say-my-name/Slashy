@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e979bb42f8c5afb4482a7a8930fc777d, type: 3}
+  m_Name: Player_AdditionalMovementConfig
+  m_EditorClassIdentifier: 
+  <Config>k__BackingField:
+    <JumpStartVelocity>k__BackingField: 5
+    <AirboneControlFactor>k__BackingField: 0.7

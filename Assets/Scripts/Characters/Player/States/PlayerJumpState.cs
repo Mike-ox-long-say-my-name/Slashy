@@ -13,7 +13,7 @@ namespace Characters.Player.States
             Context.AnimatorComponent.SetTrigger("jump");
 
             Context.Character.SpendStamina(Context.PlayerConfig.JumpStaminaCost);
-            Context.Movement.Jump();
+            Context.VelocityMovement.Jump();
         }
 
         public override void UpdateState()
@@ -25,11 +25,11 @@ namespace Characters.Player.States
 
         public virtual void CheckStateSwitch()
         {
-            if (Context.Movement.IsGrounded)
+            if (Context.VelocityMovement.Movement.IsGrounded)
             {
                 SwitchState(Factory.Grounded());
             }
-            else if (Context.Movement.IsFalling)
+            else if (Context.VelocityMovement.Velocity.y < 0)
             {
                 SwitchState(Factory.Fall());
             }

@@ -1,3 +1,5 @@
+using System;
+
 namespace Core.Attacking.Interfaces
 {
     public interface IAttackExecutor
@@ -5,7 +7,6 @@ namespace Core.Attacking.Interfaces
         bool IsAttacking { get; }
 
         void InterruptAttack();
-        void StartAttack(IAttackEndEventReceiver endReceiver);
-        bool InterceptHit(IHurtbox hit);
+        void StartAttack(Action<bool> attackEnded);
     }
 }

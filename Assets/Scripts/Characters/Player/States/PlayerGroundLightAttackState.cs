@@ -13,7 +13,7 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            Context.Movement.Stop();
+            Context.VelocityMovement.Stop();
 
             Context.AnimatorComponent.SetTrigger("attack");
             Context.Character.SpendStamina(Context.PlayerConfig.LightAttackFirstStaminaCost);

@@ -42,11 +42,11 @@ namespace Characters.Enemies
             if (direction.magnitude > 1.2f)
             {
                 direction.Normalize();
-                Context.Movement.Move(new Vector3(direction.x, 0, direction.z));
+                Context.VelocityMovement.Move(new Vector3(direction.x, 0, direction.z));
             }
             else
             {
-                Context.Movement.Rotate(direction.x);
+                Context.VelocityMovement.Movement.Rotate(direction.x);
                 SwitchState<ExplodingHollowAttack>();
             }
         }
@@ -80,12 +80,11 @@ namespace Characters.Enemies
     {
         public override void EnterState()
         {
-            Context.Movement.Stop();
+            Context.VelocityMovement.Stop();
             Context.AnimatorComponent.SetTrigger("attack");
 
             Context.PunchAttack.StartAttack(inter =>
             {
-                Debug.Log("end");
                 if (!inter)
                 {
                     SwitchState<ExplodingHollowPursue>();
@@ -143,10 +142,9 @@ namespace Characters.Enemies
             {
                 Context.Character.ReceiveHit(new HitInfo
                 {
-                    DamageInfo = new DamageInfo
-                    {
-                        damage = Context.DotWhileRunning
-                    }
+                    Multipliers = DamageMultipliers.One,
+                    DamageStats = Context.Character.DamageStats,
+                    Source = HitSource.AsCharacter(Context.Character)
                 });
                 _dotTrigger.SetIn(Context.DotTickInterval);
             }
@@ -160,7 +158,7 @@ namespace Characters.Enemies
             if (direction.magnitude > 1.5)
             {
                 direction.Normalize();
-                Context.Movement.Move(speedMultiplier * new Vector3(direction.x, 0, direction.z));
+                Context.VelocityMovement.Move(speedMultiplier * new Vector3(direction.x, 0, direction.z));
 
                 var health = Context.Character.Health;
                 if (health.Value / health.MaxValue < 0.2f)
@@ -171,7 +169,7 @@ namespace Characters.Enemies
             else
             {
                 direction.Normalize();
-                Context.Pushable.Push(direction, 1.4f, 0.3f);
+                Context.Pushable.Push(direction, 5f, 0.3f);
                 SwitchState<ExplodingHollowExplosion>();
             }
         }
@@ -191,7 +189,7 @@ namespace Characters.Enemies
 
         public override void EnterState()
         {
-            Context.Movement.Stop();
+            Context.VelocityMovement.Stop();
 
             _prepare.Reset();
             
@@ -232,7 +230,7 @@ namespace Characters.Enemies
     {
         public override void EnterState()
         {
-            Context.Movement.Stop();
+            Context.VelocityMovement.Stop();
 
             Context.AnimatorComponent.SetTrigger("explode");
             Context.ExplosionAttack.StartAttack(_ => SwitchState<ExplodingHollowDeath>());
@@ -260,7 +258,7 @@ namespace Characters.Enemies
 
         public override void EnterState()
         {
-            Context.Movement.Stop();
+            Context.VelocityMovement.Stop();
 
             Context.AnimatorComponent.SetBool("is-staggered", true);
             _staggered.SetFor(0.5f);
@@ -306,7 +304,7 @@ namespace Characters.Enemies
         public override void EnterState()
         {
             Context.Hurtbox.Disable();
-            Context.Movement.Stop();
+            Context.VelocityMovement.Stop();
             Context.AnimatorComponent.SetTrigger("death");
 
             // Почти не захардкожено

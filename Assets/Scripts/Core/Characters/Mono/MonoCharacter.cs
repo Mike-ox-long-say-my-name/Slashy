@@ -4,19 +4,44 @@ using UnityEngine;
 namespace Core.Characters.Mono
 {
     [RequireComponent(typeof(CharacterController))]
-    public class MonoCharacter : MonoBaseCharacter
+    public class MonoCharacter : MonoBehaviour, IDamageStatsContainer
     {
-        [SerializeField] private CharacterMovementConfig movementConfig;
-        [SerializeField] private CharacterStats characterStats;
+        [SerializeField] private MonoMovementConfig monoMovementConfig;
+        [SerializeField] private MonoCharacterStats monoCharacterStats;
+        [SerializeField] private MonoDamageStats monoDamageStats;
 
-        protected override ICharacter CreateCharacter()
+
+        public DamageStats DamageStats => monoDamageStats.DamageStats;
+
+        private ICharacter _character;
+
+        public ICharacter Character
+        {
+            get
+            {
+                if (_character != null)
+                {
+                    return _character;
+                }
+
+                _character = CreateCharacter(monoMovementConfig.Config, monoDamageStats.DamageStats, monoCharacterStats.CharacterStats);
+                return _character;
+            }
+        }
+
+        protected virtual void Update()
+        {
+            Character.Tick(Time.deltaTime);
+        }
+
+        protected virtual ICharacter CreateCharacter(MovementConfig config, DamageStats damageState, CharacterStats characterStats)
         {
             var controller = GetComponent<CharacterController>();
 
-            var movement = new CharacterMovement(controller, movementConfig);
-            var pushable = new Pushable(movement);
+            var rawMovement = new Movement(controller);
 
-            return new Character(movement, pushable, characterStats);
+            var movement = new CharacterMovement(rawMovement, config);
+            return new Character(movement, damageState, characterStats);
         }
     }
 }

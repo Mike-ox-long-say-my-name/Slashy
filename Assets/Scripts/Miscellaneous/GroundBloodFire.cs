@@ -8,6 +8,8 @@ namespace Miscellaneous
     [RequireComponent(typeof(DotAttackExecutor))]
     public class GroundBloodFire : MonoBehaviour
     {
+        public const float InfinityLifeTime = -1;
+
         private IDotAttackExecutor _attackExecutor;
         [SerializeField] private ParticleSystem fireEffect;
         [SerializeField] private bool fireOnAwake;
@@ -15,12 +17,7 @@ namespace Miscellaneous
         private bool _fired;
         private float _timeRemained;
 
-        public void Fire()
-        {
-            Fire(-1);
-        }
-
-        public void Fire(float lifeTime)
+        public void Fire(float lifeTime = InfinityLifeTime)
         {
             if (_fired)
             {

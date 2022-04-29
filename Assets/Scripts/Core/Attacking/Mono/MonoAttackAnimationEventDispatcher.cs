@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core.Attacking.Interfaces;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
@@ -12,10 +13,11 @@ namespace Core.Attacking.Mono
 
         private void Awake()
         {
-            _receivers = GetComponentsInChildren<IMonoAttackAnimationEventReceiver>()
+            _receivers = GetComponentsInChildren<MonoAnimationAttackExecutor>()
                 .Select(receiver => receiver.Receiver).ToList();
         }
-
+        
+        [UsedImplicitly]
         public void OnAnimationShouldEnableHitbox()
         {
             foreach (var receiver in _receivers)
@@ -23,7 +25,8 @@ namespace Core.Attacking.Mono
                 receiver.ReceiveEnableHitbox();
             }
         }
-
+        
+        [UsedImplicitly]
         public void OnAnimationShouldDisableHitbox()
         {
             foreach (var receiver in _receivers)
@@ -31,7 +34,8 @@ namespace Core.Attacking.Mono
                 receiver.ReceiveDisableHitbox();
             }
         }
-
+        
+        [UsedImplicitly]
         public void OnAnimationShouldEndAttack()
         {
             foreach (var receiver in _receivers)

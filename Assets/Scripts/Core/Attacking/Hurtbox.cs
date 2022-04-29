@@ -12,9 +12,9 @@ namespace Core.Attacking
 
         public event Action<HitInfo> OnHit;
 
-        public void ProcessHit(HitInfo info)
+        public void ProcessHit(IAttackbox source, HitInfo hitInfo)
         {
-            OnHit?.Invoke(info);
+            OnHit?.Invoke(hitInfo);
         }
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5177069648436720858}
   - component: {fileID: 21815389352715783}
   - component: {fileID: 3117513251195595734}
+  - component: {fileID: 2657800335013722293}
   m_Layer: 0
   m_Name: GroundBloodFire
   m_TagString: Untagged
@@ -46,12 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeffed99b0e9f89408532322fa016a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnvironmental: 1
-  damageInfo:
-    damage: 5
-    balanceDamage: 2
-    pushStrength: 0
-    staggerTime: 0.2
 --- !u!114 &3117513251195595734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,6 +61,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireEffect: {fileID: 4622726146129251903}
   fireOnAwake: 0
+--- !u!114 &2657800335013722293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8586173863565596272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53f7c89cd6494eb4fbd1e191e41fd7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monoDamageStats: {fileID: 11400000, guid: c0018c73ff17bbf44850796d5829544d, type: 2}
 --- !u!1 &8613732721164451290
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,10 +133,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colliders:
   - {fileID: 6307363342628520316}
-  disableOnAwake: 0
+  disableOnInit: 0
+  ignored: []
+  isEnvironmental: 1
+  monoDamageMultipliers: {fileID: 11400000, guid: e315b1f21a259684fbdfe563b9b79299, type: 2}
   hitInterval: 1
   damageGroup: 0
-  ignored: []
 --- !u!1001 &5305375290957969610
 PrefabInstance:
   m_ObjectHideFlags: 0

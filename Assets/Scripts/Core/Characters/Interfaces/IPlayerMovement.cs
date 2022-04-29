@@ -1,9 +1,7 @@
 ﻿namespace Core.Characters.Interfaces
 {
-    public interface IPlayerMovement : ICharacterMovement
+    public interface IPlayerMovement : IVelocityMovement
     {
-        IPushable Pushable { get; }
-
         void Jump();
     }
 }

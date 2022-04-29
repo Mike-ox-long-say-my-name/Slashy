@@ -1,48 +1,42 @@
-﻿using System;
-using Core.Attacking;
+﻿using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
 using Core.Utilities;
+using System;
 using UnityEngine;
 
 namespace Core.Characters
 {
     public class Character : ICharacter
     {
-        public GameObject Object { get; }
-        
         public event Action<ICharacter, ICharacterResource> OnHealthChanged;
         public event Action<ICharacter, HitInfo> OnHitReceivedExclusive;
         public event Action<IHitReceiver, HitInfo> OnHitReceived;
         public event Action<ICharacter, HitInfo> OnStaggered;
         public event Action<ICharacter, HitInfo> OnDeath;
 
-        public ICharacterMovement Movement { get; }
-        public IPushable Pushable { get; }
+        public IVelocityMovement VelocityMovement { get; }
 
         public ICharacterResource Health => _health;
         public ICharacterResource Balance => _balance;
 
-        private readonly ICharacterStats _stats;
+        public DamageStats DamageStats { get; set; }
+        public CharacterStats CharacterStats { get; set; }
 
         private readonly HealthResource _health;
         private readonly BalanceResource _balance;
 
-        public Character(ICharacterMovement movement, IPushable pushable, ICharacterStats stats)
+
+        public Character(IVelocityMovement movement, DamageStats damageStats, CharacterStats characterStats)
         {
             Guard.NotNull(movement);
-            Guard.NotNull(pushable);
-            Guard.NotNull(stats);
 
-            Object = movement.Controller.gameObject;
+            VelocityMovement = movement;
+            DamageStats = damageStats;
+            CharacterStats = characterStats;
 
-            Movement = movement;
-            Pushable = pushable;
-
-            _stats = stats;
-
-            _health = new HealthResource(this, _stats.MaxHealth);
-            _balance = new BalanceResource(this, _stats.MaxBalance);
+            _health = new HealthResource(this, CharacterStats.MaxHealth);
+            _balance = new BalanceResource(this, CharacterStats.MaxBalance);
         }
 
         public virtual void ReceiveHit(HitInfo info)
@@ -53,16 +47,20 @@ namespace Core.Characters
             if (staggered && !dead)
             {
                 var source = info.Source;
-                if (source.Character != null && info.DamageInfo.pushStrength > 0)
+
+                var pushTime = info.PushTime;
+                var pushForce = info.PushForce;
+
+                if (source.Character != null && pushTime > 0 && pushForce > 0)
                 {
-                    var sourcePosition = source.Character.Movement.Transform.position;
-                    var direction = (Movement.Transform.position - sourcePosition);
+                    var sourcePosition = source.Character.VelocityMovement.Movement.Transform.position;
+                    var direction = (VelocityMovement.Movement.Transform.position - sourcePosition);
                     direction.y = 0;
                     direction.Normalize();
-                    Pushable.Push(direction, info.DamageInfo.pushStrength);
+                    VelocityMovement.Pushable.Push(direction, pushForce, pushTime);
                 }
 
-                _balance.Recover(_stats.MaxBalance);
+                _balance.Recover(CharacterStats.MaxBalance);
             }
 
             OnHitReceived?.Invoke(this, info);
@@ -83,26 +81,26 @@ namespace Core.Characters
 
         protected virtual bool TakeBalanceDamage(HitInfo info)
         {
-            _balance.Spend(info.DamageInfo.balanceDamage);
+            _balance.Spend(info.BalanceDamage);
             return _balance.IsDepleted;
         }
 
         protected virtual bool TakeDamage(HitInfo info)
         {
-            if (_stats.FreezeHealth)
+            if (CharacterStats.FreezeHealth)
             {
                 return false;
             }
 
-            _health.Spend(info.DamageInfo.damage);
+            _health.Spend(info.Damage);
             OnHealthChanged?.Invoke(this, Health);
 
-            return _stats.CanDie && _health.IsDepleted;
+            return CharacterStats.CanDie && _health.IsDepleted;
         }
 
         public virtual void Heal(float amount)
         {
-            if (_stats.FreezeHealth)
+            if (CharacterStats.FreezeHealth)
             {
                 return;
             }
@@ -113,13 +111,33 @@ namespace Core.Characters
 
         public virtual void Tick(float deltaTime)
         {
-            Movement.Tick(deltaTime);
-            Pushable.Tick(deltaTime);
+            VelocityMovement.Tick(deltaTime);
         }
 
         protected virtual void Die(HitInfo info)
         {
             OnDeath?.Invoke(this, info);
         }
+    }
+
+    [Serializable]
+    public struct DamageStats
+    {
+        [field: SerializeField] public float BaseDamage { get; set; }
+        [field: SerializeField] public float BaseBalanceDamage { get; set; }
+        [field: SerializeField] public float BaseStaggerTime { get; set; }
+        [field: SerializeField] public float BasePushTime { get; set; }
+        [field: SerializeField] public float BasePushForce { get; set; }
+    }
+
+    [Serializable]
+    public struct CharacterStats
+    {
+        [field: SerializeField] public float MaxHealth { get; set; }
+        [field: SerializeField] public float MaxBalance { get; set; }
+
+        [field: SerializeField] public bool FreezeHealth { get; set; }
+        [field: SerializeField] public bool FreezeBalance { get; set; }
+        [field: SerializeField] public bool CanDie { get; set; }
     }
 }

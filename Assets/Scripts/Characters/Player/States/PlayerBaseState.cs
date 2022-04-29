@@ -18,7 +18,7 @@ namespace Characters.Player.States
         {
             var input = Context.Input.MoveInput;
             var move = new Vector3(input.x, 0, input.y);
-            Context.Movement.Move(move.normalized);
+            Context.VelocityMovement.Move(move.normalized);
         }
 
         public virtual void EnterState()

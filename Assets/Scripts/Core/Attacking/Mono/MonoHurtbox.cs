@@ -1,4 +1,5 @@
 using Core.Attacking.Interfaces;
+using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
@@ -23,9 +24,17 @@ namespace Core.Attacking.Mono
 
         public IHurtbox Hurtbox => Hitbox as IHurtbox;
 
-        protected override IHitbox CreateHitbox()
+        protected override IHitbox CreateHitbox(Collider[] colliders)
         {
-            return new Hurtbox(transform, Colliders);
+            var character = GetComponentInParent<MonoCharacter>().Character;
+            var hurtbox = CreateHurtbox(colliders);
+            hurtbox.OnHit += character.ReceiveHit;
+            return hurtbox;
+        }
+
+        protected virtual IHurtbox CreateHurtbox(Collider[] colliders)
+        {
+            return new Hurtbox(transform, colliders);
         }
     }
 }

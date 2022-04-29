@@ -60,7 +60,7 @@ namespace Characters.Player.States
         public readonly OwningLock CanAttack = new OwningLock();
         public readonly OwningLock CanHeal = new OwningLock();
 
-        public IPlayerMovement Movement => Character.Movement;
+        public IPlayerMovement VelocityMovement => Character.PlayerMovement;
         public SpriteRenderer SpriteRenderer { get; private set; }
         public DashCloneEffectController DashEffectController { get; private set; }
         public IPlayerCharacter Character { get; private set; }
@@ -139,8 +139,8 @@ namespace Characters.Player.States
         private IEnumerator Start()
         {
             // Для корректного определения того, что игрок на земле при загрузке
-            Movement.MoveRaw(Vector3.down);
-            CurrentState = Movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
+            VelocityMovement.Movement.Move(Vector3.down);
+            CurrentState = VelocityMovement.Movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
             CurrentState.EnterState();
             CurrentState.UpdateState();
 

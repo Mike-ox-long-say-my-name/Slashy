@@ -10,12 +10,12 @@ namespace Core.Characters
         public float Dampening { get; set; } = 0.2f;
         public float PushTime { get; set; } = 0.3f;
 
-        private readonly IRawMovement _movement;
+        private readonly IMovement _movement;
 
         private readonly TimedTrigger _pushing = new TimedTrigger();
         private Vector3 _pushVelocity;
 
-        public Pushable(IRawMovement movement)
+        public Pushable(IMovement movement)
         {
             _movement = movement;
         }
@@ -53,7 +53,7 @@ namespace Core.Characters
 
         private void ApplyVelocity()
         {
-            _movement.MoveRaw(_pushVelocity * Time.deltaTime);
+            _movement.Move(_pushVelocity * Time.deltaTime);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Characters.Player.States
 
         protected virtual void CheckStateSwitch()
         {
-            if (!Context.Movement.IsGrounded)
+            if (!Context.VelocityMovement.Movement.IsGrounded)
             {
                 SwitchState(Factory.Fall());
             }

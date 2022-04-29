@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42075aaa1067ebc498b0d23d294d380c, type: 3}
+  m_Name: Player_ActionConfig
+  m_EditorClassIdentifier: 
+  <LightAttackFirstStaminaCost>k__BackingField: 10
+  <LightAttackSecondStaminaCost>k__BackingField: 10
+  <LightAttackRecovery>k__BackingField: 0.1
+  <StaggerTime>k__BackingField: 0.2
+  <StaggerFallTime>k__BackingField: 0.5
+  <JumpStaminaCost>k__BackingField: 15
+  <DashRecovery>k__BackingField: 0.3
+  <DashDistance>k__BackingField: 3
+  <DashTime>k__BackingField: 0.4
+  <DashInvincibilityStart>k__BackingField: 0.1
+  <DashInvincibilityEnd>k__BackingField: 0.8
+  <DashStaminaCost>k__BackingField: 10
+  <StaminaRegeneration>k__BackingField: 15
+  <StaminaRegenerationDelay>k__BackingField: 1
+  <EmptyStaminaAdditionalRegenerationDelay>k__BackingField: 1
+  <ActiveHealRate>k__BackingField: 10
+  <HealStaminaConsumption>k__BackingField: 10

@@ -6,6 +6,6 @@ namespace Core.Attacking.Interfaces
     {
         event Action<HitInfo> OnHit;
 
-        void ProcessHit(HitInfo info);
+        void ProcessHit(IAttackbox source, HitInfo hitInfo);
     }
 }

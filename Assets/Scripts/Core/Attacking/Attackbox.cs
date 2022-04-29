@@ -7,6 +7,8 @@ namespace Core.Attacking
 {
     public class Attackbox : BaseHitbox, IAttackbox
     {
+        public HitInfo HitInfo { get; set; }
+
         public List<IHurtbox> Ignored { get; set; } = new List<IHurtbox>();
 
         protected readonly HashSet<IHurtbox> Hits = new HashSet<IHurtbox>();
@@ -36,12 +38,16 @@ namespace Core.Attacking
             }
 
             Hits.Add(hit);
+            if (HitInfo != null)
+            {
+                hit.ProcessHit(this, HitInfo);
+            }
             OnHit?.Invoke(this, hit);
         }
 
-        protected virtual bool ShouldDispatch(IHurtbox hit)
+        protected bool ShouldDispatch(IHurtbox hit)
         {
-            return !Hits.Contains(hit) && !Ignored.Contains(hit);
+            return IsEnabled && !Hits.Contains(hit) && !Ignored.Contains(hit);
         }
     }
 }

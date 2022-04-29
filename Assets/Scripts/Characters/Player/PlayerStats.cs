@@ -1,22 +1,15 @@
-using Core.Characters.Mono;
-using Core.Player.Interfaces;
+using System;
 using UnityEngine;
 
 namespace Characters.Player
 {
-    [CreateAssetMenu(menuName = "Player Stats", fileName = "PlayerStats", order = 0)]
-    public class PlayerStats : CharacterStats, IPlayerStats
+    [Serializable]
+    public struct PlayerStats
     {
-        [SerializeField] private bool freezeStamina;
-        [SerializeField, Min(0)] private float maxStamina;
-        [SerializeField, Min(0)] private float staminaRegeneration;
-        [SerializeField, Min(0)] private float staminaRegenerationDelay;
-        [SerializeField, Min(0)] private float emptyStaminaAdditionalRegenerationDelay;
-
-        public bool FreezeStamina => freezeStamina;
-        public float MaxStamina => maxStamina;
-        public float StaminaRegeneration => staminaRegeneration;
-        public float StaminaRegenerationDelay => staminaRegenerationDelay;
-        public float EmptyStaminaAdditionalRegenerationDelay => emptyStaminaAdditionalRegenerationDelay;
+        [field: SerializeField] public bool FreezeStamina { get; set; }
+        [field: SerializeField] public float MaxStamina { get; set; }
+        [field: SerializeField] public float StaminaRegeneration { get; set; }
+        [field: SerializeField] public float StaminaRegenerationDelay { get; set; }
+        [field: SerializeField] public float EmptyStaminaAdditionalRegenerationDelay { get; set; }
     }
 }

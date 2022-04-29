@@ -41,7 +41,8 @@ namespace Effects
                 return;
             }
 
-            PlayParticles(character.Movement.Transform, hitInfo.Source.Character.Movement.Transform);
+            PlayParticles(character.VelocityMovement.Movement.Transform,
+                hitInfo.Source.Character.VelocityMovement.Movement.Transform);
         }
 
         private void PlayParticles(Transform receiver, Transform source)

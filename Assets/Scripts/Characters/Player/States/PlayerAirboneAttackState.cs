@@ -14,13 +14,13 @@ namespace Characters.Player.States
             Context.AttackedAtThisAirTime = true;
 
             Context.AnimatorComponent.SetTrigger("attack");
-            Context.Movement.ResetGravity();
+            Context.VelocityMovement.ResetGravity();
             Context.LightAirboneAttack.StartAttack(OnAttackEnded);
         }
 
         private void OnAttackEnded(bool _)
         {
-            if (Context.Movement.IsGrounded)
+            if (Context.VelocityMovement.Movement.IsGrounded)
             {
                 SwitchState(Factory.Grounded());
             }

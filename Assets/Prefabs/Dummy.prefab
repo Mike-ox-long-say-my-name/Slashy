@@ -51,47 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdda5cbebf644bb4c8fb5b11ce8590ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onHealthChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  onHitReceived:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7908643522208775509}
-        m_TargetAssemblyTypeName: Effects.DamageTakenParticles, Effects
-        m_MethodName: OnHitReceived
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1064989014271854016}
-        m_TargetAssemblyTypeName: Effects.DamageTakenAnimator, Effects
-        m_MethodName: OnHitReceived
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onHitReceivedExclusive:
-    m_PersistentCalls:
-      m_Calls: []
-  onStaggered:
-    m_PersistentCalls:
-      m_Calls: []
-  onDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  movementConfig: {fileID: 11400000, guid: 4134a00af62dcf04e90ad7da87885ff9, type: 2}
-  characterStats: {fileID: 11400000, guid: a8ac0e164dc33f644af321206472867a, type: 2}
+  monoMovementConfig: {fileID: 11400000, guid: 4134a00af62dcf04e90ad7da87885ff9, type: 2}
+  monoCharacterStats: {fileID: 11400000, guid: a8ac0e164dc33f644af321206472867a, type: 2}
+  monoDamageStats: {fileID: 11400000, guid: 44a2aa0093a06b240a7b02f1d30793fa, type: 2}
 --- !u!212 &4556132590720217570
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -368,17 +330,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
   m_PrefabInstance: {fileID: 363728515908805146}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1064989014271854016 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 849949932376991706, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
-  m_PrefabInstance: {fileID: 363728515908805146}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63988ca9b4fab0243a6c616ef6e3c9de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7067832371833211169
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -507,14 +458,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6439476025216424924, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
   m_PrefabInstance: {fileID: 9023365295544637754}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7908643522208775509 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1222810363967579247, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
-  m_PrefabInstance: {fileID: 9023365295544637754}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0edaab1c2b568f344bd2027aa2f74a48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

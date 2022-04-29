@@ -2,7 +2,6 @@
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
-using Core.DependencyInjection;
 using Miscellaneous;
 using System.Collections;
 using UnityEngine;
@@ -59,7 +58,7 @@ namespace Characters.Enemies
                     {
                         var fireObject = Instantiate(config.BloodFirePrefab,
                             _data.Transform.position + groundOffset + direction * distance,
-                            Quaternion.identity).Resolve();
+                            Quaternion.identity);
 
                         var lifeTime = Random.Range(config.MinFireLifeTime, config.MaxFireLifeTime);
                         fireObject.GetComponent<GroundBloodFire>().Fire(lifeTime);
@@ -84,7 +83,7 @@ namespace Characters.Enemies
 
         protected override IAttackExecutor CreateExecutor(ICoroutineHost host, IAttackbox attackbox)
         {
-            var attackData = new AttackData()
+            var attackData = new AttackData
             {
                 Particles = explosionParticles,
                 Config = config,

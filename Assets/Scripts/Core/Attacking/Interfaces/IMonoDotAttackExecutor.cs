@@ -2,7 +2,4 @@
 
 namespace Core.Attacking.Interfaces
 {
-    public interface IMonoDotAttackExecutor : IMonoWrapper<IDotAttackExecutor>
-    {
-    }
 }

@@ -1,40 +1,51 @@
 using Core.Attacking.Interfaces;
-using Core.DependencyInjection;
-using Core.Utilities;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
 {
-    public class MonoAttackbox : MonoBaseHitbox, IMonoAttackbox
+    public class MonoAttackbox : MonoBaseHitbox
     {
-        [SerializeField] private bool disableOnAwake = true;
+        [SerializeField] private bool disableOnInit = true;
         [SerializeField] private MonoHurtbox[] ignored;
 
-        private IAttackbox _attackbox;
+        protected bool DisableOnInit => disableOnInit;
+        protected IEnumerable<MonoHurtbox> Ignored => ignored;
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<IMonoHurtbox>(out var hit))
+            ProcessTrigger(other);
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            ProcessTrigger(other);
+        }
+
+        private void ProcessTrigger(Component other)
+        {
+            if (other.TryGetComponent<MonoHurtbox>(out var hit))
             {
-                _attackbox.ProcessHit(hit.Resolve());
+                Attackbox.ProcessHit(hit.Hurtbox);
             }
         }
-        
-        [AutoResolve]
-        public IAttackbox Resolve()
-        {
-            if (_attackbox != null)
-            {
-                return _attackbox;
-            }
 
-            var receiver = GetComponentInParent<IMonoHitEventReceiver>();
-            _attackbox = new Attackbox(transform, receiver, disableOnAwake, Colliders)
+        public IAttackbox Attackbox => Hitbox as IAttackbox;
+
+        protected override IHitbox CreateHitbox()
+        {
+            var attackbox = new Attackbox(transform, Colliders)
             {
-                Ignored = ignored.ToNativeList()
+                Ignored = ignored.Select(hurtbox => hurtbox.Hurtbox).ToList()
             };
 
-            return _attackbox;
+            if (disableOnInit)
+            {
+                attackbox.Disable();
+            }
+            
+            return attackbox;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Core.Attacking;
+﻿using System;
+using Core.Attacking;
+using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
 using Core.Utilities;
 using UnityEngine;
@@ -8,6 +10,12 @@ namespace Core.Characters
     public class Character : ICharacter
     {
         public GameObject Object { get; }
+        
+        public event Action<ICharacter, ICharacterResource> OnHealthChanged;
+        public event Action<ICharacter, HitInfo> OnHitReceivedExclusive;
+        public event Action<IHitReceiver, HitInfo> OnHitReceived;
+        public event Action<ICharacter, HitInfo> OnStaggered;
+        public event Action<ICharacter, HitInfo> OnDeath;
 
         public ICharacterMovement Movement { get; }
         public IPushable Pushable { get; }
@@ -16,17 +24,15 @@ namespace Core.Characters
         public ICharacterResource Balance => _balance;
 
         private readonly ICharacterStats _stats;
-        private readonly ICharacterEventDispatcher _dispatcher;
 
         private readonly HealthResource _health;
         private readonly BalanceResource _balance;
 
-        public Character(ICharacterMovement movement, IPushable pushable, ICharacterStats stats, ICharacterEventDispatcher eventDispatcher)
+        public Character(ICharacterMovement movement, IPushable pushable, ICharacterStats stats)
         {
             Guard.NotNull(movement);
             Guard.NotNull(pushable);
             Guard.NotNull(stats);
-            Guard.NotNull(eventDispatcher);
 
             Object = movement.Controller.gameObject;
 
@@ -34,7 +40,6 @@ namespace Core.Characters
             Pushable = pushable;
 
             _stats = stats;
-            _dispatcher = eventDispatcher;
 
             _health = new HealthResource(this, _stats.MaxHealth);
             _balance = new BalanceResource(this, _stats.MaxBalance);
@@ -60,7 +65,7 @@ namespace Core.Characters
                 _balance.Recover(_stats.MaxBalance);
             }
 
-            _dispatcher.OnHitReceived(this, info);
+            OnHitReceived?.Invoke(this, info);
 
             if (dead)
             {
@@ -68,11 +73,11 @@ namespace Core.Characters
             }
             else if (staggered)
             {
-                _dispatcher.OnStaggered(this, info);
+                OnStaggered?.Invoke(this, info);
             }
             else
             {
-                _dispatcher.OnHitReceivedExclusive(this, info);
+                OnHitReceivedExclusive?.Invoke(this, info);
             }
         }
 
@@ -90,7 +95,7 @@ namespace Core.Characters
             }
 
             _health.Spend(info.DamageInfo.damage);
-            _dispatcher.OnHealthChanged(this, Health);
+            OnHealthChanged?.Invoke(this, Health);
 
             return _stats.CanDie && _health.IsDepleted;
         }
@@ -103,7 +108,7 @@ namespace Core.Characters
             }
 
             _health.Recover(amount);
-            _dispatcher.OnHealthChanged(this, Health);
+            OnHealthChanged?.Invoke(this, Health);
         }
 
         public virtual void Tick(float deltaTime)
@@ -114,7 +119,7 @@ namespace Core.Characters
 
         protected virtual void Die(HitInfo info)
         {
-            _dispatcher.OnDeath(this, info);
+            OnDeath?.Invoke(this, info);
         }
     }
 }

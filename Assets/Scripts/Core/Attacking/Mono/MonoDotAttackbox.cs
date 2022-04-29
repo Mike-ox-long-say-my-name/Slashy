@@ -1,40 +1,32 @@
 ﻿using Core.Attacking.Interfaces;
-using Core.DependencyInjection;
-using Core.Utilities;
+using System.Linq;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
 {
-    public class MonoDotAttackbox : MonoBaseHitbox, IMonoDotAttackbox
+    public class MonoDotAttackbox : MonoAttackbox
     {
-        [SerializeField] private bool disableOnAwake = false;
         [SerializeField, Range(0.01f, 5)] private float hitInterval = 1f;
         [SerializeField, Min(0)] private int damageGroup;
 
-        [SerializeField] private MonoHurtbox[] ignored;
-
-        private IDotAttackbox _attackbox;
-        
-        [AutoResolve]
-        public IDotAttackbox Resolve()
+        protected override IHitbox CreateHitbox()
         {
-            if (_attackbox != null)
-            {
-                return _attackbox;
-            }
-            
-            var receiver = GetComponentInParent<IMonoHitEventReceiver>();
             var colliders = GetComponentsInChildren<Collider>();
-
-            _attackbox = new DotAttackbox(transform, receiver, disableOnAwake, colliders)
+            var attackbox = new DotAttackbox(transform, damageGroup, colliders)
             {
                 HitInterval = hitInterval,
-                DamageGroup = damageGroup,
-                Ignored = ignored.ToNativeList()
+                Ignored = Ignored.Select(hurtbox => hurtbox.Hurtbox).ToList()
             };
 
-            return _attackbox;
+            if (DisableOnInit)
+            {
+                attackbox.Disable();
+            }
+
+            return attackbox;
         }
+
+        public new IDotAttackbox Attackbox => Hitbox as IDotAttackbox;
 
         private void OnTriggerStay(Collider other)
         {
@@ -48,19 +40,15 @@ namespace Core.Attacking.Mono
 
         private void ProcessTrigger(Component other)
         {
-            if (other.TryGetComponent<IMonoHurtbox>(out var hit))
+            if (other.TryGetComponent<MonoHurtbox>(out var hit))
             {
-                if (_attackbox == null)
-                {
-
-                }
-                _attackbox.ProcessHit(hit.Resolve());
+                Attackbox.ProcessHit(hit.Hurtbox);
             }
         }
 
         private void Update()
         {
-            _attackbox.Tick(Time.deltaTime);
+            Attackbox.Tick(Time.deltaTime);
         }
     }
 }

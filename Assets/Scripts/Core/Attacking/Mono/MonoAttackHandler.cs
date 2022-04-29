@@ -1,13 +1,13 @@
 using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
-using Core.DependencyInjection;
+using Core.Characters.Mono;
 using Core.Utilities;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
 {
     [DisallowMultipleComponent]
-    public abstract class MonoAttackHandler : MonoBehaviour, IMonoAttackExecutor, IMonoHitEventReceiver
+    public abstract class MonoAttackHandler : MonoBehaviour
     {
         [SerializeField] private bool isEnvironmental;
         [SerializeField] private DamageInfo damageInfo;
@@ -27,25 +27,29 @@ namespace Core.Attacking.Mono
 
         protected abstract IAttackExecutor CreateExecutor(ICoroutineHost host, IAttackbox attackbox);
 
-        public void OnHit(IHitbox source, IHurtbox hit)
+        private void OnHit(IHitbox source, IHurtbox hit)
         {
-            hit.Dispatch(HitInfo);
+            hit.ProcessHit(HitInfo);
         }
 
-        [AutoResolve]
-        public IAttackExecutor Resolve()
+        public IAttackExecutor Executor
         {
-            if (_executor != null)
+            get
             {
+                if (_executor != null)
+                {
+                    return _executor;
+                }
+
+                var monoCharacter = GetComponentInParent<MonoCharacter>();
+                _source = !isEnvironmental && monoCharacter != null ? monoCharacter.Character : null;
+
+                var attackBox = GetComponentInChildren<MonoAttackbox>().Attackbox;
+                attackBox.OnHit += OnHit;
+                _executor = CreateExecutor(this.ToCoroutineHost(), attackBox);
+
                 return _executor;
             }
-
-            _source = !isEnvironmental ? GetComponentInParent<IMonoCharacter>()?.Resolve() : null;
-
-            var attackBox = GetComponentInChildren<IMonoAttackbox>()?.Resolve();
-            _executor = CreateExecutor(this.ToCoroutineHost(), attackBox);
-
-            return _executor;
         }
     }
 }

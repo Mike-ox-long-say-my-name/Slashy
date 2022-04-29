@@ -1,8 +1,7 @@
-using Core.DependencyInjection;
-
 namespace Core.Attacking.Interfaces
 {
-    public interface IMonoAttackAnimationEventReceiver : IMonoWrapper<IAttackAnimationEventReceiver>
+    public interface IMonoAttackAnimationEventReceiver
     {
+        IAttackAnimationEventReceiver Receiver { get; }
     }
 }

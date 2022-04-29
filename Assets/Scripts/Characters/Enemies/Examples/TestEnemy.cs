@@ -15,9 +15,9 @@ namespace Characters.Enemies.Examples
 
         private void DoAttack()
         {
-            if (!monoAttackHandler.Resolve().IsAttacking)
+            if (!monoAttackHandler.Executor.IsAttacking)
             {
-                monoAttackHandler.Resolve().StartAttack(null);
+                monoAttackHandler.Executor.StartAttack(null);
             }
         }
     }

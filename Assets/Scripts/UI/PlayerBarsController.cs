@@ -11,15 +11,23 @@ namespace UI
         private void OnEnable()
         {
             var player = PlayerManager.Instance.PlayerInfo?.Player;
-            player?.OnHealthChanged.AddListener(healthBar.OnResourceValueChanged);
-            player?.OnStaminaChanged.AddListener(staminaBar.OnResourceValueChanged);
+            if (player == null)
+            {
+                return;
+            }
+            player.OnHealthChanged += healthBar.OnResourceValueChanged;
+            player.OnStaminaChanged += staminaBar.OnResourceValueChanged;
         }
 
         private void OnDisable()
         {
             var player = PlayerManager.Instance.PlayerInfo?.Player;
-            player?.OnHealthChanged.RemoveListener(healthBar.OnResourceValueChanged);
-            player?.OnStaminaChanged.RemoveListener(staminaBar.OnResourceValueChanged);
+            if (player == null)
+            {
+                return;
+            }
+            player.OnHealthChanged -= healthBar.OnResourceValueChanged;
+            player.OnStaminaChanged -= staminaBar.OnResourceValueChanged;
         }
     }
 }

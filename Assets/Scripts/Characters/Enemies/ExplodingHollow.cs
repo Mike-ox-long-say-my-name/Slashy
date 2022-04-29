@@ -336,8 +336,8 @@ namespace Characters.Enemies
 
         public Animator AnimatorComponent { get; private set; }
 
-        public IAttackExecutor ExplosionAttack => explosionMonoAttackHandler.Resolve();
-        public IAttackExecutor PunchAttack => punchMonoAttack.Resolve();
+        public IAttackExecutor ExplosionAttack => explosionMonoAttackHandler.Executor;
+        public IAttackExecutor PunchAttack => punchMonoAttack.Executor;
 
         public float DotWhileRunning => dotWhileRunning;
         public float DotTickInterval => dotTickInterval;

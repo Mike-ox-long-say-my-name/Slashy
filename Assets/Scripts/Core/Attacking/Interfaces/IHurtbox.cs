@@ -1,9 +1,11 @@
-﻿namespace Core.Attacking.Interfaces
+﻿using System;
+
+namespace Core.Attacking.Interfaces
 {
     public interface IHurtbox : IHitbox
     {
-        IHitReceiver AttachedTo { get; }
+        event Action<HitInfo> OnHit;
 
-        void Dispatch(HitInfo info);
+        void ProcessHit(HitInfo info);
     }
 }

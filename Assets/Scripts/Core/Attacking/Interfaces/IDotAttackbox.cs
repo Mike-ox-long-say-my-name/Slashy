@@ -1,8 +1,7 @@
 namespace Core.Attacking.Interfaces
 {
-    public interface IDotAttackbox : IHitbox
+    public interface IDotAttackbox : IAttackbox
     {
-        void ProcessHit(IHurtbox hit);
         void Tick(float deltaTime);
     }
 }

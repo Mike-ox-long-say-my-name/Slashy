@@ -2,7 +2,7 @@
 {
     public interface IMonoPlayerInfoProvider
     {
-        IMonoPlayerCharacter Player { get; }
+        IPlayerCharacter Player { get; }
         
         bool IsJumping { get; }
         bool IsFalling { get; }

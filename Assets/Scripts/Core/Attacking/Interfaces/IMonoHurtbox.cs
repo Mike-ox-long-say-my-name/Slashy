@@ -1,8 +1,7 @@
-using Core.DependencyInjection;
-
 namespace Core.Attacking.Interfaces
 {
-    public interface IMonoHurtbox : IMonoWrapper<IHurtbox>
+    public interface IMonoHurtbox
     {
+        IHurtbox Hurtbox { get; }
     }
 }

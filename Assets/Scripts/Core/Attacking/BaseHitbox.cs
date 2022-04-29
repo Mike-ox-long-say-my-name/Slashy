@@ -9,7 +9,6 @@ namespace Core.Attacking
     public class BaseHitbox : IHitbox
     {
         public Transform Transform { get; }
-
         private readonly Collider[] _colliders;
 
         public BaseHitbox(Transform transform, params Collider[] colliders)

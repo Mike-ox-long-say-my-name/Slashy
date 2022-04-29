@@ -1,49 +1,52 @@
 ﻿using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
-using Core.DependencyInjection;
+using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
 {
-    public class MonoDotAttackHandler : MonoBehaviour, IMonoDotAttackExecutor, IMonoHitEventReceiver
+    public class MonoDotAttackHandler : MonoBehaviour
     {
         [SerializeField] private bool isEnvironmental;
         [SerializeField] private DamageInfo damageInfo;
 
+        private ICharacter _source;
         private IDotAttackExecutor _executor;
-        private HitInfo _hitInfo;
 
         private void Awake()
         {
-            var character = !isEnvironmental ? GetComponentInParent<IMonoCharacter>()?.Resolve() : null;
+            var monoCharacter = GetComponentInChildren<MonoCharacter>();
+            _source = !isEnvironmental && monoCharacter != null ? monoCharacter.Character : null;
+        }
 
-            _hitInfo = new HitInfo
+        private void OnHit(IHitbox source, IHurtbox hit)
+        {
+            var hitInfo = new HitInfo
             {
                 DamageInfo = damageInfo,
                 Source = new HitSource
                 {
                     IsEnvironmental = isEnvironmental,
-                    Character = character
+                    Character = _source
                 }
             };
+            hit.ProcessHit(hitInfo);
         }
 
-        public void OnHit(IHitbox source, IHurtbox hit)
+        public IDotAttackExecutor Executor
         {
-            hit.Dispatch(_hitInfo);
-        }
-        
-        [AutoResolve]
-        public IDotAttackExecutor Resolve()
-        {
-            if (_executor != null)
+            get
             {
+                if (_executor != null)
+                {
+                    return _executor;
+                }
+
+                var attackBox = GetComponentInChildren<MonoDotAttackbox>().Attackbox;
+                attackBox.OnHit += OnHit;
+                _executor = new DotAttackExecutor(attackBox);
                 return _executor;
             }
-
-            var attackBox = GetComponentInChildren<IMonoDotAttackbox>()?.Resolve();
-            _executor = new DotAttackExecutor(attackBox);
-            return _executor;
         }
     }
 }

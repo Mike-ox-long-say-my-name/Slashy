@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Core.Attacking.Mono
 {
     [DisallowMultipleComponent]
-    public class MonoAnimationAttackExecutor : MonoAttackHandler
+    public class MonoAnimationAttackHandler : MonoAttackHandler
     {
         protected virtual AnimationAttackExecutor CreateAnimationAttackExecutor(ICoroutineHost host,
             IAttackbox attackbox)

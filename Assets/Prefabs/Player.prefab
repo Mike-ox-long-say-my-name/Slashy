@@ -585,7 +585,7 @@ MonoBehaviour:
   followSmoothTime: 0.3
   lightAttackFirst: {fileID: 27388021579594124}
   lightAttackSecond: {fileID: 1161144045783392307}
-  lightAirboneAttack: {fileID: 3443966890626358407}
+  lightAirboneAttack: {fileID: 185531307906766173}
   playerConfig: {fileID: 11400000, guid: f26cce65e6cf9c1459ed6afb890acb18, type: 2}
 --- !u!114 &4950135374432913508
 MonoBehaviour:
@@ -720,7 +720,7 @@ GameObject:
   - component: {fileID: 3601963403562516412}
   - component: {fileID: 6037228690400032685}
   m_Layer: 9
-  m_Name: LightAttackHitbox 2
+  m_Name: LightAirAttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -733,13 +733,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2174685387874637135}
-  m_LocalRotation: {x: 0, y: 0, z: 0.3553109, w: 0.93474823}
-  m_LocalPosition: {x: 0.41, y: 0.02, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.11857727, w: 0.99294484}
+  m_LocalPosition: {x: 0.17, y: -0.17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4553024811509310712}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 41.625}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 13.62}
 --- !u!65 &3601963403562516412
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -751,7 +751,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.76, y: 1, z: 1.7}
+  m_Size: {x: 3, y: 1.81, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6037228690400032685
 MonoBehaviour:
@@ -781,7 +781,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4553024811509310712}
-  - component: {fileID: 3443966890626358407}
+  - component: {fileID: 185531307906766173}
   m_Layer: 9
   m_Name: LightAirboneAttackExecutor
   m_TagString: Untagged
@@ -804,7 +804,7 @@ Transform:
   m_Father: {fileID: 812809748605883927}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3443966890626358407
+--- !u!114 &185531307906766173
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -813,10 +813,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6490604781185489133}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bde7fb01a517e04a84c8066e6adcc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDistance: 0.4
 --- !u!1 &6529360737305819375
 GameObject:
   m_ObjectHideFlags: 0

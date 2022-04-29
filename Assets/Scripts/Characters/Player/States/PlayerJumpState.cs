@@ -2,10 +2,6 @@ namespace Characters.Player.States
 {
     public class PlayerJumpState : PlayerAirboneState
     {
-        public PlayerJumpState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         public override void EnterState()
         {
             base.EnterState();
@@ -27,16 +23,16 @@ namespace Characters.Player.States
         {
             if (Context.VelocityMovement.Movement.IsGrounded)
             {
-                SwitchState(Factory.Grounded());
+                SwitchState<PlayerGroundedState>();
             }
             else if (Context.VelocityMovement.Velocity.y < 0)
             {
-                SwitchState(Factory.Fall());
+                SwitchState<PlayerFallState>();
             }
             else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed)
             {
                 Context.Input.ResetBufferedInput();
-                // TODO: SwitchState(Factory.AirLightAttack());
+                SwitchState<PlayerAirLightAttackState>();
             }
         }
     }

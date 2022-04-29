@@ -2,6 +2,7 @@ using Configs;
 using Core.Utilities;
 using Effects;
 using System.Collections;
+using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
@@ -13,7 +14,6 @@ namespace Characters.Player.States
 {
     public class PlayerStateMachine : MonoBehaviour, IMonoPlayerInfoProvider
     {
-        public PlayerStateFactory StateFactory { get; private set; }
         public PlayerBaseState CurrentState { get; set; }
 
         [Space]
@@ -81,6 +81,7 @@ namespace Characters.Player.States
 
         public bool CanStartAttack => CanAttack && !IsAttacking && Character.HasStamina();
         public bool AttackedAtThisAirTime { get; set; }
+        public HitInfo LastHitInfo { get; set; }
 
         private void Awake()
         {
@@ -116,8 +117,6 @@ namespace Characters.Player.States
                 HasSpriteRenderer = false;
             }
 
-            StateFactory = new PlayerStateFactory(this);
-
             if (followingCamera == null)
             {
                 followingCamera = Camera.main;
@@ -140,7 +139,12 @@ namespace Characters.Player.States
         {
             // Для корректного определения того, что игрок на земле при загрузке
             VelocityMovement.Movement.Move(Vector3.down);
-            CurrentState = VelocityMovement.Movement.IsGrounded ? StateFactory.Grounded() : StateFactory.Fall();
+
+            var startState = VelocityMovement.Movement.IsGrounded 
+                ? new PlayerGroundedState() : (PlayerBaseState)new PlayerFallState();
+            startState.Construct(this);
+
+            CurrentState = startState;
             CurrentState.EnterState();
             CurrentState.UpdateState();
 

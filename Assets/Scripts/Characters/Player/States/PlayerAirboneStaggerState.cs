@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Core.Attacking;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -7,8 +8,14 @@ namespace Characters.Player.States
     {
         private Coroutine _recoverFromStaggerFallRoutine;
 
-        public PlayerAirboneStaggerState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
+        public override void OnStaggered(HitInfo info)
         {
+        }
+
+        public override void OnDeath(HitInfo info)
+        {
+            Context.StopCoroutine(_recoverFromStaggerFallRoutine);
+            base.OnDeath(info);
         }
 
         public override void EnterState()
@@ -44,7 +51,7 @@ namespace Characters.Player.States
         {
             yield return new WaitForSeconds(recoveryTime);
 
-            SwitchState(Factory.Grounded());
+            SwitchState<PlayerGroundedState>();
         }
     }
 }

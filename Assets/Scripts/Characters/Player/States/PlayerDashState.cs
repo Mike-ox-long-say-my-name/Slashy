@@ -9,10 +9,6 @@ namespace Characters.Player.States
     {
         private Coroutine _dashRoutine;
 
-        public PlayerDashState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
@@ -62,7 +58,7 @@ namespace Characters.Player.States
                     yield return null;
                 }
 
-                SwitchState(Factory.Grounded());
+                SwitchState<PlayerGroundedState>();
             }
 
             var fullMove = direction * Context.PlayerConfig.DashDistance;

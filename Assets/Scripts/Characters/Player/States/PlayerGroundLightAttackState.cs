@@ -4,10 +4,6 @@ namespace Characters.Player.States
 {
     public class PlayerGroundLightAttackState : PlayerBaseGroundedState
     {
-        public PlayerGroundLightAttackState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         private int _currentAttack;
         private bool _shouldContinueAttack;
 
@@ -51,7 +47,7 @@ namespace Characters.Player.States
         {
             if (!interrupted)
             {
-                SwitchState(Factory.Grounded());
+                SwitchState<PlayerGroundedState>();
             }
             else
             {

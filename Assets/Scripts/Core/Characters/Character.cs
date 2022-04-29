@@ -3,7 +3,6 @@ using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
 using Core.Utilities;
 using System;
-using UnityEngine;
 
 namespace Core.Characters
 {
@@ -26,6 +25,7 @@ namespace Core.Characters
         private readonly HealthResource _health;
         private readonly BalanceResource _balance;
 
+        public bool IsDead { get; private set; }
 
         public Character(IVelocityMovement movement, DamageStats damageStats, CharacterStats characterStats)
         {
@@ -41,6 +41,11 @@ namespace Core.Characters
 
         public virtual void ReceiveHit(HitInfo info)
         {
+            if (IsDead)
+            {
+                return;
+            }
+
             var dead = TakeDamage(info);
             var staggered = TakeBalanceDamage(info);
 
@@ -116,28 +121,8 @@ namespace Core.Characters
 
         protected virtual void Die(HitInfo info)
         {
+            IsDead = true;
             OnDeath?.Invoke(this, info);
         }
-    }
-
-    [Serializable]
-    public struct DamageStats
-    {
-        [field: SerializeField] public float BaseDamage { get; set; }
-        [field: SerializeField] public float BaseBalanceDamage { get; set; }
-        [field: SerializeField] public float BaseStaggerTime { get; set; }
-        [field: SerializeField] public float BasePushTime { get; set; }
-        [field: SerializeField] public float BasePushForce { get; set; }
-    }
-
-    [Serializable]
-    public struct CharacterStats
-    {
-        [field: SerializeField] public float MaxHealth { get; set; }
-        [field: SerializeField] public float MaxBalance { get; set; }
-
-        [field: SerializeField] public bool FreezeHealth { get; set; }
-        [field: SerializeField] public bool FreezeBalance { get; set; }
-        [field: SerializeField] public bool CanDie { get; set; }
     }
 }

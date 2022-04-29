@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Characters.Enemies
 {
-    public class PunchMonoAttack : MonoAnimationAttackExecutor
+    public class PunchMonoAttack : MonoAnimationAttackHandler
     {
     }
 }

@@ -4,10 +4,6 @@ namespace Characters.Player.States
 {
     public abstract class PlayerAirboneState : PlayerBaseState
     {
-        protected PlayerAirboneState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         public override void EnterState()
         {
             Context.AnimatorComponent.SetBool("is-airbone", true);
@@ -20,7 +16,7 @@ namespace Characters.Player.States
 
         public override void OnStaggered(HitInfo info)
         {
-            SwitchState(Factory.AirboneStagger());
+            SwitchState<PlayerAirboneStaggerState>();
         }
     }
 }

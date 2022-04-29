@@ -1,20 +1,26 @@
 using Core.Attacking;
+using UnityEngine;
 
 namespace Characters.Player.States
 {
-    public class PlayerAirboneAttackState : PlayerAirboneState
+    public class PlayerAirLightAttackState : PlayerAirboneState
     {
-        public PlayerAirboneAttackState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         public override void EnterState()
         {
             base.EnterState();
             Context.AttackedAtThisAirTime = true;
 
             Context.AnimatorComponent.SetTrigger("attack");
-            Context.VelocityMovement.ResetGravity();
+
+            var inputX = Context.Input.MoveInput.x;
+            var push = Vector3.up;
+            if (!Mathf.Approximately(inputX, 0))
+            {
+                var moveDirection = Mathf.Sign(inputX);
+                push += Vector3.right * moveDirection;
+            }
+
+            Context.Character.PlayerMovement.Pushable.Push(push, 5, 0.1f);
             Context.LightAirboneAttack.StartAttack(OnAttackEnded);
         }
 
@@ -22,11 +28,11 @@ namespace Characters.Player.States
         {
             if (Context.VelocityMovement.Movement.IsGrounded)
             {
-                SwitchState(Factory.Grounded());
+                SwitchState<PlayerGroundedState>();
             }
             else
             {
-                SwitchState(Factory.Fall());
+                SwitchState<PlayerFallState>();
             }
         }
 

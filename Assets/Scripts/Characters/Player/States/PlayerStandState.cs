@@ -2,10 +2,6 @@ namespace Characters.Player.States
 {
     public class PlayerGroundedState : PlayerBaseGroundedState
     {
-        public PlayerGroundedState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         public override void EnterState()
         {
             Context.AttackedAtThisAirTime = false;
@@ -24,14 +20,14 @@ namespace Characters.Player.States
         {
             if (!Context.VelocityMovement.Movement.IsGrounded)
             {
-                SwitchState(Factory.Fall());
+                SwitchState<PlayerFallState>();
             }
             else if (Context.CanDash && Context.Input.IsDashPressed)
             {
                 Context.Input.ResetBufferedInput();
                 if (Context.Character.HasStamina())
                 {
-                    SwitchState(Factory.Dash());
+                    SwitchState<PlayerDashState>();
                 }
             }
             else if (Context.CanJump && Context.Input.IsJumpPressed)
@@ -39,18 +35,18 @@ namespace Characters.Player.States
                 Context.Input.ResetBufferedInput();
                 if (Context.Character.HasStamina())
                 {
-                    SwitchState(Factory.Jump());
+                    SwitchState<PlayerJumpState>();
                 }
             }
             else if (Context.CanHeal && Context.Input.IsHealPressed)
             {
                 Context.Input.ResetBufferedInput();
-                SwitchState(Factory.Heal());
+                SwitchState<PlayerHealState>();
             }
             else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed)
             {
                 Context.Input.ResetBufferedInput();
-                SwitchState(Factory.GroundLightAttack());
+                SwitchState<PlayerGroundLightAttackState>();
             }
         }
     }

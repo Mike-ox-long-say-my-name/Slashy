@@ -13,7 +13,7 @@ namespace Core.Attacking.Mono
 
         private void Awake()
         {
-            _receivers = GetComponentsInChildren<MonoAnimationAttackExecutor>()
+            _receivers = GetComponentsInChildren<MonoAnimationAttackHandler>()
                 .Select(receiver => receiver.Receiver).ToList();
         }
         

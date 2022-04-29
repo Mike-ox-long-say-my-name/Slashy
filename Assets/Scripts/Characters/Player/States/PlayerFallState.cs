@@ -2,10 +2,6 @@ namespace Characters.Player.States
 {
     public class PlayerFallState : PlayerAirboneState
     {
-        public PlayerFallState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         public override void UpdateState()
         {
             HandleControl();
@@ -17,7 +13,7 @@ namespace Characters.Player.States
         {
             if (Context.VelocityMovement.Movement.IsGrounded)
             {
-                SwitchState(Factory.Grounded());
+                SwitchState<PlayerGroundedState>();
             }
             else if (Context.CanAttack && Context.CanStartAttack && Context.Input.IsLightAttackPressed)
             {

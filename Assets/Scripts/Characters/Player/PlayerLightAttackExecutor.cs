@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Characters.Player
 {
-    public class PlayerLightAttackExecutor : MonoAnimationAttackExecutor
+    public class PlayerLightAttackExecutor : MonoAnimationAttackHandler
     {
         private struct AttackContext
         {

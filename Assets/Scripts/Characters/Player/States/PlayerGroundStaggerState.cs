@@ -5,10 +5,6 @@ namespace Characters.Player.States
 {
     public class PlayerGroundStaggerState : PlayerBaseGroundedState
     {
-        public PlayerGroundStaggerState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
@@ -16,7 +12,7 @@ namespace Characters.Player.States
             Context.AnimatorComponent.SetBool("is-staggered", true);
 
             Context.Input.ResetBufferedInput();
-            Context.StartCoroutine(RecoverRoutine(Context.PlayerConfig.StaggerTime));
+            Context.StartCoroutine(RecoverRoutine(Context.LastHitInfo.StaggerTime));
         }
 
         public override void ExitState()
@@ -28,7 +24,7 @@ namespace Characters.Player.States
         {
             yield return new WaitForSeconds(staggerTime);
 
-            SwitchState(Factory.Grounded());
+            SwitchState<PlayerGroundedState>();
         }
     }
 }

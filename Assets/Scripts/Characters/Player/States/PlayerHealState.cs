@@ -9,10 +9,6 @@ namespace Characters.Player.States
     {
         private Coroutine _healRoutine;
 
-        public PlayerHealState(PlayerStateMachine context, PlayerStateFactory factory) : base(context, factory)
-        {
-        }
-
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
@@ -59,8 +55,8 @@ namespace Characters.Player.States
                 Context.StopCoroutine(_healRoutine);
                 _healRoutine = null;
             }
-            // TODO: добавить анимацию + привязать к ней задержку
-            SwitchState(Factory.Grounded());
+
+            SwitchState<PlayerGroundedState>();
         }
 
         private IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Core.Characters.Mono
+namespace Core.Player
 {
     [Serializable]
     public struct PlayerMovementConfig

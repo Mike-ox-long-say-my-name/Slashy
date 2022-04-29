@@ -73,7 +73,7 @@ namespace Characters.Player
         protected override void Die(HitInfo info)
         {
             base.Die(info);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

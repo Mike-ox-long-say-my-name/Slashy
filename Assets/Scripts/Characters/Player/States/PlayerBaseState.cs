@@ -1,13 +1,12 @@
-using System;
 using Core.Attacking;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Characters.Player.States
 {
     public abstract class PlayerBaseState
     {
         protected PlayerStateMachine Context { get; private set; }
+        protected bool IsValidState { get; private set; } = true;
 
         public void Construct(PlayerStateMachine context)
         {
@@ -49,9 +48,15 @@ namespace Characters.Player.States
 
         protected virtual void SwitchState<T>() where T : PlayerBaseState, new()
         {
+            if (!IsValidState)
+            {
+                return;
+            }
+
             var newState = new T();
             newState.Construct(Context);
 
+            IsValidState = false;
             ExitState();
             Context.CurrentState = newState;
             newState.EnterState();

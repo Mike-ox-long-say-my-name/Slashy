@@ -63,6 +63,7 @@ namespace Characters.Enemies
         {
             if (info.Source.Character is IPlayerCharacter)
             {
+                Context.WasHitByPlayer = true;
                 SwitchState<ExplodingHollowCharging>();
             }
         }
@@ -72,6 +73,11 @@ namespace Characters.Enemies
             if (!(info.Source.Character is IPlayerCharacter))
             {
                 SwitchState<ExplodingHollowStagger>();
+            }
+            else
+            {
+                Context.WasHitByPlayer = true;
+                SwitchState<ExplodingHollowCharging>();
             }
         }
     }
@@ -85,7 +91,10 @@ namespace Characters.Enemies
 
             Context.PunchAttack.StartAttack(inter =>
             {
-                SwitchState<ExplodingHollowPursue>();
+                if (!inter)
+                {
+                    SwitchState<ExplodingHollowPursue>();
+                }
             });
         }
 
@@ -135,16 +144,6 @@ namespace Characters.Enemies
         public override void UpdateState()
         {
             _dotTrigger.Step(Time.deltaTime);
-            if (_dotTrigger.CheckAndReset())
-            {
-                Context.Character.ReceiveHit(new HitInfo
-                {
-                    Multipliers = DamageMultipliers.One,
-                    DamageStats = Context.Character.DamageStats,
-                    Source = HitSource.AsCharacter(Context.Character)
-                });
-                _dotTrigger.SetIn(Context.DotTickInterval);
-            }
 
             var speedMultiplier = 3.5f;
             var player = Context.PlayerPosition;
@@ -169,13 +168,22 @@ namespace Characters.Enemies
                 Context.Pushable.Push(direction, 5f, 0.3f);
                 SwitchState<ExplodingHollowExplosion>();
             }
+
+            if (!_dotTrigger.CheckAndReset())
+            {
+                return;
+            }
+
+            Context.Character.ReceiveHit(new HitInfo
+            {
+                Multipliers = DamageMultipliers.One,
+                DamageStats = Context.Character.DamageStats,
+                Source = HitSource.AsCharacter(Context.Character)
+            });
+            _dotTrigger.SetIn(Context.DotTickInterval);
         }
 
         public override void OnHitReceived(HitInfo info)
-        {
-        }
-
-        public override void OnStaggered(HitInfo info)
         {
         }
     }
@@ -188,10 +196,13 @@ namespace Characters.Enemies
         {
             Context.VelocityMovement.Stop();
 
-            _prepare.Reset();
+            var stats = Context.Character.CharacterStats;
+            stats.FreezeBalance = true;
+            Context.Character.CharacterStats = stats;
+
 
             Context.AnimatorComponent.SetTrigger("charge");
-
+            _prepare.Reset();
             _prepare.SetIn(Context.ChargeTime);
         }
 
@@ -203,22 +214,10 @@ namespace Characters.Enemies
                 return;
             }
 
-            // Если персонаж не переживет 1 тик урона, то сразу взрываемся
-            if (Context.DotWhileRunning >= Context.Character.Health.Value)
-            {
-                SwitchState<ExplodingHollowExplosion>();
-            }
-            else
-            {
-                SwitchState<ExplodingHollowRunning>();
-            }
+            SwitchState<ExplodingHollowRunning>();
         }
 
         public override void OnHitReceived(HitInfo info)
-        {
-        }
-
-        public override void OnStaggered(HitInfo info)
         {
         }
     }
@@ -230,6 +229,7 @@ namespace Characters.Enemies
             Context.VelocityMovement.Stop();
 
             Context.AnimatorComponent.SetTrigger("explode");
+
             Context.ExplosionAttack.StartAttack(_ => SwitchState<ExplodingHollowDeath>());
         }
 
@@ -251,7 +251,6 @@ namespace Characters.Enemies
     public class ExplodingHollowStagger : ExplodingHollowBaseState
     {
         private readonly TimedTrigger _staggered = new TimedTrigger();
-        private bool _wasHit;
 
         public override void EnterState()
         {
@@ -270,7 +269,7 @@ namespace Characters.Enemies
         {
             if (_staggered.IsFree)
             {
-                if (_wasHit)
+                if (Context.WasHitByPlayer)
                 {
                     SwitchState<ExplodingHollowCharging>();
                 }
@@ -287,12 +286,8 @@ namespace Characters.Enemies
         {
             if (info.Source.Character is IPlayerCharacter)
             {
-                _wasHit = true;
+                Context.WasHitByPlayer = true;
             }
-        }
-
-        public override void OnStaggered(HitInfo info)
-        {
         }
     }
 
@@ -338,6 +333,8 @@ namespace Characters.Enemies
         public float DotTickInterval => dotTickInterval;
 
         public ParticleSystem ChargeBurnParticles => chargeBurnParticles;
+
+        public bool WasHitByPlayer { get; set; }
 
         protected override EnemyBaseState<ExplodingHollow> StartState()
         {

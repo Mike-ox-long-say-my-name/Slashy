@@ -86,6 +86,11 @@ namespace Core.Characters
 
         protected virtual bool TakeBalanceDamage(HitInfo info)
         {
+            if (CharacterStats.FreezeBalance)
+            {
+                return false;
+            }
+
             _balance.Spend(info.BalanceDamage);
             return _balance.IsDepleted;
         }
@@ -121,6 +126,10 @@ namespace Core.Characters
 
         protected virtual void Die(HitInfo info)
         {
+            if (IsDead)
+            {
+                return;
+            }
             IsDead = true;
             OnDeath?.Invoke(this, info);
         }

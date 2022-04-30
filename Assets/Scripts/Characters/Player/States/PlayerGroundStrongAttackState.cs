@@ -3,7 +3,7 @@ using Core.Characters;
 
 namespace Characters.Player.States
 {
-    public class PlayerGroundStrongAttackState : PlayerBaseState
+    public class PlayerGroundStrongAttackState : PlayerBaseGroundedState
     {
         private int _currentAttack;
         private bool _shouldContinueAttack;

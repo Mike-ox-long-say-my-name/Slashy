@@ -27,7 +27,7 @@ namespace Characters.Player
 
         public override void Move(Vector3 direction)
         {
-            if (Movement.IsGrounded)
+            if (BaseMovement.IsGrounded)
             {
                 base.Move(direction);
             }

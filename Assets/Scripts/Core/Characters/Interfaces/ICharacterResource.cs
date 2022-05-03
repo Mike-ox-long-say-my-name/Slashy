@@ -1,3 +1,5 @@
+using System;
+
 namespace Core.Characters.Interfaces
 {
     public interface ICharacterResource
@@ -5,6 +7,11 @@ namespace Core.Characters.Interfaces
         ICharacter Character { get; }
 
         float MaxValue { get; }
-        float Value { get; }
+        float Value { get; set; }
+
+        void Recover(float amount);
+        void Spend(float amount);
+
+        event Action<ICharacterResource> OnValueChanged;
     }
 }

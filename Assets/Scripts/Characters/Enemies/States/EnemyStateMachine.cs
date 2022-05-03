@@ -14,14 +14,14 @@ namespace Characters.Enemies.States
         
         public ICharacter Character { get; private set; }
         public IVelocityMovement VelocityMovement => Character.VelocityMovement;
-        public IMovement Movement => VelocityMovement.Movement;
+        public IMovement Movement => VelocityMovement.BaseMovement;
         public IPushable Pushable => VelocityMovement.Pushable;
         public IHurtbox Hurtbox { get; private set; }
 
-        public IMonoPlayerInfoProvider MonoPlayerInfo => PlayerManager.Instance.PlayerInfo;
-        public IPlayerCharacter Player => MonoPlayerInfo.Player;
+        public IPlayer PlayerInfo => PlayerManager.Instance.PlayerInfo;
+        public IPlayerCharacter Player => PlayerInfo.Player;
 
-        public Vector3 PlayerPosition => Player.PlayerMovement.Movement.Transform.position;
+        public Vector3 PlayerPosition => Player.PlayerMovement.BaseMovement.Transform.position;
 
         protected abstract EnemyBaseState<T> StartState();
 

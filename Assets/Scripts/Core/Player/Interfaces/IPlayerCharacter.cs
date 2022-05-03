@@ -5,8 +5,6 @@ namespace Core.Player.Interfaces
 {
     public interface IPlayerCharacter : ICharacter
     {
-        event Action<IPlayerCharacter, ICharacterResource> OnStaminaChanged;
-
         IPlayerMovement PlayerMovement { get; }
 
         ICharacterResource Stamina { get; }

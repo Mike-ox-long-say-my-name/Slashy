@@ -1,8 +1,11 @@
-﻿namespace Core.Player.Interfaces
+﻿using Core.Attacking.Interfaces;
+
+namespace Core.Player.Interfaces
 {
-    public interface IMonoPlayerInfoProvider
+    public interface IPlayer
     {
         IPlayerCharacter Player { get; }
+        IHurtbox Hurtbox { get; }
         
         bool IsJumping { get; }
         bool IsFalling { get; }

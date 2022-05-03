@@ -12,7 +12,7 @@ using UnityEngine.InputSystem;
 
 namespace Characters.Player.States
 {
-    public class PlayerStateMachine : MonoBehaviour, IMonoPlayerInfoProvider
+    public class PlayerStateMachine : MonoBehaviour, IPlayer
     {
         public PlayerBaseState CurrentState { get; set; }
 
@@ -142,9 +142,9 @@ namespace Characters.Player.States
         private IEnumerator Start()
         {
             // Для корректного определения того, что игрок на земле при загрузке
-            VelocityMovement.Movement.Move(Vector3.down);
+            VelocityMovement.BaseMovement.Move(Vector3.down);
 
-            var startState = VelocityMovement.Movement.IsGrounded
+            var startState = VelocityMovement.BaseMovement.IsGrounded
                 ? new PlayerGroundedState() : (PlayerBaseState)new PlayerFallState();
             startState.Construct(this);
 

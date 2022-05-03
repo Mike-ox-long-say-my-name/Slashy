@@ -4,7 +4,7 @@ namespace Core.Characters.Interfaces
 {
     public interface IVelocityMovement
     {
-        IMovement Movement { get; }
+        IMovement BaseMovement { get; }
         IPushable Pushable { get; }
 
         Vector3 Velocity { get; }

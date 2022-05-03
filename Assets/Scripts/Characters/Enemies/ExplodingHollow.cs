@@ -46,7 +46,7 @@ namespace Characters.Enemies
             }
             else
             {
-                Context.VelocityMovement.Movement.Rotate(direction.x);
+                Context.VelocityMovement.BaseMovement.Rotate(direction.x);
                 SwitchState<ExplodingHollowAttack>();
             }
         }

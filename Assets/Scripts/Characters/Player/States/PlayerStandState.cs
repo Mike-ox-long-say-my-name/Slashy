@@ -18,7 +18,7 @@ namespace Characters.Player.States
 
         protected virtual void CheckStateSwitch()
         {
-            if (!Context.VelocityMovement.Movement.IsGrounded)
+            if (!Context.VelocityMovement.BaseMovement.IsGrounded)
             {
                 SwitchState<PlayerFallState>();
             }

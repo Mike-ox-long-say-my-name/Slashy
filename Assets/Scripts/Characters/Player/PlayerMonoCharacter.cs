@@ -13,8 +13,6 @@ namespace Characters.Player
 
         private readonly StaminaResource _staminaResource;
 
-        public event Action<IPlayerCharacter, ICharacterResource> OnStaminaChanged;
-
         IPlayerMovement IPlayerCharacter.PlayerMovement => (IPlayerMovement)VelocityMovement;
         public ICharacterResource Stamina => _staminaResource;
 
@@ -43,7 +41,6 @@ namespace Characters.Player
             }
 
             _staminaResource.Recover(PlayerStats.StaminaRegeneration * Time.deltaTime);
-            OnStaminaChanged?.Invoke(this, Stamina);
         }
 
         public void SpendStamina(float amount)
@@ -64,8 +61,6 @@ namespace Characters.Player
                 var delay = PlayerStats.StaminaRegenerationDelay;
                 _staminaRecoveryDelayed.SetFor(delay);
             }
-
-            OnStaminaChanged?.Invoke(this, Stamina);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Core.Characters
         public MovementConfig MovementConfig { get; }
 
         protected Vector3 Velocity;
-        public IMovement Movement { get; }
+        public IMovement BaseMovement { get; }
         public IPushable Pushable { get; }
 
         Vector3 IVelocityMovement.Velocity => Velocity;
@@ -19,7 +19,7 @@ namespace Core.Characters
             Guard.NotNull(movement);
             Guard.NotNull(movementConfig);
 
-            Movement = movement;
+            BaseMovement = movement;
             Pushable = new Pushable(movement);
             MovementConfig = movementConfig;
         }
@@ -49,11 +49,11 @@ namespace Core.Characters
                 return;
             }
 
-            Velocity.y += (Movement.IsGrounded ? MovementConfig.GroundedGravity : MovementConfig.Gravity) * deltaTime;
+            Velocity.y += (BaseMovement.IsGrounded ? MovementConfig.GroundedGravity : MovementConfig.Gravity) * deltaTime;
             ClampVelocity();
-            Movement.Move(Velocity * deltaTime);
+            BaseMovement.Move(Velocity * deltaTime);
             
-            Movement.Rotate(Velocity.x);
+            BaseMovement.Rotate(Velocity.x);
         }
 
         private void ClampVelocity()

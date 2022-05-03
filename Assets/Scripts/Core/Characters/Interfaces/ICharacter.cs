@@ -6,7 +6,6 @@ namespace Core.Characters.Interfaces
 {
     public interface ICharacter : IHitReceiver
     {
-        event Action<ICharacter, ICharacterResource> OnHealthChanged;
         event Action<ICharacter, HitInfo> OnHitReceivedExclusive;
         event Action<ICharacter, HitInfo> OnStaggered;
         event Action<ICharacter, HitInfo> OnDeath;
@@ -18,7 +17,7 @@ namespace Core.Characters.Interfaces
 
         CharacterStats CharacterStats { get; set; }
         DamageStats DamageStats { get; set; }
-
+        
         void Heal(float amount);
         void Tick(float deltaTime);
     }

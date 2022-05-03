@@ -15,8 +15,8 @@ namespace UI
             {
                 return;
             }
-            player.OnHealthChanged += healthBar.OnResourceValueChanged;
-            player.OnStaminaChanged += staminaBar.OnResourceValueChanged;
+            player.Health.OnValueChanged += healthBar.OnResourceValueChanged;
+            player.Stamina.OnValueChanged += staminaBar.OnResourceValueChanged;
         }
 
         private void OnDisable()
@@ -26,8 +26,8 @@ namespace UI
             {
                 return;
             }
-            player.OnHealthChanged -= healthBar.OnResourceValueChanged;
-            player.OnStaminaChanged -= staminaBar.OnResourceValueChanged;
+            player.Health.OnValueChanged -= healthBar.OnResourceValueChanged;
+            player.Stamina.OnValueChanged -= staminaBar.OnResourceValueChanged;
         }
     }
 }

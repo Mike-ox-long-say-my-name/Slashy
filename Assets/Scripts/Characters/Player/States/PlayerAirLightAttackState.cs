@@ -17,7 +17,7 @@ namespace Characters.Player.States
 
         private void OnAttackEnded(bool _)
         {
-            if (Context.VelocityMovement.Movement.IsGrounded)
+            if (Context.VelocityMovement.BaseMovement.IsGrounded)
             {
                 SwitchState<PlayerGroundedState>();
             }

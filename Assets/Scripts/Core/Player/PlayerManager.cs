@@ -5,9 +5,9 @@ namespace Core.Player
 {
     public class PlayerManager : PublicSingleton<PlayerManager>
     {
-        private IMonoPlayerInfoProvider _playerData;
+        private IPlayer _playerData;
 
-        public IMonoPlayerInfoProvider PlayerInfo
+        public IPlayer PlayerInfo
         {
             get
             {
@@ -22,10 +22,10 @@ namespace Core.Player
                     return null;
                 }
 
-                _playerData = playerObject.GetComponent<IMonoPlayerInfoProvider>();
+                _playerData = playerObject.GetComponent<IPlayer>();
                 if (_playerData == null)
                 {
-                    Debug.LogError($"Player does not implement {nameof(IMonoPlayerInfoProvider)}.\n" +
+                    Debug.LogError($"Player does not implement {nameof(IPlayer)}.\n" +
                                    "Maybe there is multiple players on scene", this);
                 }
 

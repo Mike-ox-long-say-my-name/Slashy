@@ -8,7 +8,6 @@ namespace Core.Characters
 {
     public class Character : ICharacter
     {
-        public event Action<ICharacter, ICharacterResource> OnHealthChanged;
         public event Action<ICharacter, HitInfo> OnHitReceivedExclusive;
         public event Action<IHitReceiver, HitInfo> OnHitReceived;
         public event Action<ICharacter, HitInfo> OnStaggered;
@@ -58,8 +57,8 @@ namespace Core.Characters
 
                 if (source.Character != null && pushTime > 0 && pushForce > 0)
                 {
-                    var sourcePosition = source.Character.VelocityMovement.Movement.Transform.position;
-                    var direction = (VelocityMovement.Movement.Transform.position - sourcePosition);
+                    var sourcePosition = source.Character.VelocityMovement.BaseMovement.Transform.position;
+                    var direction = (VelocityMovement.BaseMovement.Transform.position - sourcePosition);
                     direction.y = 0;
                     direction.Normalize();
                     VelocityMovement.Pushable.Push(direction, pushForce, pushTime);
@@ -103,7 +102,6 @@ namespace Core.Characters
             }
 
             _health.Spend(info.Damage);
-            OnHealthChanged?.Invoke(this, Health);
 
             return CharacterStats.CanDie && _health.IsDepleted;
         }
@@ -116,7 +114,6 @@ namespace Core.Characters
             }
 
             _health.Recover(amount);
-            OnHealthChanged?.Invoke(this, Health);
         }
 
         public virtual void Tick(float deltaTime)

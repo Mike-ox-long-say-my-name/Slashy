@@ -47,7 +47,7 @@ namespace Characters.Player
             var context = new AttackContext
             {
                 Input = playerInput,
-                Movement = playerMovement.Movement,
+                Movement = playerMovement.BaseMovement,
                 MoveDistance = moveDistance
             };
             return new PlayerLightAttack(context, host, attackbox);

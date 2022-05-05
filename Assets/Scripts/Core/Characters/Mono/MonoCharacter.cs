@@ -1,15 +1,16 @@
-﻿using Core.Characters.Interfaces;
+﻿using Core.Attacking;
+using Core.Attacking.Interfaces;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Core.Characters.Mono
 {
     [RequireComponent(typeof(CharacterController))]
-    public class MonoCharacter : MonoBehaviour, IDamageStatsContainer
+    public class MonoCharacter : MonoBehaviour, IDamageStatsContainer, IHitReceiver
     {
         [SerializeField] private MonoMovementConfig monoMovementConfig;
         [SerializeField] private MonoCharacterStats monoCharacterStats;
         [SerializeField] private MonoDamageStats monoDamageStats;
-
 
         public DamageStats DamageStats => monoDamageStats.DamageStats;
 
@@ -42,6 +43,11 @@ namespace Core.Characters.Mono
 
             var movement = new CharacterMovement(rawMovement, config);
             return new Character(movement, damageState, characterStats);
+        }
+
+        public void ReceiveHit(HitInfo hit)
+        {
+            Character.ReceiveHit(hit);
         }
     }
 }

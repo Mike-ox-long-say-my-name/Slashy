@@ -6,6 +6,7 @@ namespace Core.Characters.Interfaces
 {
     public interface ICharacter : IHitReceiver
     {
+        event Action<IHitReceiver, HitInfo> OnHitReceived;
         event Action<ICharacter, HitInfo> OnHitReceivedExclusive;
         event Action<ICharacter, HitInfo> OnStaggered;
         event Action<ICharacter, HitInfo> OnDeath;

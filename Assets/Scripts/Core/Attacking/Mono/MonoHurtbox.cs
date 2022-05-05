@@ -1,5 +1,4 @@
 using Core.Attacking.Interfaces;
-using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
@@ -26,9 +25,9 @@ namespace Core.Attacking.Mono
 
         protected override IHitbox CreateHitbox(Collider[] colliders)
         {
-            var character = GetComponentInParent<MonoCharacter>().Character;
+            var receiver = GetComponentInParent<IHitReceiver>();
             var hurtbox = CreateHurtbox(colliders);
-            hurtbox.OnHit += character.ReceiveHit;
+            hurtbox.OnHit += receiver.ReceiveHit;
             return hurtbox;
         }
 

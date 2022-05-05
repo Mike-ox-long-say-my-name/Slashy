@@ -1,6 +1,5 @@
 ﻿using Core.Characters;
 using Core.Characters.Interfaces;
-using Core.Characters.Mono;
 using Core.Player;
 using UnityEngine;
 
@@ -15,6 +14,7 @@ namespace Characters.Player
             PlayerMovementConfig playerMovementConfig) : base(movement, movementConfig)
         {
             PlayerMovementConfig = playerMovementConfig;
+            AutoResetVelocity = false;
         }
 
         private void MoveAirbone(Vector3 direction)

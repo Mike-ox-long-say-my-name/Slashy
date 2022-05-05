@@ -14,6 +14,8 @@ namespace Core.Characters
 
         Vector3 IVelocityMovement.Velocity => Velocity;
 
+        public bool AutoResetVelocity { get; set; } = true;
+
         public CharacterMovement(IMovement movement, MovementConfig movementConfig)
         {
             Guard.NotNull(movement);
@@ -52,8 +54,13 @@ namespace Core.Characters
             Velocity.y += (BaseMovement.IsGrounded ? MovementConfig.GroundedGravity : MovementConfig.Gravity) * deltaTime;
             ClampVelocity();
             BaseMovement.Move(Velocity * deltaTime);
-            
             BaseMovement.Rotate(Velocity.x);
+
+            if (AutoResetVelocity)
+            {
+                Velocity.x = 0;
+                Velocity.z = 0;
+            }
         }
 
         private void ClampVelocity()

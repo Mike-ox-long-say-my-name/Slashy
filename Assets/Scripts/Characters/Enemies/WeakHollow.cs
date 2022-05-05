@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using Characters.Enemies.States;
 using Core.Attacking;
+using Core.Attacking.Interfaces;
+using Core.Attacking.Mono;
+using Core.Characters;
 using Core.Utilities;
 using UnityEngine;
 
@@ -15,12 +18,14 @@ namespace Characters.Enemies
 
         public override void OnStaggered(HitInfo info)
         {
+            Context.InterruptActiveAttack();
             Context.LastHitInfo = info;
             SwitchState<WeakHollowStagger>();
         }
 
         public override void OnDeath(HitInfo info)
         {
+            Context.InterruptActiveAttack();
             Context.LastHitInfo = info;
             SwitchState<WeakHollowDeath>();
         }
@@ -28,22 +33,22 @@ namespace Characters.Enemies
 
     public class WeakHollowStagger : WeakHollowBaseState
     {
-        private Coroutine _staggerRoutine;
+        private Timer _timer;
 
         public override void EnterState()
         {
-            if (_staggerRoutine != null)
-            {
-                Context.StopCoroutine(_staggerRoutine);
-            }
-
-            _staggerRoutine = Context.StartCoroutine(StaggerRoutine(Context.LastHitInfo.StaggerTime));
+            Context.AnimatorComponent.SetBool("is-staggered", true);
+            _timer = Timer.Start(Context.LastHitInfo.StaggerTime, SwitchState<WeakHollowIdle>);
         }
 
-        private IEnumerator StaggerRoutine(float staggerTime)
+        public override void UpdateState()
         {
-            yield return new WaitForSeconds(staggerTime);
-            SwitchState<WeakHollowIdle>();
+            _timer.Step(Time.deltaTime);
+        }
+
+        public override void ExitState()
+        {
+            Context.AnimatorComponent.SetBool("is-staggered", false);
         }
     }
 
@@ -65,25 +70,14 @@ namespace Characters.Enemies
         public override void EnterState()
         {
             Context.AnimatorComponent.SetBool("is-walking", true);
-        }
-
-        public override void UpdateState()
-        {
-            var playerDirection = Context.PlayerPosition.WithZeroY() - Context.Movement.Transform.position.WithZeroY();
-            var distance = playerDirection.magnitude;
-            playerDirection.Normalize();
-            if (distance < 3)
-            {
-                SwitchState<WeakHollowCharge>();
-            }
-            else
-            {
-                Context.VelocityMovement.Move(playerDirection);
-            }
+            Context.AutoMovement.MoveTo(Context.Player.PlayerMovement.BaseMovement.Transform);
+            Context.AutoMovement.SetTargetReachedEpsilon(3);
+            Context.AutoMovement.TargetReached += SwitchState<WeakHollowCharge>;
         }
 
         public override void ExitState()
         {
+            Context.AutoMovement.ResetState();
             Context.AnimatorComponent.SetBool("is-walking", false);
         }
     }
@@ -92,7 +86,66 @@ namespace Characters.Enemies
     {
         public override void EnterState()
         {
-            //Context.AnimatorComponent.Set("is-walking", false);
+            Context.AnimatorComponent.SetBool("is-charging", true);
+            _timer = Timer.Start(3, SwitchState<WeakHollowConfused>);
+
+            Context.AutoMovement.SetSpeedMultiplier(2);
+            Context.AutoMovement.MoveTo(Context.Player.PlayerMovement.BaseMovement.Transform);
+        }
+
+        private Timer _timer;
+
+        public override void UpdateState()
+        {
+
+            var playerDirection = Context.PlayerPosition.WithZeroY() - Context.Movement.Transform.position.WithZeroY();
+            var distance = playerDirection.magnitude;
+            playerDirection.Normalize();
+            if (distance < 1)
+            {
+                SwitchState<WeakHollowAttack>();
+                return;
+            }
+
+            Context.VelocityMovement.Move(playerDirection * 2);
+            _timer.Step(Time.deltaTime);
+        }
+
+        public override void ExitState()
+        {
+            Context.AnimatorComponent.SetBool("is-charging", false);
+            Context.AutoMovement.ResetState();
+        }
+    }
+
+    public class WeakHollowConfused : WeakHollowBaseState
+    {
+        private Timer _timer;
+
+        public override void EnterState()
+        {
+            _timer = Timer.Start(3, SwitchState<WeakHollowPursue>);
+        }
+
+        public override void UpdateState()
+        {
+            _timer.Step(Time.deltaTime);
+        }
+    }
+
+    public class WeakHollowAttack : WeakHollowBaseState
+    {
+        public override void EnterState()
+        {
+            Context.VelocityMovement.Stop();
+            Context.AnimatorComponent.SetTrigger("attack");
+            Context.PunchAttackExecutor.StartAttack(inter =>
+            {
+                if (!inter)
+                {
+                    SwitchState<WeakHollowRetreat>();
+                }
+            });
         }
     }
 
@@ -102,7 +155,7 @@ namespace Characters.Enemies
         {
             Context.AnimatorComponent.SetTrigger("death");
 
-            Context.StartCoroutine(DieIn(1));
+            Context.StartCoroutine(DieIn(0.5f));
         }
 
         private IEnumerator DieIn(float time)
@@ -112,15 +165,54 @@ namespace Characters.Enemies
         }
     }
 
+    public class WeakHollowRetreat : WeakHollowBaseState
+    {
+        public override void EnterState()
+        {
+            Context.AnimatorComponent.SetBool("is-walking", true);
+
+            Context.AutoMovement.SetSpeedMultiplier(0.4f);
+            Context.AutoMovement.LockRotationOn(Context.Player.PlayerMovement.BaseMovement.Transform);
+
+            _timer = Timer.Start(2, SwitchState<WeakHollowIdle>);
+        }
+
+        private Timer _timer;
+
+        public override void UpdateState()
+        {
+            var playerDirection = Context.PlayerPosition.WithZeroY() - Context.Movement.Transform.position.WithZeroY();
+            playerDirection.Normalize();
+            
+            Context.AutoMovement.Move(-playerDirection);
+
+            _timer.Step(Time.deltaTime);
+        }
+
+        public override void ExitState()
+        {
+            Context.AutoMovement.ResetSpeedMultiplier();
+            Context.AutoMovement.UnlockRotation();
+            Context.AnimatorComponent.SetBool("is-walking", false);
+        }
+    }
+
     public class WeakHollow : EnemyStateMachine<WeakHollow>
     {
+        [SerializeField] private MonoAttackHandler punchAttack;
+
         public HitInfo LastHitInfo { get; set; }
         public Animator AnimatorComponent { get; private set; }
+
+        public IAttackExecutor PunchAttackExecutor => punchAttack.Executor;
+        public IAutoMovement AutoMovement { get; private set; }
+
 
         protected override void Awake()
         {
             base.Awake();
             AnimatorComponent = GetComponent<Animator>();
+            AutoMovement = VelocityMovement as IAutoMovement;
         }
 
         protected override EnemyBaseState<WeakHollow> StartState()
@@ -128,6 +220,14 @@ namespace Characters.Enemies
             var state = new WeakHollowIdle();
             state.Init(this, this);
             return state;
+        }
+
+        public void InterruptActiveAttack()
+        {
+            if (PunchAttackExecutor.IsAttacking)
+            {
+                PunchAttackExecutor.InterruptAttack();
+            }
         }
     }
 }

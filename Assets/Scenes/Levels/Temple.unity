@@ -485,7 +485,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh37624
+  m_Name: pb_Mesh45982
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -650,6 +650,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 950221308283362036, guid: fbe9fab27cfb63c46b87e7aeef641d6d, type: 3}
+      propertyPath: orthographic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950221308283362036, guid: fbe9fab27cfb63c46b87e7aeef641d6d, type: 3}
+      propertyPath: field of view
+      value: 50.769093
+      objectReference: {fileID: 0}
+    - target: {fileID: 950221308283362036, guid: fbe9fab27cfb63c46b87e7aeef641d6d, type: 3}
+      propertyPath: m_FOVAxisMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 950221308283362037, guid: fbe9fab27cfb63c46b87e7aeef641d6d, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -664,7 +676,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 950221308283364618, guid: fbe9fab27cfb63c46b87e7aeef641d6d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 950221308283364618, guid: fbe9fab27cfb63c46b87e7aeef641d6d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2259,7 +2271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8046769827537848030, guid: 1c9367291f7e3494dbcaaaac65322d95, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c9367291f7e3494dbcaaaac65322d95, type: 3}

@@ -128,11 +128,11 @@ namespace Characters.Enemies
 
     public class ExplodingHollowRunning : ExplodingHollowBaseState
     {
-        private readonly TimedTrigger _dotTrigger = new TimedTrigger();
+        private Timer _dotTimer;
 
         public override void EnterState()
         {
-            _dotTrigger.Reset();
+            _dotTimer = Timer.Start(Context.DotTickInterval, SelfHit, true);
 
             Context.AnimatorComponent.SetTrigger("charge-end");
             if (Context.ChargeBurnParticles != null)
@@ -141,10 +141,18 @@ namespace Characters.Enemies
             }
         }
 
+        private void SelfHit()
+        {
+            Context.Character.ReceiveHit(new HitInfo
+            {
+                Multipliers = DamageMultipliers.One,
+                DamageStats = Context.Character.DamageStats,
+                Source = HitSource.AsCharacter(Context.Character)
+            });
+        }
+
         public override void UpdateState()
         {
-            _dotTrigger.Step(Time.deltaTime);
-
             var speedMultiplier = 3.5f;
             var player = Context.PlayerPosition;
             var self = Context.transform.position;
@@ -169,22 +177,16 @@ namespace Characters.Enemies
                 SwitchState<ExplodingHollowExplosion>();
             }
 
-            if (!_dotTrigger.CheckAndReset())
-            {
-                return;
-            }
-
-            Context.Character.ReceiveHit(new HitInfo
-            {
-                Multipliers = DamageMultipliers.One,
-                DamageStats = Context.Character.DamageStats,
-                Source = HitSource.AsCharacter(Context.Character)
-            });
-            _dotTrigger.SetIn(Context.DotTickInterval);
+            _dotTimer.Step(Time.deltaTime);
         }
 
         public override void OnHitReceived(HitInfo info)
         {
+        }
+
+        public override void ExitState()
+        {
+            _dotTimer.Stop();
         }
     }
 

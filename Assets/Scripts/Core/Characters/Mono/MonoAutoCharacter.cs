@@ -14,5 +14,6 @@ namespace Core.Characters.Mono
             var movement = new AutoMovement(rawMovement, config);
             return new AutoCharacter(movement, damageState, characterStats);
         }
+
     }
 }

@@ -54,12 +54,16 @@ namespace Core.Characters
 
             if (BaseMovement.IsGrounded)
             {
-                Velocity.y = MovementConfig.GroundedGravity;
+                if (Velocity.y < 0)
+                {
+                    Velocity.y = MovementConfig.GroundedGravity;
+                }
             }
             else
             {
                 Velocity.y += MovementConfig.Gravity * deltaTime;
             }
+
             ClampVelocity();
             BaseMovement.Move(Velocity * deltaTime);
             BaseMovement.Rotate(Velocity.x);

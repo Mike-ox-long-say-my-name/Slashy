@@ -317,7 +317,7 @@ MonoBehaviour:
   aggroDistance: 5
   chargeTime: 2
   dotWhileRunning: 5
-  dotTickInterval: 0.3
+  dotTickInterval: 0.6
   explosionMonoAttackHandler: {fileID: 2976861941872019505}
   punchMonoAttack: {fileID: 683470893094407908}
   chargeBurnParticles: {fileID: 3067029855397981146}

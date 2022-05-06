@@ -8,9 +8,12 @@ namespace Core.Utilities
         public bool IsRunning { get; private set; }
         public float TimeRemained { get; private set; }
 
+        private float _baseTime;
+        public bool IsRepeating { get; private set; }
+
         public event Action Timeout;
 
-        public void Start(float time)
+        public void Start(float time, bool repeating = false)
         {
             if (time < 0)
             {
@@ -18,7 +21,9 @@ namespace Core.Utilities
                 return;
             }
 
+            IsRepeating = repeating;
             IsRunning = true;
+            _baseTime = time;
             TimeRemained = time;
         }
 
@@ -34,8 +39,14 @@ namespace Core.Utilities
             {
                 return;
             }
-            IsRunning = false;
+
             Invoke();
+            if (IsRepeating)
+            {
+                TimeRemained = _baseTime;
+            }
+
+            IsRunning = IsRepeating;
         }
 
         private void Invoke()
@@ -43,12 +54,19 @@ namespace Core.Utilities
             Timeout?.Invoke();
         }
 
-        public static Timer Start(float time, Action timeout)
+        public static Timer Start(float time, Action timeout, bool repeating = false)
         {
             var timer = new Timer();
             timer.Timeout += timeout;
-            timer.Start(time);
+            timer.Start(time, repeating);
             return timer;
+        }
+
+        public void Stop()
+        {
+            TimeRemained = 0;
+            _baseTime = 0;
+            IsRunning = false;
         }
     }
 }

@@ -89,9 +89,9 @@ namespace Characters.Enemies
             Context.VelocityMovement.Stop();
             Context.AnimatorComponent.SetTrigger("attack");
 
-            Context.PunchAttack.StartAttack(inter =>
+            Context.PunchAttack.StartAttack(result =>
             {
-                if (!inter)
+                if (result.WasCompleted)
                 {
                     SwitchState<ExplodingHollowPursue>();
                 }

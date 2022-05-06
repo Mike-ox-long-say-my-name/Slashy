@@ -7,6 +7,7 @@ namespace Core.Attacking.Interfaces
         bool IsAttacking { get; }
 
         void InterruptAttack();
-        void StartAttack(Action<bool> attackEnded);
+        void StartAttack(Action<AttackResult> attackEnded);
+        void RegisterHit(IHurtbox hit);
     }
 }

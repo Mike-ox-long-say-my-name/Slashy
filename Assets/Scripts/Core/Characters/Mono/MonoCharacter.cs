@@ -2,11 +2,12 @@
 using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Core.Characters.Mono
 {
     [RequireComponent(typeof(CharacterController))]
-    public class MonoCharacter : MonoBehaviour, IDamageStatsContainer, IHitReceiver
+    public class MonoCharacter : MonoBehaviour, IDamageStatsContainer, IHitReceiver, IHitReceiveDispatcher
     {
         [SerializeField] private MonoMovementConfig monoMovementConfig;
         [SerializeField] private MonoCharacterStats monoCharacterStats;
@@ -26,6 +27,7 @@ namespace Core.Characters.Mono
                 }
 
                 _character = CreateCharacter(monoMovementConfig.Config, monoDamageStats.DamageStats, monoCharacterStats.CharacterStats);
+                _character.OnHitReceived += HitReceived.Invoke;
                 return _character;
             }
         }
@@ -45,9 +47,8 @@ namespace Core.Characters.Mono
             return new Character(movement, damageState, characterStats);
         }
 
-        public void ReceiveHit(HitInfo hit)
-        {
-            Character.ReceiveHit(hit);
-        }
+        public void ReceiveHit(HitInfo hit) => Character.ReceiveHit(hit);
+
+        public UnityEvent<IHitReceiver, HitInfo> HitReceived { get; } = new UnityEvent<IHitReceiver, HitInfo>();
     }
 }

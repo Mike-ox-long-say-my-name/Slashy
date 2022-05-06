@@ -68,7 +68,7 @@ namespace Characters.Enemies
     public class WeakHollowPursue : WeakHollowBaseState
     {
         public override void EnterState()
-        {
+        { 
             Context.AnimatorComponent.SetBool("is-walking", true);
             Context.AutoMovement.MoveTo(Context.Player.PlayerMovement.BaseMovement.Transform);
             Context.AutoMovement.SetTargetReachedEpsilon(3);
@@ -139,11 +139,20 @@ namespace Characters.Enemies
         {
             Context.VelocityMovement.Stop();
             Context.AnimatorComponent.SetTrigger("attack");
-            Context.PunchAttackExecutor.StartAttack(inter =>
+            Context.PunchAttackExecutor.StartAttack(result =>
             {
-                if (!inter)
+                if (result.WasInterrupted)
+                {
+                    return;
+                }
+
+                if (result.Hits.Count > 0)
                 {
                     SwitchState<WeakHollowRetreat>();
+                }
+                else
+                {
+                    SwitchState<WeakHollowPursue>();
                 }
             });
         }

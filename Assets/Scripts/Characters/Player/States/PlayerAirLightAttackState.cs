@@ -15,7 +15,7 @@ namespace Characters.Player.States
             Context.AirboneLightAttack.StartAttack(OnAttackEnded);
         }
 
-        private void OnAttackEnded(bool _)
+        private void OnAttackEnded(AttackResult result)
         {
             if (Context.VelocityMovement.BaseMovement.IsGrounded)
             {

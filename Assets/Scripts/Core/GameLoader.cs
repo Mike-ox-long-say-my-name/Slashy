@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Core
 {
     public class GameLoader : PublicSingleton<GameLoader>, IGameLoader
     {
-        private const string GameSceneName = "Scenes/SampleScene";
-        private const string MenuSceneName = "Scenes/MenuScene";
+        [SerializeField] private SceneAsset gameScene;
+        [SerializeField] private SceneAsset menuScene;
 
         public bool HasAnyGameProgress => false;
 
@@ -17,20 +18,21 @@ namespace Core
 
         public void LoadNewGame()
         {
-            TryLoadScene(GameSceneName);
+            TryLoadScene("Scenes/Levels/Temple");
         }
 
         public void LoadMenu()
         {
-            TryLoadScene(MenuSceneName);
+            TryLoadScene("Scenes/MenuScene");
         }
 
-        private void TryLoadScene(string sceneName)
+        private void TryLoadScene(string asset)
         {
+            var sceneName = asset;
             var sceneIndex = SceneUtility.GetBuildIndexByScenePath(sceneName);
             if (sceneIndex == -1)
             {
-                Debug.LogWarning("Scene is missing", this);
+                Debug.LogWarning("Scene is missing in build info", this);
                 return;
             }
 

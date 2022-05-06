@@ -2,7 +2,8 @@
     "name": "Effects",
     "rootNamespace": "",
     "references": [
-        "GUID:c85678d10edf086498cac69a08606a8b"
+        "GUID:c85678d10edf086498cac69a08606a8b",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

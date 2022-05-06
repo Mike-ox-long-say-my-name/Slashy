@@ -35,7 +35,6 @@ namespace Core
             }
             else if (_instance != this)
             {
-                Debug.LogWarning($"Multiple instances of {typeof(T).Name} are present in scene", this);
                 Destroy(gameObject);
             }
         }

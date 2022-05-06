@@ -1,6 +1,6 @@
+using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
-using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Effects
@@ -9,26 +9,14 @@ namespace Effects
     {
         protected virtual void Subscribe()
         {
-            var monoCharacter = GetComponentInParent<MonoCharacter>();
-            if (monoCharacter == null)
-            {
-                return;
-            }
-
-            var character = monoCharacter.Character;
-            character.OnHitReceived += OnHitReceived;
+            var receiver = GetComponentInParent<IHitReceiveDispatcher>();
+            receiver?.HitReceived.AddListener(OnHitReceived);
         }
 
         protected virtual void Unsubscribe()
         {
-            var monoCharacter = GetComponentInParent<MonoCharacter>();
-            if (monoCharacter == null)
-            {
-                return;
-            }
-
-            var character = monoCharacter.Character;
-            character.OnHitReceived -= OnHitReceived;
+            var receiver = GetComponentInParent<IHitReceiveDispatcher>();
+            receiver?.HitReceived.RemoveListener(OnHitReceived);
         }
 
         protected abstract void OnHitReceived(IHitReceiver entity, HitInfo info);

@@ -33,9 +33,9 @@ namespace Characters.Player.States
             Context.Character.ReceiveHit(selfHit);
         }
 
-        private void AttackEndedFirst(bool interrupted)
+        private void AttackEndedFirst(AttackResult result)
         {
-            if (!interrupted && _shouldContinueAttack)
+            if (result.WasCompleted && _shouldContinueAttack)
             {
                 _currentAttack = 2;
                 Context.Character.SpendStamina(Context.PlayerConfig.SecondStrongAttackStaminaCost);
@@ -43,7 +43,7 @@ namespace Characters.Player.States
             }
             else
             {
-                AttackEndedSecond(interrupted);
+                AttackEndedSecond(result);
             }
         }
 
@@ -56,9 +56,9 @@ namespace Characters.Player.States
             }
         }
 
-        private void AttackEndedSecond(bool interrupted)
+        private void AttackEndedSecond(AttackResult result)
         {
-            if (!interrupted)
+            if (result.WasCompleted)
             {
                 SwitchState<PlayerGroundedState>();
             }

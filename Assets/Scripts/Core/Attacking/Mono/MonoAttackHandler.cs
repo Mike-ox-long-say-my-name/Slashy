@@ -22,7 +22,10 @@ namespace Core.Attacking.Mono
 
                 var attackBox = GetComponentInChildren<MonoAttackbox>().Attackbox;
                 _executor = CreateExecutor(this.ToCoroutineHost(), attackBox);
-
+                attackBox.OnHit += (attack, hit) =>
+                {
+                    _executor.RegisterHit(hit);
+                };
                 return _executor;
             }
         }

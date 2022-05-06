@@ -25,7 +25,10 @@ namespace Core.Attacking
         {
             foreach (var hitbox in _colliders)
             {
-                hitbox.enabled = true;
+                if (hitbox != null)
+                {
+                    hitbox.enabled = true;
+                }
             }
 
             IsEnabled = true;
@@ -35,7 +38,10 @@ namespace Core.Attacking
         {
             foreach (var hitbox in _colliders)
             {
-                hitbox.enabled = false;
+                if (hitbox != null)
+                {
+                    hitbox.enabled = false;
+                }
             }
             IsEnabled = false;
         }

@@ -1,20 +1,45 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Core.Attacking.Interfaces;
 using Core.Utilities;
 using UnityEngine;
 
 namespace Core.Attacking
 {
+
+    public class AttackResult
+    {
+        public bool WasInterrupted => !WasCompleted;
+        public bool WasCompleted { get; }
+        private readonly IHurtbox[] _hits;
+
+        public IReadOnlyList<IHurtbox> Hits => _hits;
+
+        public AttackResult(IEnumerable<IHurtbox> hits, bool wasCompleted)
+        {
+            _hits = hits.ToArray();
+            WasCompleted = wasCompleted;    
+        }
+    }
+
     public abstract class AttackExecutor : IAttackExecutor
     {
         private Coroutine _runningAttack;
-        private Action<bool> _attackEnded;
+        private Action<AttackResult> _attackEnded;
 
         protected ICoroutineHost Host { get; }
         protected IAttackbox Attackbox { get; }
 
         public bool IsAttacking => _runningAttack != null;
+
+        private readonly List<IHurtbox> _hits = new List<IHurtbox>();
+
+        public void RegisterHit(IHurtbox hit)
+        {
+            _hits.Add(hit);
+        }
 
         protected AttackExecutor(ICoroutineHost host, IAttackbox attackbox)
         {
@@ -39,7 +64,7 @@ namespace Core.Attacking
             _attackEnded = null;
         }
 
-        public void StartAttack(Action<bool> attackEnded)
+        public void StartAttack(Action<AttackResult> attackEnded)
         {
             if (IsAttacking)
             {
@@ -64,7 +89,8 @@ namespace Core.Attacking
 
         protected virtual void OnAttackEnded(bool interrupted)
         {
-            _attackEnded?.Invoke(interrupted);
+            _attackEnded?.Invoke(new AttackResult(_hits, !interrupted));
+            _hits.Clear();
             _attackEnded = null;
         }
     }

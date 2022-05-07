@@ -1,33 +1,38 @@
 using Core.Attacking;
 using Core.Attacking.Interfaces;
+using Core.Characters.Interfaces;
+using Core.Modules;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Core.Characters
 {
-    public class BreakableObject : MonoBehaviour, IHitReceiver, IHitReceiveDispatcher
+    [RequireComponent(typeof(MixinHittable))]
+    [RequireComponent(typeof(MixinHealth))]
+    public class MixinBreakable : MonoBehaviour
     {
-        [SerializeField] private UnityEvent<IHitReceiver, HitInfo> hitReceived;
         [SerializeField] private UnityEvent destroyed;
-        [SerializeField] private float maxHealth;
 
-        private float _health = 30;
+        public UnityEvent Destroyed => destroyed;
+
+        private IResource _health;
 
         private void Awake()
         {
-            _health = maxHealth;
+            var receiver = GetComponent<MixinHittable>().HitReceiver;
+            receiver.HitReceived += ReceiveHit;
+
+            _health = GetComponent<MixinHealth>().Health;
         }
 
-        public void ReceiveHit(HitInfo hitInfo)
+        private void ReceiveHit(IHitReceiver receiver, HitInfo hitInfo)
         {
-            _health -= hitInfo.Damage;
-            HitReceived?.Invoke(this, hitInfo);
-            if (_health <= 0)
+            _health.Spend(hitInfo.Damage);
+
+            if (_health.IsDepleted())
             {
-                destroyed?.Invoke();
+                Destroyed?.Invoke();
             }
         }
-
-        public UnityEvent<IHitReceiver, HitInfo> HitReceived => hitReceived;
     }
 }

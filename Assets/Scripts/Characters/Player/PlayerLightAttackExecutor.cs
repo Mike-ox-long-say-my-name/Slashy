@@ -13,7 +13,7 @@ namespace Characters.Player
         private struct AttackContext
         {
             public IAutoPlayerInput Input { get; set; }
-            public IMovement Movement { get; set; }
+            public IBaseMovement BaseMovement { get; set; }
             public float MoveDistance { get; set; }
         }
 
@@ -31,10 +31,10 @@ namespace Characters.Player
             {
                 base.OnEnableHitbox();
                 var inputX = _context.Input.MoveInput.x;
-                _context.Movement.Rotate(inputX);
+                _context.BaseMovement.Rotate(inputX);
 
-                var direction = _context.Movement.Transform.right;
-                _context.Movement.Move(direction * _context.MoveDistance);
+                var direction = _context.BaseMovement.Transform.right;
+                _context.BaseMovement.Move(direction * _context.MoveDistance);
             }
         }
 
@@ -42,12 +42,12 @@ namespace Characters.Player
 
         protected override AnimationAttackExecutor CreateAnimationAttackExecutor(ICoroutineHost host, IAttackbox attackbox)
         {
-            var playerMovement = GetComponentInParent<MonoPlayerCharacter>().Player.PlayerMovement;
+            var playerMovement = GetComponentInParent<PlayerMixinCharacter>().Player.PlayerMovement;
             var playerInput = GetComponentInParent<IAutoPlayerInput>();
             var context = new AttackContext
             {
                 Input = playerInput,
-                Movement = playerMovement.BaseMovement,
+                BaseMovement = playerMovement.BaseMovement,
                 MoveDistance = moveDistance
             };
             return new PlayerLightAttack(context, host, attackbox);

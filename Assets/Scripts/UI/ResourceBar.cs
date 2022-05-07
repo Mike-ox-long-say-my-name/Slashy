@@ -13,7 +13,7 @@ namespace UI
         [SerializeField, Min(0)] private float fillAnimationTickInterval = 0.05f;
         [SerializeField, Range(0, 1)] private float fillAnimationStartDelay = 0.15f;
 
-        public void OnResourceValueChanged(ICharacterResource resource)
+        public void OnResourceValueChanged(IResource resource)
         {
             var fraction = resource.Value / resource.MaxValue;
             if (_middleLayerAnimation != null)

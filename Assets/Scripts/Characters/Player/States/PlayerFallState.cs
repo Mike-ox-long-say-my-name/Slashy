@@ -15,10 +15,10 @@ namespace Characters.Player.States
             {
                 SwitchState<PlayerGroundedState>();
             }
-            else if (Context.CanAttack && Context.CanStartAttack && Context.Input.IsLightAttackPressed)
+            else if (Context.CanAttack && Context.CanStartAttack && !Context.AttackedAtThisAirTime && Context.Input.IsLightAttackPressed)
             {
                 Context.Input.ResetBufferedInput();
-                // TODO: SwitchState(Factory.AirLightAttack());
+                SwitchState<PlayerAirLightAttackState>();
             }
         }
     }

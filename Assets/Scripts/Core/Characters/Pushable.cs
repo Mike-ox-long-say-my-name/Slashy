@@ -10,14 +10,14 @@ namespace Core.Characters
         public float Dampening { get; set; } = 0.2f;
         public float PushTime { get; set; } = 0.3f;
 
-        private readonly IMovement _movement;
+        private readonly IBaseMovement _baseMovement;
 
         private readonly TimedTrigger _pushing = new TimedTrigger();
         private Vector3 _pushVelocity;
 
-        public Pushable(IMovement movement)
+        public Pushable(IBaseMovement baseMovement)
         {
-            _movement = movement;
+            _baseMovement = baseMovement;
         }
 
         public bool IsPushing => _pushing.IsSet;
@@ -53,7 +53,7 @@ namespace Core.Characters
 
         private void ApplyVelocity()
         {
-            _movement.Move(_pushVelocity * Time.deltaTime);
+            _baseMovement.Move(_pushVelocity * Time.deltaTime);
         }
     }
 }

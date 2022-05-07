@@ -1,10 +1,8 @@
-using Core.Characters.Interfaces;
-
 namespace Core.Characters
 {
-    public class HealthResource : BaseCharacterResource
+    public class HealthResource : BaseResource
     {
-        public HealthResource(ICharacter character, float maxHealth) : base(character, maxHealth)
+        public HealthResource(float maxHealth) : base(maxHealth)
         {
         }
     }

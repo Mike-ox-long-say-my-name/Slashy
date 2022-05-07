@@ -1,25 +1,19 @@
 using System;
 using Core.Attacking;
-using Core.Attacking.Interfaces;
 
 namespace Core.Characters.Interfaces
 {
-    public interface ICharacter : IHitReceiver
+    public interface ICharacter
     {
-        event Action<IHitReceiver, HitInfo> OnHitReceived;
-        event Action<ICharacter, HitInfo> OnHitReceivedExclusive;
-        event Action<ICharacter, HitInfo> OnStaggered;
-        event Action<ICharacter, HitInfo> OnDeath;
+        event Action<ICharacter, HitInfo> HitReceived;
+        event Action<ICharacter, HitInfo> Staggered;
+        event Action<ICharacter, HitInfo> Dead;
 
-        IVelocityMovement VelocityMovement { get; }
-
-        ICharacterResource Health { get; }
-        ICharacterResource Balance { get; }
-
-        CharacterStats CharacterStats { get; set; }
-        DamageStats DamageStats { get; set; }
+        IResource Health { get; }
+        IResource Balance { get; }
         
-        void Heal(float amount);
-        void Tick(float deltaTime);
+        bool FreezeHealth { get; set; }
+        bool FreezeBalance { get; set; }
+        bool CanDie { get; set; }
     }
 }

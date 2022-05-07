@@ -57,7 +57,7 @@ namespace Characters.Enemies
         public override void UpdateState()
         {
             var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(),
-                Context.Movement.Transform.position.WithZeroY());
+                Context.BaseMovement.Transform.position.WithZeroY());
             if (distance < 6)
             {
                 SwitchState<WeakHollowPursue>();
@@ -98,7 +98,7 @@ namespace Characters.Enemies
         public override void UpdateState()
         {
 
-            var playerDirection = Context.PlayerPosition.WithZeroY() - Context.Movement.Transform.position.WithZeroY();
+            var playerDirection = Context.PlayerPosition.WithZeroY() - Context.BaseMovement.Transform.position.WithZeroY();
             var distance = playerDirection.magnitude;
             playerDirection.Normalize();
             if (distance < 1)
@@ -190,7 +190,7 @@ namespace Characters.Enemies
 
         public override void UpdateState()
         {
-            var playerDirection = Context.PlayerPosition.WithZeroY() - Context.Movement.Transform.position.WithZeroY();
+            var playerDirection = Context.PlayerPosition.WithZeroY() - Context.BaseMovement.Transform.position.WithZeroY();
             playerDirection.Normalize();
             
             Context.AutoMovement.Move(-playerDirection);

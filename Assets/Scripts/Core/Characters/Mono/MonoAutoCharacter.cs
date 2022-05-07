@@ -1,19 +1,29 @@
-﻿using Core.Characters.Interfaces;
+﻿using Core.Modules;
 using UnityEngine;
 
 namespace Core.Characters.Mono
 {
-    public class MonoAutoCharacter : MonoCharacter
+    [RequireComponent(typeof(MixinMovementBase))]
+    [RequireComponent(typeof(MixinVelocityMovement))]
+    public class MixinAutoMovement : MonoBehaviour
     {
-        protected override ICharacter CreateCharacter(MovementConfig config, DamageStats damageState, CharacterStats characterStats)
+        private IAutoMovement _autoMovement;
+
+        public IAutoMovement AutoMovement
         {
-            var controller = GetComponent<CharacterController>();
+            get
+            {
+                if (_autoMovement != null)
+                {
+                    return _autoMovement;
+                }
 
-            var rawMovement = new Movement(controller);
+                var baseMovement = GetComponent<MixinMovementBase>().BaseMovement;
+                var velocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
 
-            var movement = new AutoMovement(rawMovement, config);
-            return new AutoCharacter(movement, damageState, characterStats);
+                _autoMovement = new AutoMovement(transform, baseMovement, velocityMovement);
+                return _autoMovement;
+            }
         }
-
     }
 }

@@ -5,42 +5,41 @@ using UnityEngine;
 
 namespace Core.Characters
 {
-    public enum AutoMovementMode
+    public class AutoMovement : IAutoMovement
     {
-        RandomSpherical
-    }
+        private readonly Transform _transform;
+        private readonly IBaseMovement _baseBaseMovement;
+        private readonly IVelocityMovement _velocityMovement;
 
-    public class AutoMovement : CharacterMovement, IAutoMovement
-    {
         private const float DefaultTargetReachedEpsilon = 0.3f;
 
         private float _targetReachedEpsilon = DefaultTargetReachedEpsilon;
         private Transform _lockOn;
-        private Vector3? _targetPosition;
         private Transform _target;
+        private Vector3? _targetPosition;
         private float _speedMultiplier = 1;
 
-        public AutoMovement(IMovement movement, MovementConfig movementConfig) : base(movement, movementConfig)
+        public AutoMovement(Transform transform, IBaseMovement baseBaseMovement, IVelocityMovement velocityVelocityMovement)
         {
-            AutoResetVelocity = true;
+            _transform = transform;
+            _baseBaseMovement = baseBaseMovement;
+            _velocityMovement = velocityVelocityMovement;
         }
 
-        public override void Tick(float deltaTime)
+        public void Tick(float deltaTime)
         {
             var desiredPosition = GetTargetPosition();
 
             if (desiredPosition.HasValue)
             {
-                var direction = (desiredPosition.Value - BaseMovement.Transform.position).normalized;
-                Move(direction * _speedMultiplier);
+                var direction = (desiredPosition.Value - _transform.position).normalized;
+                _velocityMovement.Move(direction * _speedMultiplier);
             }
-
-            base.Tick(deltaTime);
 
             if (_lockOn != null)
             {
-                var direction = _lockOn.position - BaseMovement.Transform.position;
-                BaseMovement.Rotate(direction.x);
+                var direction = _lockOn.position - _transform.position;
+                _baseBaseMovement.Rotate(direction.x);
             }
 
             CheckTargetReached();
@@ -54,7 +53,7 @@ namespace Core.Characters
                 return;
             }
 
-            var position = BaseMovement.Transform.position;
+            var position = _transform.position;
             var distance = Vector3.Distance(position, desiredPosition.Value);
             if (distance < _targetReachedEpsilon)
             {

@@ -1,10 +1,8 @@
-using Core.Characters.Interfaces;
-
 namespace Core.Characters
 {
-    public class StaminaResource : BaseCharacterResource
+    public class StaminaResource : BaseResource
     {
-        public StaminaResource(ICharacter character, float maxStamina) : base(character, maxStamina)
+        public StaminaResource(float maxStamina) : base(maxStamina)
         {
         }
     }

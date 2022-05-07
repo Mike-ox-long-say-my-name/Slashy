@@ -2,7 +2,6 @@ using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Player.Interfaces;
 using Core.Utilities;
-using System;
 using UnityEngine;
 
 namespace Characters.Player
@@ -14,11 +13,11 @@ namespace Characters.Player
         private readonly StaminaResource _staminaResource;
 
         IPlayerMovement IPlayerCharacter.PlayerMovement => (IPlayerMovement)VelocityMovement;
-        public ICharacterResource Stamina => _staminaResource;
+        public IResource Stamina => _staminaResource;
 
         private readonly TimedTrigger _staminaRecoveryDelayed = new TimedTrigger();
 
-        public PlayerCharacter(IPlayerMovement movement, DamageStats damageStats, CharacterStats characterStats, PlayerStats playerStats)
+        public PlayerCharacter(CharacterStats characterStats, PlayerStats playerStats)
             : base(movement, damageStats, characterStats)
         {
             PlayerStats = playerStats;

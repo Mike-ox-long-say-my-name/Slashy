@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Characters.Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class MonoPlayerCharacter : MonoCharacter
+    public class PlayerMixinCharacter : MixinCharacter
     {
         [SerializeField] private MonoPlayerStats monoPlayerStats;
         [SerializeField] private MonoPlayerMovementConfig monoPlayerConfig;
@@ -17,7 +17,7 @@ namespace Characters.Player
             DamageStats damageState, CharacterStats characterStats)
         {
             var controller = GetComponent<CharacterController>();
-            var movement = new Movement(controller);
+            var movement = new BaseMovement(controller);
             var playerMovement = new PlayerMovement(movement, movementConfig, monoPlayerConfig.Config);
             return new PlayerCharacter(playerMovement, damageState, characterStats, monoPlayerStats.PlayerStats);
         }

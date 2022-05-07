@@ -4,11 +4,9 @@ using UnityEngine;
 
 namespace Core.Characters
 {
-    public abstract class BaseCharacterResource : ICharacterResource
+    public abstract class BaseResource : IResource
     {
-        public event Action<ICharacterResource> OnValueChanged;
-
-        public ICharacter Character { get; }
+        public event Action<IResource> OnValueChanged;
 
         private float _value;
 
@@ -30,14 +28,13 @@ namespace Core.Characters
             }
         }
 
-        protected BaseCharacterResource(ICharacter character, float maxValue, float startValue)
+        protected BaseResource(float maxValue, float startValue)
         {
-            Character = character;
             MaxValue = maxValue;
             Value = startValue;
         }
 
-        protected BaseCharacterResource(ICharacter character, float maxValue) : this(character, maxValue, maxValue)
+        protected BaseResource(float maxValue) : this(maxValue, maxValue)
         {
         }
 

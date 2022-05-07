@@ -1,12 +1,33 @@
-﻿namespace Core.Characters
-{
-    public class AutoCharacter : Character
-    {
-        public IAutoMovement AutoMovement => VelocityMovement as IAutoMovement;
+﻿using System;
+using Core.Characters.Interfaces;
+using Core.Modules;
+using UnityEngine;
 
-        public AutoCharacter(IAutoMovement movement, DamageStats damageStats, CharacterStats characterStats)
-            : base(movement, damageStats, characterStats)
+namespace Core.Characters
+{
+    [RequireComponent(typeof(MixinMovementBase))]
+    public class MixinPushable : MonoBehaviour
+    {
+        private IPushable _pushable;
+
+        public IPushable Pushable
         {
+            get
+            {
+                if (_pushable != null)
+                {
+                    return _pushable;
+                }
+
+                var movement = GetComponent<MixinMovementBase>().BaseMovement;
+                _pushable = new Pushable(movement);
+                return _pushable;
+            }
+        }
+
+        private void Update()
+        {
+            Pushable.Tick(Time.deltaTime);
         }
     }
 }

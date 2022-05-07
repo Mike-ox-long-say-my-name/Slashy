@@ -1,10 +1,10 @@
 ﻿using System;
-using Core.Characters.Interfaces;
+using Core.Modules;
 using UnityEngine;
 
 namespace Core.Characters
 {
-    public interface IAutoMovement : IVelocityMovement
+    public interface IAutoMovement : IUpdateable
     {
         void LockRotationOn(Transform lockOn);
         void UnlockRotation();

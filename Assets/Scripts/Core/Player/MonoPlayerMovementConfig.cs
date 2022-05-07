@@ -1,5 +1,4 @@
-﻿using Core.Characters.Mono;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Core.Player

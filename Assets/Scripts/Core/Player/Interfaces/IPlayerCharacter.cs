@@ -7,7 +7,7 @@ namespace Core.Player.Interfaces
     {
         IPlayerMovement PlayerMovement { get; }
 
-        ICharacterResource Stamina { get; }
+        IResource Stamina { get; }
 
         void SpendStamina(float amount);
     }

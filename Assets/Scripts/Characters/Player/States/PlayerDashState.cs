@@ -42,7 +42,7 @@ namespace Characters.Player.States
 
         private void Dash(Vector3 direction)
         {
-            IEnumerator DashCoroutine(IMovement movement, float dashTime, Vector3 targetMove)
+            IEnumerator DashCoroutine(IBaseMovement movement, float dashTime, Vector3 targetMove)
             {
                 var passedTime = 0f;
                 while (passedTime < dashTime)

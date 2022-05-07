@@ -1,44 +1,34 @@
 ﻿using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
-using Core.Utilities;
 using System;
 
 namespace Core.Characters
 {
     public class Character : ICharacter
     {
-        public event Action<ICharacter, HitInfo> OnHitReceivedExclusive;
-        public event Action<IHitReceiver, HitInfo> OnHitReceived;
-        public event Action<ICharacter, HitInfo> OnStaggered;
-        public event Action<ICharacter, HitInfo> OnDeath;
+        public event Action<ICharacter, HitInfo> HitReceived;
+        public event Action<ICharacter, HitInfo> Staggered;
+        public event Action<ICharacter, HitInfo> Dead;
 
-        public IVelocityMovement VelocityMovement { get; }
+        public bool FreezeHealth { get; set; } = false;
+        public bool FreezeBalance { get; set; } = false;
+        public bool CanDie { get; set; } = true;
 
-        public ICharacterResource Health => _health;
-        public ICharacterResource Balance => _balance;
-
-        public DamageStats DamageStats { get; set; }
-        public CharacterStats CharacterStats { get; set; }
-
-        private readonly HealthResource _health;
-        private readonly BalanceResource _balance;
+        public IResource Health { get; }
+        public IResource Balance { get; }
 
         public bool IsDead { get; private set; }
 
-        public Character(IVelocityMovement movement, DamageStats damageStats, CharacterStats characterStats)
+        public Character(IResource health, IResource balance, IHitReceiver hitReceiver)
         {
-            Guard.NotNull(movement);
+            Health = health;
+            Balance = balance;
 
-            VelocityMovement = movement;
-            DamageStats = damageStats;
-            CharacterStats = characterStats;
-
-            _health = new HealthResource(this, CharacterStats.MaxHealth);
-            _balance = new BalanceResource(this, CharacterStats.MaxBalance);
+            hitReceiver.HitReceived += ProcessHit;
         }
 
-        public virtual void ReceiveHit(HitInfo info)
+        private void ProcessHit(IHitReceiver receiver, HitInfo info)
         {
             if (IsDead)
             {
@@ -47,78 +37,43 @@ namespace Core.Characters
 
             var dead = TakeDamage(info);
             var staggered = TakeBalanceDamage(info);
-
-            if (staggered && !dead)
-            {
-                var source = info.Source;
-
-                var pushTime = info.PushTime;
-                var pushForce = info.PushForce;
-
-                if (source.Character != null && pushTime > 0 && pushForce > 0)
-                {
-                    var sourcePosition = source.Character.VelocityMovement.BaseMovement.Transform.position;
-                    var direction = (VelocityMovement.BaseMovement.Transform.position - sourcePosition);
-                    direction.y = 0;
-                    direction.Normalize();
-                    VelocityMovement.Pushable.Push(direction, pushForce, pushTime);
-                }
-
-                _balance.Recover(CharacterStats.MaxBalance);
-            }
-
-            OnHitReceived?.Invoke(this, info);
-
+            
             if (dead)
             {
                 Die(info);
             }
             else if (staggered)
             {
-                OnStaggered?.Invoke(this, info);
+                Staggered?.Invoke(this, info);
+                Balance.Recover(Balance.MaxValue);
             }
             else
             {
-                OnHitReceivedExclusive?.Invoke(this, info);
+                HitReceived?.Invoke(this, info);
             }
         }
 
-        protected virtual bool TakeBalanceDamage(HitInfo info)
+        private bool TakeBalanceDamage(HitInfo info)
         {
-            if (CharacterStats.FreezeBalance)
+            if (FreezeBalance)
             {
                 return false;
             }
 
-            _balance.Spend(info.BalanceDamage);
-            return _balance.IsDepleted;
+            Balance.Spend(info.BalanceDamage);
+            return Balance.IsDepleted();
         }
 
-        protected virtual bool TakeDamage(HitInfo info)
+        private bool TakeDamage(HitInfo info)
         {
-            if (CharacterStats.FreezeHealth)
+            if (FreezeHealth)
             {
                 return false;
             }
 
-            _health.Spend(info.Damage);
+            Health.Spend(info.Damage);
 
-            return CharacterStats.CanDie && _health.IsDepleted;
-        }
-
-        public virtual void Heal(float amount)
-        {
-            if (CharacterStats.FreezeHealth)
-            {
-                return;
-            }
-
-            _health.Recover(amount);
-        }
-
-        public virtual void Tick(float deltaTime)
-        {
-            VelocityMovement.Tick(deltaTime);
+            return CanDie && Health.IsDepleted();
         }
 
         protected virtual void Die(HitInfo info)
@@ -127,8 +82,9 @@ namespace Core.Characters
             {
                 return;
             }
+
             IsDead = true;
-            OnDeath?.Invoke(this, info);
+            Dead?.Invoke(this, info);
         }
     }
 }

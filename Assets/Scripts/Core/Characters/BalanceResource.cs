@@ -1,14 +1,8 @@
-﻿using Core.Characters.Interfaces;
-
-namespace Core.Characters
+﻿namespace Core.Characters
 {
-    public class BalanceResource : BaseCharacterResource
+    public class BalanceResource : BaseResource
     {
-        public BalanceResource(ICharacter character, float maxValue, float startValue) : base(character, maxValue, startValue)
-        {
-        }
-
-        public BalanceResource(ICharacter character, float maxValue) : base(character, maxValue)
+        public BalanceResource(float maxValue) : base(maxValue)
         {
         }
     }

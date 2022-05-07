@@ -2,10 +2,7 @@ using Core.Attacking.Interfaces;
 using Core.Characters.Mono;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Characters;
-using Core.Characters.Interfaces;
 using UnityEngine;
-using UnityEngine.Video;
 
 namespace Core.Attacking.Mono
 {
@@ -57,22 +54,10 @@ namespace Core.Attacking.Mono
 
         protected override IHitbox CreateHitbox(Collider[] colliders)
         {
-            DamageStats damageStats;
-            ICharacter source;
+            var damageStats = GetComponentInParent<MixinDamageSource>().DamageStats;
+            var mixinCharacter = GetComponentInParent<MixinCharacter>();
+            var source = mixinCharacter != null ? mixinCharacter.Character : null;
 
-            var monoCharacter = GetComponentInParent<MonoCharacter>();
-            if (monoCharacter == null)
-            {
-                var container = GetComponentInParent<IDamageStatsContainer>();
-                damageStats = container.DamageStats;
-                source = null;
-            }
-            else
-            {
-                source = monoCharacter.Character;
-                damageStats = source.DamageStats;
-            }
-            
             return CreateAttackbox(colliders, new HitInfo
             {
                 Multipliers = monoDamageMultipliers.DamageMultipliers,

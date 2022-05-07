@@ -52,7 +52,7 @@ namespace Characters.Player.States
                     return _player;
                 }
 
-                _player = GetComponent<MonoPlayerCharacter>().Player;
+                _player = GetComponent<PlayerMixinCharacter>().Player;
                 return _player;
             }
         }
@@ -134,8 +134,8 @@ namespace Characters.Player.States
 
             var character = Player;
             character.OnHitReceived += (_, info) => CurrentState.OnHitReceived(info);
-            character.OnStaggered += (_, info) => CurrentState.OnStaggered(info);
-            character.OnDeath += (_, info) => CurrentState.OnDeath(info);
+            character.Staggered += (_, info) => CurrentState.OnStaggered(info);
+            character.Dead += (_, info) => CurrentState.OnDeath(info);
             Character = character;
         }
 

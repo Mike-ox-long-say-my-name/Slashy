@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Characters.Enemies.Examples
 {
-    public class TestEnemy : MonoCharacter
+    public class TestEnemy : MixinCharacter
     {
         [SerializeField] private MonoAttackHandler monoAttackHandler;
 

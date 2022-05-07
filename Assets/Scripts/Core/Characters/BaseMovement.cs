@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Core.Characters
 {
-    public class Movement : IMovement
+    public class BaseMovement : IBaseMovement
     {
         private readonly CharacterController _controller;
         public Transform Transform { get; }
 
-        public Movement(CharacterController controller)
+        public BaseMovement(CharacterController controller)
         {
             Guard.NotNull(controller);
 

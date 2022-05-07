@@ -14,7 +14,7 @@ namespace Characters.Enemies.States
         
         public ICharacter Character { get; private set; }
         public IVelocityMovement VelocityMovement => Character.VelocityMovement;
-        public IMovement Movement => VelocityMovement.BaseMovement;
+        public IBaseMovement BaseMovement => VelocityMovement.BaseMovement;
         public IPushable Pushable => VelocityMovement.Pushable;
         public IHurtbox Hurtbox { get; private set; }
 
@@ -29,10 +29,10 @@ namespace Characters.Enemies.States
         {
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
 
-            var character = Character = GetComponent<MonoCharacter>().Character;
-            character.OnHitReceivedExclusive += (_, info) => CurrentState.OnHitReceived(info);
-            character.OnStaggered += (_, info) => CurrentState.OnStaggered(info);
-            character.OnDeath += (_, info) => CurrentState.OnDeath(info);
+            var character = Character = GetComponent<MixinCharacter>().Character;
+            character.HitReceived += (_, info) => CurrentState.OnHitReceived(info);
+            character.Staggered += (_, info) => CurrentState.OnStaggered(info);
+            character.Dead += (_, info) => CurrentState.OnDeath(info);
 
             CurrentState = StartState();
             CurrentState.EnterState();

@@ -1,5 +1,4 @@
 using Core.Attacking;
-using UnityEngine;
 
 namespace Characters.Player.States
 {

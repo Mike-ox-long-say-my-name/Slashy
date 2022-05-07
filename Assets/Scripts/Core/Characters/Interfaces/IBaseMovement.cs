@@ -2,7 +2,7 @@
 
 namespace Core.Characters.Interfaces
 {
-    public interface IMovement
+    public interface IBaseMovement
     {
         bool IsGrounded { get; }
 

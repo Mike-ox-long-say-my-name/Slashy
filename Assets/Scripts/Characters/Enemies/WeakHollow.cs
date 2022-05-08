@@ -43,7 +43,7 @@ namespace Characters.Enemies
 
         public override void UpdateState()
         {
-            _timer.Step(Time.deltaTime);
+            _timer.Tick(Time.deltaTime);
         }
 
         public override void ExitState()
@@ -108,7 +108,7 @@ namespace Characters.Enemies
             }
 
             Context.VelocityMovement.Move(playerDirection * 2);
-            _timer.Step(Time.deltaTime);
+            _timer.Tick(Time.deltaTime);
         }
 
         public override void ExitState()
@@ -129,7 +129,7 @@ namespace Characters.Enemies
 
         public override void UpdateState()
         {
-            _timer.Step(Time.deltaTime);
+            _timer.Tick(Time.deltaTime);
         }
     }
 
@@ -195,7 +195,7 @@ namespace Characters.Enemies
             
             Context.AutoMovement.Move(-playerDirection);
 
-            _timer.Step(Time.deltaTime);
+            _timer.Tick(Time.deltaTime);
         }
 
         public override void ExitState()

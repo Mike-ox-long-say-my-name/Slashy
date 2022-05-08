@@ -177,7 +177,7 @@ namespace Characters.Enemies
                 SwitchState<ExplodingHollowExplosion>();
             }
 
-            _dotTimer.Step(Time.deltaTime);
+            _dotTimer.Tick(Time.deltaTime);
         }
 
         public override void OnHitReceived(HitInfo info)

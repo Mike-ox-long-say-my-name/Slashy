@@ -10,6 +10,7 @@ namespace Core.Characters
 
         private float _value;
 
+        public bool Frozen { get; set; } = false;
         public float MaxValue { get; }
 
         public float Value
@@ -17,6 +18,11 @@ namespace Core.Characters
             get => _value;
             set
             {
+                if (Frozen)
+                {
+                    return;
+                }
+
                 var newValue = Mathf.Clamp(value, 0, MaxValue);
                 if (Mathf.Approximately(newValue, _value))
                 {
@@ -59,7 +65,5 @@ namespace Core.Characters
 
             Value += amount;
         }
-
-        public bool IsDepleted => Mathf.Approximately(Value, 0);
     }
 }

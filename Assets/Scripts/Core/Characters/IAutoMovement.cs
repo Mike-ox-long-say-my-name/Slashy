@@ -20,14 +20,4 @@ namespace Core.Characters
 
         event Action TargetReached;
     }
-
-    public static class AutoMovementExtensions
-    {
-        public static void ResetState(this IAutoMovement movement)
-        {
-            movement.ResetSpeedMultiplier();
-            movement.ResetTarget();
-            movement.ResetTargetReachedEpsilon();
-        }
-    }
 }

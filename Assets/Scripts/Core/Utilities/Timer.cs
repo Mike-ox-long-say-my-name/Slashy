@@ -27,7 +27,7 @@ namespace Core.Utilities
             TimeRemained = time;
         }
 
-        public void Step(float deltaTime)
+        public void Tick(float deltaTime)
         {
             if (!IsRunning)
             {

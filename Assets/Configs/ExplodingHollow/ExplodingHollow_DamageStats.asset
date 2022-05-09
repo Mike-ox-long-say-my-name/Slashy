@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ExplodingHollow_DamageStats
   m_EditorClassIdentifier: 
   <DamageStats>k__BackingField:
-    <BaseDamage>k__BackingField: 8
-    <BaseBalanceDamage>k__BackingField: 4
+    <BaseDamage>k__BackingField: 10
+    <BaseBalanceDamage>k__BackingField: 5
     <BaseStaggerTime>k__BackingField: 0.2
     <BasePushTime>k__BackingField: 0.2
     <BasePushForce>k__BackingField: 0.3

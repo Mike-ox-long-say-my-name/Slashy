@@ -11,6 +11,6 @@ namespace Core.Characters.Interfaces
         void Recover(float amount);
         void Spend(float amount);
 
-        event Action<IResource> OnValueChanged;
+        event Action<IResource> ValueChanged;
     }
 }

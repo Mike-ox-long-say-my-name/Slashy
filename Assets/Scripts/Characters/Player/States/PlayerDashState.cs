@@ -1,7 +1,6 @@
 using Core.Attacking;
 using Core.Characters.Interfaces;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -15,7 +14,7 @@ namespace Characters.Player.States
             Context.VelocityMovement.Stop();
             Context.AnimatorComponent.SetBool("is-dashing", true);
 
-            Context.Character.SpendStamina(Context.PlayerConfig.DashStaminaCost);
+            Context.Player.Stamina.Spend(Context.PlayerConfig.DashStaminaCost);
             var input = Context.Input.MoveInput;
             Context.VelocityMovement.BaseMovement.Rotate(input.x);
             var direction = new Vector3(input.x, 0, input.y);

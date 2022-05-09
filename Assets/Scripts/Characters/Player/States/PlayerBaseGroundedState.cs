@@ -8,5 +8,10 @@ namespace Characters.Player.States
         {
             SwitchState<PlayerGroundStaggerState>();
         }
+
+        public override void OnStaggerEnded()
+        {
+            SwitchState<PlayerGroundedState>();
+        }
     }
 }

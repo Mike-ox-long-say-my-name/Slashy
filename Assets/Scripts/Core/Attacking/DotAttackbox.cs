@@ -1,11 +1,13 @@
+using System;
 using Core.Attacking.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Core.Attacking
 {
-    public sealed class DotAttackbox : Attackbox, IDotAttackbox
+    public sealed class DotAttackbox : BaseHitbox, IDotAttackbox
     {
         private float _hitInterval = 1f;
 
@@ -30,6 +32,8 @@ namespace Core.Attacking
 
         private static readonly Dictionary<IHurtbox, HashSet<int>> GlobalHits = new Dictionary<IHurtbox, HashSet<int>>();
 
+        public List<IHurtbox> Ignored { get; set; } = new List<IHurtbox>();
+
         public DotAttackbox(Transform transform, int damageGroup, params Collider[] colliders) : base(transform, colliders)
         {
             if (damageGroup < 0)
@@ -49,10 +53,13 @@ namespace Core.Attacking
             }
         }
 
-        public override void ProcessHit(IHurtbox hit)
+        public Team Team { get; set; }
+        public event Action<IHurtbox> Hit;
+
+        public void ProcessHit(IHurtbox hit)
         {
             EnsureGlobalHitExist(hit);
-            if (!ShouldDispatchGlobal(hit))
+            if (!ShouldDispatch(hit))
             {
                 return;
             }
@@ -60,7 +67,7 @@ namespace Core.Attacking
             _hitTimes.Add(hit, HitInterval);
             GlobalHits[hit].Add(DamageGroup);
 
-            base.ProcessHit(hit);
+            Hit?.Invoke(hit);
         }
 
         private void UpdateTimes(float deltaTime)
@@ -72,11 +79,11 @@ namespace Core.Attacking
             }
         }
 
-        private bool ShouldDispatchGlobal(IHurtbox hit)
+        private bool ShouldDispatch(IHurtbox hit)
         {
             var hasSameGroupHit = GlobalHits.TryGetValue(hit, out var groups) && groups.Contains(DamageGroup);
             // TODO: подумать
-            return /*!hasSameGroupHit &&*/ ShouldDispatch(hit);
+            return /*!hasSameGroupHit &&*/ IsEnabled && !Ignored.Contains(hit) && !_hitTimes.ContainsKey(hit);
         }
 
         private void ClearDeadHits()
@@ -90,14 +97,12 @@ namespace Core.Attacking
             {
                 _hitTimes.Remove(removeHit);
                 GlobalHits[removeHit].Remove(DamageGroup);
-                Hits.Remove(removeHit);
             }
         }
 
-        public override void ClearHits()
+        public void ClearHits()
         {
             _hitTimes.Clear();
-            base.ClearHits();
         }
 
         public void Tick(float deltaTime)

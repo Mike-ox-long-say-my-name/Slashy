@@ -1,5 +1,6 @@
 using System;
 using Core.Attacking.Interfaces;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Core.Attacking
@@ -10,11 +11,12 @@ namespace Core.Attacking
         {
         }
 
-        public event Action<HitInfo> OnHit;
+        public Team Team { get; set; }
+        public event Action<HitInfo> Hit;
 
         public void ProcessHit(IAttackbox source, HitInfo hitInfo)
         {
-            OnHit?.Invoke(hitInfo);
+            Hit?.Invoke(hitInfo);
         }
     }
 }

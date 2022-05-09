@@ -1,43 +1,80 @@
-﻿using Core.Attacking.Interfaces;
+﻿using System.Collections.Generic;
+using Core.Attacking.Interfaces;
 using System.Linq;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
 {
-    public class MonoDotAttackbox : MonoAttackbox
+    [RequireComponent(typeof(MixinTriggerEventDispatcher))]
+    [RequireComponent(typeof(MixinColliderStorage))]
+    [RequireComponent(typeof(MixinHitInfoContainer))]
+    public class MonoDotAttackbox : MonoBehaviour
     {
         [SerializeField, Range(0.01f, 5)] private float hitInterval = 1f;
         [SerializeField, Min(0)] private int damageGroup;
+        [SerializeField] private List<MonoHurtbox> ignored = new List<MonoHurtbox>();
 
-        protected override IAttackbox CreateAttackbox(Collider[] colliders, HitInfo hitInfo)
+        private IDotAttackbox CreateAttackbox()
         {
-            var attackbox = new DotAttackbox(transform, damageGroup, colliders)
+            var storage = GetComponent<MixinColliderStorage>();
+
+            var attackbox = new DotAttackbox(transform, damageGroup, storage.GetColliders().ToArray())
             {
                 HitInterval = hitInterval,
-                HitInfo = hitInfo,
-                Ignored = Ignored.Select(hurtbox => hurtbox.Hurtbox).ToList()
+                Ignored = ignored.Select(mono => mono.Hurtbox).ToList()
             };
-
+            attackbox.Hit += hit => hit.ProcessHit(attackbox, GetHitInfo());
             return attackbox;
         }
 
-        public new IDotAttackbox Attackbox => Hitbox as IDotAttackbox;
-
-        private void OnTriggerStay(Collider other)
+        private void Awake()
         {
-            ProcessTrigger(other);
+            var dispatcher = GetComponent<MixinTriggerEventDispatcher>();
+            SubscribeToDispatcher(dispatcher);
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void SubscribeToDispatcher(MixinTriggerEventDispatcher dispatcher)
         {
-            ProcessTrigger(other);
+            dispatcher.Enter.AddListener(ProcessHit);
+            dispatcher.Stay.AddListener(ProcessHit);
         }
 
-        private void ProcessTrigger(Component other)
+        private void ProcessHit(Collider trigger)
         {
-            if (other.TryGetComponent<MonoHurtbox>(out var hit))
+            var hurtbox = trigger.TryGetComponent<MonoHurtbox>(out var monoHurtbox) ? monoHurtbox.Hurtbox : null;
+            if (hurtbox == null)
             {
-                Attackbox.ProcessHit(hit.Hurtbox);
+                return;
+            }
+
+            Attackbox.ProcessHit(hurtbox);
+        }
+
+        private MixinHitInfoContainer _container;
+
+        private HitInfo GetHitInfo()
+        {
+            if (_container == null)
+            {
+                _container = GetComponent<MixinHitInfoContainer>();
+            }
+
+            return _container.GetHitInfo();
+        }
+
+        private IDotAttackbox _attackbox;
+
+        public IDotAttackbox Attackbox
+        {
+            get
+            {
+                if (_attackbox != null)
+                {
+                    return _attackbox;
+                }
+
+                _attackbox = CreateAttackbox();
+                return _attackbox;
             }
         }
 

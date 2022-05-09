@@ -4,9 +4,16 @@ using Core.Utilities;
 
 namespace Core.Attacking
 {
-    public class AnimationAttackExecutor : AttackExecutor, IAttackAnimationEventReceiver
+    public class AnimationAttackExecutor : AttackExecutor, IAnimationAttackExecutorContext
     {
         private readonly Trigger _attackEnded = new Trigger();
+
+        public IAttackEventHandler EventHandler { get; set; }
+
+        public void UseDefaultHandler()
+        {
+            EventHandler = new DefaultAttackEventHandler();
+        }
 
         public AnimationAttackExecutor(ICoroutineHost host, IAttackbox attackbox)
             : base(host, attackbox)
@@ -18,13 +25,9 @@ namespace Core.Attacking
             _attackEnded.Reset();
             while (!_attackEnded.CheckAndReset())
             {
-                OnAttackTick();
+                EventHandler?.HandleTick(this);
                 yield return null;
             }
-        }
-
-        protected virtual void OnAttackTick()
-        {
         }
 
         protected override void OnAttackEnded(bool interrupted)
@@ -33,48 +36,27 @@ namespace Core.Attacking
             base.OnAttackEnded(interrupted);
         }
 
-        protected void EndAttack()
+        public void EndAttack()
         {
             _attackEnded.Set();
         }
 
-        public virtual void OnEnableHitbox()
+        IAttackbox IAnimationAttackExecutorContext.Attackbox => Attackbox;
+
+        public void OnEnableHitbox()
         {
-            Attackbox.Enable();
+            EventHandler?.HandleEnableHitbox(this);
         }
 
-        public virtual void OnDisableHitbox()
+        public void OnDisableHitbox()
         {
-            Attackbox.Disable();
+            EventHandler?.HandleDisableHitbox(this);
         }
 
-        public virtual void OnAnimationEnded()
+        public void OnAnimationEnded()
         {
+            EventHandler?.HandleAnimationEnd(this);
             EndAttack();
-        }
-
-        public void ReceiveEnableHitbox()
-        {
-            if (IsAttacking)
-            {
-                OnEnableHitbox();
-            }
-        }
-
-        public void ReceiveDisableHitbox()
-        {
-            if (IsAttacking)
-            {
-                OnDisableHitbox();
-            }
-        }
-
-        public void ReceiveAnimationEnded()
-        {
-            if (IsAttacking)
-            {
-                OnAnimationEnded();
-            }
         }
     }
 }

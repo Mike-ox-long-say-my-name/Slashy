@@ -1,4 +1,6 @@
 using Core.Attacking.Interfaces;
+using Core.Characters;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
@@ -7,6 +9,8 @@ namespace Core.Attacking.Mono
     [RequireComponent(typeof(Rigidbody))]
     public class MonoHurtbox : MonoBaseHitbox
     {
+        private IHitReceiver _attachedTo;
+
         private void Awake()
         {
             var rigidBody = GetComponent<Rigidbody>();
@@ -21,19 +25,41 @@ namespace Core.Attacking.Mono
             rigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         }
 
-        public IHurtbox Hurtbox => Hitbox as IHurtbox;
+        public override IHitbox Hitbox => Hurtbox;
 
-        protected override IHitbox CreateHitbox(Collider[] colliders)
+        private IHurtbox _hurtbox;
+
+        public IHurtbox Hurtbox
         {
-            var receiver = GetComponentInParent<IHitReceiver>();
-            var hurtbox = CreateHurtbox(colliders);
-            hurtbox.OnHit += receiver.ReceiveHit;
-            return hurtbox;
+            get
+            {
+                if (_hurtbox != null)
+                {
+                    return _hurtbox;
+                }
+
+                _hurtbox = CreateHurtbox();
+                return _hurtbox;
+            }
         }
 
-        protected virtual IHurtbox CreateHurtbox(Collider[] colliders)
+        private Team GetTeam()
         {
-            return new Hurtbox(transform, colliders);
+            var mixinTeam = GetComponentInParent<MixinTeam>();
+            return mixinTeam != null ? mixinTeam.Team : Team.None;
+        }
+
+        private IHurtbox CreateHurtbox()
+        {
+            _attachedTo = GetComponentInParent<MixinHittable>().HitReceiver;
+
+            var hurtbox = new Hurtbox(transform, colliders)
+            {
+                Team = GetTeam()
+            };
+            hurtbox.Hit += _attachedTo.ReceiveHit;
+
+            return hurtbox;
         }
     }
 }

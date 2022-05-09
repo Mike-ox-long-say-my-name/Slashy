@@ -1,4 +1,5 @@
 ﻿using Core.Attacking;
+using Core.Characters.Interfaces;
 
 namespace Characters.Player.States
 {
@@ -12,7 +13,7 @@ namespace Characters.Player.States
             Context.VelocityMovement.Stop();
 
             Context.AnimatorComponent.SetTrigger("attack");
-            Context.Character.SpendStamina(Context.PlayerConfig.LightAttackFirstStaminaCost);
+            Context.Player.Stamina.Spend(Context.PlayerConfig.LightAttackFirstStaminaCost);
 
             _currentAttack = 1;
             _shouldContinueAttack = false;
@@ -25,7 +26,7 @@ namespace Characters.Player.States
             if (result.WasCompleted && _shouldContinueAttack)
             {
                 _currentAttack = 2;
-                Context.Character.SpendStamina(Context.PlayerConfig.LightAttackSecondStaminaCost);
+                Context.Player.Stamina.Spend(Context.PlayerConfig.LightAttackSecondStaminaCost);
                 Context.SecondLightAttack.StartAttack(AttackEndedSecond);
             }
             else
@@ -36,7 +37,7 @@ namespace Characters.Player.States
 
         public override void UpdateState()
         {
-            if (!_shouldContinueAttack && Context.Character.HasStamina() && Context.Input.IsLightAttackPressed)
+            if (!_shouldContinueAttack && Context.Player.HasStamina() && Context.Input.IsLightAttackPressed)
             {
                 Context.AnimatorComponent.SetTrigger("attack");
                 _shouldContinueAttack = true;

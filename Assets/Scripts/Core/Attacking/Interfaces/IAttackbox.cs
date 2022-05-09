@@ -1,10 +1,13 @@
 using System;
+using Core.Characters.Interfaces;
 
 namespace Core.Attacking.Interfaces
 {
     public interface IAttackbox : IHitbox
     {
-        event Action<IAttackbox, IHurtbox> OnHit; 
+        Team Team { get; }
+
+        event Action<IHurtbox> Hit;
 
         void ProcessHit(IHurtbox hit);
     }

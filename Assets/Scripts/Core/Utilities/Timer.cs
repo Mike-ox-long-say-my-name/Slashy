@@ -15,7 +15,7 @@ namespace Core.Utilities
 
         public void Start(float time, bool repeating = false)
         {
-            if (time < 0)
+            if (time <= 0)
             {
                 Invoke();
                 return;

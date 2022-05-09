@@ -1,47 +1,33 @@
-using Core.Attacking.Interfaces;
-using Core.Characters.Mono;
 using System.Collections.Generic;
+using Core.Attacking.Interfaces;
 using System.Linq;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
 {
-    public class MonoAttackbox : MonoBaseHitbox
+    [RequireComponent(typeof(MixinTriggerEventDispatcher))]
+    [RequireComponent(typeof(MixinColliderStorage))]
+    [RequireComponent(typeof(MixinHitInfoContainer))]
+    public class MonoAttackbox : MonoBehaviour
     {
         [SerializeField] private bool disableOnInit = true;
-        [SerializeField] private MonoHurtbox[] ignored;
+        [SerializeField] private List<MonoHurtbox> ignored = new List<MonoHurtbox>();
 
-        [SerializeField] private bool isEnvironmental;
-        [SerializeField] private MonoDamageMultipliers monoDamageMultipliers;
-
-        protected IEnumerable<MonoHurtbox> Ignored => ignored;
-
-        private void OnTriggerEnter(Collider other)
+        private Team GetTeam()
         {
-            ProcessTrigger(other);
+            var mixinTeam = GetComponentInParent<MixinTeam>();
+            return mixinTeam != null ? mixinTeam.Team : Team.None;
         }
 
-        private void OnTriggerStay(Collider other)
+        private IAttackbox CreateAttackbox()
         {
-            ProcessTrigger(other);
-        }
+            var storage = GetComponent<MixinColliderStorage>();
 
-        private void ProcessTrigger(Component other)
-        {
-            if (other.TryGetComponent<MonoHurtbox>(out var hit))
+            var attackbox = new Attackbox(transform, storage.GetColliders().ToArray())
             {
-                Attackbox.ProcessHit(hit.Hurtbox);
-            }
-        }
-
-        public IAttackbox Attackbox => Hitbox as IAttackbox;
-
-        protected virtual IAttackbox CreateAttackbox(Collider[] colliders, HitInfo hitInfo)
-        {
-            var attackbox = new Attackbox(transform, colliders)
-            {
-                Ignored = ignored != null ? ignored.Select(hurtbox => hurtbox.Hurtbox).ToList() : new List<IHurtbox>(),
-                HitInfo = hitInfo
+                Ignored = ignored.Select(mono => mono.Hurtbox).ToList(),
+                Team = GetTeam()
             };
 
             if (disableOnInit)
@@ -52,22 +38,55 @@ namespace Core.Attacking.Mono
             return attackbox;
         }
 
-        protected override IHitbox CreateHitbox(Collider[] colliders)
+        private void Awake()
         {
-            var damageStats = GetComponentInParent<MixinDamageSource>().DamageStats;
-            var mixinCharacter = GetComponentInParent<MixinCharacter>();
-            var source = mixinCharacter != null ? mixinCharacter.Character : null;
+            var dispatcher = GetComponent<MixinTriggerEventDispatcher>();
+            SubscribeToDispatcher(dispatcher);
+        }
 
-            return CreateAttackbox(colliders, new HitInfo
+        private void SubscribeToDispatcher(MixinTriggerEventDispatcher dispatcher)
+        {
+            dispatcher.Enter.AddListener(ProcessHit);
+        }
+
+        private void ProcessHit(Collider trigger)
+        {
+            var hurtbox = trigger.TryGetComponent<MonoHurtbox>(out var monoHurtbox) ? monoHurtbox.Hurtbox : null;
+            if (hurtbox == null)
             {
-                Multipliers = monoDamageMultipliers.DamageMultipliers,
-                DamageStats = damageStats,
-                Source = new HitSource
+                return;
+            }
+
+            Attackbox.ProcessHit(hurtbox);
+        }
+
+        private MixinHitInfoContainer _container;
+
+        private HitInfo GetHitInfo()
+        {
+            if (_container == null)
+            {
+                _container = GetComponent<MixinHitInfoContainer>();
+            }
+
+            return _container.GetHitInfo();
+        }
+
+        private IAttackbox _attackbox;
+
+        public IAttackbox Attackbox
+        {
+            get
+            {
+                if (_attackbox != null)
                 {
-                    IsEnvironmental = isEnvironmental,
-                    Character = source
+                    return _attackbox;
                 }
-            });
+
+                _attackbox = CreateAttackbox();
+                _attackbox.Hit += hit => hit.ProcessHit(_attackbox, GetHitInfo());
+                return _attackbox;
+            }
         }
     }
 }

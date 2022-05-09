@@ -87,10 +87,12 @@ GameObject:
   - component: {fileID: 1885769690848288303}
   - component: {fileID: 1885769690848288302}
   - component: {fileID: 1885769690848288301}
-  - component: {fileID: 1885769690848288291}
   - component: {fileID: 1885769690848288300}
   - component: {fileID: 8684881552350295955}
   - component: {fileID: 4955350230420926831}
+  - component: {fileID: 6927038716274299432}
+  - component: {fileID: 3643802300908234508}
+  - component: {fileID: 981852412258651036}
   m_Layer: 0
   m_Name: chair
   m_TagString: Untagged
@@ -179,34 +181,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.13, y: 6, z: 0.2}
   m_Center: {x: -0.08, y: 2, z: 0}
---- !u!114 &1885769690848288291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1885769690848288296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b2fe11180b6c0f4e983e5e7fff2ae69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroyed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1885769690848288300}
-        m_TargetAssemblyTypeName: Core.Destructor, Core
-        m_MethodName: Destroy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 40
 --- !u!114 &1885769690848288300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7034024a1f8ed5842b168c1e651fbf48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyLaterTime: 0.5
 --- !u!210 &8684881552350295955
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -280,6 +255,58 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6927038716274299432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885769690848288296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3174af911ee605b4baf8ab23a84922f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxValue: 40
+--- !u!114 &3643802300908234508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885769690848288296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55739a39e7b1394d992fa1928f01043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &981852412258651036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885769690848288296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9668e66d5132c4b91fbcbc41f0eed8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1885769690848288300}
+        m_TargetAssemblyTypeName: Core.MixinDestroyable, Core
+        m_MethodName: Destroy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1885769689757017533
 PrefabInstance:
   m_ObjectHideFlags: 0

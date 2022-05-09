@@ -6,7 +6,7 @@ namespace Core.Characters
 {
     public abstract class BaseResource : IResource
     {
-        public event Action<IResource> OnValueChanged;
+        public event Action<IResource> ValueChanged;
 
         private float _value;
 
@@ -30,7 +30,7 @@ namespace Core.Characters
                 }
 
                 _value = newValue;
-                OnValueChanged?.Invoke(this);
+                ValueChanged?.Invoke(this);
             }
         }
 

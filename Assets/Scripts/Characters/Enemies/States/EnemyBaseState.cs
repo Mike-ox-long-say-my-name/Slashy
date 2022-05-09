@@ -39,6 +39,10 @@ namespace Characters.Enemies.States
         {
         }
 
+        public virtual void OnStaggerEnded()
+        {
+        }
+
         protected virtual void SwitchState<TState>() where TState : EnemyBaseState<TContext>, new()
         {
             if (!IsValidState)

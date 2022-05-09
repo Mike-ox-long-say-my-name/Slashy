@@ -1,5 +1,4 @@
 using Configs.Player;
-using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
@@ -7,11 +6,21 @@ using Core.Player.Interfaces;
 using Core.Utilities;
 using Effects;
 using System.Collections;
+using Core.Characters;
+using Core.Characters.Mono;
+using Core.Modules;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Characters.Player.States
 {
+    [RequireComponent(typeof(MixinVelocityMovement))]
+    [RequireComponent(typeof(MixinStamina))]
+    [RequireComponent(typeof(MixinCharacter))]
+    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(MixinJumpHandler))]
+    [RequireComponent(typeof(MixinHittable))]
     public class PlayerStateMachine : MonoBehaviour, IPlayer
     {
         public PlayerBaseState CurrentState { get; set; }
@@ -23,11 +32,11 @@ namespace Characters.Player.States
 
         [Space]
         [Header("Attacks")]
-        [SerializeField] private MonoAttackHandler lightAttackFirst;
-        [SerializeField] private MonoAttackHandler lightAttackSecond;
-        [SerializeField] private MonoAttackHandler lightAirboneAttack;
-        [SerializeField] private MonoAttackHandler firstStrongAttack;
-        [SerializeField] private MonoAttackHandler secondStrongAttack;
+        [SerializeField] private MonoAbstractAttackExecutor lightAttackFirst;
+        [SerializeField] private MonoAbstractAttackExecutor lightAttackSecond;
+        [SerializeField] private MonoAbstractAttackExecutor lightAirboneAttack;
+        [SerializeField] private MonoAbstractAttackExecutor firstStrongAttack;
+        [SerializeField] private MonoAbstractAttackExecutor secondStrongAttack;
 
         [Space]
         [SerializeField] private PlayerConfig playerConfig;
@@ -52,7 +61,9 @@ namespace Characters.Player.States
                     return _player;
                 }
 
-                _player = GetComponent<PlayerMixinCharacter>().Player;
+                var character = GetComponent<MixinCharacter>().Character;
+                var stamina = GetComponent<MixinStamina>().Stamina;
+                _player = new PlayerCharacter(character, stamina);
                 return _player;
             }
         }
@@ -62,19 +73,20 @@ namespace Characters.Player.States
         public readonly OwningLock CanAttack = new OwningLock();
         public readonly OwningLock CanHeal = new OwningLock();
 
-        public IPlayerMovement VelocityMovement => Character.PlayerMovement;
+        public Transform Transform => transform;
+        public IVelocityMovement VelocityMovement { get; private set; }
         public SpriteRenderer SpriteRenderer { get; private set; }
         public DashCloneEffectController DashEffectController { get; private set; }
-        public IPlayerCharacter Character { get; private set; }
         public Animator AnimatorComponent { get; private set; }
         public IHurtbox Hurtbox { get; private set; }
         public IAutoPlayerInput Input { get; private set; }
+        public IJumpHandler JumpHandler { get; private set; }
 
         public IAttackExecutor FirstLightAttack { get; private set; }
         public IAttackExecutor SecondLightAttack { get; private set; }
         public IAttackExecutor AirboneLightAttack { get; private set; }
-        public IAttackExecutor FirstStrongAttack => firstStrongAttack.Executor;
-        public IAttackExecutor SecondStrongAttack => secondStrongAttack.Executor;
+        public IAttackExecutor FirstStrongAttack => firstStrongAttack.GetExecutor();
+        public IAttackExecutor SecondStrongAttack => secondStrongAttack.GetExecutor();
 
         public PlayerConfig PlayerConfig => playerConfig;
 
@@ -83,17 +95,22 @@ namespace Characters.Player.States
 
         private float _cameraFollowVelocity;
 
-        public bool CanStartAttack => CanAttack && !IsAttacking && Character.HasStamina();
+        public bool CanStartAttack => CanAttack && !IsAttacking && Player.HasStamina();
         public bool AttackedAtThisAirTime { get; set; }
-        public HitInfo LastHitInfo { get; set; }
+        public IHitReceiver HitReceiver { get; private set; }
 
         private void Awake()
         {
             Input = GetComponent<IAutoPlayerInput>();
+            VelocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
 
             SpriteRenderer = GetComponent<SpriteRenderer>();
             AnimatorComponent = GetComponent<Animator>();
             DashEffectController = GetComponentInChildren<DashCloneEffectController>();
+            HitReceiver = GetComponent<MixinHittable>().HitReceiver;
+
+            Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
+            JumpHandler = GetComponent<MixinJumpHandler>().JumpHandler;
 
             if (lightAttackFirst == null)
             {
@@ -115,28 +132,21 @@ namespace Characters.Player.States
                 Debug.LogWarning("Dash Clone Effect Controller not found", this);
                 HasDashEffectController = false;
             }
-            if (SpriteRenderer == null)
-            {
-                Debug.LogWarning("Sprite Renderer not found", this);
-                HasSpriteRenderer = false;
-            }
 
             if (followingCamera == null)
             {
                 followingCamera = Camera.main;
             }
 
-            FirstLightAttack = lightAttackFirst.Executor;
-            SecondLightAttack = lightAttackSecond.Executor;
-            AirboneLightAttack = lightAirboneAttack.Executor;
+            FirstLightAttack = lightAttackFirst.GetExecutor();
+            SecondLightAttack = lightAttackSecond.GetExecutor();
+            AirboneLightAttack = lightAirboneAttack.GetExecutor();
 
-            Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
-
-            var character = Player;
-            character.OnHitReceived += (_, info) => CurrentState.OnHitReceived(info);
+            var character = Player.Character;
+            character.HitReceived += (_, info) => CurrentState.OnHitReceived(info);
             character.Staggered += (_, info) => CurrentState.OnStaggered(info);
             character.Dead += (_, info) => CurrentState.OnDeath(info);
-            Character = character;
+            character.RecoveredFromStagger += _ => CurrentState.OnStaggerEnded();
         }
 
         private IEnumerator Start()

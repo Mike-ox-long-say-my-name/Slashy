@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d44c31fcf5943418009219055bf813, type: 3}
   m_Name: Player_MovementConfig
   m_EditorClassIdentifier: 
-  <Config>k__BackingField:
-    <HorizontalSpeed>k__BackingField: 5
-    <VerticalSpeed>k__BackingField: 5
-    <MinVelocity>k__BackingField: -20
-    <MaxVelocity>k__BackingField: 20
-    <Gravity>k__BackingField: -9.81
-    <GroundedGravity>k__BackingField: -0.5
+  <HorizontalSpeed>k__BackingField: 5
+  <VerticalSpeed>k__BackingField: 5
+  <MinVelocity>k__BackingField: -20
+  <MaxVelocity>k__BackingField: 20
+  <Gravity>k__BackingField: -9.81
+  <GroundedGravity>k__BackingField: -0.5
+  <AirboneControlFactor>k__BackingField: 0.7

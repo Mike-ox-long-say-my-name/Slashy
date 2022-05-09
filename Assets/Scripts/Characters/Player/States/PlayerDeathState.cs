@@ -1,5 +1,6 @@
 using System.Collections;
 using Core;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Characters.Player.States

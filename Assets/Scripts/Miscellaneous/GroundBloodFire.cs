@@ -1,16 +1,15 @@
-﻿using Core.Attacking;
-using Core.Attacking.Interfaces;
+﻿using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using UnityEngine;
 
 namespace Miscellaneous
 {
-    [RequireComponent(typeof(DotAttackExecutor))]
+    [RequireComponent(typeof(MonoAbstractAttackExecutor))]
     public class GroundBloodFire : MonoBehaviour
     {
         public const float InfinityLifeTime = -1;
 
-        private IDotAttackExecutor _attackExecutor;
+        private IAttackExecutor _attackExecutor;
         [SerializeField] private ParticleSystem fireEffect;
         [SerializeField] private bool fireOnAwake;
 
@@ -32,12 +31,12 @@ namespace Miscellaneous
                 fireEffect.Play();
             }
 
-            _attackExecutor.EnableDot();
+            _attackExecutor.StartAttack(null);
         }
 
         private void Awake()
         {
-            _attackExecutor = GetComponent<MonoDotAttackHandler>().Executor;
+            _attackExecutor = GetComponent<MonoAbstractAttackExecutor>().GetExecutor();
             if (fireEffect != null)
             {
                 fireEffect.gameObject.SetActive(false);

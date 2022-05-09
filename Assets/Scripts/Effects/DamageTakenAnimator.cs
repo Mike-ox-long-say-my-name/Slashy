@@ -2,11 +2,12 @@ using Core.Attacking;
 using System.Collections;
 using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
+using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Effects
 {
-    public class DamageTakenAnimator : BaseCharacterHitListener
+    public class DamageTakenAnimator : AbstractHitListener
     {
         [Header("Animation")]
         [SerializeField, Min(0)] private float flashTime;
@@ -23,10 +24,14 @@ namespace Effects
         [SerializeField] private SpriteRenderer animationSpriteRenderer;
 
         private Coroutine _animationRoutine;
+
+        private ICharacter _character;
         
         private void OnEnable()
         {
             Subscribe();
+            var mixinCharacter = GetComponentInParent<MixinCharacter>();
+            _character = mixinCharacter != null ? mixinCharacter.Character : null;
         }
 
         private void OnDisable()
@@ -40,15 +45,10 @@ namespace Effects
             {
                 StopCoroutine(_animationRoutine);
             }
-
-            if (_animationRoutine != null)
-            {
-                StopCoroutine(_animationRoutine);
-            }
-            _animationRoutine = StartCoroutine(AnimationRoutine(entity));
+            _animationRoutine = StartCoroutine(AnimationRoutine());
         }
 
-        private IEnumerator AnimationRoutine(IHitReceiver entity)
+        private IEnumerator AnimationRoutine()
         {
             var passedTime = 0f;
 
@@ -60,9 +60,9 @@ namespace Effects
                 var fraction = passedTime / flashTime;
 
                 var color = animationSpriteRenderer.color;
-                if (changeColorBasedOnHealth && entity is ICharacter character)
+                if (changeColorBasedOnHealth && _character != null)
                 {
-                    var healthFraction = character.Health.Value / character.Health.MaxValue;
+                    var healthFraction = _character.Health.Value / _character.Health.MaxValue;
                     color = Color.Lerp(baseFlashColor, zeroHpColor, 1 - healthFraction);
                 }
 

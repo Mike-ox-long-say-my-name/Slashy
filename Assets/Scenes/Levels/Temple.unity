@@ -1412,6 +1412,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3223575521092780786, guid: 55ca5d56a4a4fea419acaa2c8b6f41f1, type: 3}
+      propertyPath: recoverySpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223575521092780786, guid: 55ca5d56a4a4fea419acaa2c8b6f41f1, type: 3}
+      propertyPath: emptyStaminaAdditionalDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5439189654482408908, guid: 55ca5d56a4a4fea419acaa2c8b6f41f1, type: 3}
+      propertyPath: autoResetVelocity
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55ca5d56a4a4fea419acaa2c8b6f41f1, type: 3}
 --- !u!1 &1828063328
@@ -2207,7 +2219,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9208427884475707357, guid: 89316979865199a4ab46fe97c5677562, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 89316979865199a4ab46fe97c5677562, type: 3}
 --- !u!4 &7971961009319538402 stripped
 Transform:

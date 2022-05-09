@@ -8,8 +8,8 @@ namespace Characters.Player.States
 
             Context.AnimatorComponent.SetTrigger("jump");
 
-            Context.Character.SpendStamina(Context.PlayerConfig.JumpStaminaCost);
-            Context.VelocityMovement.Jump();
+            Context.Player.Stamina.Spend(Context.PlayerConfig.JumpStaminaCost);
+            Context.JumpHandler.Jump();
         }
 
         public override void UpdateState()

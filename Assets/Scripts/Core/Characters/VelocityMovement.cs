@@ -15,6 +15,7 @@ namespace Core.Characters
         public float AirboneControlFactor { get; set; }
 
         public bool AutoResetVelocity { get; set; } = true;
+        public bool AutoRotateToDirection { get; set; } = true;
 
         private Vector3 _velocity;
 
@@ -24,12 +25,12 @@ namespace Core.Characters
             set => _velocity = value;
         }
 
-        private readonly IBaseMovement _baseMovement;
+        public IBaseMovement BaseMovement { get; }
 
         public VelocityMovement(IBaseMovement baseMovement)
         {
             Guard.NotNull(baseMovement);
-            _baseMovement = baseMovement;
+            BaseMovement = baseMovement;
         }
 
         private float _horizontalAirboneVelocity, _verticalAirboneVelocity;
@@ -44,7 +45,7 @@ namespace Core.Characters
 
         public virtual void Move(Vector3 direction)
         {
-            if (_baseMovement.IsGrounded)
+            if (BaseMovement.IsGrounded)
             {
                 ApplyGroundedVelocity(direction);
             }
@@ -62,7 +63,7 @@ namespace Core.Characters
 
         private void ApplyGravity(float deltaTime)
         {
-            if (_baseMovement.IsGrounded)
+            if (BaseMovement.IsGrounded)
             {
                 if (_velocity.y < 0)
                 {
@@ -81,8 +82,11 @@ namespace Core.Characters
             ApplyGravity(deltaTime);
             ClampVelocity();
 
-            _baseMovement.Move(_velocity * deltaTime);
-            _baseMovement.Rotate(_velocity.x);
+            BaseMovement.Move(_velocity * deltaTime);
+            if (AutoRotateToDirection)
+            {
+                BaseMovement.Rotate(_velocity.x);
+            }
 
             if (!AutoResetVelocity)
             {

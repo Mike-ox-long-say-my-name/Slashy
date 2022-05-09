@@ -1,11 +1,13 @@
 using Core.Characters.Interfaces;
+using UnityEngine;
 
 namespace Core.Attacking
 {
     public struct HitSource
     {
-        public bool IsEnvironmental;
-        public ICharacter Character;
+        public Transform Transform { get; set; }
+        public bool IsEnvironmental { get; set; }
+        public ICharacter Character { get; set; }
 
         public static HitSource Environmental => new HitSource
         {

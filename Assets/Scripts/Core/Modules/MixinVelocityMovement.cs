@@ -8,6 +8,7 @@ namespace Core.Modules
     [RequireComponent(typeof(MixinMovementBase))]
     public class MixinVelocityMovement : MonoBehaviour
     {
+        [SerializeField] private bool autoResetVelocity = true;
         [SerializeField] private MonoVelocityMovementConfig velocityMovementConfig;
 
         private IVelocityMovement _movement;
@@ -30,10 +31,16 @@ namespace Core.Modules
                     HorizontalSpeed = velocityMovementConfig.HorizontalSpeed,
                     VerticalSpeed = velocityMovementConfig.VerticalSpeed,
                     MaxVelocity = velocityMovementConfig.MaxVelocity,
-                    MinVelocity = velocityMovementConfig.MinVelocity
+                    MinVelocity = velocityMovementConfig.MinVelocity,
+                    AutoResetVelocity = autoResetVelocity
                 };
                 return _movement;
             }
+        }
+
+        private void Update()
+        {
+            VelocityMovement.Tick(Time.deltaTime);
         }
     }
 }

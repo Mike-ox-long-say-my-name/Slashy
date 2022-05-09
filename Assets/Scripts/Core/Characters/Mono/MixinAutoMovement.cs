@@ -17,13 +17,16 @@ namespace Core.Characters.Mono
                 {
                     return _autoMovement;
                 }
-
-                var baseMovement = GetComponent<MixinMovementBase>().BaseMovement;
+                
                 var velocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
-
-                _autoMovement = new AutoMovement(transform, baseMovement, velocityMovement);
+                _autoMovement = new AutoMovement(velocityMovement);
                 return _autoMovement;
             }
+        }
+
+        private void Update()
+        {
+            AutoMovement.Tick(Time.deltaTime);
         }
     }
 }

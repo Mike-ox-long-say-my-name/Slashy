@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Effects
 {
-    public class DamageTakenParticles : BaseCharacterHitListener
+    public class DamageTakenParticles : AbstractHitListener
     {
         [SerializeField] private float baseXOffset = 0.1f;
         [SerializeField] private Vector2 maxPositionOffset = new Vector2(0.2f, 0.4f);
@@ -31,21 +31,14 @@ namespace Effects
                 return;
             }
 
-            if (hitInfo.Source.Character == null)
+            var source = hitInfo.Source.Transform;
+            if (source != null)
             {
-                return;
+                PlayParticles(source);
             }
-
-            if (!(entity is ICharacter character))
-            {
-                return;
-            }
-
-            PlayParticles(character.VelocityMovement.BaseMovement.Transform,
-                hitInfo.Source.Character.VelocityMovement.BaseMovement.Transform);
         }
 
-        private void PlayParticles(Transform receiver, Transform source)
+        private void PlayParticles(Transform source)
         {
             var offsetX = Random.Range(0, maxPositionOffset.x) + baseXOffset;
             var offsetY = Random.Range(0, maxPositionOffset.y);
@@ -62,7 +55,7 @@ namespace Effects
             offsetY *= -Mathf.Sign(direction.y);
 
             shape.position = new Vector3(offsetX, offsetY, 0);
-            shape.rotation = (Quaternion.LookRotation(direction) * receiver.rotation).eulerAngles;
+            shape.rotation = (Quaternion.LookRotation(direction) * transform.rotation).eulerAngles;
 
             bloodParticleSystem.Play();
         }

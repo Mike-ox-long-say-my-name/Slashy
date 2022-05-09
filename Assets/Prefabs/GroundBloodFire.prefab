@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5177069648436720858}
   - component: {fileID: 21815389352715783}
   - component: {fileID: 3117513251195595734}
-  - component: {fileID: 2657800335013722293}
+  - component: {fileID: 3639160558268409170}
   m_Layer: 0
   m_Name: GroundBloodFire
   m_TagString: Untagged
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireEffect: {fileID: 4622726146129251903}
   fireOnAwake: 0
---- !u!114 &2657800335013722293
+--- !u!114 &3639160558268409170
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,10 +70,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8586173863565596272}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53f7c89cd6494eb4fbd1e191e41fd7d7, type: 3}
+  m_Script: {fileID: 11500000, guid: d82be1ccb40e4c846970ed41939847de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monoDamageStats: {fileID: 11400000, guid: c0018c73ff17bbf44850796d5829544d, type: 2}
+  hasSource: 0
+  isEnvironmental: 1
+  damageStats: {fileID: 11400000, guid: c0018c73ff17bbf44850796d5829544d, type: 2}
 --- !u!1 &8613732721164451290
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,6 +87,9 @@ GameObject:
   - component: {fileID: 6784614366745448622}
   - component: {fileID: 6307363342628520316}
   - component: {fileID: 8639959725365925837}
+  - component: {fileID: 3812309575476865715}
+  - component: {fileID: 7488072990933152757}
+  - component: {fileID: 7211200732857319320}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Untagged
@@ -131,14 +136,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429d94b9141039e419c2a99f9033bfd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliders:
-  - {fileID: 6307363342628520316}
-  disableOnInit: 0
-  ignored: []
-  isEnvironmental: 1
-  monoDamageMultipliers: {fileID: 11400000, guid: e315b1f21a259684fbdfe563b9b79299, type: 2}
   hitInterval: 1
   damageGroup: 0
+  ignored: []
+--- !u!114 &3812309575476865715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8613732721164451290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enter:
+    m_PersistentCalls:
+      m_Calls: []
+  stay:
+    m_PersistentCalls:
+      m_Calls: []
+  exit:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7488072990933152757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8613732721164451290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94646c6b46afb274e9e19e6e64e3e114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7211200732857319320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8613732721164451290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8893d5f4bb2f3bd40a675df1193ce353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multipliers: {fileID: 11400000, guid: e315b1f21a259684fbdfe563b9b79299, type: 2}
 --- !u!1001 &5305375290957969610
 PrefabInstance:
   m_ObjectHideFlags: 0

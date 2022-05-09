@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Core.Attacking;
+using Core.Characters.Interfaces;
 using Core.Player.Interfaces;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Characters.Player.States
 
             _healRoutine = Context.StartCoroutine(
                 HealRoutine(
-                    Context.Character,
+                    Context.Player,
                     Context.PlayerConfig.ActiveHealRate,
                     Context.PlayerConfig.HealStaminaConsumption)
                 );
@@ -61,10 +62,10 @@ namespace Characters.Player.States
 
         private IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)
         {
-            while (player.Health.Value < player.Health.MaxValue)
+            while (player.Character.Health.Value < player.Character.Health.MaxValue)
             {
-                player.Heal(healRate * Time.deltaTime);
-                player.SpendStamina(staminaConsumptionRate * Time.deltaTime);
+                player.Character.Health.Recover(healRate * Time.deltaTime);
+                player.Stamina.Spend(staminaConsumptionRate * Time.deltaTime);
                 yield return null;
             }
 

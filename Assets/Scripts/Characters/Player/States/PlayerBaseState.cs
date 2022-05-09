@@ -39,10 +39,13 @@ namespace Characters.Player.States
 
         public virtual void OnHitReceived(HitInfo info)
         {
-            Context.LastHitInfo = info;
         }
 
         public virtual void OnStaggered(HitInfo info)
+        {
+        }
+
+        public virtual void OnStaggerEnded()
         {
         }
 

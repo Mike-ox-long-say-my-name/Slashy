@@ -7,8 +7,6 @@ namespace Core.Characters
 {
     public class AutoMovement : IAutoMovement
     {
-        private readonly Transform _transform;
-        private readonly IBaseMovement _baseBaseMovement;
         private readonly IVelocityMovement _velocityMovement;
 
         private const float DefaultTargetReachedEpsilon = 0.3f;
@@ -17,13 +15,12 @@ namespace Core.Characters
         private Transform _lockOn;
         private Transform _target;
         private Vector3? _targetPosition;
+        private Vector3 _offset;
         private float _speedMultiplier = 1;
 
-        public AutoMovement(Transform transform, IBaseMovement baseBaseMovement, IVelocityMovement velocityVelocityMovement)
+        public AutoMovement(IVelocityMovement velocityMovement)
         {
-            _transform = transform;
-            _baseBaseMovement = baseBaseMovement;
-            _velocityMovement = velocityVelocityMovement;
+            _velocityMovement = velocityMovement;
         }
 
         public void Tick(float deltaTime)
@@ -32,14 +29,14 @@ namespace Core.Characters
 
             if (desiredPosition.HasValue)
             {
-                var direction = (desiredPosition.Value - _transform.position).normalized;
+                var direction = (desiredPosition.Value - _velocityMovement.BaseMovement.Transform.position).normalized;
                 _velocityMovement.Move(direction * _speedMultiplier);
             }
 
             if (_lockOn != null)
             {
-                var direction = _lockOn.position - _transform.position;
-                _baseBaseMovement.Rotate(direction.x);
+                var direction = _lockOn.position - _velocityMovement.BaseMovement.Transform.position;
+                _velocityMovement.BaseMovement.Rotate(direction.x);
             }
 
             CheckTargetReached();
@@ -53,7 +50,7 @@ namespace Core.Characters
                 return;
             }
 
-            var position = _transform.position;
+            var position = _velocityMovement.BaseMovement.Transform.position;
             var distance = Vector3.Distance(position, desiredPosition.Value);
             if (distance < _targetReachedEpsilon)
             {
@@ -64,18 +61,20 @@ namespace Core.Characters
 
         private Vector3? GetTargetPosition()
         {
-            return _target != null ? _target.position : _targetPosition;
+            return _target != null ? _target.position + _offset : _targetPosition;
         }
 
         public void LockRotationOn(Transform lockOn)
         {
             Guard.NotNull(lockOn);
             _lockOn = lockOn;
+            _velocityMovement.AutoRotateToDirection = false;
         }
 
         public void UnlockRotation()
         {
             _lockOn = null;
+            _velocityMovement.AutoRotateToDirection = true;
         }
 
         public void MoveTo(Vector3 position)
@@ -84,17 +83,25 @@ namespace Core.Characters
             _targetPosition = position;
         }
 
+        public void MoveToWithOffset(Transform target, Vector3 offset)
+        {
+            MoveTo(target);
+            _offset = offset;
+        }
+
         public void MoveTo(Transform target)
         {
             Guard.NotNull(target);
             _target = target;
             _targetPosition = null;
+            _offset = Vector3.zero;
         }
 
         public void ResetTarget()
         {
             _targetPosition = null;
             _target = null;
+            _offset = Vector3.zero;
         }
 
         public void SetSpeedMultiplier(float speedMultiplier)

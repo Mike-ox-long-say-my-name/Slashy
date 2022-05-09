@@ -33,7 +33,7 @@ namespace Core.Levels
         private static IEnumerator MoveRoutine(IPlayer playerInfo, Vector3 target)
         {
             var movement = playerInfo.VelocityMovement;
-            var player = playerInfo.Transform.position;
+            var player = playerInfo.VelocityMovement.BaseMovement.Transform.position;
 
             while (true)
             {
@@ -75,8 +75,8 @@ namespace Core.Levels
             var player = playerInfo.Player;
             _transferData = new PlayerTransferData
             {
-                Health = player.Health.Value,
-                Balance = player.Balance.Value,
+                Health = player.Character.Health.Value,
+                Balance = player.Character.Balance.Value,
                 Stamina = player.Stamina.Value,
                 StartPosition = startPosition,
                 StartTargetPosition = startTargetPosition
@@ -103,10 +103,10 @@ namespace Core.Levels
             var host = PlayerManager.Instance;
             var playerInfo = host.PlayerInfo;
             var player = playerInfo.Player;
-            player.Health.Value = _transferData.Health;
-            player.Balance.Value = _transferData.Balance;
+            player.Character.Health.Value = _transferData.Health;
+            player.Character.Balance.Value = _transferData.Balance;
             player.Stamina.Value = _transferData.Stamina;
-            var movement = playerInfo.BaseMovement;
+            var movement = playerInfo.VelocityMovement.BaseMovement;
             movement.SetPosition(_transferData.StartPosition);
 
             host.StartCoroutine(MoveAndReleaseRoutine(playerInfo, _transferData.StartTargetPosition));

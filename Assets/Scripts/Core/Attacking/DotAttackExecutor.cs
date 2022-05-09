@@ -1,29 +1,42 @@
-﻿using Core.Attacking.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using Core.Attacking.Interfaces;
 using Core.Utilities;
 
 namespace Core.Attacking
 {
-    public class DotAttackExecutor : IDotAttackExecutor
+    public class DotAttackExecutor : IAttackExecutor
     {
-        protected IDotAttackbox Attackbox { get; }
+        private readonly IDotAttackbox _attackbox;
 
         public DotAttackExecutor(IDotAttackbox attackbox)
         {
             Guard.NotNull(attackbox);
-
-            Attackbox = attackbox;
+            _attackbox = attackbox;
         }
 
-        public bool IsDotEnabled => Attackbox.IsEnabled;
+        public bool IsAttacking => _attackbox.IsEnabled;
 
-        public void EnableDot()
+        public void InterruptAttack()
         {
-            Attackbox.Enable();
+            _attackbox.Disable();
+            _attackEnded?.Invoke(new AttackResult(_hits, false));
+            _hits.Clear();
+            _attackEnded = null;
         }
 
-        public void DisableDot()
+        private Action<AttackResult> _attackEnded;
+        private readonly List<IHurtbox> _hits = new List<IHurtbox>();
+
+        public void StartAttack(Action<AttackResult> attackEnded)
         {
-            Attackbox.Disable();
+            _attackEnded = attackEnded;
+            _attackbox.Enable();
+        }
+
+        public void RegisterHit(IHurtbox hit)
+        {
+            _hits.Add(hit);
         }
     }
 }

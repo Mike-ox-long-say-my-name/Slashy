@@ -1,7 +1,6 @@
 ﻿using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Characters.Mono;
-using UnityEngine;
 
 namespace Core.Modules
 {

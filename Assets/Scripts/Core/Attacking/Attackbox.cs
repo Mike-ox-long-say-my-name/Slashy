@@ -1,27 +1,24 @@
 using Core.Attacking.Interfaces;
 using System;
 using System.Collections.Generic;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Core.Attacking
 {
     public class Attackbox : BaseHitbox, IAttackbox
     {
-        public HitInfo HitInfo { get; set; }
-
         public List<IHurtbox> Ignored { get; set; } = new List<IHurtbox>();
 
-        protected readonly HashSet<IHurtbox> Hits = new HashSet<IHurtbox>();
-
-        public event Action<IAttackbox, IHurtbox> OnHit;
+        private readonly HashSet<IHurtbox> _hits = new HashSet<IHurtbox>();
 
         public Attackbox(Transform transform, params Collider[] colliders) : base(transform, colliders)
         {
         }
 
-        public virtual void ClearHits()
+        public void ClearHits()
         {
-            Hits.Clear();
+            _hits.Clear();
         }
 
         public override void Disable()
@@ -30,24 +27,23 @@ namespace Core.Attacking
             base.Disable();
         }
 
-        public virtual void ProcessHit(IHurtbox hit)
+        public Team Team { get; set; }
+        public event Action<IHurtbox> Hit;
+
+        public void ProcessHit(IHurtbox hit)
         {
             if (!ShouldDispatch(hit))
             {
                 return;
             }
 
-            Hits.Add(hit);
-            if (HitInfo != null)
-            {
-                hit.ProcessHit(this, HitInfo);
-            }
-            OnHit?.Invoke(this, hit);
+            _hits.Add(hit);
+            Hit?.Invoke(hit);
         }
 
-        protected bool ShouldDispatch(IHurtbox hit)
+        private bool ShouldDispatch(IHurtbox hit)
         {
-            return IsEnabled && !Hits.Contains(hit) && !Ignored.Contains(hit);
+            return IsEnabled && (Team == Team.None || hit.Team != Team) && !_hits.Contains(hit) && !Ignored.Contains(hit);
         }
     }
 }

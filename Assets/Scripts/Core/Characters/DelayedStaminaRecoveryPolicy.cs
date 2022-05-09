@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Core.Characters
 {
+    [CreateAssetMenu(menuName = "Policy/Stamina Recovery", fileName = "DelayedStaminaRecoveryPolicy", order = 0)]
     public class DelayedStaminaRecoveryPolicy : StaminaRecoveryPolicy
     {
         [SerializeField] private float recoverySpeed;
@@ -23,7 +24,7 @@ namespace Core.Characters
         }
 
         public override void InformSpent(IResource stamina)
-        {
+        { 
             var delay = staminaRecoveryDelay;
             if (stamina.IsDepleted())
             {

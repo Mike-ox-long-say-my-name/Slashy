@@ -1,14 +1,13 @@
-﻿using Core;
-using Core.Attacking;
-using Core.Attacking.Interfaces;
+﻿using Core.Attacking;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
+using Core.Modules;
 using Core.Player.Interfaces;
 using UnityEngine;
 
 namespace Characters.Player
 {
-    public class PlayerLightAttackExecutor : MonoAnimationAttackHandler
+    public class PlayerLightAttackExecutor : MonoAnimationAttackExecutor
     {
         private struct AttackContext
         {
@@ -17,40 +16,40 @@ namespace Characters.Player
             public float MoveDistance { get; set; }
         }
 
-        private class PlayerLightAttack : AnimationAttackExecutor
+        private class AttackEventHandler : DefaultAttackEventHandler
         {
-            private readonly AttackContext _context;
+            private readonly AttackContext _attackContext;
 
-            public PlayerLightAttack(AttackContext context, ICoroutineHost host, IAttackbox attackbox)
-                : base(host, attackbox)
+            public AttackEventHandler(AttackContext context)
             {
-                _context = context;
+                _attackContext = context;
             }
 
-            public override void OnEnableHitbox()
+            public override void HandleEnableHitbox(IAnimationAttackExecutorContext context)
             {
-                base.OnEnableHitbox();
-                var inputX = _context.Input.MoveInput.x;
-                _context.BaseMovement.Rotate(inputX);
+                base.HandleEnableHitbox(context);
 
-                var direction = _context.BaseMovement.Transform.right;
-                _context.BaseMovement.Move(direction * _context.MoveDistance);
+                var inputX = _attackContext.Input.MoveInput.x;
+                _attackContext.BaseMovement.Rotate(inputX);
+
+                var direction = _attackContext.BaseMovement.Transform.right;
+                _attackContext.BaseMovement.Move(direction * _attackContext.MoveDistance);
             }
         }
 
         [SerializeField, Min(0)] private float moveDistance = 0.4f;
 
-        protected override AnimationAttackExecutor CreateAnimationAttackExecutor(ICoroutineHost host, IAttackbox attackbox)
+        protected override void ConfigureExecutor(AnimationAttackExecutor executor)
         {
-            var playerMovement = GetComponentInParent<PlayerMixinCharacter>().Player.PlayerMovement;
+            var movement = GetComponentInParent<MixinMovementBase>().BaseMovement;
             var playerInput = GetComponentInParent<IAutoPlayerInput>();
             var context = new AttackContext
             {
                 Input = playerInput,
-                BaseMovement = playerMovement.BaseMovement,
+                BaseMovement = movement,
                 MoveDistance = moveDistance
             };
-            return new PlayerLightAttack(context, host, attackbox);
+            executor.EventHandler = new AttackEventHandler(context);
         }
     }
 }

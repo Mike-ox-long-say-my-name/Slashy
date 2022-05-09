@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d71c9ecee65d16f4ab1bd3dda1eaaeec, type: 3}
+  m_Script: {fileID: 11500000, guid: 7133c3b5a70319c409323113d119ddd2, type: 3}
   m_Name: ExplodingHollow_ExplosionInfo
   m_EditorClassIdentifier: 
   bloodFirePrefab: {fileID: 8586173863565596272, guid: c61b4dfba2b618e468d99969f797a7a5, type: 3}

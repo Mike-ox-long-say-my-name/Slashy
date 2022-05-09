@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 3192924453606795691}
   - component: {fileID: 3192924453606795690}
   - component: {fileID: 3192924453606795689}
-  - component: {fileID: 3192924453606795687}
   - component: {fileID: 3192924453606795688}
   - component: {fileID: 4061737891866893587}
   - component: {fileID: 6056060677774660052}
+  - component: {fileID: 7418597499886861069}
+  - component: {fileID: 4327539068661993240}
   m_Layer: 0
   m_Name: chair2
   m_TagString: Untagged
@@ -103,37 +104,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.13, y: 6, z: 0.2}
   m_Center: {x: -0.08, y: 2, z: 0}
---- !u!114 &3192924453606795687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3192924453606795692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b2fe11180b6c0f4e983e5e7fff2ae69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitReceived:
-    m_PersistentCalls:
-      m_Calls: []
-  destroyed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3192924453606795688}
-        m_TargetAssemblyTypeName: Core.Destructor, Core
-        m_MethodName: Destroy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 40
 --- !u!114 &3192924453606795688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7034024a1f8ed5842b168c1e651fbf48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyLaterTime: 0.5
 --- !u!210 &4061737891866893587
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -207,6 +178,46 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7418597499886861069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3192924453606795692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9668e66d5132c4b91fbcbc41f0eed8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3192924453606795688}
+        m_TargetAssemblyTypeName: Core.MixinDestroyable, Core
+        m_MethodName: Destroy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4327539068661993240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3192924453606795692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3174af911ee605b4baf8ab23a84922f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxValue: 40
 --- !u!1 &3192924454314435029
 GameObject:
   m_ObjectHideFlags: 0

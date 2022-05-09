@@ -1,7 +1,7 @@
 ﻿using Characters.Enemies.States;
 using Core.Attacking;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowBaseState : EnemyBaseState<WeakHollowStateMachine>
     {

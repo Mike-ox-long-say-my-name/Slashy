@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.ExplodingHollow
 {
     public class ExplodingHollowPursue : ExplodingHollowBaseState
     {

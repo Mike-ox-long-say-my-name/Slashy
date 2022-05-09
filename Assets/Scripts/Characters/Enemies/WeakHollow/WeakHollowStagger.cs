@@ -1,7 +1,7 @@
 ﻿using Core.Utilities;
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowStagger : WeakHollowBaseState
     {

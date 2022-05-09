@@ -1,4 +1,4 @@
-﻿namespace Characters.Enemies
+﻿namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowAttack : WeakHollowBaseState
     {

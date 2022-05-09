@@ -1,7 +1,7 @@
 ﻿using Core.Characters;
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowPursue : WeakHollowBaseState
     {

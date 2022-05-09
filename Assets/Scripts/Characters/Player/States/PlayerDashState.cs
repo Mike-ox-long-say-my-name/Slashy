@@ -90,10 +90,10 @@ namespace Characters.Player.States
 
         private IEnumerator RecoverFromDashRoutine(float recoverTime)
         {
-            Context.CanDash.Lock(this);
+            Context.DashRecoveryLock.Lock(this);
 
             yield return new WaitForSeconds(recoverTime);
-            Context.CanDash.TryUnlock(this);
+            Context.DashRecoveryLock.TryUnlock(this);
         }
 
         private void EnableInvincibility()

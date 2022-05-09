@@ -22,33 +22,40 @@ namespace Characters.Player.States
             {
                 SwitchState<PlayerFallState>();
             }
-            else if (Context.CanDash && Context.Input.IsDashPressed)
+            else if (Context.CanDash
+                     && Context.DashRecoveryLock.IsUnlocked
+                     && Context.Input.IsDashPressed
+                     && Context.Player.HasStamina())
             {
                 Context.Input.ResetBufferedInput();
-                if (Context.Player.HasStamina())
-                {
-                    SwitchState<PlayerDashState>();
-                }
+                SwitchState<PlayerDashState>();
             }
-            else if (Context.CanJump && Context.Input.IsJumpPressed)
+            else if (Context.CanJump
+                     && Context.Input.IsJumpPressed
+                     && Context.Player.HasStamina())
             {
                 Context.Input.ResetBufferedInput();
-                if (Context.Player.HasStamina())
-                {
-                    SwitchState<PlayerJumpState>();
-                }
+                SwitchState<PlayerJumpState>();
             }
-            else if (Context.CanHeal && Context.Input.IsHealPressed)
+            else if (Context.CanHeal
+                     && Context.Input.IsHealPressed
+                     && Context.Player.HasStamina())
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerHealState>();
             }
-            else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed)
+            else if (Context.CanLightAttack
+                     && Context.AttackExecutorHelper.IsAllIdle()
+                     && Context.Input.IsLightAttackPressed
+                     && Context.Player.HasStamina())
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerGroundLightAttackState>();
             }
-            else if (Context.CanStartAttack && Context.Input.IsStrongAttackPressed)
+            else if (Context.CanStrongAttack
+                     && Context.AttackExecutorHelper.IsAllIdle()
+                     && Context.Input.IsStrongAttackPressed
+                     && Context.Player.HasStamina())
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerGroundStrongAttackState>();

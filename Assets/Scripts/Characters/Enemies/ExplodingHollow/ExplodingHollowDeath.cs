@@ -1,6 +1,6 @@
 using Characters.Enemies.States;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.ExplodingHollow
 {
     public class ExplodingHollowDeath : EnemyBaseState<ExplodingHollowStateMachine>
     {

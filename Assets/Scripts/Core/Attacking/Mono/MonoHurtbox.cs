@@ -1,6 +1,7 @@
 using Core.Attacking.Interfaces;
 using Core.Characters;
 using Core.Characters.Interfaces;
+using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Core.Attacking.Mono

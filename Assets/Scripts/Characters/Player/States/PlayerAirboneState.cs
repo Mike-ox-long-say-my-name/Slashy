@@ -16,6 +16,7 @@ namespace Characters.Player.States
 
         public override void OnStaggered(HitInfo info)
         {
+            base.OnStaggered(info);
             SwitchState<PlayerAirboneStaggerState>();
         }
     }

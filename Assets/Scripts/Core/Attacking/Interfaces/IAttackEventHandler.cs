@@ -1,4 +1,4 @@
-namespace Core.Attacking
+namespace Core.Attacking.Interfaces
 {
     public interface IAttackEventHandler
     {

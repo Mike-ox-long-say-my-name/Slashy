@@ -1,13 +1,13 @@
-﻿using Core;
+﻿using System.Collections;
+using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
-using Miscellaneous;
-using System.Collections;
 using Core.Utilities;
+using Miscellaneous;
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.ExplodingHollow
 {
     public class MonoExplosionAttackExecutor : MonoAbstractAttackExecutor
     {

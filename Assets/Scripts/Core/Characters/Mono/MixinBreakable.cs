@@ -5,7 +5,7 @@ using Core.Modules;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Core.Characters
+namespace Core.Characters.Mono
 {
     [RequireComponent(typeof(MixinHittable))]
     [RequireComponent(typeof(MixinHealth))]

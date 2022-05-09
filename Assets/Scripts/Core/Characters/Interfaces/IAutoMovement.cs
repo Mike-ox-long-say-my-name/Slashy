@@ -2,7 +2,7 @@
 using Core.Modules;
 using UnityEngine;
 
-namespace Core.Characters
+namespace Core.Characters.Interfaces
 {
     public interface IAutoMovement : IUpdateable
     {

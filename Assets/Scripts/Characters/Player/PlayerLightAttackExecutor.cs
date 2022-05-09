@@ -1,4 +1,5 @@
 ﻿using Core.Attacking;
+using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
 using Core.Modules;

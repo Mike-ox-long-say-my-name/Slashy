@@ -1,3 +1,5 @@
+using Core.Attacking.Interfaces;
+
 namespace Core.Attacking
 {
     public class DefaultAttackEventHandler : IAttackEventHandler

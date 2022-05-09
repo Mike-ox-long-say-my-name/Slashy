@@ -20,5 +20,7 @@ namespace Core.Player.Interfaces
         bool IsStaggered { get; }
         bool IsAttacking { get; }
         Transform Transform { get; }
+
+        MixinPlayerCapabilities Capabilities { get; }
     }
 }

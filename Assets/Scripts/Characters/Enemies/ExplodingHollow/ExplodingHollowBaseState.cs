@@ -2,7 +2,7 @@ using Characters.Enemies.States;
 using Core.Attacking;
 using Core.Characters.Interfaces;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.ExplodingHollow
 {
     public abstract class ExplodingHollowBaseState : EnemyBaseState<ExplodingHollowStateMachine>
     {

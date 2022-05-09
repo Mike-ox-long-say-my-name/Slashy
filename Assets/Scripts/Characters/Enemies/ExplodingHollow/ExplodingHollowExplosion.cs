@@ -1,7 +1,7 @@
 using Core.Attacking;
 using Core.Characters.Interfaces;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.ExplodingHollow
 {
     public class ExplodingHollowExplosion : ExplodingHollowBaseState
     {

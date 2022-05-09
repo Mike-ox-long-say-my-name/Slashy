@@ -29,7 +29,12 @@ namespace Characters.Player.States
             {
                 SwitchState<PlayerFallState>();
             }
-            else if (Context.CanStartAttack && Context.Input.IsLightAttackPressed)
+            else if (Context.CanLightAttack
+                     && Context.CanStartLightAttack
+                     && !Context.AttackedAtThisAirTime
+                     && Context.AttackExecutorHelper.IsAllIdle()
+                     && Context.Player.HasStamina()
+                     && Context.Input.IsLightAttackPressed)
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerAirLightAttackState>();

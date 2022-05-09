@@ -15,7 +15,7 @@ namespace Characters.Player.States
             Context.StartCoroutine(QuitAfterSlowDown(1.4f, 0.02f));
         }
 
-        private IEnumerator QuitAfterSlowDown(float slowPerSecond, float tickInterval)
+        private static IEnumerator QuitAfterSlowDown(float slowPerSecond, float tickInterval)
         {
             while (Time.timeScale > 0)
             {

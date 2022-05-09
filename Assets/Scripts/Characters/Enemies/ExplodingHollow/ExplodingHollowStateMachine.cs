@@ -5,7 +5,7 @@ using Core.Characters;
 using Core.Characters.Mono;
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.ExplodingHollow
 {
     [RequireComponent(typeof(MixinDamageSource))]
     public class ExplodingHollowStateMachine : EnemyStateMachine<ExplodingHollowStateMachine>

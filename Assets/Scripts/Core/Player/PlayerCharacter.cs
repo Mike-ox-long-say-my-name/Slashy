@@ -1,7 +1,8 @@
 ﻿using Core.Characters.Interfaces;
+using Core.Player.Interfaces;
 using Core.Utilities;
 
-namespace Core.Player.Interfaces
+namespace Core.Player
 {
     public class PlayerCharacter : IPlayerCharacter
     {

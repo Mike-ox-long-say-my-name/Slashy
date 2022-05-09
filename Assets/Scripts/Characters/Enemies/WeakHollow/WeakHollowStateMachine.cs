@@ -2,11 +2,11 @@
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
-using Core.Characters;
+using Core.Characters.Interfaces;
 using Core.Characters.Mono;
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.WeakHollow
 {
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(MixinAutoMovement))]

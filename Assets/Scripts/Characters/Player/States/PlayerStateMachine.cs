@@ -1,4 +1,3 @@
-using Configs.Player;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
@@ -6,11 +5,14 @@ using Core.Player.Interfaces;
 using Core.Utilities;
 using Effects;
 using System.Collections;
+using Core.Attacking;
 using Core.Characters;
 using Core.Characters.Mono;
 using Core.Modules;
+using Core.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using PlayerConfig = Configs.Player.PlayerConfig;
 
 namespace Characters.Player.States
 {
@@ -21,6 +23,8 @@ namespace Characters.Player.States
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(MixinJumpHandler))]
     [RequireComponent(typeof(MixinHittable))]
+    [RequireComponent(typeof(MixinPlayerCapabilities))]
+    [RequireComponent(typeof(MixinAttackExecutorHelper))]
     public class PlayerStateMachine : MonoBehaviour, IPlayer
     {
         public PlayerBaseState CurrentState { get; set; }
@@ -68,10 +72,13 @@ namespace Characters.Player.States
             }
         }
 
-        public readonly OwningLock CanDash = new OwningLock();
-        public readonly OwningLock CanJump = new OwningLock();
-        public readonly OwningLock CanAttack = new OwningLock();
-        public readonly OwningLock CanHeal = new OwningLock();
+        public OwningLock DashRecoveryLock { get; } = new OwningLock();
+        
+        public bool CanDash => Capabilities.CanDash;
+        public bool CanJump => Capabilities.CanJump;
+        public bool CanLightAttack => Capabilities.CanLightAttack;
+        public bool CanStrongAttack => Capabilities.CanStrongAttack;
+        public bool CanHeal => Capabilities.CanHeal;
 
         public Transform Transform => transform;
         public IVelocityMovement VelocityMovement { get; private set; }
@@ -81,6 +88,8 @@ namespace Characters.Player.States
         public IHurtbox Hurtbox { get; private set; }
         public IAutoPlayerInput Input { get; private set; }
         public IJumpHandler JumpHandler { get; private set; }
+        public MixinPlayerCapabilities Capabilities { get; private set; }
+        public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
 
         public IAttackExecutor FirstLightAttack { get; private set; }
         public IAttackExecutor SecondLightAttack { get; private set; }
@@ -95,7 +104,9 @@ namespace Characters.Player.States
 
         private float _cameraFollowVelocity;
 
-        public bool CanStartAttack => CanAttack && !IsAttacking && Player.HasStamina();
+        public bool CanStartLightAttack => CanLightAttack && !IsAttacking && Player.HasStamina();
+        public bool CanStartStrongAttack => CanStrongAttack && !IsAttacking && Player.HasStamina();
+
         public bool AttackedAtThisAirTime { get; set; }
         public IHitReceiver HitReceiver { get; private set; }
 
@@ -111,6 +122,8 @@ namespace Characters.Player.States
 
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
             JumpHandler = GetComponent<MixinJumpHandler>().JumpHandler;
+            Capabilities = GetComponent<MixinPlayerCapabilities>();
+            AttackExecutorHelper = GetComponent<MixinAttackExecutorHelper>();
 
             if (lightAttackFirst == null)
             {
@@ -156,7 +169,7 @@ namespace Characters.Player.States
 
             var startState = VelocityMovement.BaseMovement.IsGrounded
                 ? new PlayerGroundedState() : (PlayerBaseState)new PlayerFallState();
-            startState.Construct(this);
+            startState.Init(this);
 
             CurrentState = startState;
             CurrentState.EnterState();

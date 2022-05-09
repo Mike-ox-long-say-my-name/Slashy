@@ -1,7 +1,7 @@
 ﻿using Core;
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowIdle : WeakHollowBaseState
     {

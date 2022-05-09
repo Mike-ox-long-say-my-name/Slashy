@@ -2,7 +2,7 @@ using Core.Attacking;
 using Core.Utilities;
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.ExplodingHollow
 {
     public class ExplodingHollowRunning : ExplodingHollowBaseState
     {

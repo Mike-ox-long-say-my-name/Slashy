@@ -10,6 +10,11 @@ namespace Characters.Player.States
             Context.AnimatorComponent.SetBool("is-staggered", true);
         }
 
+        public override void OnStaggerEnded()
+        {
+            SwitchState<PlayerGroundedState>();
+        }
+
         public override void ExitState()
         {
             Context.AnimatorComponent.SetBool("is-staggered", false);

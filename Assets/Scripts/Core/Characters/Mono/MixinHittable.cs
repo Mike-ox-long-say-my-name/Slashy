@@ -1,7 +1,7 @@
 ﻿using Core.Attacking.Interfaces;
 using UnityEngine;
 
-namespace Core.Characters
+namespace Core.Characters.Mono
 {
     public class MixinHittable : MonoBehaviour
     {

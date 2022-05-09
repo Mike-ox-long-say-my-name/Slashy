@@ -3,7 +3,7 @@ using Core.Characters.Interfaces;
 using Core.Utilities;
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowRetreat : WeakHollowBaseState
     {

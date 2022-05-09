@@ -4,7 +4,7 @@ using Core.Characters.Interfaces;
 using Core.Modules;
 using UnityEngine;
 
-namespace Core.Characters
+namespace Core.Characters.Mono
 {
     [RequireComponent(typeof(MixinMovementBase))]
     public class MixinPushable : MonoBehaviour

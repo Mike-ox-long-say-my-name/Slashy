@@ -1,7 +1,7 @@
 using Core.Characters.Interfaces;
 using UnityEngine;
 
-namespace Core.Attacking
+namespace Core.Attacking.Mono
 {
     public class MixinTeam : MonoBehaviour
     {

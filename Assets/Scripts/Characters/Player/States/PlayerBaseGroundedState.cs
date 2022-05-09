@@ -6,12 +6,8 @@ namespace Characters.Player.States
     {
         public override void OnStaggered(HitInfo info)
         {
+            base.OnStaggered(info);
             SwitchState<PlayerGroundStaggerState>();
-        }
-
-        public override void OnStaggerEnded()
-        {
-            SwitchState<PlayerGroundedState>();
         }
     }
 }

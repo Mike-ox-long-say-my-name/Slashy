@@ -1,6 +1,7 @@
+using Core.Characters.Interfaces;
 using UnityEngine;
 
-namespace Core.Characters.Interfaces
+namespace Core.Characters
 {
     public static class CharacterResourceExtensions
     {

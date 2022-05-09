@@ -8,7 +8,7 @@ namespace Characters.Player.States
         protected PlayerStateMachine Context { get; private set; }
         protected bool IsValidState { get; private set; } = true;
 
-        public void Construct(PlayerStateMachine context)
+        public void Init(PlayerStateMachine context)
         {
             Context = context;
         }
@@ -34,6 +34,7 @@ namespace Characters.Player.States
 
         public virtual void OnDeath(HitInfo info)
         {
+            Context.AttackExecutorHelper.InterruptAllRunning();
             SwitchState<PlayerDeathState>();
         }
 
@@ -43,6 +44,7 @@ namespace Characters.Player.States
 
         public virtual void OnStaggered(HitInfo info)
         {
+            Context.AttackExecutorHelper.InterruptAllRunning();
         }
 
         public virtual void OnStaggerEnded()
@@ -57,7 +59,7 @@ namespace Characters.Player.States
             }
 
             var newState = new T();
-            newState.Construct(Context);
+            newState.Init(Context);
 
             IsValidState = false;
             ExitState();

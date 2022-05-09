@@ -1,6 +1,4 @@
-using Core.Attacking.Interfaces;
-
-namespace Core.Attacking
+namespace Core.Attacking.Interfaces
 {
     public interface IAnimationAttackExecutorContext
     {

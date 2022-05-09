@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.Enemies.ExplodingHollow
 {
     [CreateAssetMenu(menuName = "Attacks/Exploding Attack Config", fileName = "ExplodingHollowAttack", order = 0)]
     public class ExplodingHollowAttackConfig : ScriptableObject

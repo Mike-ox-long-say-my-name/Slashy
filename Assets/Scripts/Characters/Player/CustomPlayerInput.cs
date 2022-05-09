@@ -66,6 +66,7 @@ namespace Characters.Player
 
         private void OnMove(InputAction.CallbackContext context)
         {
+            ResetBufferedInput();
             MoveInput = context.ReadValue<Vector2>();
         }
 

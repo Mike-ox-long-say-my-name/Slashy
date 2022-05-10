@@ -1,4 +1,3 @@
-using System.Net.NetworkInformation;
 using Core.Player;
 using Core.Player.Interfaces;
 using UnityEngine;
@@ -75,6 +74,19 @@ namespace UI.PopupHints
             Player.Capabilities.CanLightAttack = true;
 
             shownHints.LightAttack = true;
+        }
+
+        public void ShowStrongAttackHint()
+        {
+            if (shownHints.StrongAttack)
+            {
+                return;
+            }
+
+            TryShowHint(strongAttackHint);
+            Player.Capabilities.CanStrongAttack = true;
+
+            shownHints.StrongAttack = true;
         }
 
         private void SubscribeToHintEvents()

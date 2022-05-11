@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using System;
+using Core;
 using Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,13 +10,11 @@ namespace UI.Menu
     {
         private IMenu _mainMenu;
         private IMenu _settingsMenu;
-        private IGameLoader _gameLoader;
 
         private void Awake()
         {
             _mainMenu = GetComponentInChildren<InGameMainMenu>();
             _settingsMenu = GetComponentInChildren<SettingsMenu>();
-            _gameLoader = GameLoader.Instance;
         }
 
         private void OnEnable()
@@ -27,7 +26,13 @@ namespace UI.Menu
 
         private void OnDisable()
         {
-            var actions = PlayerActionsProxy.Instance.Actions;
+            var proxy = PlayerActionsProxy.TryGetInstance();
+            if (proxy == null)
+            {
+                return;
+            }
+
+            var actions = proxy.Actions;
             actions.UI.Menu.performed -= OnMenuPressed;
         }
 
@@ -76,7 +81,7 @@ namespace UI.Menu
 
         public void ExitToMainMenu()
         {
-            _gameLoader.LoadMenu();
+            GameLoader.Instance.LoadMenu();
         }
 
         private static void RestrictPlayerInput()

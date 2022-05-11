@@ -22,5 +22,7 @@ namespace Core.Player.Interfaces
         Transform Transform { get; }
 
         MixinPlayerCapabilities Capabilities { get; }
+
+        GameObject PlayerObject { get; }
     }
 }

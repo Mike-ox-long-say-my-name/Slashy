@@ -1,4 +1,5 @@
-﻿using Core.Characters.Interfaces;
+﻿using System;
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Core.Characters.Mono
@@ -10,5 +11,10 @@ namespace Core.Characters.Mono
         public float MaxValue => maxValue;
 
         public abstract IResource Resource { get; }
+
+        private void Start()
+        {
+            Resource.ForceRaiseEvent();
+        }
     }
 }

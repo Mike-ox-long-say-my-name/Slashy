@@ -19,5 +19,6 @@ namespace Core.Characters.Interfaces
         IHitReceiver HitReceiver { get; }
 
         bool CanDie { get; set; }
+        void Kill();
     }
 }

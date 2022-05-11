@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Environemnt
+namespace Environmemnt
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class ResizeToFitScreen : MonoBehaviour

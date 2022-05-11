@@ -21,11 +21,17 @@ namespace UI
 
         private void OnDisable()
         {
-            var player = PlayerManager.Instance.PlayerInfo?.Player;
+            var manager = PlayerManager.TryGetInstance();
+            if (manager == null)
+            {
+                return;
+            }
+            var player = manager.PlayerInfo?.Player;
             if (player == null)
             {
                 return;
             }
+
             player.Character.Health.ValueChanged -= healthBar.OnResourceValueChanged;
             player.Stamina.ValueChanged -= staminaBar.OnResourceValueChanged;
         }

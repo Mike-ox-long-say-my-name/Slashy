@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using Core.Attacking;
+﻿using Core.Attacking;
 using Core.Characters.Interfaces;
 using Core.Player.Interfaces;
+using System.Collections;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -13,7 +13,6 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
-            
             Context.AnimatorComponent.SetBool("is-healing", true);
 
             _healRoutine = Context.StartCoroutine(
@@ -26,13 +25,13 @@ namespace Characters.Player.States
 
         public override void OnStaggered(HitInfo info)
         {
-            Context.StopCoroutine(_healRoutine);
+            StopHealing();
             base.OnStaggered(info);
         }
 
         public override void OnDeath(HitInfo info)
         {
-            Context.StopCoroutine(_healRoutine);
+            StopHealing();
             base.OnDeath(info);
         }
 
@@ -42,25 +41,67 @@ namespace Characters.Player.States
             {
                 StopHealing();
             }
+
+            CheckStateSwitch();
+        }
+
+        private void CheckStateSwitch()
+        {
+            if (!Context.VelocityMovement.BaseMovement.IsGrounded)
+            {
+                SwitchState<PlayerFallState>();
+            }
+            else if (Context.CanDash
+                     && Context.DashRecoveryLock.IsUnlocked
+                     && Context.Input.IsDashPressed
+                     && Context.Player.HasStamina())
+            {
+                Context.Input.ResetBufferedInput();
+                SwitchState<PlayerDashState>();
+            }
+            else if (Context.CanJump
+                     && Context.Input.IsJumpPressed
+                     && Context.Player.HasStamina())
+            {
+                Context.Input.ResetBufferedInput();
+                SwitchState<PlayerJumpState>();
+            }
+            else if (Context.CanLightAttack
+                     && Context.AttackExecutorHelper.IsAllIdle()
+                     && Context.Input.IsLightAttackPressed
+                     && Context.Player.HasStamina())
+            {
+                Context.Input.ResetBufferedInput();
+                SwitchState<PlayerGroundLightAttackState>();
+            }
+            else if (Context.CanStrongAttack
+                     && Context.AttackExecutorHelper.IsAllIdle()
+                     && Context.Input.IsStrongAttackPressed
+                     && Context.Player.HasStamina())
+            {
+                Context.Input.ResetBufferedInput();
+                SwitchState<PlayerGroundStrongAttackState>();
+            }
         }
 
         public override void ExitState()
         {
             Context.AnimatorComponent.SetBool("is-healing", false);
+            StopHealing();
         }
 
         private void StopHealing()
         {
-            if (_healRoutine != null)
+            if (_healRoutine == null)
             {
-                Context.StopCoroutine(_healRoutine);
-                _healRoutine = null;
+                return;
             }
 
-            SwitchState<PlayerGroundedState>();
+            Context.StopCoroutine(_healRoutine);
+            _healRoutine = null;
         }
 
-        private IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)
+        private static IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)
         {
             while (player.Character.Health.Value < player.Character.Health.MaxValue)
             {
@@ -68,8 +109,6 @@ namespace Characters.Player.States
                 player.Stamina.Spend(staminaConsumptionRate * Time.deltaTime);
                 yield return null;
             }
-
-            StopHealing();
         }
     }
 }

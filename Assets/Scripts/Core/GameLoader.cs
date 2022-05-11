@@ -1,42 +1,125 @@
-﻿using UnityEditor;
+﻿using Core.Levels;
+using Core.Player;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Core
 {
-    public class GameLoader : PublicSingleton<GameLoader>, IGameLoader
+    public class GameLoader : PublicSingleton<GameLoader>
     {
-        [SerializeField] private SceneAsset gameScene;
+        [SerializeField] private SaveData saveData;
+
+        [SerializeField] private UnityEvent<string> exiting;
+        [SerializeField] private UnityEvent<string> loadingLevel;
+        [SerializeField] private UnityEvent<string> loadingExitedLevel;
+        [SerializeField] private UnityEvent<string> startingNewGame;
+        [SerializeField] private UnityEvent<string> loadedLevel;
+        [SerializeField] private UnityEvent<string> loadedExitedLevel;
+
+        [SerializeField] private SceneAsset newGameScene;
         [SerializeField] private SceneAsset menuScene;
 
-        public bool HasAnyGameProgress => false;
+        public UnityEvent<string> Exiting => exiting;
+
+        public UnityEvent<string> LoadingLevel => loadingLevel;
+
+        public UnityEvent<string> StartingNewGame => startingNewGame;
+        public UnityEvent<string> LoadedLevel => loadedLevel;
+        public UnityEvent<string> LoadedExitedLevel => loadedExitedLevel;
+        public UnityEvent<string> LoadingExitedLevel => loadingExitedLevel;
+
+        public bool HasAnyGameProgress => !string.IsNullOrEmpty(saveData.ExitData.Level);
+
+        private string _scheduledScene;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            MapOtherSceneToSetActiveLater();
+        }
+
+        private void MapOtherSceneToSetActiveLater()
+        {
+            var managersScene = GetCurrentScene();
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                var scene = SceneManager.GetSceneAt(i);
+                if (scene.name == managersScene)
+                {
+                    continue;
+                }
+
+                _scheduledScene = scene.name;
+                SceneManager.sceneLoaded += SetActiveLater;
+                return;
+            }
+        }
+
+        private void SetActiveLater(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name != _scheduledScene)
+            {
+                return;
+            }
+
+            SceneManager.sceneLoaded -= SetActiveLater;
+            _scheduledScene = null;
+            SceneManager.SetActiveScene(scene);
+        }
+
+        public void LoadLevel(string levelName)
+        {
+            LoadingLevel?.Invoke(levelName);
+            TryLoadScene(levelName);
+            LoadedLevel?.Invoke(levelName);
+            PlayerManager.Instance.ActivatePlayer();
+        }
 
         public void LoadGame()
         {
-            Debug.LogWarning("Not implemented", this);
+            var exitedLevel = saveData.ExitData.Level;
+            LoadingExitedLevel?.Invoke(exitedLevel);
+            TryLoadScene(exitedLevel);
+            LoadedExitedLevel?.Invoke(exitedLevel);
         }
 
         public void LoadNewGame()
         {
-            TryLoadScene("Scenes/Levels/Temple");
+            var levelName = newGameScene.name;
+            StartingNewGame?.Invoke(levelName);
+            LoadLevel(levelName);
         }
 
         public void LoadMenu()
         {
-            TryLoadScene("Scenes/MenuScene");
+            Exiting?.Invoke(GetCurrentScene());
+            TryLoadScene(menuScene.name);
         }
 
-        private void TryLoadScene(string asset)
+        private void TryLoadScene(string sceneName)
         {
-            var sceneName = asset;
             var sceneIndex = SceneUtility.GetBuildIndexByScenePath(sceneName);
             if (sceneIndex == -1)
             {
-                Debug.LogWarning("Scene is missing in build info", this);
+                Debug.LogWarning($"Scene {sceneName} is missing in build info", this);
                 return;
             }
 
-            SceneManager.LoadScene(sceneIndex);
+            var currentScene = GetCurrentScene();
+            if (currentScene != null)
+            {
+                SceneManager.UnloadSceneAsync(currentScene);
+            }
+            var operation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+            operation.completed += _ => SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(sceneIndex));
+        }
+
+        public static string GetCurrentScene()
+        {
+            var activeScene = SceneManager.GetActiveScene();
+            return activeScene.IsValid() ? activeScene.name : null;
         }
     }
 }

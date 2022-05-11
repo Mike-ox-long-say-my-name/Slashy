@@ -33,7 +33,8 @@ namespace Core.Characters
             BaseMovement = baseMovement;
         }
 
-        private float _horizontalAirboneVelocity, _verticalAirboneVelocity;
+        private float _horizontalAirboneVelocity;
+        private float _verticalAirboneVelocity;
 
         private void ApplyAirboneVelocity(Vector3 direction)
         {
@@ -41,6 +42,7 @@ namespace Core.Characters
                 ref _horizontalAirboneVelocity, AirboneControlFactor);
             _velocity.z = Mathf.SmoothDamp(Velocity.z, VerticalSpeed * direction.z,
                 ref _verticalAirboneVelocity, AirboneControlFactor);
+            _velocity.z = direction.z * VerticalSpeed;
         }
 
         public virtual void Move(Vector3 direction)
@@ -48,11 +50,18 @@ namespace Core.Characters
             if (BaseMovement.IsGrounded)
             {
                 ApplyGroundedVelocity(direction);
+                ResetAirboneValues();
             }
             else
             {
                 ApplyAirboneVelocity(direction);
             }
+        }
+
+        private void ResetAirboneValues()
+        {
+            _horizontalAirboneVelocity = 0;
+            _verticalAirboneVelocity = 0;
         }
 
         private void ApplyGroundedVelocity(Vector3 direction)

@@ -69,7 +69,7 @@ namespace Characters.Player.States
 
         private void TickDashEffectController(float timeStep)
         {
-            if (Context.HasDashEffectController && Context.HasSpriteRenderer)
+            if (Context.HasDashEffectController)
             {
                 Context.DashEffectController.Tick(Context.transform, Context.SpriteRenderer.sprite, timeStep);
             }

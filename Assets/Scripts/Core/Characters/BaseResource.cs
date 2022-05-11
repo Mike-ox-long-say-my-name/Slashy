@@ -6,6 +6,11 @@ namespace Core.Characters
 {
     public abstract class BaseResource : IResource
     {
+        public void ForceRaiseEvent()
+        {
+            ValueChanged?.Invoke(this);
+        }
+
         public event Action<IResource> ValueChanged;
 
         private float _value;

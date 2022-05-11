@@ -10,6 +10,7 @@ namespace Core.Characters.Interfaces
 
         void Recover(float amount);
         void Spend(float amount);
+        void ForceRaiseEvent();
 
         event Action<IResource> ValueChanged;
     }

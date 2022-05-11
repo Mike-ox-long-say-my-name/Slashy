@@ -1,4 +1,5 @@
-﻿using Core.Player.Interfaces;
+﻿using System;
+using Core.Player.Interfaces;
 using Core.Utilities;
 using Settings;
 using UnityEngine;
@@ -27,6 +28,8 @@ namespace Characters.Player
         public bool IsStrongAttackPressed => IsStrongAttackPressedTrigger.IsSet;
         public bool IsHealPressed => IsHealPressedTrigger.IsSet;
 
+        public event Action Interacted;
+
         public Vector2 MoveInput { get; private set; }
 
         private void ConnectToUnityInput()
@@ -41,6 +44,7 @@ namespace Characters.Player
             actions.Player.Move.canceled += OnMove;
             actions.Player.Fire.performed += OnAttack;
             actions.Player.Fire2.performed += OnStrongAttack;
+            actions.Player.Interact.performed += OnInteracted;
         }
 
         private void Awake()
@@ -98,6 +102,11 @@ namespace Characters.Player
         {
             ResetBufferedInput();
             IsHealPressedTrigger.SetFor(healInputWaitTime);
+        }
+
+        private void OnInteracted(InputAction.CallbackContext context)
+        {
+            Interacted?.Invoke();
         }
     }
 }

@@ -4,27 +4,23 @@ using UnityEngine.UI;
 
 namespace UI.Menu
 {
-    public class MainMenu : Menu<MainMenu>
+    public class MainMenu : Menu
     {
         [SerializeField] private Button continueButton;
 
-        private IGameLoader _gameLoader;
-
         protected override bool DisableOnStart => false;
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
-            _gameLoader = GameLoader.Instance;
-
             if (continueButton == null)
             {
                 Debug.LogWarning("Continue button is not assigned", this);
             }
             else
             {
-                continueButton.interactable = _gameLoader.HasAnyGameProgress;
+                continueButton.interactable = GameLoader.Instance.HasAnyGameProgress;
             }
+            base.Start();
         }
     }
 }

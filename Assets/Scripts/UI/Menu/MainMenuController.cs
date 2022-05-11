@@ -8,7 +8,6 @@ namespace UI.Menu
 {
     public class MainMenuController : MonoBehaviour
     {
-        private IGameLoader _gameLoader;
         private IMenu _mainMenu;
         private IMenu _settingsMenu;
 
@@ -16,7 +15,6 @@ namespace UI.Menu
         {
             _mainMenu = FindObjectOfType<MainMenu>();
             _settingsMenu = FindObjectOfType<SettingsMenu>();
-            _gameLoader = GameLoader.Instance;
         }
 
         private void OnEnable()
@@ -28,7 +26,12 @@ namespace UI.Menu
 
         private void OnDisable()
         {
-            var actions = PlayerActionsProxy.Instance.Actions;
+            var proxy = PlayerActionsProxy.TryGetInstance();
+            if (proxy == null)
+            {
+                return;
+            }
+            var actions = proxy.Actions;
             actions.UI.Menu.performed -= OnMenuPressed;
         }
 
@@ -52,12 +55,12 @@ namespace UI.Menu
 
         public void ContinuePlaying()
         {
-            // TODO
+            GameLoader.Instance.LoadGame();
         }
 
         public void StartNewGame()
         {
-            _gameLoader.LoadNewGame();
+            GameLoader.Instance.LoadNewGame();
         }
 
         public void ExitGame()

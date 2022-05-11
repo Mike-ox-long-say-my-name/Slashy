@@ -1,15 +1,15 @@
+using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
+using Core.Characters.Mono;
+using Core.Modules;
+using Core.Player;
 using Core.Player.Interfaces;
 using Core.Utilities;
 using Effects;
 using System.Collections;
-using Core.Attacking;
-using Core.Characters;
-using Core.Characters.Mono;
-using Core.Modules;
-using Core.Player;
+using Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using PlayerConfig = Configs.Player.PlayerConfig;
@@ -25,14 +25,10 @@ namespace Characters.Player.States
     [RequireComponent(typeof(MixinHittable))]
     [RequireComponent(typeof(MixinPlayerCapabilities))]
     [RequireComponent(typeof(MixinAttackExecutorHelper))]
+    [RequireComponent(typeof(MixinInteractor))]
     public class PlayerStateMachine : MonoBehaviour, IPlayer
     {
         public PlayerBaseState CurrentState { get; set; }
-
-        [Space]
-        [Header("Camera")]
-        [SerializeField] private Camera followingCamera;
-        [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
 
         [Space]
         [Header("Attacks")]
@@ -73,7 +69,7 @@ namespace Characters.Player.States
         }
 
         public OwningLock DashRecoveryLock { get; } = new OwningLock();
-        
+
         public bool CanDash => Capabilities.CanDash;
         public bool CanJump => Capabilities.CanJump;
         public bool CanLightAttack => Capabilities.CanLightAttack;
@@ -90,22 +86,18 @@ namespace Characters.Player.States
         public IJumpHandler JumpHandler { get; private set; }
         public MixinPlayerCapabilities Capabilities { get; private set; }
         public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
+        public MixinInteractor Interactor { get; private set; }
+        public GameObject PlayerObject => gameObject;
 
-        public IAttackExecutor FirstLightAttack { get; private set; }
-        public IAttackExecutor SecondLightAttack { get; private set; }
-        public IAttackExecutor AirboneLightAttack { get; private set; }
+        public IAttackExecutor FirstLightAttack => lightAttackFirst.GetExecutor();
+        public IAttackExecutor SecondLightAttack => lightAttackSecond.GetExecutor();
+        public IAttackExecutor AirboneLightAttack => lightAirboneAttack.GetExecutor();
         public IAttackExecutor FirstStrongAttack => firstStrongAttack.GetExecutor();
         public IAttackExecutor SecondStrongAttack => secondStrongAttack.GetExecutor();
 
         public PlayerConfig PlayerConfig => playerConfig;
 
         public bool HasDashEffectController { get; private set; } = true;
-        public bool HasSpriteRenderer { get; private set; } = true;
-
-        private float _cameraFollowVelocity;
-
-        public bool CanStartLightAttack => CanLightAttack && !IsAttacking && Player.HasStamina();
-        public bool CanStartStrongAttack => CanStrongAttack && !IsAttacking && Player.HasStamina();
 
         public bool AttackedAtThisAirTime { get; set; }
         public IHitReceiver HitReceiver { get; private set; }
@@ -124,6 +116,7 @@ namespace Characters.Player.States
             JumpHandler = GetComponent<MixinJumpHandler>().JumpHandler;
             Capabilities = GetComponent<MixinPlayerCapabilities>();
             AttackExecutorHelper = GetComponent<MixinAttackExecutorHelper>();
+            Interactor = GetComponent<MixinInteractor>();
 
             if (lightAttackFirst == null)
             {
@@ -146,20 +139,15 @@ namespace Characters.Player.States
                 HasDashEffectController = false;
             }
 
-            if (followingCamera == null)
-            {
-                followingCamera = Camera.main;
-            }
-
-            FirstLightAttack = lightAttackFirst.GetExecutor();
-            SecondLightAttack = lightAttackSecond.GetExecutor();
-            AirboneLightAttack = lightAirboneAttack.GetExecutor();
-
             var character = Player.Character;
             character.HitReceived += (_, info) => CurrentState.OnHitReceived(info);
             character.Staggered += (_, info) => CurrentState.OnStaggered(info);
             character.Dead += (_, info) => CurrentState.OnDeath(info);
             character.RecoveredFromStagger += _ => CurrentState.OnStaggerEnded();
+
+            Input.Interacted += () => CurrentState.OnInteracted();
+
+            PlayerManager.Instance.PlayerLoaded?.Invoke();
         }
 
         private IEnumerator Start()
@@ -181,20 +169,15 @@ namespace Characters.Player.States
         private void Update()
         {
             CurrentState.UpdateState();
-            MoveCamera();
 
             if (Keyboard.current.iKey.wasPressedThisFrame)
             {
                 print(CurrentState);
             }
-        }
-
-        private void MoveCamera()
-        {
-            var cameraPosition = followingCamera.transform.position;
-            var newX = Mathf.SmoothDamp(cameraPosition.x, transform.position.x,
-                ref _cameraFollowVelocity, followSmoothTime);
-            followingCamera.transform.position = new Vector3(newX, cameraPosition.y, cameraPosition.z);
+            if (Keyboard.current.pKey.wasPressedThisFrame)
+            {
+                Player.Character.Kill();
+            }
         }
     }
 }

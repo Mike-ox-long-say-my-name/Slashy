@@ -33,18 +33,16 @@ namespace Core.Levels
         private static IEnumerator MoveRoutine(IPlayer playerInfo, Vector3 target)
         {
             var movement = playerInfo.VelocityMovement;
-            var player = playerInfo.VelocityMovement.BaseMovement.Transform.position;
+            var player = playerInfo.Transform;
 
             while (true)
             {
-                var targetDirection = target - player;
-                targetDirection.y = 0;
+                var targetDirection = (target - player.position).WithZeroY();
                 targetDirection.Normalize();
 
                 movement.Move(targetDirection);
 
-                var playerNewPosition = player;
-                playerNewPosition.y = 0;
+                var playerNewPosition = player.position.WithZeroY();
 
                 const float margin = 0.2f;
                 if (Vector3.Distance(target, playerNewPosition) < margin)
@@ -70,7 +68,7 @@ namespace Core.Levels
 
         private void LoadNextLevel(IPlayer playerInfo)
         {
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            PlayerManager.Instance.PlayerLoaded.AddListener(OnPlayerLoaded);
 
             var player = playerInfo.Player;
             _transferData = new PlayerTransferData
@@ -82,7 +80,7 @@ namespace Core.Levels
                 StartTargetPosition = startTargetPosition
             };
 
-            SceneManager.LoadScene(levelWarp.name);
+            GameLoader.Instance.LoadLevel(levelWarp.name);
         }
 
         private struct PlayerTransferData
@@ -96,11 +94,11 @@ namespace Core.Levels
 
         private static PlayerTransferData _transferData;
 
-        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private static void OnPlayerLoaded()
         {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-
             var host = PlayerManager.Instance;
+            host.PlayerLoaded.RemoveListener(OnPlayerLoaded);
+
             var playerInfo = host.PlayerInfo;
             var player = playerInfo.Player;
             player.Character.Health.Value = _transferData.Health;
@@ -109,7 +107,7 @@ namespace Core.Levels
             var movement = playerInfo.VelocityMovement.BaseMovement;
             movement.SetPosition(_transferData.StartPosition);
 
-            host.StartCoroutine(MoveAndReleaseRoutine(playerInfo, _transferData.StartTargetPosition));
+            // host.StartCoroutine(MoveAndReleaseRoutine(playerInfo, _transferData.StartTargetPosition));
         }
     }
 }

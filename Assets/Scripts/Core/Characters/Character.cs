@@ -17,6 +17,11 @@ namespace Core.Characters
         
         public bool CanDie { get; set; } = true;
 
+        public void Kill()
+        {
+            Die(null);
+        }
+
         public IResource Health { get; }
         public IResource Balance { get; }
         public IHitReceiver HitReceiver { get; }

@@ -51,10 +51,12 @@ namespace Effects
 
         private void CreateEffectClone(Transform spriteTransform, Sprite dashSprite)
         {
-            var cloneObject = new GameObject("Dash Effect Clone");
+            var cloneObject = new GameObject("Dash Effect Clone")
+            {
+                hideFlags = HideFlags.HideAndDontSave
+            };
             var cloneTransform = cloneObject.transform;
-            cloneTransform.position = spriteTransform.position;
-            cloneTransform.rotation = spriteTransform.rotation;
+            cloneTransform.SetPositionAndRotation(spriteTransform.position, spriteTransform.rotation);
             cloneTransform.localScale = spriteTransform.localScale;
 
             cloneObject.AddComponent<SortingGroup>();

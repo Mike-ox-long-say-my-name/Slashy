@@ -1,9 +1,8 @@
-﻿using Core;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UI.Menu
 {
-    public abstract class Menu<T> : Singleton<T>, IMenu where T : Component
+    public abstract class Menu : MonoBehaviour, IMenu
     {
         private GameObject _menuUI;
 
@@ -11,13 +10,12 @@ namespace UI.Menu
 
         protected virtual bool DisableOnStart => true;
 
-        protected override void Awake()
+        protected virtual void Awake()
         {
-            base.Awake();
             _menuUI = gameObject;
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             if (DisableOnStart)
             {

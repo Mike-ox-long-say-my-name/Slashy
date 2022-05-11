@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 4198748199945247214}
   - component: {fileID: 3059292579043626510}
   - component: {fileID: 6264112177882997879}
-  - component: {fileID: 69876404432317230}
   m_Layer: 5
   m_Name: BasePopupHint
   m_TagString: Untagged
@@ -227,7 +226,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   appearMove: {x: 0, y: 0}
   appearTime: 0.55
-  appearMoveSpeed: 0
 --- !u!114 &6264112177882997879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 871fbdfb84bcf2f4382a1702795d7a43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasInteractRadius: 0
+  isInteractable: 0
+  returnType: 0
   interacted:
     m_PersistentCalls:
       m_Calls:
@@ -256,15 +255,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &69876404432317230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8150699739189621440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78ea400957eb9c843852819b9580242b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -3,27 +3,37 @@ using UnityEngine.Events;
 
 namespace Core
 {
-    public class MixinInteractable : MonoBehaviour
+    public class MixinInteractable : MonoBehaviour, IInteractable
     {
-        [SerializeField] private bool hasInteractRadius = true;
-        [SerializeField, Min(0)] private float interactRadius = 1f;
-
+        [SerializeField] private bool initiallyInteractable;
+        [SerializeField] private InteractionResult returnType;
+        [SerializeField] private InteractionMask mask;
         [SerializeField] private UnityEvent interacted;
 
         public UnityEvent Interacted => interacted;
 
-        public void TryInteract(Transform interactor)
+        private void Awake()
         {
-            if (hasInteractRadius)
-            {
-                var distance = Vector3.Distance(interactor.position, transform.position);
-                if (distance > interactRadius)
-                {
-                    return;
-                }
-            }
+            IsInteractable = initiallyInteractable;
+        }
 
+        public void MakeInteractable()
+        {
+            IsInteractable = true;
+        }
+
+        public void MakeUninteractable()
+        {
+            IsInteractable = false;
+        }
+
+        public bool IsInteractable { get; private set; }
+        public InteractionMask Mask => mask;
+
+        public InteractionResult Interact()
+        {
             Interacted?.Invoke();
+            return returnType;
         }
     }
 }

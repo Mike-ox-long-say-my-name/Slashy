@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core.Player.Interfaces
 {
@@ -11,6 +12,8 @@ namespace Core.Player.Interfaces
         bool IsLightAttackPressed { get; }
         bool IsStrongAttackPressed { get; }
         bool IsHealPressed { get; }
+
+        event Action Interacted;
 
         Vector2 MoveInput { get; }
     }

@@ -6,10 +6,9 @@ namespace Core
     {
         public new static T Instance => Singleton<T>.Instance;
 
-        protected override void Awake()
+        public new static T TryGetInstance()
         {
-            base.Awake();
-            DontDestroyOnLoad(this);
+            return Singleton<T>.TryGetInstance();
         }
     }
 }

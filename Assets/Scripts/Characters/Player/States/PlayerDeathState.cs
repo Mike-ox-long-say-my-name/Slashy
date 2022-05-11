@@ -1,6 +1,6 @@
-using System.Collections;
-using Core;
 using Core.Characters.Interfaces;
+using Core.Player;
+using System.Collections;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -12,19 +12,23 @@ namespace Characters.Player.States
             Context.Hurtbox.Disable();
             Context.VelocityMovement.Stop();
             Context.AnimatorComponent.SetTrigger("death");
-            Context.StartCoroutine(QuitAfterSlowDown(1.4f, 0.02f));
+            Context.StartCoroutine(PlayDeathSequence(1.4f, 0.02f));
         }
 
-        private static IEnumerator QuitAfterSlowDown(float slowPerSecond, float tickInterval)
+        private static IEnumerator PlayDeathSequence(float slowPerSecond, float tickInterval)
         {
-            while (Time.timeScale > 0)
+            PlayerManager.Instance.PlayedDeadSequenceStarted?.Invoke();
+
+            const float targetTimeScale = 0.2f;
+            while (Time.timeScale > targetTimeScale)
             {
-                Time.timeScale = Mathf.Max(0, Time.timeScale - slowPerSecond * Time.unscaledDeltaTime);
+                Time.timeScale = Mathf.Max(targetTimeScale, Time.timeScale - slowPerSecond * Time.unscaledDeltaTime);
                 yield return new WaitForSecondsRealtime(tickInterval);
             }
 
             Time.timeScale = 1f;
-            GameLoader.Instance.LoadMenu();
+
+            PlayerManager.Instance.PlayedDeadSequenceEnded?.Invoke();
         }
     }
 }

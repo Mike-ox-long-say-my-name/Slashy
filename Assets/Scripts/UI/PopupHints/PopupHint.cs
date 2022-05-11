@@ -1,9 +1,10 @@
-using System;
+using Core;
 using System.Collections;
 using UnityEngine;
 
 namespace UI.PopupHints
 {
+    [RequireComponent(typeof(MixinInteractable))]
     [RequireComponent(typeof(RectTransform))]
     public class PopupHint : MonoBehaviour
     {
@@ -13,10 +14,12 @@ namespace UI.PopupHints
         [SerializeField, Min(0.01f)] private float appearTime = 0.55f;
 
         private bool _isShown = false;
+        private MixinInteractable _interactable;
 
         private void Awake()
         {
             _transform = GetComponent<RectTransform>();
+            _interactable = GetComponent<MixinInteractable>();
         }
 
         public void Show()
@@ -26,6 +29,7 @@ namespace UI.PopupHints
                 return;
             }
 
+            _interactable.MakeInteractable();
             _isShown = true;
             StartCoroutine(MoveRoutine(appearMove, appearTime));
         }
@@ -37,6 +41,7 @@ namespace UI.PopupHints
                 return;
             }
 
+            _interactable.MakeUninteractable();
             _isShown = false;
             StartCoroutine(MoveRoutine(-appearMove, appearTime));
         }

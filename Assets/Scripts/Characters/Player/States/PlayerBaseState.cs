@@ -1,3 +1,4 @@
+using Core;
 using Core.Attacking;
 using UnityEngine;
 
@@ -49,6 +50,11 @@ namespace Characters.Player.States
 
         public virtual void OnStaggerEnded()
         {
+        }
+
+        public virtual void OnInteracted()
+        {
+            Context.Interactor.TryInteract(InteractionMask.Popup);
         }
 
         protected virtual void SwitchState<T>() where T : PlayerBaseState, new()

@@ -1,3 +1,5 @@
+using Core;
+
 namespace Characters.Player.States
 {
     public class PlayerGroundedState : PlayerBaseGroundedState
@@ -14,6 +16,11 @@ namespace Characters.Player.States
             Context.AnimatorComponent.SetBool("is-walking", Context.Input.MoveInput.sqrMagnitude > 0);
 
             CheckStateSwitch();
+        }
+
+        public override void OnInteracted()
+        {
+            Context.Interactor.TryInteract(InteractionMask.Any);
         }
 
         protected virtual void CheckStateSwitch()

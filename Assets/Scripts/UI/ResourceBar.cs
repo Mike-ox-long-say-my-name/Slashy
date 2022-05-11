@@ -1,5 +1,7 @@
+using System;
 using Core.Characters.Interfaces;
 using System.Collections;
+using Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,11 +9,14 @@ namespace UI
 {
     public class ResourceBar : MonoBehaviour
     {
+        [SerializeField] private bool firstChangeNoAnimation = true;
         [SerializeField] private Image frontLayerImage;
         [SerializeField] private Image middleLayerImage;
         [SerializeField, Range(0, 0.1f)] private float fillAnimationPerTick = 0.05f;
         [SerializeField, Min(0)] private float fillAnimationTickInterval = 0.05f;
         [SerializeField, Range(0, 1)] private float fillAnimationStartDelay = 0.15f;
+
+        private bool _firstAnimationHappened = false;
 
         public void OnResourceValueChanged(IResource resource)
         {
@@ -24,7 +29,15 @@ namespace UI
             middleLayerImage.fillAmount = frontLayerImage.fillAmount;
             frontLayerImage.fillAmount = fraction;
 
-            _middleLayerAnimation = StartCoroutine(MiddleLayerAnimation(fraction));
+            if (!_firstAnimationHappened && firstChangeNoAnimation)
+            {
+                middleLayerImage.fillAmount = fraction;
+            }
+            else
+            {
+                _middleLayerAnimation = StartCoroutine(MiddleLayerAnimation(fraction));
+            }
+            _firstAnimationHappened = true;
         }
 
         private IEnumerator MiddleLayerAnimation(float targetFill)

@@ -1,8 +1,9 @@
 using UnityEngine;
 
-namespace Environemnt
+namespace Environmemnt
 {
     [RequireComponent(typeof(SpriteRenderer))]
+    [DefaultExecutionOrder(10)]
     public class ParallaxBackground : MonoBehaviour
     {
         public float weight;

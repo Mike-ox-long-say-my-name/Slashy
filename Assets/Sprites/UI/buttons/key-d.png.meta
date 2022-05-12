@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ceab592d6c866b3409773c4d37cb5f83
+guid: c4500ff933374f548a1fc1b6a03e0453
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 98912652851853467
-    second: mouse-right
+      213: 1950859858209543769
+    second: key-d
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -106,7 +106,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mouse-right
+      name: key-d
       rect:
         serializedVersion: 2
         x: 128
@@ -120,8 +120,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b98b601a8886f5100800000000000000
-      internalID: 98912652851853467
+      spriteID: 956162774b8d21b10800000000000000
+      internalID: 1950859858209543769
       vertices: []
       indices: 
       edges: []

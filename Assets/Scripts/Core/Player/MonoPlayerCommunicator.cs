@@ -21,9 +21,9 @@ namespace Core.Player
         [Serializable]
         public struct In
         {
-            [SerializeField] private UnityEvent touchedBonefire;
+            [SerializeField] private UnityEvent touchedBonfire;
             
-            public UnityEvent TouchedBonefire => touchedBonefire;
+            public UnityEvent TouchedBonfire => touchedBonfire;
         }
 
         [SerializeField] private Out outEvents;

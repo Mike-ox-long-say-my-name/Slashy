@@ -5,9 +5,7 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             base.EnterState();
-
-            Context.AnimatorComponent.SetTrigger("jump");
-
+            
             Context.Player.Stamina.Spend(Context.PlayerConfig.JumpStaminaCost);
             Context.JumpHandler.Jump();
         }

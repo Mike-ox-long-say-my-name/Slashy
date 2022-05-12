@@ -8,7 +8,7 @@ namespace Effects
         [SerializeField] private SpriteRenderer shadowSpriteRenderer;
 
         [SerializeField] private LayerMask shadowCastMask;
-        [SerializeField, Range(0, 1)] private float maxTransparency = 0.7f;
+        [SerializeField, Range(0, 1)] private float alphaFactor = 0.7f;
         [SerializeField, Min(0)] private float shadowAppearDistance = 2f;
         [SerializeField] private Vector3 hitPointOffset;
 
@@ -33,7 +33,7 @@ namespace Effects
 
             var transparency = isHit ? (1 - hitInfo.distance / shadowAppearDistance) : 0;
             var color = shadowSpriteRenderer.color;
-            shadowSpriteRenderer.color = new Color(color.r, color.g, color.b, transparency * maxTransparency);
+            shadowSpriteRenderer.color = new Color(color.r, color.g, color.b, transparency * alphaFactor);
             shadowSpriteRenderer.transform.position = hitInfo.point + hitPointOffset;
         }
     }

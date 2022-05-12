@@ -1,4 +1,5 @@
 using Core;
+using Core.Levels;
 
 namespace Characters.Player.States
 {
@@ -20,7 +21,11 @@ namespace Characters.Player.States
 
         public override void OnInteracted()
         {
-            Context.Interactor.TryInteract(InteractionMask.Any);
+            var result = Context.Interactor.TryInteract(InteractionMask.Any);
+            if (result == InteractionResult.TouchedBonfire)
+            {
+                SwitchState<PlayerTouchingBonfireState>();
+            }
         }
 
         protected virtual void CheckStateSwitch()

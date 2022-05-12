@@ -17,6 +17,8 @@ namespace Core.Characters
         public bool AutoResetVelocity { get; set; } = true;
         public bool AutoRotateToDirection { get; set; } = true;
 
+        public float MinMoveDistance { get; set; } = 0.001f;
+
         private Vector3 _velocity;
 
         public Vector3 Velocity
@@ -91,7 +93,11 @@ namespace Core.Characters
             ApplyGravity(deltaTime);
             ClampVelocity();
 
-            BaseMovement.Move(_velocity * deltaTime);
+            var move = _velocity * deltaTime;
+            if (move.magnitude > MinMoveDistance)
+            {
+                BaseMovement.Move(_velocity * deltaTime);
+            }
             if (AutoRotateToDirection)
             {
                 BaseMovement.Rotate(_velocity.x);

@@ -7,14 +7,27 @@ namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowRetreat : WeakHollowBaseState
     {
+        private void SetRandomSpeedMultiplier()
+        {
+            var multiplier = Random.Range(0.3f, 0.7f);
+            Context.AutoMovement.SetSpeedMultiplier(multiplier);
+        }
+
+        private static float GetRandomRetreatTime()
+        {
+            return Random.Range(1f, 3f);
+        }
+
         public override void EnterState()
         {
             Context.AnimatorComponent.SetBool("is-walking", true);
 
-            Context.AutoMovement.SetSpeedMultiplier(0.4f);
             Context.AutoMovement.LockRotationOn(Context.PlayerInfo.Transform);
 
-            _timer = Timer.Start(2, SwitchState<WeakHollowIdle>);
+            SetRandomSpeedMultiplier();
+
+            var retreatTime = GetRandomRetreatTime();
+            _timer = Timer.Start(retreatTime, SwitchState<WeakHollowPursue>);
         }
 
         private Timer _timer;
@@ -32,8 +45,8 @@ namespace Characters.Enemies.WeakHollow
         public override void ExitState()
         {
             Context.AutoMovement.ResetSpeedMultiplier();
-            Context.VelocityMovement.Stop();
             Context.AutoMovement.UnlockRotation();
+            Context.VelocityMovement.Stop();
             Context.AnimatorComponent.SetBool("is-walking", false);
         }
     }

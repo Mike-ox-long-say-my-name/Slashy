@@ -150,10 +150,10 @@ namespace Characters.Player.States
             PlayerManager.Instance.PlayerLoaded?.Invoke();
         }
 
-        private IEnumerator Start()
+        private void Start()
         {
             // Для корректного определения того, что игрок на земле при загрузке
-            VelocityMovement.BaseMovement.Move(Vector3.down);
+            VelocityMovement.BaseMovement.Move(Vector3.down * 0.2f);
 
             var startState = VelocityMovement.BaseMovement.IsGrounded
                 ? new PlayerGroundedState() : (PlayerBaseState)new PlayerFallState();
@@ -163,7 +163,8 @@ namespace Characters.Player.States
             CurrentState.EnterState();
             CurrentState.UpdateState();
 
-            yield return new WaitForSeconds(0.3f);
+            // Разогревочный
+            VelocityMovement.BaseMovement.Move(new Vector3(0.01f, -0.01f, 0));
         }
 
         private void Update()

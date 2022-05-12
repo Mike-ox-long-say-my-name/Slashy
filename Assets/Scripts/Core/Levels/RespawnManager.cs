@@ -46,7 +46,7 @@ namespace Core.Levels
             GameLoader.Instance.LoadLevel(respawnData.RespawnLevel);
         }
         
-        public void UpdateRespawnData(Bonefire bonfire)
+        public void UpdateRespawnData(Bonfire bonfire)
         {
             respawnData.RespawnLevel = GameLoader.GetCurrentScene();
             respawnData.RespawnPosition = bonfire.GetRespawnPosition();

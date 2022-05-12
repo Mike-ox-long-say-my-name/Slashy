@@ -19,6 +19,7 @@ namespace Core
         {
             return _interactables
                 .Where(interactable => interactable.IsInteractable && ((interactable.Mask & mask) != 0))
+                .OrderBy(interactable => interactable.Mask)
                 .Select(interactable => interactable.Interact())
                 .FirstOrDefault();
         }

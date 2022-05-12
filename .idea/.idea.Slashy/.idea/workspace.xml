@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="" />
+    <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LevelBase/UI Canvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LevelBase/UI Canvas.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/.background.kra-autosave.kra" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/.healthbar.kra-autosave.kra" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/background.kra" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/UI/background.kra" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/healthbar-frame.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/healthbar-frame.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/healthbar-mask.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/healthbar-mask.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/healthbar.kra" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/UI/healthbar.kra" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,6 +72,7 @@
       <workItem from="1650605822927" duration="460000" />
       <workItem from="1651139852033" duration="2179000" />
       <workItem from="1651240010781" duration="826000" />
+      <workItem from="1652372257647" duration="2000" />
     </task>
     <servers />
   </component>

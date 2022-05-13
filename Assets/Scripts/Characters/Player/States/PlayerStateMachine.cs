@@ -39,7 +39,22 @@ namespace Characters.Player.States
         [SerializeField] private MonoAbstractAttackExecutor secondStrongAttack;
 
         [Space]
+        [Header("Sounds")]
+        [SerializeField] private AudioSource lightAttackSource;
+        [SerializeField] private AudioSource strongAttackSource;
+        [SerializeField] private AudioSource jumpSource;
+        [SerializeField] private AudioSource walkSource;
+
+        [Space]
         [SerializeField] private PlayerConfig playerConfig;
+
+        public AudioSource JumpSource => jumpSource;
+
+        public AudioSource LightAttackSource => lightAttackSource;
+
+        public AudioSource StrongAttackSource => strongAttackSource;
+
+        public AudioSource WalkSource => walkSource;
 
         public bool IsInvincible { get; set; }
         public bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);

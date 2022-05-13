@@ -123,7 +123,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1792072655868191051}
   - component: {fileID: 1792072655868191053}
-  - component: {fileID: 1792072655868191052}
   - component: {fileID: 1792072655868191054}
   - component: {fileID: 1792072655868191055}
   - component: {fileID: 1792072655868191088}
@@ -165,36 +164,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnOffset: {x: -1.28, y: -0.5, z: -0.62}
   playerPositionOffset: {x: 1, y: -0.5, z: 0}
---- !u!114 &1792072655868191052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1792072655868191050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 871fbdfb84bcf2f4382a1702795d7a43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initiallyInteractable: 0
-  returnType: 2
-  mask: 2
-  interacted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1792072655868191053}
-        m_TargetAssemblyTypeName: Core.Levels.Bonfire, Core
-        m_MethodName: TouchBonfire
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1792072655868191054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,10 +176,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enterAndExitOnce: 0
   enter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1792072655868191052}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Core.MixinInteractable, Core
         m_MethodName: MakeInteractable
         m_Mode: 1
@@ -240,7 +210,7 @@ MonoBehaviour:
   exit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1792072655868191052}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Core.MixinInteractable, Core
         m_MethodName: MakeUninteractable
         m_Mode: 1

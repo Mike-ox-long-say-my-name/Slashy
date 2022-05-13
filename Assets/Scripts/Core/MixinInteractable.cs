@@ -6,7 +6,7 @@ namespace Core
     public class MixinInteractable : MonoBehaviour, IInteractable
     {
         [SerializeField] private bool initiallyInteractable;
-        [SerializeField] private InteractionResult returnType;
+        [SerializeField] private InteractionType returnType;
         [SerializeField] private InteractionMask mask;
         [SerializeField] private UnityEvent interacted;
 
@@ -33,7 +33,7 @@ namespace Core
         public InteractionResult Interact()
         {
             Interacted?.Invoke();
-            return returnType;
+            return new InteractionResult(returnType, this);
         }
     }
 }

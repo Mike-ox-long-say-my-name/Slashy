@@ -1,4 +1,6 @@
-﻿namespace Characters.Enemies.WeakHollow
+﻿using UnityEngine;
+
+namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowAttack : WeakHollowBaseState
     {
@@ -13,7 +15,7 @@
                     return;
                 }
 
-                if (result.Hits.Count > 0)
+                if (result.Hits.Count > 0 && Random.value < Context.AttackRepeatChance)
                 {
                     SwitchState<WeakHollowRetreat>();
                 }

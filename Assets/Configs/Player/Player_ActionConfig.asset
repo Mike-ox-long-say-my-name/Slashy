@@ -14,15 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LightAttackFirstStaminaCost>k__BackingField: 10
   <LightAttackSecondStaminaCost>k__BackingField: 10
-  <LightAttackRecovery>k__BackingField: 0.1
+  <LightAttackRecovery>k__BackingField: 0
   <LightAirAttackStaminaCost>k__BackingField: 15
+  <FirstStrongAttackStaminaCost>k__BackingField: 20
+  <SecondStrongAttackStaminaCost>k__BackingField: 20
+  <FirstStrongAttackHealthCost>k__BackingField: 20
   <StaggerFallTime>k__BackingField: 0.5
   <JumpStaminaCost>k__BackingField: 15
   <DashRecovery>k__BackingField: 0.3
-  <DashDistance>k__BackingField: 3
+  <DashDistance>k__BackingField: 3.5
   <DashTime>k__BackingField: 0.4
   <DashInvincibilityStart>k__BackingField: 0.1
   <DashInvincibilityEnd>k__BackingField: 0.8
   <DashStaminaCost>k__BackingField: 10
-  <ActiveHealRate>k__BackingField: 10
+  <ActiveHealRate>k__BackingField: 13
   <HealStaminaConsumption>k__BackingField: 10

@@ -49,7 +49,12 @@ namespace Characters.Player
 
         private void UnsubscribeFromInput()
         {
-            var actions = PlayerActionsProxy.Instance.Actions;
+            var instance = PlayerActionsProxy.TryGetInstance();
+            if (instance == null)
+            {
+                return;
+            }
+            var actions = instance.Actions;
             actions.Player.Jump.performed -= OnJump;
             actions.Player.Dash.performed -= OnDash;
             actions.Player.Heal.performed -= OnHeal;

@@ -15,11 +15,8 @@ namespace Characters.Player.States
             {
                 SwitchState<PlayerGroundedState>();
             }
-            else if (Context.CanLightAttack
-                     && !Context.AttackedAtThisAirTime
-                     && Context.AttackExecutorHelper.IsAllIdle()
-                     && Context.Player.HasStamina()
-                     && Context.Input.IsLightAttackPressed)
+            else if (Context.ShouldLightAttack
+                     && !Context.AttackedThisAirTime)
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerAirLightAttackState>();

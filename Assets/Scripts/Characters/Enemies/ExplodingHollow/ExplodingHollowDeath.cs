@@ -1,4 +1,5 @@
 using Characters.Enemies.States;
+using Core;
 
 namespace Characters.Enemies.ExplodingHollow
 {
@@ -6,12 +7,11 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            Context.Hurtbox.Disable();
-            // Context.VelocityMovement.Stop();
-            Context.Animator.SetTrigger("death");
+            BorderManager.Instance.DecreaseAggroCounter();
 
-            // Почти не захардкожено
-            Context.Destroyable.DestroyAfter(0.3f);
+            Context.Hurtbox.Disable();
+            Context.Animator.SetTrigger("death");
+            Context.Destroyable.DestroyLater();
         }
     }
 }

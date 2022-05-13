@@ -18,6 +18,8 @@ namespace Core.Characters
         private Vector3 _offset;
         private float _speedMultiplier = 1;
 
+        public bool IgnoreY { get; set; } = true;
+
         public AutoMovement(IVelocityMovement velocityMovement)
         {
             _velocityMovement = velocityMovement;
@@ -51,12 +53,19 @@ namespace Core.Characters
             }
 
             var position = _velocityMovement.BaseMovement.Transform.position;
-            var distance = Vector3.Distance(position, desiredPosition.Value);
-            if (distance < _targetReachedEpsilon)
+
+
+            var distance = IgnoreY ?
+                Vector3.Distance(position.WithZeroY(), desiredPosition.Value.WithZeroY()) :
+                Vector3.Distance(position, desiredPosition.Value);
+
+            if (distance >= _targetReachedEpsilon)
             {
-                TargetReached?.Invoke();
-                TargetReached = null;
+                return;
             }
+
+            TargetReached?.Invoke();
+            TargetReached = null;
         }
 
         private Vector3? GetTargetPosition()

@@ -52,33 +52,22 @@ namespace Characters.Player.States
             {
                 SwitchState<PlayerFallState>();
             }
-            else if (Context.CanDash
-                     && Context.DashRecoveryLock.IsUnlocked
-                     && Context.Input.IsDashPressed
-                     && Context.Player.HasStamina())
+            else if (Context.ShouldDash)
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerDashState>();
             }
-            else if (Context.CanJump
-                     && Context.Input.IsJumpPressed
-                     && Context.Player.HasStamina())
+            else if (Context.ShouldJump)
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerJumpState>();
             }
-            else if (Context.CanLightAttack
-                     && Context.AttackExecutorHelper.IsAllIdle()
-                     && Context.Input.IsLightAttackPressed
-                     && Context.Player.HasStamina())
+            else if (Context.ShouldLightAttack)
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerGroundLightAttackState>();
             }
-            else if (Context.CanStrongAttack
-                     && Context.AttackExecutorHelper.IsAllIdle()
-                     && Context.Input.IsStrongAttackPressed
-                     && Context.Player.HasStamina())
+            else if (Context.ShouldStrongAttack)
             {
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerGroundStrongAttackState>();
@@ -102,7 +91,7 @@ namespace Characters.Player.States
             _healRoutine = null;
         }
 
-        private static IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)
+        private IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)
         {
             while (player.Character.Health.Value < player.Character.Health.MaxValue)
             {
@@ -110,6 +99,8 @@ namespace Characters.Player.States
                 player.Stamina.Spend(staminaConsumptionRate * Time.deltaTime);
                 yield return null;
             }
+
+            SwitchState<PlayerGroundedState>();
         }
     }
 }

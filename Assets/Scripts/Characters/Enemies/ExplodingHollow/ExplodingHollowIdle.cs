@@ -1,3 +1,4 @@
+using Core;
 using UnityEngine;
 
 namespace Characters.Enemies.ExplodingHollow
@@ -8,6 +9,7 @@ namespace Characters.Enemies.ExplodingHollow
         {
             if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < Context.AggroDistance)
             {
+                BorderManager.Instance.IncreaseAggroCounter();
                 SwitchState<ExplodingHollowPursue>();
             }
         }

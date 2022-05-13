@@ -1,9 +1,11 @@
+using Core;
 using UnityEngine;
 
 namespace Miscellaneous
 {
     public class CameraController : MonoBehaviour
     {
+        [SerializeField] private float minBorderDistance = 15f;
         [SerializeField] private bool instantFirstMoves;
         [SerializeField] private Transform anchor;
         [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
@@ -25,7 +27,8 @@ namespace Miscellaneous
         private void SetPosition(float x)
         {
             var position = transform.position;
-            transform.position = new Vector3(x, position.y, position.z);
+            var availableX = BorderManager.Instance.GetAvailableCameraX(position.x, x, minBorderDistance);
+            transform.position = new Vector3(availableX, position.y, position.z);
         }
 
         private void Awake()

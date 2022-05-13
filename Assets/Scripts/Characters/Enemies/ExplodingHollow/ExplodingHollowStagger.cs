@@ -7,8 +7,6 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            //Context.VelocityMovement.Stop();
-
             Context.Animator.SetBool("is-staggered", true);
         }
 
@@ -25,7 +23,7 @@ namespace Characters.Enemies.ExplodingHollow
             }
             else
             {
-                SwitchState<ExplodingHollowIdle>();
+                SwitchState<ExplodingHollowPursue>();
             }
         }
 

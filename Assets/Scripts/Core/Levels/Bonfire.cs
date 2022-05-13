@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Core.Levels
 {
-    public class Bonfire : MonoBehaviour
+    public class Bonfire : MonoBehaviour, IInteractable
     {
         [SerializeField] private Vector3 respawnOffset;
         [SerializeField] private Vector3 playerPositionOffset = new Vector3(1, 0, 0);
@@ -19,27 +19,25 @@ namespace Core.Levels
         {
             return transform.position + playerPositionOffset;
         }
-
-        [UsedImplicitly]
-        public void TouchBonfire()
+        
+        private void TouchBonfire()
         {
             RespawnManager.Instance.UpdateRespawnData(this);
-            AlignPlayerForAnimation(PlayerManager.Instance.PlayerInfo);
-        }
-
-        private void AlignPlayerForAnimation(IPlayer player)
-        {
-            var bonfirePosition = transform.position;
-            var animationPosition = GetPlayerAnimationPosition();
-            var movement = player.VelocityMovement.BaseMovement;
-            movement.SetPosition(animationPosition);
-            movement.Rotate(bonfirePosition.x - animationPosition.x);
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(GetRespawnPosition(), 0.3f);
             Gizmos.DrawSphere(GetPlayerAnimationPosition(), 0.2f);
+        }
+
+        public bool IsInteractable { get; set; } = false;
+        public InteractionMask Mask => InteractionMask.Bonfire;
+
+        public InteractionResult Interact()
+        {
+            TouchBonfire();
+            return new InteractionResult(InteractionType.TouchedBonfire, this);
         }
     }
 }

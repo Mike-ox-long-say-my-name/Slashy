@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player_SecondStrongAttack_DamageMultipliers
   m_EditorClassIdentifier: 
   <DamageMultipliers>k__BackingField:
-    <DamageMultiplier>k__BackingField: 5
+    <DamageMultiplier>k__BackingField: 3
     <BalanceDamageMultiplier>k__BackingField: 3
     <PushMultiplier>k__BackingField: 2
     <StaggerTimeMultiplier>k__BackingField: 3

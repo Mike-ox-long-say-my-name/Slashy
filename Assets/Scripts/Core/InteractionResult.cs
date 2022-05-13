@@ -1,10 +1,14 @@
 ﻿namespace Core
 {
-    public enum InteractionResult
+    public readonly struct InteractionResult
     {
-        None = 0,
-        Popup = 1,
-        TouchedBonfire = 2,
-        Other = 3
+        public readonly InteractionType Type;
+        public readonly object Sender;
+
+        public InteractionResult(InteractionType type, object sender)
+        {
+            Type = type;
+            Sender = sender;
+        }
     }
 }

@@ -1,15 +1,22 @@
-﻿using System;
-using Core;
+﻿using Core;
 using Settings;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace UI.Menu
 {
     public class InGameMenuController : MonoBehaviour
     {
+        [SerializeField] private UnityEvent menuOpened;
+        [SerializeField] private UnityEvent menuClosed;
+
         private IMenu _mainMenu;
         private IMenu _settingsMenu;
+
+        public UnityEvent MenuClosed => menuClosed;
+
+        public UnityEvent MenuOpened => menuOpened;
 
         private void Awake()
         {
@@ -56,6 +63,7 @@ namespace UI.Menu
         {
             _mainMenu.Show();
             RestrictPlayerInput();
+            MenuOpened?.Invoke();
         }
 
         public void ShowSettingsMenu()
@@ -67,6 +75,7 @@ namespace UI.Menu
         {
             _mainMenu.Close();
             AllowPlayerInput();
+            MenuClosed?.Invoke();
         }
 
         public void CloseSettingsMenu()

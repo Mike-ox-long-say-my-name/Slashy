@@ -13,12 +13,7 @@ namespace Core.Player.Interfaces
 
         IHurtbox Hurtbox { get; }
         
-        bool IsJumping { get; }
-        bool IsFalling { get; }
-        bool IsDashing { get; }
-        bool IsInvincible { get; }
-        bool IsStaggered { get; }
-        bool IsAttacking { get; }
+        bool IsFrozen { get; set; }
         Transform Transform { get; }
 
         MixinPlayerCapabilities Capabilities { get; }

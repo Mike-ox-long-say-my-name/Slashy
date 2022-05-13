@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using Core.Player;
+﻿using Core.Player;
 using Core.Player.Interfaces;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Core.Levels
 {
@@ -14,12 +13,11 @@ namespace Core.Levels
         [SerializeField] private Vector3 startPosition;
         [SerializeField] private Vector3 startTargetPosition;
 
-        private void OnTriggerEnter(Collider other)
+        public void OnTriggered(Collider other)
         {
-            var player = other.GetComponent<IPlayer>();
-            if (player != null)
+            if (other.GetComponent<IPlayer>() != null)
             {
-                Warp(player);
+                Warp(PlayerManager.Instance.PlayerInfo);
             }
         }
 
@@ -55,6 +53,7 @@ namespace Core.Levels
 
         private IEnumerator MoveAndLoadRoutine(IPlayer playerInfo, Vector3 target)
         {
+            playerInfo.IsFrozen = true;
             playerInfo.Hurtbox.Disable();
             yield return MoveRoutine(playerInfo, target);
             LoadNextLevel(playerInfo);
@@ -64,6 +63,7 @@ namespace Core.Levels
         {
             yield return MoveRoutine(playerInfo, target);
             playerInfo.Hurtbox.Enable();
+            playerInfo.IsFrozen = false;
         }
 
         private void LoadNextLevel(IPlayer playerInfo)

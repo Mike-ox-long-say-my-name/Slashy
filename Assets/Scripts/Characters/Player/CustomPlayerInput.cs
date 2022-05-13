@@ -32,7 +32,7 @@ namespace Characters.Player
 
         public Vector2 MoveInput { get; private set; }
 
-        private void ConnectToUnityInput()
+        private void SubscribeToInput()
         {
             var actions = PlayerActionsProxy.Instance.Actions;
             actions.Player.Enable();
@@ -47,6 +47,20 @@ namespace Characters.Player
             actions.Player.Interact.performed += OnInteracted;
         }
 
+        private void UnsubscribeFromInput()
+        {
+            var actions = PlayerActionsProxy.Instance.Actions;
+            actions.Player.Jump.performed -= OnJump;
+            actions.Player.Dash.performed -= OnDash;
+            actions.Player.Heal.performed -= OnHeal;
+            actions.Player.Move.performed -= OnMove;
+            actions.Player.Move.started -= OnMove;
+            actions.Player.Move.canceled -= OnMove;
+            actions.Player.Fire.performed -= OnAttack;
+            actions.Player.Fire2.performed -= OnStrongAttack;
+            actions.Player.Interact.performed -= OnInteracted;
+        }
+
         private void Awake()
         {
             IsJumpPressedTrigger = _triggerFactory.Create();
@@ -54,8 +68,16 @@ namespace Characters.Player
             IsLightAttackPressedTrigger = _triggerFactory.Create();
             IsHealPressedTrigger = _triggerFactory.Create();
             IsStrongAttackPressedTrigger = _triggerFactory.Create();
+        }
 
-            ConnectToUnityInput();
+        private void OnEnable()
+        {
+            SubscribeToInput();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromInput();
         }
 
         private void Update()

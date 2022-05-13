@@ -40,6 +40,7 @@ namespace Characters.Player.States
             if (Context.Input.MoveInput.sqrMagnitude > 0)
             {
                 StopHealing();
+                SwitchState<PlayerGroundedState>();
             }
 
             CheckStateSwitch();

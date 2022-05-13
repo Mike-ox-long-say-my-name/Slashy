@@ -82,6 +82,7 @@ namespace Characters.Player.States
         public DashCloneEffectController DashEffectController { get; private set; }
         public Animator AnimatorComponent { get; private set; }
         public IHurtbox Hurtbox { get; private set; }
+        public bool IsFrozen { get; set; }
         public IAutoPlayerInput Input { get; private set; }
         public IJumpHandler JumpHandler { get; private set; }
         public MixinPlayerCapabilities Capabilities { get; private set; }
@@ -169,7 +170,10 @@ namespace Characters.Player.States
 
         private void Update()
         {
-            CurrentState.UpdateState();
+            if (!IsFrozen)
+            {
+                CurrentState.UpdateState();
+            }
 
             if (Keyboard.current.iKey.wasPressedThisFrame)
             {

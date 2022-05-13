@@ -21,7 +21,7 @@ namespace Core.Levels
             PlayerManager.Instance.PlayedDeadSequenceEnded.AddListener(Respawn);
             PlayerManager.Instance.PlayerLoaded.AddListener(OnPlayerLoaded);
         }
-
+            
         private void OnStartingNewGame(string level)
         {
             respawnData.RespawnLevel = level;

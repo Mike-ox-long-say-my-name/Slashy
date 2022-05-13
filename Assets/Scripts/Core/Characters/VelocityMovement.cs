@@ -76,7 +76,7 @@ namespace Core.Characters
         {
             if (BaseMovement.IsGrounded)
             {
-                if (_velocity.y < 0)
+                if (_velocity.y <= 1e-5)
                 {
                     _velocity.y = GroundedGravity;
                 }

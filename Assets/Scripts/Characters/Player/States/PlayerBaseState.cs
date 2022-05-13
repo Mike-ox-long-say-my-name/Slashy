@@ -63,7 +63,7 @@ namespace Characters.Player.States
             {
                 return;
             }
-
+            
             var newState = new T();
             newState.Init(Context);
 

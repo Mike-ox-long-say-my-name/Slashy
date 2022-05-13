@@ -1,5 +1,4 @@
 using Core;
-using Core.Levels;
 
 namespace Characters.Player.States
 {

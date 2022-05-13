@@ -1,7 +1,5 @@
-using System;
 using Core.Characters.Interfaces;
 using System.Collections;
-using Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,14 +15,21 @@ namespace UI
         [SerializeField, Range(0, 1)] private float fillAnimationStartDelay = 0.15f;
 
         private bool _firstAnimationHappened = false;
+        private float _maxFill;
+
+        private void Awake()
+        {
+            _maxFill = frontLayerImage.fillAmount;
+        }
 
         public void OnResourceValueChanged(IResource resource)
         {
-            var fraction = resource.Value / resource.MaxValue;
             if (_middleLayerAnimation != null)
             {
                 StopCoroutine(_middleLayerAnimation);
             }
+
+            var fraction = resource.Value / resource.MaxValue * _maxFill;
 
             middleLayerImage.fillAmount = frontLayerImage.fillAmount;
             frontLayerImage.fillAmount = fraction;

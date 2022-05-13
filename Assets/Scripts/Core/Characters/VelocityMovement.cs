@@ -44,7 +44,6 @@ namespace Core.Characters
                 ref _horizontalAirboneVelocity, AirboneControlFactor);
             _velocity.z = Mathf.SmoothDamp(Velocity.z, VerticalSpeed * direction.z,
                 ref _verticalAirboneVelocity, AirboneControlFactor);
-            _velocity.z = direction.z * VerticalSpeed;
         }
 
         public virtual void Move(Vector3 direction)

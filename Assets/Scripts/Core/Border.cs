@@ -12,11 +12,12 @@ namespace Core
         private BoxCollider _borderCollider;
 
         public float X => transform.position.x;
+        public bool IsEnabled => _borderCollider.enabled;
 
         private void Awake()
         {
             _borderCollider = GetComponent<BoxCollider>();
-            if (!isAggroBorder)
+            if (isAggroBorder)
             {
                 Disable();
             }

@@ -15,7 +15,10 @@ namespace Characters.Player.States
 
         public override void OnDeath(HitInfo info)
         {
-            Context.StopCoroutine(_recoverFromStaggerFallRoutine);
+            if (_recoverFromStaggerFallRoutine != null)
+            {
+                Context.StopCoroutine(_recoverFromStaggerFallRoutine);
+            }
             base.OnDeath(info);
         }
 

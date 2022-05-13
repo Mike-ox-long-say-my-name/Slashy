@@ -7,7 +7,7 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             base.EnterState();
-            Context.AttackedAtThisAirTime = true;
+            Context.AttackedThisAirTime = true;
 
             Context.Player.Stamina.Spend(Context.PlayerConfig.LightAirAttackStaminaCost);
             Context.AnimatorComponent.SetTrigger("attack");

@@ -12,14 +12,22 @@ namespace Characters.Enemies.WeakHollow
     [RequireComponent(typeof(MixinAutoMovement))]
     public class WeakHollowStateMachine : EnemyStateMachine<WeakHollowStateMachine>
     {
+        [SerializeField, Range(0, 1)] private float attackRepeatChance = 0.2f;
+        [SerializeField, Range(0, 1)] private float pursueAfterStaggerChance = 0.3f;
+        [SerializeField] private bool tryToSurroundPlayer = true;
         [SerializeField] private MonoAbstractAttackExecutor punchAttack;
+
+        public float AttackRepeatChance => attackRepeatChance;
+        public float PursueAfterStaggerChance => pursueAfterStaggerChance;
+
+        public bool TryToSurroundPlayer => tryToSurroundPlayer;
 
         public HitInfo LastHitInfo { get; set; }
         public Animator AnimatorComponent { get; private set; }
 
         public IAttackExecutor PunchAttackExecutor => punchAttack.GetExecutor();
         public IAutoMovement AutoMovement { get; private set; }
-        
+
         protected override void Awake()
         {
             base.Awake();

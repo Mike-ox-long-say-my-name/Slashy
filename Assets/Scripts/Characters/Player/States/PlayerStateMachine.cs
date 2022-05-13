@@ -1,3 +1,4 @@
+using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
@@ -8,8 +9,6 @@ using Core.Player;
 using Core.Player.Interfaces;
 using Core.Utilities;
 using Effects;
-using System.Collections;
-using Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using PlayerConfig = Configs.Player.PlayerConfig;
@@ -84,6 +83,7 @@ namespace Characters.Player.States
         }
 
         public OwningLock DashRecoveryLock { get; } = new OwningLock();
+        public OwningLock LightAttackRecoveryLock { get; } = new OwningLock();
 
         public bool CanDash => Capabilities.CanDash;
         public bool CanJump => Capabilities.CanJump;
@@ -115,8 +115,32 @@ namespace Characters.Player.States
 
         public bool HasDashEffectController { get; private set; } = true;
 
-        public bool AttackedAtThisAirTime { get; set; }
+        public bool AttackedThisAirTime { get; set; }
         public IHitReceiver HitReceiver { get; private set; }
+
+        public bool ShouldLightAttack => CanLightAttack
+                                              && LightAttackRecoveryLock.IsUnlocked
+                                              && AttackExecutorHelper.IsAllIdle()
+                                              && Player.HasStamina()
+                                              && Input.IsLightAttackPressed;
+
+        public bool ShouldStrongAttack => CanStrongAttack
+                                              && AttackExecutorHelper.IsAllIdle()
+                                              && Player.HasStamina()
+                                              && Input.IsStrongAttackPressed;
+
+        public bool ShouldDash => CanDash
+                                       && DashRecoveryLock.IsUnlocked
+                                       && Input.IsDashPressed
+                                       && Player.HasStamina();
+
+        public bool ShouldJump => CanJump
+                                       && Input.IsJumpPressed
+                                       && Player.HasStamina();
+
+        public bool ShouldHeal => CanHeal
+                                  && Input.IsHealPressed
+                                  && Player.HasStamina();
 
         private void Awake()
         {

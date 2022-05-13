@@ -19,11 +19,19 @@ namespace Core
             base.Awake();
 
             _borders = FindObjectsOfType<Border>();
+            _borders = _borders
+                .OrderBy(border => border.X)
+                .ToArray();
         }
 
-        public float GetAvailableCameraX()
+        public float GetAvailableCameraX(float currentX, float targetX, float minDistance)
         {
-            throw new NotImplementedException();
+            var (left, right) = GetSurroundingBorders(currentX, true);
+            if (left == null || right == null)
+            {
+                return targetX;
+            }
+            return Mathf.Clamp(targetX, left.X + minDistance, right.X - minDistance);
         }
 
         public void IncreaseAggroCounter()
@@ -33,25 +41,45 @@ namespace Core
                 return;
             }
             var player = PlayerManager.Instance.PlayerInfo.Transform;
-            EnableClosestBorders(player.position.x);
+            EnableSurroundingBorders(player.position.x);
         }
 
-        private void EnableClosestBorders(float x)
+        private void EnableSurroundingBorders(float x)
         {
-            for (int i = 0; i < _borders.Length - 1; i++)
+            var (left, right) = GetSurroundingBorders(x);
+            if (left == null || right == null)
             {
-                var left = _borders[i];
-                var right = _borders[i + 1];
+                return;
+            }
+
+            left.Enable();
+            right.Enable();
+        }
+
+        public (Border left, Border right) GetSurroundingBorders(float x, bool onlyEnabled = false)
+        {
+            var searchThrough = onlyEnabled ? _borders.Where(border => border.IsEnabled).ToArray() : _borders;
+
+            for (int i = 0; i < searchThrough.Length - 1; i++)
+            {
+                var left = searchThrough[i];
+                var right = searchThrough[i + 1];
+
+                if (left == null || right == null)
+                {
+                    Debug.LogWarning("Border was null");
+                    continue;
+                }
 
                 if (!(left.X <= x) || !(right.X >= x))
                 {
                     continue;
                 }
 
-                left.Enable();
-                right.Enable();
-                break;
+                return (left, right);
             }
+
+            return (null, null);
         }
 
         public void DecreaseAggroCounter()
@@ -68,6 +96,12 @@ namespace Core
             {
                 border.Disable();
             }
+        }
+
+        public void ResetAggroCounter()
+        {
+            _aggroCounter = 0;
+            DisableAggroBorders();
         }
     }
 }

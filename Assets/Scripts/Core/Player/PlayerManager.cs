@@ -33,14 +33,18 @@ namespace Core.Player
                 return _playerInfo;
             }
         }
-
+        
         [SerializeField] private UnityEvent playerLoaded;
         [SerializeField] private UnityEvent playedDeadSequenceStarted;
         [SerializeField] private UnityEvent playedDeadSequenceEnded;
+        [SerializeField] private UnityEvent playerTouchedBonfire;
+        [SerializeField] private UnityEvent playedStartedAttacking;
 
         public UnityEvent PlayerLoaded => playerLoaded;
         public UnityEvent PlayedDeadSequenceStarted => playedDeadSequenceStarted;
         public UnityEvent PlayedDeadSequenceEnded => playedDeadSequenceEnded;
+        public UnityEvent PlayerTouchedBonfire => playerTouchedBonfire;
+        public UnityEvent PlayedStartedAttacking => playedStartedAttacking;
 
         public void ActivatePlayer()
         {

@@ -9,10 +9,13 @@ namespace Characters.Enemies.WeakHollow
         {
             var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(),
                 Context.BaseMovement.Transform.position.WithZeroY());
-            if (distance < 6)
+            if (!(distance < 6))
             {
-                SwitchState<WeakHollowPursue>();
+                return;
             }
+
+            BorderManager.Instance.IncreaseAggroCounter();
+            SwitchState<WeakHollowPursue>();
         }
     }
 }

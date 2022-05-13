@@ -1,5 +1,7 @@
-﻿using Core.Attacking;
+﻿using System.Collections;
+using Core.Attacking;
 using Core.Characters.Interfaces;
+using UnityEngine;
 
 namespace Characters.Player.States
 {
@@ -45,12 +47,20 @@ namespace Characters.Player.States
         {
             if (result.WasCompleted)
             {
+                Context.StartCoroutine(RecoveryRoutine(Context.PlayerConfig.LightAttackRecovery));
                 SwitchState<PlayerGroundedState>();
             }
             else
             {
                 Context.AnimatorComponent.ResetTrigger("attack");
             }
+        }
+
+        private IEnumerator RecoveryRoutine(float recoverTime)
+        {
+            Context.LightAttackRecoveryLock.Lock(this);
+            yield return new WaitForSeconds(recoverTime);
+            Context.LightAttackRecoveryLock.TryUnlock(this);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.Player;
+﻿using System;
+using Core.Player;
 using Core.Player.Interfaces;
 using System.Collections;
 using UnityEditor;
@@ -107,7 +108,12 @@ namespace Core.Levels
             var movement = playerInfo.VelocityMovement.BaseMovement;
             movement.SetPosition(_transferData.StartPosition);
 
-            // host.StartCoroutine(MoveAndReleaseRoutine(playerInfo, _transferData.StartTargetPosition));
+            host.StartCoroutine(MoveAndReleaseRoutine(playerInfo, _transferData.StartTargetPosition));
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawSphere(transform.position, 0.3f);
         }
     }
 }

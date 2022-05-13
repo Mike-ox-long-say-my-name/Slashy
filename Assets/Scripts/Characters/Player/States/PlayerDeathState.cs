@@ -1,6 +1,7 @@
 using Core.Characters.Interfaces;
 using Core.Player;
 using System.Collections;
+using Core;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -27,7 +28,8 @@ namespace Characters.Player.States
             }
 
             Time.timeScale = 1f;
-
+            
+            BorderManager.Instance.ResetAggroCounter();
             PlayerManager.Instance.PlayedDeadSequenceEnded?.Invoke();
         }
     }

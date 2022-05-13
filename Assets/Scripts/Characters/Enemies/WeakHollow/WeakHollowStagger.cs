@@ -20,9 +20,9 @@ namespace Characters.Enemies.WeakHollow
 
         private void Timeout()
         {
-            if (Random.value < 0.3)
+            if (Random.value < Context.PursueAfterStaggerChance)
             {
-                SwitchState<WeakHollowAttack>();
+                SwitchState<WeakHollowPursue>();
             }
             else
             {

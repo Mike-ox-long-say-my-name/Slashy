@@ -11,6 +11,12 @@ namespace Characters.Enemies.ExplodingHollow
 {
     public class MonoExplosionAttackExecutor : MonoAbstractAttackExecutor
     {
+        [SerializeField, Range(0, 2)] private float explosionDelay = 0.4f;
+        [SerializeField, Range(0.1f, 3)] private float explosionHitboxLingerTime = 1.5f;
+
+        [SerializeField] private ParticleSystem explosionParticles;
+        [SerializeField] private ExplodingHollowAttackConfig config;
+
         private class ExplosionAttack : AttackExecutor
         {
             private readonly AttackData _data;
@@ -23,7 +29,7 @@ namespace Characters.Enemies.ExplodingHollow
 
             protected override IEnumerator Execute()
             {
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(_data.ExplosionDelay);
 
                 if (_data.Particles != null)
                 {
@@ -35,7 +41,7 @@ namespace Characters.Enemies.ExplodingHollow
                 CreateBloodFires();
 
                 yield return new WaitForFixedUpdate();
-                yield return new WaitForSeconds(0.13f);
+                yield return new WaitForSeconds(_data.LingerTime);
 
                 Attackbox.Disable();
             }
@@ -44,10 +50,10 @@ namespace Characters.Enemies.ExplodingHollow
             {
                 var config = _data.Config;
 
-                var groundOffset = Vector3.down * 0.6f;
+                var groundOffset = Vector3.down;
 
                 var deltaAngle = Mathf.PI * 2 / config.FireRows;
-                var deltaDistance = config.FiresPerRow / config.FireRowLength;
+                var deltaDistance = config.FireRowLength / config.FiresPerRow;
 
                 var angle = 0f;
                 for (int i = 0; i < config.FireRows; i++)
@@ -72,14 +78,13 @@ namespace Characters.Enemies.ExplodingHollow
             }
         }
 
-        [SerializeField] private ParticleSystem explosionParticles;
-        [SerializeField] private ExplodingHollowAttackConfig config;
-
         private struct AttackData
         {
             public ParticleSystem Particles { get; set; }
             public ExplodingHollowAttackConfig Config { get; set; }
             public Transform Transform { get; set; }
+            public float ExplosionDelay { get; set; }
+            public float LingerTime { get; set; }
         }
 
         private IAttackExecutor _executor;
@@ -95,7 +100,9 @@ namespace Characters.Enemies.ExplodingHollow
             {
                 Particles = explosionParticles,
                 Config = config,
-                Transform = transform
+                Transform = transform,
+                ExplosionDelay = explosionDelay,
+                LingerTime = explosionHitboxLingerTime
             };
 
             var attackbox = GetComponentInChildren<MonoAttackbox>().Attackbox;

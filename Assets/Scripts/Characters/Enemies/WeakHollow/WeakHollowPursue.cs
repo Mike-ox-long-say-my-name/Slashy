@@ -22,7 +22,8 @@ namespace Characters.Enemies.WeakHollow
         private static Vector3 GetRandomOffset()
         {
             var distance = Random.Range(2f, 6f);
-            return Random.insideUnitCircle.normalized * distance;
+            var offsetXY = Random.insideUnitCircle.normalized * distance;
+            return new Vector3(offsetXY.x, 0, offsetXY.y);
         }
 
         public override void ExitState()

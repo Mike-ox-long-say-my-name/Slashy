@@ -9,6 +9,8 @@ namespace Core.Levels
         
         private void Start()
         {
+            return;
+
             var gameLoader = GameLoader.Instance;
             gameLoader.Exiting.AddListener(OnExiting);
             gameLoader.LoadedExitedLevel.AddListener(OnLoadedExitedLevel);

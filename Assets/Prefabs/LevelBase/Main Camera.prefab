@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07978769deff1d04c93aa9881dafe29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minBorderDistance: 9
   instantFirstMoves: 1
   anchor: {fileID: 0}
-  followSmoothTime: 0.3
+  followSmoothTime: 0.33

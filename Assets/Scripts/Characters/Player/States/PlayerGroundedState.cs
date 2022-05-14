@@ -46,7 +46,7 @@ namespace Characters.Player.States
 
             HandleControl();
 
-            Context.AnimatorComponent.SetBool("is-walking", Context.Input.MoveInput.sqrMagnitude > 0);
+            Context.Animator.SetBool("is-walking", Context.Input.MoveInput.sqrMagnitude > 0);
 
             CheckStateSwitch();
         }

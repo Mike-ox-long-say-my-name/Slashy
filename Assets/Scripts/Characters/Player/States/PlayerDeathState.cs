@@ -12,7 +12,7 @@ namespace Characters.Player.States
         {
             Context.Hurtbox.Disable();
             Context.VelocityMovement.Stop();
-            Context.AnimatorComponent.SetTrigger("death");
+            Context.Animator.SetTrigger("death");
             Context.StartCoroutine(PlayDeathSequence(1.4f, 0.02f));
         }
 

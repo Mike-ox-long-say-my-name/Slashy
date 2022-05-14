@@ -13,7 +13,7 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
-            Context.AnimatorComponent.SetBool("is-healing", true);
+            Context.Animator.SetBool("is-healing", true);
 
             _healRoutine = Context.StartCoroutine(
                 HealRoutine(
@@ -76,7 +76,7 @@ namespace Characters.Player.States
 
         public override void ExitState()
         {
-            Context.AnimatorComponent.SetBool("is-healing", false);
+            Context.Animator.SetBool("is-healing", false);
             StopHealing();
         }
 

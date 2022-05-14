@@ -12,7 +12,7 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
-            Context.AnimatorComponent.SetBool("is-saving", true);
+            Context.Animator.SetBool("is-saving", true);
 
             _touchTimer = Timer.Start(AnimationTime, SwitchState<PlayerGroundedState>);
         }
@@ -31,7 +31,7 @@ namespace Characters.Player.States
         public override void ExitState()
         {
             Context.Hurtbox.Enable();
-            Context.AnimatorComponent.SetBool("is-saving", false);
+            Context.Animator.SetBool("is-saving", false);
         }
     }
 }

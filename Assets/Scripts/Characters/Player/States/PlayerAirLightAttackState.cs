@@ -10,7 +10,7 @@ namespace Characters.Player.States
             Context.AttackedThisAirTime = true;
 
             Context.Player.Stamina.Spend(Context.PlayerConfig.LightAirAttackStaminaCost);
-            Context.AnimatorComponent.SetTrigger("attack");
+            Context.Animator.SetTrigger("attack");
             Context.AirboneLightAttack.StartAttack(OnAttackEnded);
         }
 

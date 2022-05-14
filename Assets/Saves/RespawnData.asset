@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: RespawnData
   m_EditorClassIdentifier: 
   <RespawnPosition>k__BackingField: {x: 17.17, y: -0.06514013, z: 1.3659714}
-  <RespawnLevel>k__BackingField: 
+  <RespawnLevel>k__BackingField: Temple

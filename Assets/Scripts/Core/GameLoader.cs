@@ -30,7 +30,7 @@ namespace Core
         public UnityEvent<string> LoadedExitedLevel => loadedExitedLevel;
         public UnityEvent<string> LoadingExitedLevel => loadingExitedLevel;
 
-        public bool HasAnyGameProgress => !string.IsNullOrEmpty(saveData.ExitData.Level);
+        public bool HasAnyGameProgress => !string.IsNullOrEmpty(saveData.RespawnData.RespawnLevel);
 
         private string _scheduledScene;
 
@@ -79,7 +79,7 @@ namespace Core
 
         public void LoadGame()
         {
-            var exitedLevel = saveData.ExitData.Level;
+            var exitedLevel = saveData.RespawnData.RespawnLevel;
             LoadingExitedLevel?.Invoke(exitedLevel);
             TryLoadScene(exitedLevel);
             LoadedExitedLevel?.Invoke(exitedLevel);

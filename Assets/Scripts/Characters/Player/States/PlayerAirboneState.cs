@@ -6,12 +6,12 @@ namespace Characters.Player.States
     {
         public override void EnterState()
         {
-            Context.AnimatorComponent.SetBool("is-airbone", true);
+            Context.Animator.SetBool("is-airbone", true);
         }
 
         public override void ExitState()
         {
-            Context.AnimatorComponent.SetBool("is-airbone", false);
+            Context.Animator.SetBool("is-airbone", false);
         }
 
         public override void OnStaggered(HitInfo info)

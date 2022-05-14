@@ -7,7 +7,7 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
-            Context.AnimatorComponent.SetBool("is-staggered", true);
+            Context.Animator.SetBool("is-staggered", true);
         }
 
         public override void OnStaggerEnded()
@@ -17,7 +17,7 @@ namespace Characters.Player.States
 
         public override void ExitState()
         {
-            Context.AnimatorComponent.SetBool("is-staggered", false);
+            Context.Animator.SetBool("is-staggered", false);
         }
     }
 }

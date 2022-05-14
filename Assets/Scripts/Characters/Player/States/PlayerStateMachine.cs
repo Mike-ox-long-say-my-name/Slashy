@@ -95,7 +95,7 @@ namespace Characters.Player.States
         public IVelocityMovement VelocityMovement { get; private set; }
         public SpriteRenderer SpriteRenderer { get; private set; }
         public DashCloneEffectController DashEffectController { get; private set; }
-        public Animator AnimatorComponent { get; private set; }
+        public Animator Animator { get; private set; }
         public IHurtbox Hurtbox { get; private set; }
         public bool IsFrozen { get; set; }
         public IAutoPlayerInput Input { get; private set; }
@@ -148,7 +148,7 @@ namespace Characters.Player.States
             VelocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
 
             SpriteRenderer = GetComponent<SpriteRenderer>();
-            AnimatorComponent = GetComponent<Animator>();
+            Animator = GetComponent<Animator>();
             DashEffectController = GetComponentInChildren<DashCloneEffectController>();
             HitReceiver = GetComponent<MixinHittable>().HitReceiver;
 

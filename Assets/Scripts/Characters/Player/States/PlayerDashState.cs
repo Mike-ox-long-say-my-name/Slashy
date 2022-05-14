@@ -12,7 +12,7 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
-            Context.AnimatorComponent.SetBool("is-dashing", true);
+            Context.Animator.SetBool("is-dashing", true);
 
             Context.Player.Stamina.Spend(Context.PlayerConfig.DashStaminaCost);
             var input = Context.Input.MoveInput;
@@ -23,7 +23,7 @@ namespace Characters.Player.States
 
         public override void ExitState()
         {
-            Context.AnimatorComponent.SetBool("is-dashing", false);
+            Context.Animator.SetBool("is-dashing", false);
             Context.StartCoroutine(RecoverFromDashRoutine(Context.PlayerConfig.DashRecovery));
         }
 

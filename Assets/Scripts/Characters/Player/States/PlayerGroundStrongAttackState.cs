@@ -12,7 +12,7 @@ namespace Characters.Player.States
         {
             Context.VelocityMovement.Stop();
 
-            Context.AnimatorComponent.SetTrigger("strong-attack");
+            Context.Animator.SetTrigger("strong-attack");
             Context.Player.Stamina.Spend(Context.PlayerConfig.FirstStrongAttackStaminaCost);
             
             _shouldContinueAttack = false;
@@ -53,7 +53,7 @@ namespace Characters.Player.States
         {
             if (!_shouldContinueAttack && Context.Player.HasStamina() && Context.Input.IsStrongAttackPressed)
             {
-                Context.AnimatorComponent.SetTrigger("strong-attack");
+                Context.Animator.SetTrigger("strong-attack");
                 _shouldContinueAttack = true;
             }
         }
@@ -66,7 +66,7 @@ namespace Characters.Player.States
             }
             else
             {
-                Context.AnimatorComponent.ResetTrigger("strong-attack");
+                Context.Animator.ResetTrigger("strong-attack");
             }
         }
     }

@@ -18,10 +18,16 @@ namespace Core.Levels
             }
 
             GameLoader.Instance.StartingNewGame.AddListener(OnStartingNewGame);
+            GameLoader.Instance.LoadedExitedLevel.AddListener(OnLoadedExitedLevel);
             PlayerManager.Instance.PlayedDeadSequenceEnded.AddListener(Respawn);
             PlayerManager.Instance.PlayerLoaded.AddListener(OnPlayerLoaded);
         }
-            
+
+        private void OnLoadedExitedLevel(string arg0)
+        {
+            _isRespawning = true;
+        }
+
         private void OnStartingNewGame(string level)
         {
             respawnData.RespawnLevel = level;

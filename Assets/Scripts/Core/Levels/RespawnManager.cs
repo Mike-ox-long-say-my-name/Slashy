@@ -12,11 +12,6 @@ namespace Core.Levels
 
         private void Start()
         {
-            if (string.IsNullOrEmpty(respawnData.RespawnLevel))
-            {
-                respawnData.RespawnLevel = GameLoader.GetCurrentScene();
-            }
-
             GameLoader.Instance.StartingNewGame.AddListener(OnStartingNewGame);
             GameLoader.Instance.LoadedExitedLevel.AddListener(OnLoadedExitedLevel);
             PlayerManager.Instance.PlayedDeadSequenceEnded.AddListener(Respawn);

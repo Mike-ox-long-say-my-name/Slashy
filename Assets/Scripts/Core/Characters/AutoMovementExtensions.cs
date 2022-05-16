@@ -9,6 +9,8 @@ namespace Core.Characters
             movement.ResetSpeedMultiplier();
             movement.ResetTarget();
             movement.ResetTargetReachedEpsilon();
+            movement.ResetMaxMoveTime();
+            movement.ResetTargetReached();
         }
     }
 }

@@ -34,6 +34,7 @@ namespace Core.Attacking
         {
             EndAttack();
             base.OnAttackEnded(interrupted);
+            EventHandler?.HandleAttackEnd(this, interrupted);
         }
 
         public void EndAttack()

@@ -1,3 +1,4 @@
+using System;
 using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
@@ -142,6 +143,8 @@ namespace Characters.Player.States
                                   && Input.IsHealPressed
                                   && Player.HasStamina();
 
+        public Vector3? WarpPosition { get; set; } = null;
+
         private void Awake()
         {
             Input = GetComponent<IAutoPlayerInput>();
@@ -188,6 +191,26 @@ namespace Characters.Player.States
             Input.Interacted += () => CurrentState.OnInteracted();
 
             PlayerManager.Instance.PlayerLoaded?.Invoke();
+        }
+
+        private void OnEnable()
+        {
+            PlayerManager.Instance.StartedWarping.AddListener(OnStartedWarping);
+        }
+
+        private void OnDisable()
+        {
+            var manager = PlayerManager.TryGetInstance();
+            if (manager == null)
+            {
+                return;
+            }
+            manager.StartedWarping?.RemoveListener(OnStartedWarping);
+        }
+
+        private void OnStartedWarping(Vector3 position)
+        {
+            CurrentState.OnWarp(position);
         }
 
         private void Start()

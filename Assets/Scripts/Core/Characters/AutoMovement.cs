@@ -18,6 +18,8 @@ namespace Core.Characters
         private Vector3 _offset;
         private float _speedMultiplier = 1;
 
+        private Timer _moveTimer;
+
         public bool IgnoreY { get; set; } = true;
 
         public AutoMovement(IVelocityMovement velocityMovement)
@@ -27,11 +29,14 @@ namespace Core.Characters
 
         public void Tick(float deltaTime)
         {
+            _moveTimer?.Tick(deltaTime);
+
             var desiredPosition = GetTargetPosition();
 
             if (desiredPosition.HasValue)
             {
-                var direction = (desiredPosition.Value - _velocityMovement.BaseMovement.Transform.position).normalized;
+                var direction = (desiredPosition.Value - _velocityMovement.BaseMovement.Transform.position)
+                    .WithZeroY().normalized;
                 _velocityMovement.Move(direction * _speedMultiplier);
             }
 
@@ -64,8 +69,14 @@ namespace Core.Characters
                 return;
             }
 
+            RaiseTargetReachedEvent();
+        }
+
+        private void RaiseTargetReachedEvent()
+        {
             TargetReached?.Invoke();
-            TargetReached = null;
+            //TargetReached = null;
+            _moveTimer = null;
         }
 
         private Vector3? GetTargetPosition()
@@ -133,6 +144,20 @@ namespace Core.Characters
             _targetReachedEpsilon = DefaultTargetReachedEpsilon;
         }
 
+        public void SetMaxMoveTime(float time)
+        {
+            _moveTimer = Timer.Start(time, RaiseTargetReachedEvent);
+        }
+
+        public void ResetMaxMoveTime()
+        {
+            _moveTimer = null;
+        }
+
         public event Action TargetReached;
+        public void ResetTargetReached()
+        {
+            TargetReached = null;
+        }
     }
 }

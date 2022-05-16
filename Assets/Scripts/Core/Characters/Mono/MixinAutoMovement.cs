@@ -1,4 +1,5 @@
-﻿using Core.Characters.Interfaces;
+﻿using Core.Attacking;
+using Core.Characters.Interfaces;
 using Core.Modules;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace Core.Characters.Mono
                 {
                     return _autoMovement;
                 }
-                
+
                 var velocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
                 _autoMovement = new AutoMovement(velocityMovement);
                 return _autoMovement;

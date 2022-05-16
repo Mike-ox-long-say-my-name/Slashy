@@ -6,5 +6,6 @@ namespace Core.Attacking.Interfaces
         void HandleEnableHitbox(IAnimationAttackExecutorContext context);
         void HandleDisableHitbox(IAnimationAttackExecutorContext context);
         void HandleAnimationEnd(IAnimationAttackExecutorContext context);
+        void HandleAttackEnd(IAnimationAttackExecutorContext context, bool interrupted);
     }
 }

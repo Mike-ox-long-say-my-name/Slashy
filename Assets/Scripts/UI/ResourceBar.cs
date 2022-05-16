@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
+    [DefaultExecutionOrder(-1)]
     public class ResourceBar : MonoBehaviour
     {
         [SerializeField] private bool firstChangeNoAnimation = true;
@@ -21,6 +22,8 @@ namespace UI
         {
             _maxFill = frontLayerImage.fillAmount;
         }
+
+        private Coroutine _middleLayerAnimation;
 
         public void OnResourceValueChanged(IResource resource)
         {
@@ -65,7 +68,5 @@ namespace UI
                 yield return new WaitForSeconds(fillAnimationTickInterval);
             }
         }
-
-        private Coroutine _middleLayerAnimation;
     }
 }

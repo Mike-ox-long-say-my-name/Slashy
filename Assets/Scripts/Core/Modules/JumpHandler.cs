@@ -4,13 +4,13 @@ namespace Core.Modules
 {
     public class JumpHandler : IJumpHandler
     {
-        private readonly IBaseMovement _baseBaseMovement;
+        private readonly IBaseMovement _baseMovement;
         private readonly IVelocityMovement _velocityMovement;
         private readonly float _jumpPower;
 
-        public JumpHandler(IBaseMovement baseBaseMovement, IVelocityMovement velocityMovement, float jumpPower)
+        public JumpHandler(IBaseMovement baseMovement, IVelocityMovement velocityMovement, float jumpPower)
         {
-            _baseBaseMovement = baseBaseMovement;
+            _baseMovement = baseMovement;
             _velocityMovement = velocityMovement;
             _jumpPower = jumpPower;
         }
@@ -25,7 +25,7 @@ namespace Core.Modules
 
         private bool CanJump()
         {
-            return _baseBaseMovement.IsGrounded;
+            return _baseMovement.IsGrounded;
         }
 
         private void ApplyVelocity()

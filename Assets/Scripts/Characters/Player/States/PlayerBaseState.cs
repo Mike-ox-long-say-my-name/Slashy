@@ -77,5 +77,10 @@ namespace Characters.Player.States
         {
             return GetType().Name;
         }
+
+        public virtual void OnWarp(Vector3 position)
+        {
+            Context.WarpPosition = position;
+        }
     }
 }

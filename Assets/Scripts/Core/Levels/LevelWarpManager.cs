@@ -11,6 +11,8 @@ namespace Core.Levels
         [SerializeField] private Image screenImage;
         [SerializeField] private float screenDarkeningTime = 1.8f;
 
+        private LevelWarpInfo _info;
+
         private void Start()
         {
             GameLoader.Instance.Exiting.AddListener(_ =>
@@ -32,12 +34,13 @@ namespace Core.Levels
         public void InitiateWarp(Vector3 position, LevelWarpInfo info)
         {
             CanInitiateWarp = false;
-            Warp(PlayerManager.Instance.PlayerInfo, position, info);
+            _info = info;
+            PlayerManager.Instance.StartedWarping?.Invoke(position);
         }
 
-        private void Warp(IPlayer playerInfo, Vector3 targetPosition, LevelWarpInfo info)
+        private void Warp(IPlayer playerInfo, LevelWarpInfo info)
         {
-            StartCoroutine(MoveAndLoadRoutine(playerInfo, targetPosition, info));
+            StartCoroutine(MoveAndLoadRoutine(playerInfo, info));
         }
 
         private static IEnumerator MoveRoutine(IPlayer playerInfo, Vector3 target)
@@ -65,11 +68,10 @@ namespace Core.Levels
             playerInfo.Animator.SetBool("is-walking", false);
         }
 
-        private IEnumerator MoveAndLoadRoutine(IPlayer playerInfo, Vector3 target, LevelWarpInfo info)
+        private IEnumerator MoveAndLoadRoutine(IPlayer playerInfo, LevelWarpInfo info)
         {
             playerInfo.IsFrozen = true;
             playerInfo.Hurtbox.Disable();
-            yield return MoveRoutine(playerInfo, target);
             yield return LerpScreenAlphaRoutine(1, screenDarkeningTime);
 
             LoadNextLevel(playerInfo, info);
@@ -145,6 +147,11 @@ namespace Core.Levels
             movement.SetPosition(_transferData.StartPosition);
 
             StartCoroutine(MoveAndReleaseRoutine(playerInfo, _transferData.StartTargetPosition));
+        }
+
+        public void PlayerReady()
+        {
+            Warp(PlayerManager.Instance.PlayerInfo, _info);
         }
     }
 }

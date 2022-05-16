@@ -1,12 +1,11 @@
 ﻿using Core.Player.Interfaces;
-using UnityEditor;
 using UnityEngine;
 
 namespace Core.Levels
 {
     public class LevelWarp : MonoBehaviour
     {
-        [SerializeField] private SceneAsset levelWarp;
+        [SerializeField] private string levelWarp;
         [SerializeField] private Vector3 startPosition;
         [SerializeField] private Vector3 startTargetPosition;
 
@@ -21,7 +20,7 @@ namespace Core.Levels
 
             _entered = true;
             var target = GetTargetPosition();
-            var info = new LevelWarpInfo(levelWarp.name, startPosition, startTargetPosition);
+            var info = new LevelWarpInfo(levelWarp, startPosition, startTargetPosition);
             LevelWarpManager.Instance.InitiateWarp(target, info);
         }
 

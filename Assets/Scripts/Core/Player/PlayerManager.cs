@@ -39,12 +39,14 @@ namespace Core.Player
         [SerializeField] private UnityEvent playedDeadSequenceEnded;
         [SerializeField] private UnityEvent playerTouchedBonfire;
         [SerializeField] private UnityEvent playedStartedAttacking;
+        [SerializeField] private UnityEvent<Vector3> startedWarping;
 
         public UnityEvent PlayerLoaded => playerLoaded;
         public UnityEvent PlayedDeadSequenceStarted => playedDeadSequenceStarted;
         public UnityEvent PlayedDeadSequenceEnded => playedDeadSequenceEnded;
         public UnityEvent PlayerTouchedBonfire => playerTouchedBonfire;
         public UnityEvent PlayedStartedAttacking => playedStartedAttacking;
+        public UnityEvent<Vector3> StartedWarping => startedWarping;
 
         public void ActivatePlayer()
         {

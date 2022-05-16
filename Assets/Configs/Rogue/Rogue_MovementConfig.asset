@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3d44c31fcf5943418009219055bf813, type: 3}
+  m_Name: Rogue_MovementConfig
+  m_EditorClassIdentifier: 
+  <HorizontalSpeed>k__BackingField: 6
+  <VerticalSpeed>k__BackingField: 6
+  <MinVelocity>k__BackingField: -20
+  <MaxVelocity>k__BackingField: 20
+  <Gravity>k__BackingField: -9.81
+  <GroundedGravity>k__BackingField: -0.5
+  <AirboneControlFactor>k__BackingField: 1

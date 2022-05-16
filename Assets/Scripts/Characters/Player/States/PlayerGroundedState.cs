@@ -7,11 +7,11 @@ namespace Characters.Player.States
 {
     public class PlayerGroundedState : PlayerBaseGroundedState
     {
-        private bool _movingToBonfire;
+        private bool _locked;
 
         public override void EnterState()
         {
-            _movingToBonfire = false;
+            _locked = false;
             Context.AttackedThisAirTime = false;
         }
 
@@ -21,26 +21,38 @@ namespace Characters.Player.States
 
             var bonfirePosition = bonfire.transform.position.WithZeroY();
             var animationPosition = bonfire.GetPlayerAnimationPosition();
-            var movement = Context.VelocityMovement;
-            var player = movement.BaseMovement.Transform;
-
-            while (Vector3.Distance(player.position.WithZeroY(), animationPosition) > 0.1f)
-            {
-                var direction = (animationPosition - player.position).normalized;
-                movement.Move(direction);
-                yield return null;
-            }
-
-            movement.BaseMovement.SetPosition(animationPosition);
-            movement.BaseMovement.Rotate(bonfirePosition.x - animationPosition.x);
+            yield return MoveToRoutine(animationPosition);
+            Context.VelocityMovement.BaseMovement.Rotate(bonfirePosition.x - Context.Transform.position.x);
 
             SwitchState<PlayerTouchingBonfireState>();
         }
 
+        private IEnumerator MoveToRoutine(Vector3 position)
+        {
+            var movement = Context.VelocityMovement;
+            var player = movement.BaseMovement.Transform;
+
+            while (Vector3.Distance(player.position.WithZeroY(), position) > 0.1f)
+            {
+                var direction = (position - player.position).normalized;
+                movement.Move(direction);
+                yield return null;
+            }
+
+            movement.BaseMovement.SetPosition(position);
+        }
+
         public override void UpdateState()
         {
-            if (_movingToBonfire)
+            if (_locked)
             {
+                return;
+            }
+
+            if (Context.WarpPosition != null)
+            {
+                _locked = true;
+                Context.StartCoroutine(MoveToWarpRoutine(Context.WarpPosition.Value));
                 return;
             }
 
@@ -51,20 +63,31 @@ namespace Characters.Player.States
             CheckStateSwitch();
         }
 
+        private IEnumerator MoveToWarpRoutine(Vector3 position)
+        {
+            Context.Hurtbox.Disable();
+
+            yield return MoveToRoutine(position);
+
+            LevelWarpManager.Instance.PlayerReady();
+        }
+
         public override void OnInteracted()
         {
             var mask = InteractionMask.Any;
-            if (_movingToBonfire)
+            if (_locked)
             {
                 mask ^= InteractionMask.Bonfire;
             }
 
             var result = Context.Interactor.TryInteract(mask);
-            if (result.Type == InteractionType.TouchedBonfire)
+            if (result.Type != InteractionType.TouchedBonfire)
             {
-                _movingToBonfire = true;
-                Context.StartCoroutine(MoveToBonfireRoutine((Bonfire) result.Sender));
+                return;
             }
+
+            _locked = true;
+            Context.StartCoroutine(MoveToBonfireRoutine((Bonfire)result.Sender));
         }
 
         protected virtual void CheckStateSwitch()

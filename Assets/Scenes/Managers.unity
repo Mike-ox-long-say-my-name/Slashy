@@ -336,6 +336,9 @@ MonoBehaviour:
   playedStartedAttacking:
     m_PersistentCalls:
       m_Calls: []
+  startedWarping:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1229194242
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,8 +387,8 @@ MonoBehaviour:
   loadedExitedLevel:
     m_PersistentCalls:
       m_Calls: []
-  newGameScene: {fileID: 102900000, guid: f957b0749166bb240bb73dcdd7c25744, type: 3}
-  menuScene: {fileID: 102900000, guid: 7b3428fe27be7bd468560546df208f24, type: 3}
+  newGameScene: Temple
+  menuScene: MenuScene
 --- !u!4 &1229194244
 Transform:
   m_ObjectHideFlags: 0

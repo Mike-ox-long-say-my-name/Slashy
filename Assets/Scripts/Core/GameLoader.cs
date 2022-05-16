@@ -1,4 +1,5 @@
-﻿using Core.Levels;
+﻿using System;
+using Core.Levels;
 using Core.Player;
 using UnityEditor;
 using UnityEngine;
@@ -18,8 +19,8 @@ namespace Core
         [SerializeField] private UnityEvent<string> loadedLevel;
         [SerializeField] private UnityEvent<string> loadedExitedLevel;
 
-        [SerializeField] private SceneAsset newGameScene;
-        [SerializeField] private SceneAsset menuScene;
+        [SerializeField] private string newGameScene;
+        [SerializeField] private string menuScene;
 
         public UnityEvent<string> Exiting => exiting;
 
@@ -38,6 +39,25 @@ namespace Core
         {
             base.Awake();
             MapOtherSceneToSetActiveLater();
+        }
+
+        private void Start()
+        {
+            var currentScene = GetCurrentScene();
+            var loadedScenes = 0;
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                var scene = SceneManager.GetSceneAt(i);
+                if (scene.name != currentScene && scene.name != menuScene && scene.isLoaded)
+                {
+                    loadedScenes++;
+                }
+            }
+
+            if (loadedScenes == 0 && !SceneManager.GetSceneByName(menuScene).isLoaded)
+            {
+                TryLoadScene(menuScene);
+            }
         }
 
         private void MapOtherSceneToSetActiveLater()
@@ -87,7 +107,7 @@ namespace Core
 
         public void LoadNewGame()
         {
-            var levelName = newGameScene.name;
+            var levelName = newGameScene;
             StartingNewGame?.Invoke(levelName);
             LoadLevel(levelName);
         }
@@ -95,7 +115,7 @@ namespace Core
         public void LoadMenu()
         {
             Exiting?.Invoke(GetCurrentScene());
-            TryLoadScene(menuScene.name);
+            TryLoadScene(menuScene);
         }
 
         private void TryLoadScene(string sceneName)
@@ -108,7 +128,7 @@ namespace Core
             }
 
             var currentScene = GetCurrentScene();
-            if (currentScene != null)
+            if (currentScene != null && currentScene != "Managers")
             {
                 SceneManager.UnloadSceneAsync(currentScene);
             }

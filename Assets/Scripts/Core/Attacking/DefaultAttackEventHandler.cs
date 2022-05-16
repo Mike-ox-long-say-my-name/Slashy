@@ -21,5 +21,10 @@ namespace Core.Attacking
         public virtual void HandleAnimationEnd(IAnimationAttackExecutorContext context)
         {
         }
+
+        public void HandleAttackEnd(IAnimationAttackExecutorContext context, bool interrupted)
+        {
+            context.Attackbox.Disable();
+        }
     }
 }

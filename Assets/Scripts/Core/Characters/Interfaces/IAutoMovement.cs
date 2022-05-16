@@ -18,7 +18,10 @@ namespace Core.Characters.Interfaces
         void ResetSpeedMultiplier();
         void SetTargetReachedEpsilon(float epsilon);
         void ResetTargetReachedEpsilon();
+        void SetMaxMoveTime(float time);
+        void ResetMaxMoveTime();
 
         event Action TargetReached;
+        void ResetTargetReached();
     }
 }

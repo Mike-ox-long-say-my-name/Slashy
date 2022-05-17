@@ -228,6 +228,8 @@ namespace Characters.Player.States
 
             // Разогревочный
             VelocityMovement.BaseMovement.Move(new Vector3(0.01f, -0.01f, 0));
+            
+            BlackScreenManager.Instance.Whiteout(BlackScreenManager.Instance.DefaultTime);
         }
 
         private void Update()

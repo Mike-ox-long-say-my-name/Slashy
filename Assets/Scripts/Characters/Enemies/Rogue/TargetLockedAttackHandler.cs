@@ -26,11 +26,11 @@ namespace Characters.Enemies.Rogue
             baseMovement.Rotate(direction);
         }
 
-        private void MoveTowardsTarget(float distance)
+        private void MoveTowardsLookDirection(float distance)
         {
             var baseMovement = _movement.BaseMovement;
-            var direction = _target.position.x - baseMovement.Transform.position.x;
-            var move = new Vector3(Mathf.Sign(direction) * distance, 0, 0);
+            var sing = baseMovement.Transform.eulerAngles.y <= 0 ? 1 : -1;
+            var move = new Vector3(sing * distance, 0, 0);
             baseMovement.Move(move);
         }
 
@@ -43,7 +43,7 @@ namespace Characters.Enemies.Rogue
 
             if (MoveOnAttack != null)
             {
-                MoveTowardsTarget(MoveOnAttack.Value);
+                MoveTowardsLookDirection(MoveOnAttack.Value);
             }
 
             base.HandleEnableHitbox(context);

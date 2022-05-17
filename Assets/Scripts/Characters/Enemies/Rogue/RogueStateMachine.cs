@@ -7,7 +7,6 @@ using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Characters.Mono;
 using Core.Modules;
-using Core.Player;
 using Core.Utilities;
 using UnityEngine;
 
@@ -39,6 +38,7 @@ namespace Characters.Enemies.Rogue
     {
         public override void EnterState()
         {
+            BorderManager.Instance.DecreaseAggroCounter();
             Context.AutoMovement.ResetState();
             Context.AutoMovement.UnlockRotation();
 
@@ -57,6 +57,7 @@ namespace Characters.Enemies.Rogue
             const float aggroDistance = 8f;
             if (Vector3.Distance(position, player) < aggroDistance)
             {
+                BorderManager.Instance.IncreaseAggroCounter();
                 SwitchState<RoguePursue>();
             }
         }
@@ -104,14 +105,8 @@ namespace Characters.Enemies.Rogue
         {
             const float maxOffset = 0.8f;
             var direction = new Vector3(Random.Range(0f, maxOffset), 0, Random.Range(0f, maxOffset)).normalized;
-            var distance = Random.Range(2, 5);
+            var distance = Random.Range(1.4f, 3.5f);
             Context.AutoMovement.MoveTo(direction * distance);
-        }
-
-        private void SetRandomMaxRetreatTime()
-        {
-            var time = Random.Range(2f, 4f);
-            Context.AutoMovement.SetMaxMoveTime(time);
         }
 
         public override void EnterState()
@@ -122,7 +117,7 @@ namespace Characters.Enemies.Rogue
 
             SetRandomSpeedMultiplier();
             SetRandomRetreatTarget();
-            SetRandomMaxRetreatTime();
+            Context.AutoMovement.SetMaxMoveTime(1.5f);
         }
 
         private void OnTargetReached()
@@ -167,7 +162,19 @@ namespace Characters.Enemies.Rogue
 
         private void OnTargetReached()
         {
-            SwitchState<RogueThrust>();
+            var value = Random.value;
+            if (value < 0.2f)
+            {
+                SwitchState<RogueJumpAway>();
+            }
+            else if (value < 0.8f)
+            {
+                SwitchState<RogueThrust>();
+            }
+            else
+            {
+                SwitchState<RogueTripleSlash>();
+            }
         }
 
         public override void ExitState()
@@ -180,34 +187,52 @@ namespace Characters.Enemies.Rogue
         }
     }
 
-    public class DoubleSlashExecutor : MonoAnimationAttackExecutor
-    {
-        protected override void ConfigureExecutor(AnimationAttackExecutor executor)
-        {
-            var movement = GetComponentInParent<MixinVelocityMovement>().VelocityMovement;
-            executor.EventHandler =
-                new TargetLockedAttackHandler(PlayerManager.Instance.PlayerInfo.Transform, movement);
-        }
-    }
-
-    public class RogueDoubleSlash : RogueBaseState
+    public class RogueTripleSlash : RogueBaseState
     {
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("double-slash");
-            Context.DoubleSlashExecutor.StartAttack(OnAttackEnded);
+            Context.AutoMovement.UnlockRotation();
+            Context.AutoMovement.ResetState();
+            Context.VelocityMovement.Stop();
+
+            Context.Animator.SetTrigger("triple-slash");
+            Context.TripleSlashExecutor.StartAttack(OnAttackEnded);
+            Context.Character.Balance.Frozen = true;
         }
 
         private void OnAttackEnded(AttackResult obj)
         {
-            if (Random.value < Context.DoubleSlashRepeatChance)
+            if (obj.WasInterrupted)
             {
-                SwitchState<RogueDoubleSlash>();
+                return;
+            }
+
+            var value = Random.value;
+            if (value < 0.2)
+            {
+                SwitchState<RogueWait>();
+            }
+            else if (value < 0.35f)
+            {
+                SwitchState<RogueJumpAway>();
+            }
+            else if (value < 0.7f)
+            {
+                SwitchState<RogueRetreat>();
+            }
+            else if (value < 0.85f)
+            {
+                SwitchState<RogueThrust>();
             }
             else
             {
-                SwitchState<RoguePursue>();
+                SwitchState<RogueTripleSlash>();
             }
+        }
+
+        public override void ExitState()
+        {
+            Context.Character.Balance.Frozen = false;
         }
     }
 
@@ -264,7 +289,7 @@ namespace Characters.Enemies.Rogue
         private Vector3 GetPredictedPlayerMovement(float multiplier)
         {
             var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(), Context.transform.position.WithZeroY());
-            return Context.PlayerInfo.VelocityMovement.Velocity.WithZeroY().normalized * Mathf.Sqrt(distance);
+            return Context.PlayerInfo.VelocityMovement.Velocity.WithZeroY().normalized * Mathf.Sqrt(distance * multiplier);
         }
 
         public override void UpdateState()
@@ -379,6 +404,8 @@ namespace Characters.Enemies.Rogue
             Context.Animator.SetBool("is-jumping-away", true);
 
             var jumpLocation = GetRandomJumpLocation();
+            // Прогревочный
+            Context.VelocityMovement.Move((jumpLocation - Context.transform.position).normalized);
             Context.JumpHandler.Jump();
             _updatePassed = false;
 
@@ -492,7 +519,8 @@ namespace Characters.Enemies.Rogue
 
         private void OnTimeout()
         {
-            if (Random.value < 0.8f)
+            if (Random.value < 0.8f
+                && Vector3.Distance(Context.PlayerPosition.WithZeroY(), Context.transform.position.WithZeroY()) > 1)
             {
                 SwitchState<RogueJumpAtPlayer>();
             }
@@ -522,12 +550,11 @@ namespace Characters.Enemies.Rogue
     [RequireComponent(typeof(MixinJumpHandler))]
     public class RogueStateMachine : EnemyStateMachine<RogueStateMachine>
     {
-        [SerializeField] private MonoAbstractAttackExecutor doubleSlashExecutor;
+        [SerializeField] private MonoAbstractAttackExecutor tripleSlashExecutor;
         [SerializeField] private MonoAbstractAttackExecutor thrustExecutor;
         [SerializeField] private MonoAbstractAttackExecutor throwKnifeExecutor;
         [SerializeField] private MonoAbstractAttackExecutor jumpAttackExecutor;
-
-        [SerializeField, Range(0, 1)] private float doubleSlashRepeatChance = 0.6f;
+        
         [SerializeField, Range(0, 1)] private float jumpAwayAfterThrustChance = 0.7f;
         [SerializeField, Min(0)] private float maxJumpAwayDistance = 8f;
         [SerializeField, Min(0)] private float minJumpAwayDistance = 4f;
@@ -538,12 +565,11 @@ namespace Characters.Enemies.Rogue
         public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
         public IAutoMovement AutoMovement { get; private set; }
 
-        public IAttackExecutor DoubleSlashExecutor => doubleSlashExecutor.GetExecutor();
+        public IAttackExecutor TripleSlashExecutor => tripleSlashExecutor.GetExecutor();
         public IAttackExecutor ThrustExecutor => thrustExecutor.GetExecutor();
         public IAttackExecutor ThrowKnifeExecutor => throwKnifeExecutor.GetExecutor();
         public IAttackExecutor JumpAttackExecutor => jumpAttackExecutor.GetExecutor();
-
-        public float DoubleSlashRepeatChance => doubleSlashRepeatChance;
+        
         public float JumpAwayAfterThrustChance => jumpAwayAfterThrustChance;
         public float MaxJumpAwayDistance => maxJumpAwayDistance;
         public float MinJumpAwayDistance => minJumpAwayDistance;

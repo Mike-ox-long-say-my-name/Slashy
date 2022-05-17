@@ -10,7 +10,9 @@ namespace Characters.Enemies.WeakHollow
         public override void EnterState()
         {
             Context.AnimatorComponent.SetBool("is-charging", true);
-            _timer = Timer.Start(3, SwitchState<WeakHollowConfused>);
+
+            var time = Random.Range(2.5f, 4.5f);
+            _timer = Timer.Start(time, SwitchState<WeakHollowConfused>);
 
             Context.AutoMovement.SetSpeedMultiplier(2);
             Context.AutoMovement.MoveTo(Context.VelocityMovement.BaseMovement.Transform);

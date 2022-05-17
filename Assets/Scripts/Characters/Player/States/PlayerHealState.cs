@@ -93,7 +93,7 @@ namespace Characters.Player.States
 
         private IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)
         {
-            while (player.Character.Health.Value < player.Character.Health.MaxValue)
+            while (player.Character.Health.Value < player.Character.Health.MaxValue && player.HasStamina())
             {
                 player.Character.Health.Recover(healRate * Time.deltaTime);
                 player.Stamina.Spend(staminaConsumptionRate * Time.deltaTime);

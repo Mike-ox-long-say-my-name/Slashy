@@ -33,6 +33,7 @@ namespace Characters.Enemies.WeakHollow
 
             SetRandomSpeedMultiplier();
             SetRandomRetreatOffset();
+            Context.AutoMovement.SetMaxMoveTime(3f);
 
             var retreatTime = GetRandomRetreatTime();
             _timer = Timer.Start(retreatTime, SwitchState<WeakHollowPursue>);

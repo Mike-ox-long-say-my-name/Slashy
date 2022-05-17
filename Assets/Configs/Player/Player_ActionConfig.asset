@@ -16,8 +16,8 @@ MonoBehaviour:
   <LightAttackSecondStaminaCost>k__BackingField: 10
   <LightAttackRecovery>k__BackingField: 0
   <LightAirAttackStaminaCost>k__BackingField: 15
-  <FirstStrongAttackStaminaCost>k__BackingField: 20
-  <SecondStrongAttackStaminaCost>k__BackingField: 20
+  <FirstStrongAttackStaminaCost>k__BackingField: 25
+  <SecondStrongAttackStaminaCost>k__BackingField: 30
   <FirstStrongAttackHealthCost>k__BackingField: 20
   <StaggerFallTime>k__BackingField: 0.5
   <JumpStaminaCost>k__BackingField: 15
@@ -28,4 +28,4 @@ MonoBehaviour:
   <DashInvincibilityEnd>k__BackingField: 0.8
   <DashStaminaCost>k__BackingField: 10
   <ActiveHealRate>k__BackingField: 13
-  <HealStaminaConsumption>k__BackingField: 10
+  <HealStaminaConsumption>k__BackingField: 13

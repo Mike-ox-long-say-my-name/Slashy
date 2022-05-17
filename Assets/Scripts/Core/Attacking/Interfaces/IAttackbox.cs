@@ -10,5 +10,7 @@ namespace Core.Attacking.Interfaces
         event Action<IHurtbox> Hit;
 
         void ProcessHit(IHurtbox hit);
+
+        void ClearHits();
     }
 }

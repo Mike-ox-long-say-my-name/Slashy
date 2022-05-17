@@ -1,4 +1,5 @@
-﻿using Core.Characters;
+﻿using Core;
+using Core.Characters;
 using Core.Characters.Interfaces;
 using UnityEngine;
 
@@ -24,6 +25,14 @@ namespace Characters.Enemies.WeakHollow
             var distance = Random.Range(2f, 6f);
             var offsetXY = Random.insideUnitCircle.normalized * distance;
             return new Vector3(offsetXY.x, 0, offsetXY.y);
+        }
+
+        public override void UpdateState()
+        {
+            if (Vector3.Distance(Context.PlayerPosition.WithZeroY(), Context.transform.position.WithZeroY()) > 6)
+            {
+                SwitchState<WeakHollowCharge>();
+            }
         }
 
         public override void ExitState()

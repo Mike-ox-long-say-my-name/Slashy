@@ -10,7 +10,8 @@ namespace Core
 {
     public class GameLoader : PublicSingleton<GameLoader>
     {
-        [SerializeField] private SaveData saveData;
+        [SerializeField] private RespawnData respawnData;
+        [SerializeField] private BonfireSaveData bonfireData;
 
         [SerializeField] private UnityEvent<string> exiting;
         [SerializeField] private UnityEvent<string> loadingLevel;
@@ -31,7 +32,7 @@ namespace Core
         public UnityEvent<string> LoadedExitedLevel => loadedExitedLevel;
         public UnityEvent<string> LoadingExitedLevel => loadingExitedLevel;
 
-        public bool HasAnyGameProgress => !string.IsNullOrEmpty(saveData.RespawnData.RespawnLevel);
+        public bool HasAnyGameProgress => !string.IsNullOrEmpty(respawnData.RespawnLevel);
 
         private string _scheduledScene;
 
@@ -99,7 +100,7 @@ namespace Core
 
         public void LoadGame()
         {
-            var exitedLevel = saveData.RespawnData.RespawnLevel;
+            var exitedLevel = respawnData.RespawnLevel;
             LoadingExitedLevel?.Invoke(exitedLevel);
             TryLoadScene(exitedLevel);
             LoadedExitedLevel?.Invoke(exitedLevel);
@@ -107,6 +108,8 @@ namespace Core
 
         public void LoadNewGame()
         {
+            bonfireData.ResetBitmask();
+
             var levelName = newGameScene;
             StartingNewGame?.Invoke(levelName);
             LoadLevel(levelName);

@@ -434,6 +434,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98dedf53b1ea03442903b79b4ba961df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRepeatChance: 0.2
+  pursueAfterStaggerChance: 0.6
+  tryToSurroundPlayer: 1
   punchAttack: {fileID: 3508428188145309482}
 --- !u!1 &5683846623377792470
 GameObject:

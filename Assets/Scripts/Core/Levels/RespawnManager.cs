@@ -44,7 +44,10 @@ namespace Core.Levels
         public void Respawn()
         {
             _isRespawning = true;
-            GameLoader.Instance.LoadLevel(respawnData.RespawnLevel);
+            var level = string.IsNullOrEmpty(respawnData.RespawnLevel)
+                ? GameLoader.GetCurrentScene()
+                : respawnData.RespawnLevel;
+            GameLoader.Instance.LoadLevel(level);
         }
         
         public void UpdateRespawnData(Bonfire bonfire)

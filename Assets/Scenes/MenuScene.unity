@@ -268,6 +268,18 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 7959246242872977129, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 651394937}
+    - target: {fileID: 7959246242872977129, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseSettingsMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7959246242872977129, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UI.Menu.MainMenuController, UI
+      objectReference: {fileID: 0}
     - target: {fileID: 7959246243930344900, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -2,34 +2,14 @@
 using Core.Player.Interfaces;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Core.Levels
 {
     public class LevelWarpManager : PublicSingleton<LevelWarpManager>
     {
-        [SerializeField] private Image screenImage;
-        [SerializeField] private float screenDarkeningTime = 1.8f;
-
         private LevelWarpInfo _info;
 
-        private void Start()
-        {
-            GameLoader.Instance.Exiting.AddListener(_ =>
-            {
-                StopAllCoroutines();
-                SetScreenAlpha(0);
-            });
-        }
-
         public bool CanInitiateWarp { get; private set; } = true;
-
-        private void SetScreenAlpha(float alpha)
-        {
-            var color = screenImage.color;
-            color.a = alpha;
-            screenImage.color = color;
-        }
 
         public void InitiateWarp(Vector3 position, LevelWarpInfo info)
         {
@@ -72,30 +52,19 @@ namespace Core.Levels
         {
             playerInfo.IsFrozen = true;
             playerInfo.Hurtbox.Disable();
-            yield return LerpScreenAlphaRoutine(1, screenDarkeningTime);
+
+            var time = BlackScreenManager.Instance.DefaultTime;
+            BlackScreenManager.Instance.Blackout(time);
+            yield return new WaitForSeconds(time);
 
             LoadNextLevel(playerInfo, info);
         }
 
-        private IEnumerator LerpScreenAlphaRoutine(float targetAlpha, float time)
-        {
-            var difference = targetAlpha - screenImage.color.a;
-            var passedTime = 0f;
-            while (passedTime < time)
-            {
-                var deltaTime = Time.deltaTime;
-                passedTime += deltaTime;
-                SetScreenAlpha(screenImage.color.a + difference * Time.deltaTime);
-                yield return null;
-            }
-        }
-
         private IEnumerator MoveAndReleaseRoutine(IPlayer playerInfo, Vector3 target)
         {
-            yield return LerpScreenAlphaRoutine(0.4f, screenDarkeningTime);
-
-            // Т.к. переход от 0.4 до 0 не заметен, но нам приходится ждать конца корутины
-            SetScreenAlpha(0);
+            var time = BlackScreenManager.Instance.DefaultTime;
+            BlackScreenManager.Instance.Whiteout(time);
+            yield return new WaitForSeconds(time);
 
             yield return MoveRoutine(playerInfo, target);
             playerInfo.Hurtbox.Enable();

@@ -1,4 +1,5 @@
 using Core.Characters.Interfaces;
+using Core.Player;
 using Core.Utilities;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Characters.Player.States
             Context.VelocityMovement.Stop();
             Context.Animator.SetBool("is-saving", true);
 
+            PlayerManager.Instance.PlayerTouchedBonfire?.Invoke();
             _touchTimer = Timer.Start(AnimationTime, SwitchState<PlayerGroundedState>);
         }
 

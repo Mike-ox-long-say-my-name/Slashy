@@ -1,7 +1,7 @@
+using Core;
 using Core.Characters.Interfaces;
 using Core.Player;
 using System.Collections;
-using Core;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -13,24 +13,44 @@ namespace Characters.Player.States
             Context.Hurtbox.Disable();
             Context.VelocityMovement.Stop();
             Context.Animator.SetTrigger("death");
-            Context.StartCoroutine(PlayDeathSequence(1.4f, 0.02f));
+            Context.StartCoroutine(PlayDeathSequence());
         }
 
-        private static IEnumerator PlayDeathSequence(float slowPerSecond, float tickInterval)
+        private static IEnumerator PlayDeathSequence()
         {
             PlayerManager.Instance.PlayedDeadSequenceStarted?.Invoke();
-
-            const float targetTimeScale = 0.2f;
-            while (Time.timeScale > targetTimeScale)
-            {
-                Time.timeScale = Mathf.Max(targetTimeScale, Time.timeScale - slowPerSecond * Time.unscaledDeltaTime);
-                yield return new WaitForSecondsRealtime(tickInterval);
-            }
-
-            Time.timeScale = 1f;
+            
+            yield return SlowTimeTemporary(1.5f, 0.4f);
+            var time = BlackScreenManager.Instance.DefaultTime;
+            BlackScreenManager.Instance.Blackout(time);
+            yield return new WaitForSeconds(time);
             
             BorderManager.Instance.ResetAggroCounter();
             PlayerManager.Instance.PlayedDeadSequenceEnded?.Invoke();
+        }
+
+        private static IEnumerator SlowTimeTemporary(float time, float target)
+        {
+            var halfTime = time / 2;
+            var speed = (Time.timeScale - target) / halfTime;
+            var passedTime = 0f;
+            int sign = -1;
+            while (passedTime < time)
+            {
+                var deltaTime = Time.unscaledDeltaTime;
+                passedTime += deltaTime;
+
+                if (sign == -1 && passedTime >= halfTime)
+                {
+                    Time.timeScale = target;
+                    sign = 1;
+                }
+
+                Time.timeScale += sign * deltaTime * speed;
+                yield return null;
+            }
+
+            Time.timeScale = 1;
         }
     }
 }

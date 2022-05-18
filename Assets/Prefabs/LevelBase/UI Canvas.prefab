@@ -126,7 +126,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 30, y: -20}
-  m_SizeDelta: {x: 360, y: 100}
+  m_SizeDelta: {x: 444, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4833907620284729710
 MonoBehaviour:
@@ -782,6 +782,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2c3ffdf3bd4424fb7e2c58d3d69413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuOpened:
+    m_PersistentCalls:
+      m_Calls: []
+  menuClosed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4833907621856548559
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,10 +945,14 @@ PrefabInstance:
     - target: {fileID: 7959246243132020911, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6e01651e7ed8c104fae58602059d9ea9, type: 3}
+      objectReference: {fileID: 21300000, guid: e03876b465781d348b35ae770845e521, type: 3}
     - target: {fileID: 7959246243132020911, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
       propertyPath: m_Color.a
       value: 0.45490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 7959246243132020911, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7959246243930344900, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
       propertyPath: m_Pivot.x

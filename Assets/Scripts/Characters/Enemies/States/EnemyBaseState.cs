@@ -2,16 +2,13 @@
 
 namespace Characters.Enemies.States
 {
-    public abstract class EnemyBaseState<TContext>
+    public abstract class EnemyBaseState<TContext> where TContext : class, IStateHolder<TContext>
     {
-        private IStateHolder<TContext> _stateHolder;
-
         protected bool IsValidState { get; private set; } = true;
         protected TContext Context { get; private set; }
 
-        public void Init(IStateHolder<TContext> stateHolder, TContext context)
+        public void Init(TContext context)
         {
-            _stateHolder = stateHolder;
             Context = context;
         }
 
@@ -51,11 +48,11 @@ namespace Characters.Enemies.States
             }
 
             var newState = new TState();
-            newState.Init(_stateHolder, Context);
+            newState.Init(Context);
 
             ExitState();
             IsValidState = false;
-            _stateHolder.CurrentState = newState;
+            Context.CurrentState = newState;
 
             newState.EnterState();
         }

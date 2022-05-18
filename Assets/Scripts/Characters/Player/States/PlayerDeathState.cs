@@ -2,12 +2,21 @@ using Core;
 using Core.Characters.Interfaces;
 using Core.Player;
 using System.Collections;
+using Core.Attacking;
 using UnityEngine;
 
 namespace Characters.Player.States
 {
     public class PlayerDeathState : PlayerBaseState
     {
+        public override void OnDeath(HitInfo info)
+        {
+        }
+
+        public override void OnStaggered(HitInfo info)
+        {
+        }
+
         public override void EnterState()
         {
             Context.Hurtbox.Disable();

@@ -212,21 +212,17 @@ namespace Characters.Enemies.Rogue
             {
                 SwitchState<RogueWait>();
             }
-            else if (value < 0.35f)
+            else if (value < 0.4f)
             {
                 SwitchState<RogueJumpAway>();
             }
-            else if (value < 0.7f)
+            else if (value < 0.8f)
             {
                 SwitchState<RogueRetreat>();
             }
-            else if (value < 0.85f)
-            {
-                SwitchState<RogueThrust>();
-            }
             else
             {
-                SwitchState<RogueTripleSlash>();
+                SwitchState<RogueThrust>();
             }
         }
 
@@ -430,10 +426,9 @@ namespace Characters.Enemies.Rogue
 
         private void OnTargetReached()
         {
-            if (Random.value < Context.ThrowKnifeChance)
+            if (Random.value < 0.7f)
             {
                 SwitchState<RoguePursue>();
-                // TODO: SwitchState<RogueThrowKnife>();
             }
             else
             {
@@ -531,20 +526,6 @@ namespace Characters.Enemies.Rogue
         }
     }
 
-    public class RogueThrowKnife : RogueBaseState
-    {
-        public override void EnterState()
-        {
-            Context.Animator.SetTrigger("throw-knife");
-            Context.ThrowKnifeExecutor.StartAttack(OnAttackEnded);
-        }
-
-        private void OnAttackEnded(AttackResult obj)
-        {
-            SwitchState<RogueWait>();
-        }
-    }
-
     [RequireComponent(typeof(MixinAutoMovement))]
     [RequireComponent(typeof(MixinAttackExecutorHelper))]
     [RequireComponent(typeof(MixinJumpHandler))]
@@ -552,14 +533,12 @@ namespace Characters.Enemies.Rogue
     {
         [SerializeField] private MonoAbstractAttackExecutor tripleSlashExecutor;
         [SerializeField] private MonoAbstractAttackExecutor thrustExecutor;
-        [SerializeField] private MonoAbstractAttackExecutor throwKnifeExecutor;
         [SerializeField] private MonoAbstractAttackExecutor jumpAttackExecutor;
         
         [SerializeField, Range(0, 1)] private float jumpAwayAfterThrustChance = 0.7f;
         [SerializeField, Min(0)] private float maxJumpAwayDistance = 8f;
         [SerializeField, Min(0)] private float minJumpAwayDistance = 4f;
         [SerializeField, Min(0)] private float maxJumpAwayZRatio = 0.5f;
-        [SerializeField, Range(0, 1)] private float throwKnifeChance = 0.5f;
         [SerializeField] private bool tryPredictPlayerMovement = true;
 
         public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
@@ -567,21 +546,19 @@ namespace Characters.Enemies.Rogue
 
         public IAttackExecutor TripleSlashExecutor => tripleSlashExecutor.GetExecutor();
         public IAttackExecutor ThrustExecutor => thrustExecutor.GetExecutor();
-        public IAttackExecutor ThrowKnifeExecutor => throwKnifeExecutor.GetExecutor();
         public IAttackExecutor JumpAttackExecutor => jumpAttackExecutor.GetExecutor();
         
         public float JumpAwayAfterThrustChance => jumpAwayAfterThrustChance;
         public float MaxJumpAwayDistance => maxJumpAwayDistance;
         public float MinJumpAwayDistance => minJumpAwayDistance;
         public float MaxJumpAwayZRatio => maxJumpAwayZRatio;
-        public float ThrowKnifeChance => throwKnifeChance;
         public IJumpHandler JumpHandler { get; private set; }
         public bool TryPredictPlayerMovement => tryPredictPlayerMovement;
 
         protected override EnemyBaseState<RogueStateMachine> StartState()
         {
             var state = new RogueIdle();
-            state.Init(this, this);
+            state.Init(this);
             return state;
         }
 

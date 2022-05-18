@@ -38,7 +38,7 @@ namespace Characters.Enemies.WeakHollow
         protected override EnemyBaseState<WeakHollowStateMachine> StartState()
         {
             var state = new WeakHollowIdle();
-            state.Init(this, this);
+            state.Init(this);
             return state;
         }
 

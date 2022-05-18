@@ -2,6 +2,7 @@ using Characters.Enemies.States;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters;
+using Core.Characters.Interfaces;
 using Core.Characters.Mono;
 using UnityEngine;
 
@@ -12,7 +13,6 @@ namespace Characters.Enemies.ExplodingHollow
     {
         [SerializeField, Min(0)] private float aggroDistance = 5;
         [SerializeField, Min(0)] private float chargeTime = 2;
-        [SerializeField, Min(0)] private float dotWhileRunning = 5f;
         [SerializeField, Min(0)] private float dotTickInterval = 0.3f;
 
         [SerializeField] private MonoAbstractAttackExecutor explosionMonoAttackHandler;
@@ -24,9 +24,9 @@ namespace Characters.Enemies.ExplodingHollow
 
         public IAttackExecutor ExplosionAttack => explosionMonoAttackHandler.GetExecutor();
         public IAttackExecutor PunchAttack => punchMonoAttack.GetExecutor();
-
-        public float DotWhileRunning => dotWhileRunning;
+        
         public float DotTickInterval => dotTickInterval;
+        public IPushable Pushable { get; private set; }
 
         public ParticleSystem ChargeBurnParticles => chargeBurnParticles;
 
@@ -36,7 +36,7 @@ namespace Characters.Enemies.ExplodingHollow
         protected override EnemyBaseState<ExplodingHollowStateMachine> StartState()
         {
             var state = new ExplodingHollowIdle();
-            state.Init(this, this);
+            state.Init(this);
             return state;
         }
 
@@ -44,6 +44,7 @@ namespace Characters.Enemies.ExplodingHollow
         {
             base.Awake();
 
+            Pushable = GetComponent<MixinPushable>().Pushable;
             DamageStats = GetComponent<MixinDamageSource>().DamageStats;
 
             if (punchMonoAttack == null)

@@ -10,6 +10,21 @@ namespace Miscellaneous
         [SerializeField] private Transform anchor;
         [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
 
+        private Camera _camera;
+
+        private Camera Camera
+        {
+            get
+            {
+                if (_camera == null)
+                {
+                    _camera = Camera.main;
+                }
+
+                return _camera;
+            }
+        }
+
         private float _followVelocity;
 
         // Спасибо классно работает
@@ -27,7 +42,7 @@ namespace Miscellaneous
         private void SetPosition(float x)
         {
             var position = transform.position;
-            var availableX = BorderManager.Instance.GetAvailableCameraX(position.x, x, minBorderDistance);
+            var availableX = BorderManager.Instance.GetAvailableCameraX(Camera, x, minBorderDistance);
             transform.position = new Vector3(availableX, position.y, position.z);
         }
 

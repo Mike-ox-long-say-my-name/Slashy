@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4df17b39393d6944a8c418d13a9d1584, type: 3}
   m_Name: DelayedStaminaRecoveryPolicy
   m_EditorClassIdentifier: 
-  recoverySpeed: 20
-  staminaRecoveryDelay: 0.5
+  recoverySpeed: 50
+  staminaRecoveryDelay: 0.75
   emptyStaminaAdditionalDelay: 1

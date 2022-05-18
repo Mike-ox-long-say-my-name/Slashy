@@ -419,7 +419,7 @@ MonoBehaviour:
   throwKnifeExecutor: {fileID: 0}
   jumpAttackExecutor: {fileID: 390948260114192023}
   jumpAwayAfterThrustChance: 0.7
-  maxJumpAwayDistance: 5
+  maxJumpAwayDistance: 4
   minJumpAwayDistance: 2
   maxJumpAwayZRatio: 0.5
   throwKnifeChance: 0.5

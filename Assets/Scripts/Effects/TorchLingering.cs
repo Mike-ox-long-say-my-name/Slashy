@@ -12,7 +12,7 @@ namespace Effects
 
         private void Start()
         {
-            StartNextRoutine(1);
+            StartNextRoutine();
         }
 
         private IEnumerator ResizeRoutine(float time, float resizeAmount, int resizeSign)
@@ -23,20 +23,26 @@ namespace Effects
             while (passedTime < time)
             {
                 var step = Time.deltaTime;
-                light2d.intensity += step * scaledResizeAmount;
+                light2d.pointLightInnerRadius += step * scaledResizeAmount;
 
                 passedTime += step;
                 yield return null;
             }
-
-            StartNextRoutine(-resizeSign);
         }
 
-        private void StartNextRoutine(int resizeSign)
+        private IEnumerator OneCycleRoutine(float time, float resizeAmount)
         {
-            var time = 2;
-            var resize = Random.Range(-maxResize, maxResize);
-            StartCoroutine(ResizeRoutine(time, resize, resizeSign));
+            yield return ResizeRoutine(time, resizeAmount, 1);
+            yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
+            yield return ResizeRoutine(time, resizeAmount, -1);
+            StartNextRoutine();
+        }
+
+        private void StartNextRoutine()
+        {
+            var time = Random.Range(0.4f, 3f);
+            var resize = Random.Range(0, maxResize);
+            StartCoroutine(OneCycleRoutine(time, resize));
         }
     }
 }

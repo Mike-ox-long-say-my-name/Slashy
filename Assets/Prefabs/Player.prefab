@@ -120,7 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enterAndExitOnce: 0
   enter:
     m_PersistentCalls:
       m_Calls: []
@@ -230,7 +229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enterAndExitOnce: 0
   enter:
     m_PersistentCalls:
       m_Calls: []
@@ -782,9 +780,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxValue: 120
-  recoverySpeed: 20
-  staminaRecoveryDelay: 0.8
-  emptyStaminaAdditionalDelay: 1.2
+  recoverySpeed: 40
+  staminaRecoveryDelay: 1
+  emptyStaminaAdditionalDelay: 1
 --- !u!114 &3601891726258351005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1111,7 +1109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enterAndExitOnce: 0
   enter:
     m_PersistentCalls:
       m_Calls: []
@@ -1444,7 +1441,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enterAndExitOnce: 0
   enter:
     m_PersistentCalls:
       m_Calls: []
@@ -1689,7 +1685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enterAndExitOnce: 0
   enter:
     m_PersistentCalls:
       m_Calls: []

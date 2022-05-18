@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42075aaa1067ebc498b0d23d294d380c, type: 3}
   m_Name: Player_ActionConfig
   m_EditorClassIdentifier: 
-  <LightAttackFirstStaminaCost>k__BackingField: 10
-  <LightAttackSecondStaminaCost>k__BackingField: 10
+  <LightAttackFirstStaminaCost>k__BackingField: 15
+  <LightAttackSecondStaminaCost>k__BackingField: 17
   <LightAttackRecovery>k__BackingField: 0
-  <LightAirAttackStaminaCost>k__BackingField: 15
-  <FirstStrongAttackStaminaCost>k__BackingField: 25
-  <SecondStrongAttackStaminaCost>k__BackingField: 30
+  <LightAirAttackStaminaCost>k__BackingField: 25
+  <FirstStrongAttackStaminaCost>k__BackingField: 30
+  <SecondStrongAttackStaminaCost>k__BackingField: 35
   <FirstStrongAttackHealthCost>k__BackingField: 20
   <StaggerFallTime>k__BackingField: 0.5
-  <JumpStaminaCost>k__BackingField: 15
+  <JumpStaminaCost>k__BackingField: 20
   <DashRecovery>k__BackingField: 0.3
   <DashDistance>k__BackingField: 3.5
   <DashTime>k__BackingField: 0.4
@@ -28,4 +28,4 @@ MonoBehaviour:
   <DashInvincibilityEnd>k__BackingField: 0.8
   <DashStaminaCost>k__BackingField: 10
   <ActiveHealRate>k__BackingField: 13
-  <HealStaminaConsumption>k__BackingField: 13
+  <HealStaminaConsumption>k__BackingField: 15

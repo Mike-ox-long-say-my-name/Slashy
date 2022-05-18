@@ -2,7 +2,6 @@
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
-using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Characters.Mono;
 using Core.Modules;
@@ -13,19 +12,17 @@ using UnityEngine;
 namespace Characters.Enemies.States
 {
     [RequireComponent(typeof(Animator))]
-    [RequireComponent(typeof(MixinPushable))]
     [RequireComponent(typeof(MixinVelocityMovement))]
     [RequireComponent(typeof(MixinCharacter))]
     [RequireComponent(typeof(MixinDestroyable))]
-    public abstract class EnemyStateMachine<T> : MonoBehaviour, IStateHolder<T>
+    public abstract class EnemyStateMachine<T> : MonoBehaviour, IStateHolder<T> where T : class, IStateHolder<T>
     {
         public EnemyBaseState<T> CurrentState { get; set; }
-        
+
         public Animator Animator { get; private set; }
         public ICharacter Character { get; private set; }
         public IVelocityMovement VelocityMovement { get; private set; }
         public IBaseMovement BaseMovement => VelocityMovement.BaseMovement;
-        public IPushable Pushable { get; private set; }
         public IHurtbox Hurtbox { get; private set; }
         public MixinDestroyable Destroyable { get; private set; }
 
@@ -41,7 +38,6 @@ namespace Characters.Enemies.States
         protected virtual void Awake()
         {
             Animator = GetComponent<Animator>();
-            Pushable = GetComponent<MixinPushable>().Pushable;
             VelocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
             Destroyable = GetComponent<MixinDestroyable>();

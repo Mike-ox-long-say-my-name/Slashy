@@ -20,13 +20,16 @@ namespace Core
                 .ToArray();
         }
 
-        public float GetAvailableCameraX(float currentX, float targetX, float minDistance)
+        public float GetAvailableCameraX(Camera cam, float targetX, float minDistance)
         {
-            var (left, right) = GetSurroundingBorders(currentX, true);
+            var (left, right) = GetSurroundingBorders(cam.transform.position.x, true);
             if (left == null || right == null)
             {
                 return targetX;
             }
+
+            const float referenceAspect = 16f / 9f;
+            minDistance *= cam.aspect / referenceAspect;
             return Mathf.Clamp(targetX, left.X + minDistance, right.X - minDistance);
         }
 

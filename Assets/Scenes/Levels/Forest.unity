@@ -1810,6 +1810,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rogue
       objectReference: {fileID: 0}
+    - target: {fileID: 390948260618534439, guid: 5afd07dfd07904848be02d867acd200c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 390948260618534440, guid: 5afd07dfd07904848be02d867acd200c, type: 3}
       propertyPath: maxJumpAwayDistance
       value: 4
@@ -2895,7 +2899,7 @@ Transform:
   m_GameObject: {fileID: 6434984356007383054}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 38.8918, y: -4.84972, z: -26.2}
-  m_LocalScale: {x: 3.835205, y: 0.9794922, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7509330881479109643}
   m_RootOrder: 0
@@ -2944,7 +2948,7 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 2
   m_Size: {x: 157.09, y: 10.03}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0

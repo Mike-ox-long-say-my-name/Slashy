@@ -1,11 +1,20 @@
 using Core.Attacking.Interfaces;
 using Core.Utilities;
+using UnityEngine;
 
 namespace Core.Attacking.Mono
 {
     public class MonoAnimationAttackExecutor : MonoAbstractAttackExecutor
     {
+        [SerializeField] private AudioClip attackSound;
+
+        private AudioSource _audioSource;
         private AnimationAttackExecutor _executor;
+
+        private void Awake()
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
 
         public override IAttackExecutor GetExecutor()
         {
@@ -26,7 +35,7 @@ namespace Core.Attacking.Mono
             {
                 executor.RegisterHit(hit);
             };
-            
+
             ConfigureExecutor(executor);
 
             var dispatcher = GetComponentInParent<MixinAttackAnimationEventDispatcher>();
@@ -34,13 +43,14 @@ namespace Core.Attacking.Mono
             return executor;
         }
 
-        private static void SubscribeToDispatcher(MixinAttackAnimationEventDispatcher dispatcher, AnimationAttackExecutor executor)
+        private void SubscribeToDispatcher(MixinAttackAnimationEventDispatcher dispatcher, AnimationAttackExecutor executor)
         {
             dispatcher.EnableHitbox.AddListener(() =>
             {
                 if (executor.IsAttacking)
                 {
                     executor.OnEnableHitbox();
+                    TryPlaySound(attackSound);
                 }
             });
             dispatcher.DisableHitbox.AddListener(() =>
@@ -57,6 +67,14 @@ namespace Core.Attacking.Mono
                     executor.OnAnimationEnded();
                 }
             });
+        }
+
+        private void TryPlaySound(AudioClip sound)
+        {
+            if (_audioSource && sound)
+            {
+                _audioSource.PlayOneShot(sound);
+            }
         }
     }
 }

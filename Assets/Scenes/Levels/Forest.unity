@@ -2145,7 +2145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 390948260618534439, guid: 5afd07dfd07904848be02d867acd200c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 390948260618534440, guid: 5afd07dfd07904848be02d867acd200c, type: 3}
       propertyPath: maxJumpAwayDistance
@@ -2824,7 +2824,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2696767122398559256
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,16 +1,24 @@
-﻿using System.Collections;
-using Core;
+﻿using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Utilities;
 using Miscellaneous;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Characters.Enemies.ExplodingHollow
 {
     public class MonoExplosionAttackExecutor : MonoAbstractAttackExecutor
     {
+        private AudioSource _audioSource;
+
+        private void Awake()
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
+
         [SerializeField, Range(0, 2)] private float explosionDelay = 0.4f;
         [SerializeField, Range(0.1f, 3)] private float explosionHitboxLingerTime = 1.5f;
 
@@ -31,9 +39,14 @@ namespace Characters.Enemies.ExplodingHollow
             {
                 yield return new WaitForSeconds(_data.ExplosionDelay);
 
-                if (_data.Particles != null)
+                if (_data.Particles)
                 {
                     _data.Particles.Play();
+                }
+
+                if (_data.Config.ExplosionSound && _data.AudioSource)
+                {
+                    _data.AudioSource.PlayOneShot(_data.Config.ExplosionSound);
                 }
 
                 Attackbox.Enable();
@@ -81,6 +94,7 @@ namespace Characters.Enemies.ExplodingHollow
         private struct AttackData
         {
             public ParticleSystem Particles { get; set; }
+            public AudioSource AudioSource { get; set; }
             public ExplodingHollowAttackConfig Config { get; set; }
             public Transform Transform { get; set; }
             public float ExplosionDelay { get; set; }
@@ -102,7 +116,8 @@ namespace Characters.Enemies.ExplodingHollow
                 Config = config,
                 Transform = transform,
                 ExplosionDelay = explosionDelay,
-                LingerTime = explosionHitboxLingerTime
+                LingerTime = explosionHitboxLingerTime,
+                AudioSource = _audioSource
             };
 
             var attackbox = GetComponentInChildren<MonoAttackbox>().Attackbox;

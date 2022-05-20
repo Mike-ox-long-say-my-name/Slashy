@@ -6,6 +6,7 @@ namespace Characters.Enemies.ExplodingHollow
     public class ExplodingHollowAttackConfig : ScriptableObject
     {
         [SerializeField] private GameObject bloodFirePrefab;
+        [SerializeField] private AudioClip explosionSound;
 
         [SerializeField, Min(2)] private int fireRows = 6;
         [SerializeField, Min(1)] private int firesPerRow = 3;
@@ -27,5 +28,7 @@ namespace Characters.Enemies.ExplodingHollow
         public float MinFireLifeTime => minFireLifeTime;
 
         public float MaxFireLifeTime => maxFireLifeTime;
+
+        public AudioClip ExplosionSound => explosionSound;
     }
 }

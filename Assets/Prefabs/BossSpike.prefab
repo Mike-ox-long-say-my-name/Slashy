@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a537a2759cf46543b3d560a501531c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strikeDelay: 0.15
+  strikeDelay: 0
   lingerTime: 0.15
   spriteObject: {fileID: 5140338471873515751}
 --- !u!1 &5140338471873515751

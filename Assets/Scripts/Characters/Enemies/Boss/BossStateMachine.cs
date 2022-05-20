@@ -75,6 +75,25 @@ namespace Characters.Enemies.Boss
         }
     }
 
+    public class BossHorizontalSwing : BossBaseState
+    {
+        public override void EnterState()
+        {
+            Context.Animator.SetTrigger("horizontal-swing");
+            Context.HorizontalSwingExecutor.StartAttack(OnAttackEnded);
+        }
+
+        private void OnAttackEnded(AttackResult obj)
+        {
+            if (obj.WasInterrupted)
+            {
+                return;
+            }
+
+            SwitchState<BossPursue>();
+        }
+    }
+
     public class BossPursue : BossBaseState
     {
         public override void EnterState()
@@ -91,7 +110,14 @@ namespace Characters.Enemies.Boss
         private void OnTargetReached()
         {
             var value = Random.value;
-            SwitchState<BossSpikeStrike>();
+            if (value < 0.3f)
+            {
+                SwitchState<BossSpikeStrike>();
+            }
+            else
+            {
+                SwitchState<BossHorizontalSwing>();
+            }
         }
 
         public override void ExitState()
@@ -127,6 +153,7 @@ namespace Characters.Enemies.Boss
     public class BossStateMachine : EnemyStateMachine<BossStateMachine>
     {
         [SerializeField] private MonoAbstractAttackExecutor spikeStrikeExecutor;
+        [SerializeField] private MonoAbstractAttackExecutor horizontalSwingExecutor;
 
         public MixinBossEventDispatcher BossEvents { get; private set; }
         public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
@@ -134,6 +161,7 @@ namespace Characters.Enemies.Boss
         public IJumpHandler JumpHandler { get; private set; }
 
         public IAttackExecutor SpikeStrikeExecutor => spikeStrikeExecutor.GetExecutor();
+        public IAttackExecutor HorizontalSwingExecutor => horizontalSwingExecutor.GetExecutor();
 
         protected override EnemyBaseState<BossStateMachine> StartState()
         {

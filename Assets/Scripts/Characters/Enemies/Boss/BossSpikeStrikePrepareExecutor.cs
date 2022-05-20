@@ -15,24 +15,33 @@ namespace Characters.Enemies.Boss
         {
             public BossSpike Spike { get; set; }
             public float GroundOffset { get; set; }
+            private Vector3 _target;
 
-            public override void HandleEnableHitbox(IAnimationAttackExecutorContext context)
+            public void AimAtPlayer()
             {
                 var target = PlayerManager.Instance.PlayerInfo.Transform.position;
                 target.y = GroundOffset;
+                _target = target;
+            }
 
-                var spike = Instantiate(Spike, target, Quaternion.identity);
+            public override void HandleEnableHitbox(IAnimationAttackExecutorContext context)
+            {
+                var spike = Instantiate(Spike, _target, Quaternion.identity);
                 spike.StrikeFromGround();
             }
         }
 
         protected override void ConfigureExecutor(AnimationAttackExecutor executor)
         {
-            executor.EventHandler = new CustomHandler()
+            var handler = new CustomHandler
             {
                 Spike = spikePrefab,
                 GroundOffset = groundOffset
             };
+            executor.EventHandler = handler;
+
+            var animationEvents = GetComponentInParent<BossAnimationEventDispatcher>();
+            animationEvents.AimSpike.AddListener(handler.AimAtPlayer);
         }
     }
 }

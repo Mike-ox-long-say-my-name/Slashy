@@ -15,6 +15,6 @@ MonoBehaviour:
   <DamageStats>k__BackingField:
     <BaseDamage>k__BackingField: 35
     <BaseBalanceDamage>k__BackingField: 20
-    <BaseStaggerTime>k__BackingField: 1
-    <BasePushTime>k__BackingField: 0
-    <BasePushForce>k__BackingField: 0
+    <BaseStaggerTime>k__BackingField: 0.7
+    <BasePushTime>k__BackingField: 0.2
+    <BasePushForce>k__BackingField: 2

@@ -113,7 +113,7 @@ namespace Characters.Enemies.Boss
             // TODO: чето адекватное сделать
             if (value < 0.3f)
             {
-                SwitchState<BossSpikeStrike>();
+                SwitchState<BossPrepareSpikeStrike>();
             }
             else if (value < 0.6f)
             {
@@ -135,6 +135,29 @@ namespace Characters.Enemies.Boss
         }
     }
 
+    public class BossPrepareSpikeStrike : BossBaseState
+    {
+        private Timer _timer;
+
+        public override void EnterState()
+        {
+            Context.Animator.SetTrigger("prepare-spike-strike");
+            Context.VelocityMovement.Stop();
+
+            _timer = Timer.Start(Context.SpikeStrikePrepareTime, OnTimeout);
+        }
+
+        public override void UpdateState()
+        {
+            _timer?.Tick(Time.deltaTime);
+        }
+
+        private void OnTimeout()
+        {
+            SwitchState<BossSpikeStrike>();
+        }
+    }
+
     public class BossSpikeStrike : BossBaseState
     {
         public override void EnterState()
@@ -150,7 +173,14 @@ namespace Characters.Enemies.Boss
                 return;
             }
 
-            SwitchState<BossPursue>();
+            if (Random.value < Context.SpikeStrikeRepeatChance)
+            {
+                SwitchState<BossSpikeStrike>();
+            }
+            else
+            {
+                SwitchState<BossPursue>();
+            }
         }
     }
 
@@ -211,6 +241,9 @@ namespace Characters.Enemies.Boss
         [SerializeField] private MonoAbstractAttackExecutor horizontalSwingExecutor;
         [SerializeField] private MonoAbstractAttackExecutor jumpAttackExecutor;
 
+        [SerializeField] private float spikeStrikePrepareTime;
+        [SerializeField, Range(0, 1)] private float spikeStrikeRepeatChance;
+
         public MixinBossEventDispatcher BossEvents { get; private set; }
         public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
         public IAutoMovement AutoMovement { get; private set; }
@@ -219,6 +252,10 @@ namespace Characters.Enemies.Boss
         public IAttackExecutor SpikeStrikeExecutor => spikeStrikeExecutor.GetExecutor();
         public IAttackExecutor HorizontalSwingExecutor => horizontalSwingExecutor.GetExecutor();
         public IAttackExecutor JumpAttackExecutor => jumpAttackExecutor.GetExecutor();
+
+        public float SpikeStrikePrepareTime => spikeStrikePrepareTime;
+
+        public float SpikeStrikeRepeatChance => spikeStrikeRepeatChance;
 
         protected override EnemyBaseState<BossStateMachine> StartState()
         {

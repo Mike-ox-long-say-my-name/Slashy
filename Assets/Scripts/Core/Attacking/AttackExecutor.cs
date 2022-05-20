@@ -40,11 +40,9 @@ namespace Core.Attacking
                 Debug.LogWarning("Trying to interrupt inactive attack");
                 return;
             }
-
-            OnAttackEnded(true);
+            
             Host.Stop(_runningAttack);
-            _runningAttack = null;
-            _attackEnded = null;
+            OnAttackEnded(true);
         }
 
         public void StartAttack(Action<AttackResult> attackEnded)
@@ -64,17 +62,17 @@ namespace Core.Attacking
             yield return Execute();
             
             OnAttackEnded(false);
-            _runningAttack = null;
-            _attackEnded = null;
         }
 
         protected abstract IEnumerator Execute();
 
         protected virtual void OnAttackEnded(bool interrupted)
         {
-            _attackEnded?.Invoke(new AttackResult(_hits, !interrupted));
-            _hits.Clear();
+            _runningAttack = null;
+            var temp = _attackEnded;
             _attackEnded = null;
+            temp?.Invoke(new AttackResult(_hits, !interrupted));
+            _hits.Clear();
         }
     }
 }

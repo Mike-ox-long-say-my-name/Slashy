@@ -35,7 +35,7 @@ namespace Effects
                 Debug.LogWarning("Canvas Sprite is not assigned", this);
                 enabled = false;
             }
-        
+
             _timeRemained = cloneAppearInterval;
         }
 
@@ -95,6 +95,15 @@ namespace Effects
                 _clones.Remove(cloneInfo);
                 Destroy(cloneInfo.Clone);
             }
+        }
+
+        private void OnDisable()
+        {
+            foreach (var clone in _clones)
+            {
+                Destroy(clone.Clone);
+            }
+            _clones.Clear();
         }
     }
 }

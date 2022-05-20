@@ -10,20 +10,32 @@ namespace UI.Menu
         [SerializeField] private Slider soundSlider;
         [SerializeField] private Slider musicSlider;
 
+        private bool _isInitializing = true;
+
         private void Start()
         {
+            _isInitializing = true;
             var manager = AudioManager.Instance;
-            soundSlider.SetValueWithoutNotify(manager.SoundVolume * soundSlider.maxValue);
-            musicSlider.SetValueWithoutNotify(manager.MusicVolume * musicSlider.maxValue);
+            soundSlider.value = manager.SoundVolume * soundSlider.maxValue;
+            musicSlider.value = manager.MusicVolume * musicSlider.maxValue;
+            _isInitializing = false;
         }
 
         public void SetSoundVolume(float amount)
         {
+            if (_isInitializing)
+            {
+                return;
+            }
             AudioManager.Instance.SetSoundVolume(amount / soundSlider.maxValue);
         }
 
         public void SetMusicVolume(float amount)
         {
+            if (_isInitializing)
+            {
+                return;
+            }
             AudioManager.Instance.SetMusicVolume(amount / musicSlider.maxValue);
         }
     }

@@ -110,13 +110,18 @@ namespace Characters.Enemies.Boss
         private void OnTargetReached()
         {
             var value = Random.value;
+            // TODO: чето адекватное сделать
             if (value < 0.3f)
             {
                 SwitchState<BossSpikeStrike>();
             }
-            else
+            else if (value < 0.6f)
             {
                 SwitchState<BossHorizontalSwing>();
+            }
+            else
+            {
+                SwitchState<BossJumpAttackStart>();
             }
         }
 
@@ -149,11 +154,62 @@ namespace Characters.Enemies.Boss
         }
     }
 
+    public class BossJumpAttackStart : BossBaseState
+    {
+        private bool _updated;
+
+        public override void EnterState()
+        {
+            Context.Animator.SetTrigger("jump-start");
+            Context.Character.Balance.Frozen = true;
+
+            Context.VelocityMovement.Stop();
+            Context.JumpHandler.Jump();
+
+            _updated = false;
+        }
+
+        public override void UpdateState()
+        {
+            if (_updated && Context.BaseMovement.IsGrounded)
+            {
+                SwitchState<BossJumpAttackEnd>();
+            }
+
+            _updated = true;
+        }
+
+        public override void ExitState()
+        {
+            Context.Character.Balance.Frozen = false;
+        }
+    }
+
+    public class BossJumpAttackEnd : BossBaseState
+    {
+        public override void EnterState()
+        {
+            Context.Animator.SetTrigger("jump-end");
+            Context.JumpAttackExecutor.StartAttack(OnAttackEnded);
+        }
+
+        private void OnAttackEnded(AttackResult obj)
+        {
+            if (obj.WasInterrupted)
+            {
+                return;
+            }
+
+            SwitchState<BossPursue>();
+        }
+    }
+
     [RequireComponent(typeof(MixinBossEventDispatcher))]
     public class BossStateMachine : EnemyStateMachine<BossStateMachine>
     {
         [SerializeField] private MonoAbstractAttackExecutor spikeStrikeExecutor;
         [SerializeField] private MonoAbstractAttackExecutor horizontalSwingExecutor;
+        [SerializeField] private MonoAbstractAttackExecutor jumpAttackExecutor;
 
         public MixinBossEventDispatcher BossEvents { get; private set; }
         public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
@@ -162,6 +218,7 @@ namespace Characters.Enemies.Boss
 
         public IAttackExecutor SpikeStrikeExecutor => spikeStrikeExecutor.GetExecutor();
         public IAttackExecutor HorizontalSwingExecutor => horizontalSwingExecutor.GetExecutor();
+        public IAttackExecutor JumpAttackExecutor => jumpAttackExecutor.GetExecutor();
 
         protected override EnemyBaseState<BossStateMachine> StartState()
         {

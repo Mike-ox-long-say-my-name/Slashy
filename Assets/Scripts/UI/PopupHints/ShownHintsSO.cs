@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace UI.PopupHints
@@ -15,6 +14,7 @@ namespace UI.PopupHints
         [field: SerializeField] public bool Heal { get; set; }
         [field: SerializeField] public bool LightAttack { get; set; }
         [field: SerializeField] public bool StrongAttack { get; set; }
+        [field: SerializeField] public bool Save { get; set; }
 
         private void OnDisable()
         {

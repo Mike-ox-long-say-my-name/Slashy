@@ -13,7 +13,7 @@ namespace UI.PopupHints
         [SerializeField] private PopupHint dashHint;
         [SerializeField] private PopupHint jumpHint;
         [SerializeField] private PopupHint lightAttackHint;
-        [SerializeField] private PopupHint jumpAttackHint;
+        [SerializeField] private PopupHint saveHint;
         [SerializeField] private PopupHint strongAttackHint;
         [SerializeField] private PopupHint healHint;
 
@@ -23,7 +23,6 @@ namespace UI.PopupHints
 
         private void Start()
         {
-            SubscribeToHintEvents();
             ReadPlayerCapabilities();
 
             Invoke(nameof(ShowMoveHint), 0.5f);
@@ -63,6 +62,19 @@ namespace UI.PopupHints
             shownHints.Dash = true;
         }
 
+        public void ShowJumpHint()
+        {
+            if (shownHints.Jump)
+            {
+                return;
+            }
+
+            TryShowHint(jumpHint);
+            Player.Capabilities.CanJump = true;
+
+            shownHints.Jump = true;
+        }
+
         public void ShowLightAttackHint()
         {
             if (shownHints.LightAttack)
@@ -89,9 +101,26 @@ namespace UI.PopupHints
             shownHints.StrongAttack = true;
         }
 
-        private void SubscribeToHintEvents()
+        public void ShowSaveHint()
         {
-            // TODO: добавить подписку на события
+            if (shownHints.Save)
+            {
+                return;
+            }
+
+            TryShowHint(saveHint);
+            shownHints.Save = true;
+        }
+
+        public void ShowHealHint()
+        {
+            if (shownHints.Heal)
+            {
+                return;
+            }
+
+            TryShowHint(healHint);
+            shownHints.Heal = true;
         }
 
         private void TryShowHint(PopupHint hint)

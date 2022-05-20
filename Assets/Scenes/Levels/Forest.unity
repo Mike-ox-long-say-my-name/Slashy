@@ -2560,7 +2560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3174af911ee605b4baf8ab23a84922f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxValue: 100
+  maxValue: 500
 --- !u!114 &2696767122398559235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2841,7 +2841,7 @@ MonoBehaviour:
   horizontalSwingExecutor: {fileID: 1531736523}
   jumpAttackExecutor: {fileID: 357438581}
   spikeStrikePrepareTime: 0.8
-  spikeStrikeRepeatChance: 0.9
+  spikeStrikeRepeatChance: 0.6
 --- !u!114 &2696767122398559257
 MonoBehaviour:
   m_ObjectHideFlags: 0

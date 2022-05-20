@@ -20,6 +20,11 @@ namespace Tests.Edit
                 Position += move;
             }
 
+            public CollisionFlags MoveWithFlags(Vector3 move)
+            {
+                return 0;
+            }
+
             public void Rotate(float direction)
             {
             }

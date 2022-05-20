@@ -10,7 +10,8 @@ namespace Core.Attacking.Interfaces
         event Action<IHurtbox> Hit;
 
         void ProcessHit(IHurtbox hit);
-
+        AttackboxGroup Group { get; set; }
         void ClearHits();
+        void DisableNoClear();
     }
 }

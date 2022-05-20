@@ -96,6 +96,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1792072655868191053, guid: 59c528a21cf2e6d468e1224abea52c29, type: 3}
+      propertyPath: id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1792072655868191053, guid: 59c528a21cf2e6d468e1224abea52c29, type: 3}
       propertyPath: litDelay
       value: 1
       objectReference: {fileID: 0}

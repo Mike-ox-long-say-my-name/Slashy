@@ -10,7 +10,7 @@ namespace Core.Attacking
     {
         public List<IHurtbox> Ignored { get; set; } = new List<IHurtbox>();
 
-        private readonly HashSet<IHurtbox> _hits = new HashSet<IHurtbox>();
+        public AttackboxGroup Group { get; set; }
 
         public Attackbox(Transform transform, params Collider[] colliders) : base(transform, colliders)
         {
@@ -18,7 +18,12 @@ namespace Core.Attacking
 
         public void ClearHits()
         {
-            _hits.Clear();
+            Group?.Reset();
+        }
+
+        public void DisableNoClear()
+        {
+            base.Disable();
         }
 
         public override void Disable()
@@ -37,13 +42,17 @@ namespace Core.Attacking
                 return;
             }
 
-            _hits.Add(hit);
-            Hit?.Invoke(hit);
+            Group ??= new AttackboxGroup();
+
+            if (Group.TryAttack(hit))
+            {
+                Hit?.Invoke(hit);
+            }
         }
 
         private bool ShouldDispatch(IHurtbox hit)
         {
-            return IsEnabled && (Team == Team.None || hit.Team != Team) && !_hits.Contains(hit) && !Ignored.Contains(hit);
+            return IsEnabled && (Team == Team.None || hit.Team != Team) && !Ignored.Contains(hit);
         }
     }
 }

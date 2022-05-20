@@ -310,7 +310,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27830
+  m_Name: pb_Mesh48460
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1593,8 +1593,40 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5364864502632467660, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364864502632467660, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364864502632467660, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364864502632467660, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5978696687908266795, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6850688141421223769, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6850688141421223769, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6850688141421223769, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6850688141421223769, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1674,7 +1706,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 390948260618534439, guid: 5afd07dfd07904848be02d867acd200c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 390948260618534440, guid: 5afd07dfd07904848be02d867acd200c, type: 3}
       propertyPath: maxJumpAwayDistance
@@ -1896,7 +1928,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3327050447686796494, guid: 089ba3ba69d30b44c9d688cf5926bd06, type: 3}
+      propertyPath: attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: b1d25a0a2af6d4249ad7fd805c58bfea, type: 2}
+    - target: {fileID: 3327050448797129763, guid: 089ba3ba69d30b44c9d688cf5926bd06, type: 3}
+      propertyPath: m_Size.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327050448797129763, guid: 089ba3ba69d30b44c9d688cf5926bd06, type: 3}
+      propertyPath: m_Size.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327050448797129775, guid: 089ba3ba69d30b44c9d688cf5926bd06, type: 3}
+      propertyPath: multipliers
+      value: 
+      objectReference: {fileID: 11400000, guid: c8ece668a94a5ed4a8e4068508cd0d34, type: 2}
+    m_RemovedComponents:
+    - {fileID: 3327050448797129761, guid: 089ba3ba69d30b44c9d688cf5926bd06, type: 3}
+    - {fileID: 3327050448797129762, guid: 089ba3ba69d30b44c9d688cf5926bd06, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 089ba3ba69d30b44c9d688cf5926bd06, type: 3}
 --- !u!1001 &4940504120300032127
 PrefabInstance:

@@ -21,7 +21,12 @@ namespace Core.Characters
 
         public void Move(Vector3 move)
         {
-            _controller.Move(move);
+            MoveWithFlags(move);
+        }
+
+        public CollisionFlags MoveWithFlags(Vector3 move)
+        {
+            return _controller.Move(move);
         }
 
         public void Rotate(float direction)

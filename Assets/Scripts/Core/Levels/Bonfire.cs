@@ -30,7 +30,7 @@ namespace Core.Levels
 
             if (fireEffect == null)
             {
-                Debug.LogWarning("Fire particlesis null");
+                Debug.LogWarning("Fire particles is null");
                 return;
             }
 

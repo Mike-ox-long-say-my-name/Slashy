@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using Core;
+﻿using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Utilities;
+using System.Collections;
 using UnityEngine;
 
 namespace Characters.Enemies.Boss
@@ -19,6 +19,7 @@ namespace Characters.Enemies.Boss
             public float StrikeDelay { get; set; }
             public float LingerTime { get; set; }
             public GameObject SpriteObject { get; set; }
+            public AttackboxGroup AttackboxGroup { get; set; }
 
             public CustomExecutor(ICoroutineHost host, IAttackbox attackbox) : base(host, attackbox)
             {
@@ -32,19 +33,24 @@ namespace Characters.Enemies.Boss
 
                 yield return new WaitForFixedUpdate();
                 yield return new WaitForSeconds(LingerTime);
-                Attackbox.Disable();
+                Attackbox.DisableNoClear();
             }
         }
 
 
-        private IAttackExecutor _executor;
+        public void SetAttackGroup(AttackboxGroup group)
+        {
+            _executor.AttackboxGroup = group;
+        }
+
+        private CustomExecutor _executor;
 
         public override IAttackExecutor GetExecutor()
         {
             return _executor ??= CreateExecutor();
         }
 
-        private IAttackExecutor CreateExecutor()
+        private CustomExecutor CreateExecutor()
         {
             var attackbox = GetComponentInChildren<MonoAttackbox>().Attackbox;
             return new CustomExecutor(this.ToCoroutineHost(), attackbox)

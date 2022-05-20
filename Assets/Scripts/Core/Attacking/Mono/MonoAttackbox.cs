@@ -14,6 +14,7 @@ namespace Core.Attacking.Mono
         [SerializeField] private bool disableOnInit = true;
         [SerializeField] private List<MonoHurtbox> ignored = new List<MonoHurtbox>();
 
+
         private Team GetTeam()
         {
             var mixinTeam = GetComponentInParent<MixinTeam>();

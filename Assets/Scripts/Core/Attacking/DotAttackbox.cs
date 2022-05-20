@@ -70,6 +70,8 @@ namespace Core.Attacking
             Hit?.Invoke(hit);
         }
 
+        public AttackboxGroup Group { get; set; }
+
         private void UpdateTimes(float deltaTime)
         {
             var keys = _hitTimes.Keys.ToList();
@@ -81,9 +83,7 @@ namespace Core.Attacking
 
         private bool ShouldDispatch(IHurtbox hit)
         {
-            var hasSameGroupHit = GlobalHits.TryGetValue(hit, out var groups) && groups.Contains(DamageGroup);
-            // TODO: подумать
-            return /*!hasSameGroupHit &&*/ IsEnabled && !Ignored.Contains(hit) && !_hitTimes.ContainsKey(hit);
+            return IsEnabled && !Ignored.Contains(hit) && !_hitTimes.ContainsKey(hit);
         }
 
         private void ClearDeadHits()
@@ -103,6 +103,11 @@ namespace Core.Attacking
         public void ClearHits()
         {
             _hitTimes.Clear();
+        }
+
+        public void DisableNoClear()
+        {
+            Disable();
         }
 
         public void Tick(float deltaTime)

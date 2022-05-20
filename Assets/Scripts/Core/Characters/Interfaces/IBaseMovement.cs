@@ -9,6 +9,8 @@ namespace Core.Characters.Interfaces
         Transform Transform { get; }
 
         void Move(Vector3 move);
+        CollisionFlags MoveWithFlags(Vector3 move);
+
         void Rotate(float direction);
         void SetPosition(Vector3 position);
     }

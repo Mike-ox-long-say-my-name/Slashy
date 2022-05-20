@@ -7,26 +7,47 @@ namespace Characters.Enemies.Boss
 {
     public class BossJumpAttackExecutor : MonoAnimationAttackExecutor
     {
-        [SerializeField] private GameObject spikes;
+        [SerializeField] private BossJumpAttackData attackData;
 
         private class CustomHandler : DefaultAttackEventHandler
         {
-            public GameObject Spikes { get; set; }
             public Transform Parent { get; set; }
-
-            private GameObject _createdSpikes;
+            public BossJumpAttackData AttackData { get; set; }
+            private AttackboxGroup _group;
 
             public override void HandleEnableHitbox(IAnimationAttackExecutorContext context)
             {
                 base.HandleEnableHitbox(context);
-                _createdSpikes = Instantiate(Spikes, Parent.position, Quaternion.identity);
-                _createdSpikes.hideFlags = HideFlags.HideAndDontSave;
+                CreateWalkers();
             }
 
-            public override void HandleAnimationEnd(IAnimationAttackExecutorContext context)
+            private void CreateWalkers()
             {
-                base.HandleAnimationEnd(context);
-                Destroy(_createdSpikes);
+                _group = new AttackboxGroup();
+
+                var groundOffset = new Vector3(0, AttackData.GroundOffset, 0);
+
+                var deltaAngle = Mathf.PI * 2 / AttackData.Rows;
+                var startPosition = Parent.position + groundOffset;
+
+                var offset = AttackData.BaseOffsetDistance;
+                var angle = 0f;
+                for (int i = 0; i < AttackData.Rows; i++)
+                {
+                    var randomOffset = Random.value;
+                    var direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+
+                    var walker = Instantiate(AttackData.Walker, startPosition + direction * offset * randomOffset, Quaternion.identity);
+                    walker.hideFlags = HideFlags.HideAndDontSave;
+                    walker.GoInDirection(direction * AttackData.StepDistance, AttackData.StepInterval, position =>
+                    {
+                        var spike = Instantiate(AttackData.Spike, position, Quaternion.identity);
+                        spike.hideFlags = HideFlags.HideAndDontSave;
+                        spike.StrikeFromGround(_group);
+                    });
+
+                    angle += deltaAngle;
+                }
             }
         }
 
@@ -34,8 +55,8 @@ namespace Characters.Enemies.Boss
         {
             executor.EventHandler = new CustomHandler
             {
-                Spikes = spikes,
-                Parent = transform
+                Parent = transform,
+                AttackData = attackData
             };
         }
     }

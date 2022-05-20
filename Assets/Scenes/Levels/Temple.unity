@@ -4310,7 +4310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 812809748605883927, guid: 55ca5d56a4a4fea419acaa2c8b6f41f1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 812809748605883927, guid: 55ca5d56a4a4fea419acaa2c8b6f41f1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4650,6 +4650,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 619926821844274027, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1522914302775520722, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525011666834720015, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3270054332820751065, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -4825,6 +4837,10 @@ PrefabInstance:
     - target: {fileID: 4833907621713091671, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
       propertyPath: menuOpened.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978696687908266795, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2ad3730fb468b6409d1252683d324a6, type: 3}
@@ -6087,7 +6103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2193070860107749303, guid: a47275f29a9978847ad478c9a1e0f367, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 2193070860107749303, guid: a47275f29a9978847ad478c9a1e0f367, type: 3}
       propertyPath: m_LocalPosition.y

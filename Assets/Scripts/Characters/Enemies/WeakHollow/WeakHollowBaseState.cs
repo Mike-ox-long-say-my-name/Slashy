@@ -14,14 +14,14 @@ namespace Characters.Enemies.WeakHollow
         {
             Context.InterruptActiveAttack();
             Context.LastHitInfo = info;
-            SwitchState<WeakHollowStagger>();
+            SwitchState<WeakHollowStagger>(true);
         }
 
         public override void OnDeath(HitInfo info)
         {
             Context.InterruptActiveAttack();
             Context.LastHitInfo = info;
-            SwitchState<WeakHollowDeath>();
+            SwitchState<WeakHollowDeath>(true);
         }
     }
 }

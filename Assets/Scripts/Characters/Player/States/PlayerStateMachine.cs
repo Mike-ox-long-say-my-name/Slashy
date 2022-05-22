@@ -1,4 +1,3 @@
-using System;
 using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
@@ -40,21 +39,16 @@ namespace Characters.Player.States
 
         [Space]
         [Header("Sounds")]
-        [SerializeField] private AudioSource lightAttackSource;
-        [SerializeField] private AudioSource strongAttackSource;
         [SerializeField] private AudioSource jumpSource;
-        [SerializeField] private AudioSource walkSource;
+        [SerializeField] private AudioSource healSource;
+        [SerializeField] private AudioSource dashSource;
 
         [Space]
         [SerializeField] private PlayerConfig playerConfig;
 
         public AudioSource JumpSource => jumpSource;
-
-        public AudioSource LightAttackSource => lightAttackSource;
-
-        public AudioSource StrongAttackSource => strongAttackSource;
-
-        public AudioSource WalkSource => walkSource;
+        public AudioSource HealSource => healSource;
+        public AudioSource DashSource => dashSource;
 
         public bool IsInvincible { get; set; }
         public bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
@@ -62,8 +56,6 @@ namespace Characters.Player.States
         public bool IsFalling => CurrentState.GetType() == typeof(PlayerFallState);
         public bool IsStaggered => CurrentState.GetType() == typeof(PlayerAirboneStaggerState)
                                             || CurrentState.GetType() == typeof(PlayerGroundStaggerState);
-
-        public bool IsAttacking { get; set; }
 
         private IPlayerCharacter _player;
 
@@ -228,7 +220,7 @@ namespace Characters.Player.States
 
             // Разогревочный
             VelocityMovement.BaseMovement.Move(new Vector3(0.01f, -0.01f, 0));
-            
+
             BlackScreenManager.Instance.Whiteout(BlackScreenManager.Instance.DefaultTime);
         }
 

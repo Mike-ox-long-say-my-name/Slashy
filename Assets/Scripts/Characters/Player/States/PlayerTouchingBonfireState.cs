@@ -16,13 +16,13 @@ namespace Characters.Player.States
             Context.Animator.SetBool("is-saving", true);
 
             PlayerManager.Instance.PlayerTouchedBonfire?.Invoke();
-            _touchTimer = Timer.Start(AnimationTime, SwitchState<PlayerGroundedState>);
+            _touchTimer = Timer.Start(AnimationTime, () => SwitchState<PlayerGroundedState>());
         }
 
         public override void UpdateState()
         {
-            var healthRegenAmount = Context.Player.Character.Health.MaxValue / (AnimationTime * 1.3f);
-            var staminaRegenAmount = Context.Player.Stamina.MaxValue / (AnimationTime * 1.3f);
+            var healthRegenAmount = Context.Player.Character.Health.MaxValue / AnimationTime * 2;
+            var staminaRegenAmount = Context.Player.Stamina.MaxValue / AnimationTime * 2;
 
             var deltaTime = Time.deltaTime;
             Context.Player.Character.Health.Recover(healthRegenAmount * deltaTime);

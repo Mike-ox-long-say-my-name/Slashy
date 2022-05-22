@@ -40,9 +40,9 @@ namespace Characters.Enemies.States
         {
         }
 
-        protected virtual void SwitchState<TState>() where TState : EnemyBaseState<TContext>, new()
+        protected virtual void SwitchState<TState>(bool ignoreValidness = false) where TState : EnemyBaseState<TContext>, new()
         {
-            if (!IsValidState)
+            if (!ignoreValidness && !IsValidState)
             {
                 return;
             }

@@ -17,7 +17,7 @@ namespace Characters.Enemies.WeakHollow
             Context.AutoMovement.MoveToWithOffset(player, offset);
             Context.AutoMovement.SetTargetReachedEpsilon(1);
             // TODO: keep distance
-            Context.AutoMovement.TargetReached += SwitchState<WeakHollowCharge>;
+            Context.AutoMovement.TargetReached += () => SwitchState<WeakHollowCharge>();
         }
 
         private static Vector3 GetRandomOffset()

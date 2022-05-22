@@ -9,6 +9,7 @@ namespace Miscellaneous
         [SerializeField] private bool instantFirstMoves;
         [SerializeField] private Transform anchor;
         [SerializeField, Range(0, 1)] private float followSmoothTime = 0.3f;
+        [SerializeField, Range(0, 1)] private float followSmoothTimeWhenBordered = 0.1f;
 
         private Camera _camera;
 
@@ -34,8 +35,14 @@ namespace Miscellaneous
         private void Follow(Transform target)
         {
             var position = transform.position;
-            var newX = Mathf.SmoothDamp(position.x, target.position.x,
-                ref _followVelocity, followSmoothTime);
+
+            var targetX = target.position.x;
+            var availableX = BorderManager.Instance.GetAvailableCameraX(Camera, targetX, minBorderDistance);
+            var bordered = !Mathf.Approximately(availableX, targetX);
+            var smoothTime = bordered ? followSmoothTimeWhenBordered : followSmoothTime;
+
+            var newX = Mathf.SmoothDamp(position.x, targetX,
+                ref _followVelocity, smoothTime);
             SetPosition(newX);
         }
 

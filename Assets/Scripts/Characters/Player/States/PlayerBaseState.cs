@@ -36,7 +36,7 @@ namespace Characters.Player.States
         public virtual void OnDeath(HitInfo info)
         {
             Context.AttackExecutorHelper.InterruptAllRunning();
-            SwitchState<PlayerDeathState>();
+            SwitchState<PlayerDeathState>(true);
         }
 
         public virtual void OnHitReceived(HitInfo info)
@@ -57,9 +57,9 @@ namespace Characters.Player.States
             Context.Interactor.TryInteract(InteractionMask.Popup);
         }
 
-        protected virtual void SwitchState<T>() where T : PlayerBaseState, new()
+        protected virtual void SwitchState<T>(bool ignoreValidness = false) where T : PlayerBaseState, new()
         {
-            if (!IsValidState)
+            if (!ignoreValidness && !IsValidState)
             {
                 return;
             }

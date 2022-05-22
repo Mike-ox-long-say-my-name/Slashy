@@ -9,7 +9,7 @@ namespace Characters.Enemies.WeakHollow
 
         public override void EnterState()
         {
-            _timer = Timer.Start(3, SwitchState<WeakHollowPursue>);
+            _timer = Timer.Start(Random.Range(1f, 3f), () => SwitchState<WeakHollowPursue>());
         }
 
         public override void UpdateState()

@@ -39,7 +39,8 @@ namespace Characters.Enemies.ExplodingHollow
 
         public override void OnHitReceived(HitInfo info)
         {
-            if (info.Source.Character.Team == Team.Player && Context.PunchAttack.IsAttacking)
+            var source = info.Source;
+            if (source.Character is {Team: Team.Player} && Context.PunchAttack.IsAttacking)
             {
                 Context.PunchAttack.InterruptAttack();
             }

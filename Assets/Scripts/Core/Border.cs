@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Core
@@ -31,6 +32,13 @@ namespace Core
         public void Disable()
         {
             _borderCollider.enabled = false;
+        }
+
+        private void OnDrawGizmos()
+        {
+            _borderCollider = GetComponent<BoxCollider>();
+            Gizmos.color = new Color(0.2f, 0.2f, 0.2f, 0.5f);
+            Gizmos.DrawCube(transform.position, _borderCollider.size);
         }
     }
 }

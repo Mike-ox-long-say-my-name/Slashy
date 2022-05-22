@@ -1,4 +1,5 @@
-﻿using Core.Characters;
+﻿using System;
+using Core.Characters;
 using Core.Characters.Interfaces;
 using UnityEngine;
 
@@ -22,6 +23,13 @@ namespace Core.Modules
                 _movement = new BaseMovement(controller);
                 return _movement;
             }
+        }
+
+        private void Awake()
+        {
+            // Прогревочный
+            BaseMovement.Move(new Vector3(0.01f, -0.5f, 0));
+            BaseMovement.Move(new Vector3(-0.01f, -0.5f, 0));
         }
     }
 }

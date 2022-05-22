@@ -7,11 +7,15 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            BorderManager.Instance.DecreaseAggroCounter();
+            FightManager.Instance.DecreaseAggroCounter();
 
             Context.Hurtbox.Disable();
             Context.Animator.SetTrigger("death");
             Context.Destroyable.DestroyLater();
+        }
+
+        protected override void SwitchState<TState>(bool ignoreValidness = false)
+        {
         }
     }
 }

@@ -24,8 +24,6 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            // TODO: добавить анимацию стана в полете
-            // Переход делать через учет значения is-airbone
             Context.Animator.SetBool("is-staggered", true);
 
             Context.Input.ResetBufferedInput();

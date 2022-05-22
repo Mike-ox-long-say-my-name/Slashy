@@ -13,6 +13,7 @@ namespace Characters.Player.States
         {
             Context.VelocityMovement.Stop();
             Context.Animator.SetBool("is-dashing", true);
+            Context.DashSource.Play();
 
             Context.Player.Stamina.Spend(Context.PlayerConfig.DashStaminaCost);
             var input = Context.Input.MoveInput;

@@ -11,6 +11,8 @@ namespace Core.Characters.Mono
     [RequireComponent(typeof(MixinHealth))]
     public class MixinBreakable : MonoBehaviour
     {
+        [SerializeField] private AudioSource breakSoundSource;
+        [SerializeField] private GameObject brokenObject;
         [SerializeField] private UnityEvent destroyed;
 
         public UnityEvent Destroyed => destroyed;
@@ -31,6 +33,8 @@ namespace Core.Characters.Mono
 
             if (_health.IsDepleted())
             {
+                brokenObject.SetActive(true);
+                breakSoundSource.Play();
                 Destroyed?.Invoke();
             }
         }

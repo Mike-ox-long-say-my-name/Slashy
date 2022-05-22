@@ -8,7 +8,7 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void OnDeath(HitInfo info)
         {
-            SwitchState<ExplodingHollowDeath>();
+            SwitchState<ExplodingHollowDeath>(true);
         }
 
         public override void OnHitReceived(HitInfo info)
@@ -25,7 +25,7 @@ namespace Characters.Enemies.ExplodingHollow
         {
             if (info.Source.Character.Team != Team.Player)
             {
-                SwitchState<ExplodingHollowStagger>();
+                SwitchState<ExplodingHollowStagger>(true);
                 return;
             }
             Context.WasHitByPlayer = true;

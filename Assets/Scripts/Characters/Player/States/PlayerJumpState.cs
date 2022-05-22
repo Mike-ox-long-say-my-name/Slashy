@@ -8,6 +8,7 @@ namespace Characters.Player.States
             
             Context.Player.Stamina.Spend(Context.PlayerConfig.JumpStaminaCost);
             Context.JumpHandler.Jump();
+            Context.JumpSource.Play();
         }
 
         public override void UpdateState()

@@ -1,3 +1,4 @@
+using System;
 using Core.Player;
 using System.Linq;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace Core
     public class BorderManager : PublicSingleton<BorderManager>
     {
         private Border[] _borders;
-        private int _aggroCounter = 0;
 
         protected override void Awake()
         {
@@ -18,6 +18,30 @@ namespace Core
             _borders = _borders
                 .OrderBy(border => border.X)
                 .ToArray();
+        }
+
+        private void Start()
+        {
+            var fightManager = FightManager.Instance;
+            fightManager.FightStarted += EnableAggroBorders;
+            fightManager.FightEnded += DisableAggroBorders;
+        }
+
+        private void EnableAggroBorders()
+        {
+            var player = PlayerManager.Instance.PlayerInfo.Transform;
+            EnableSurroundingBorders(player.position.x);
+        }
+
+        private void OnDestroy()
+        {
+            var fightManager = FightManager.TryGetInstance();
+            if (fightManager == null)
+            {
+                return;
+            }
+            fightManager.FightStarted -= EnableAggroBorders;
+            fightManager.FightEnded -= DisableAggroBorders;
         }
 
         public float GetAvailableCameraX(Camera cam, float targetX, float minDistance)
@@ -31,16 +55,6 @@ namespace Core
             const float referenceAspect = 16f / 9f;
             minDistance *= cam.aspect / referenceAspect;
             return Mathf.Clamp(targetX, left.X + minDistance, right.X - minDistance);
-        }
-
-        public void IncreaseAggroCounter()
-        {
-            if (_aggroCounter++ != 0)
-            {
-                return;
-            }
-            var player = PlayerManager.Instance.PlayerInfo.Transform;
-            EnableSurroundingBorders(player.position.x);
         }
 
         private void EnableSurroundingBorders(float x)
@@ -81,26 +95,12 @@ namespace Core
             return (null, null);
         }
 
-        public void DecreaseAggroCounter()
-        {
-            if (--_aggroCounter == 0)
-            {
-                DisableAggroBorders();
-            }
-        }
-
         private void DisableAggroBorders()
         {
             foreach (var border in _borders.Where(border => border.IsAggroBorder))
             {
                 border.Disable();
             }
-        }
-
-        public void ResetAggroCounter()
-        {
-            _aggroCounter = 0;
-            DisableAggroBorders();
         }
     }
 }

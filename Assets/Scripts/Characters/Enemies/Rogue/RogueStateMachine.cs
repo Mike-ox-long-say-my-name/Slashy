@@ -23,14 +23,14 @@ namespace Characters.Enemies.Rogue
         {
             Context.LastHit = info;
             Context.AttackExecutorHelper.InterruptAllRunning();
-            SwitchState<RogueStaggered>();
+            SwitchState<RogueStaggered>(true);
         }
 
         public override void OnDeath(HitInfo info)
         {
             Context.LastHit = info;
             Context.AttackExecutorHelper.InterruptAllRunning();
-            SwitchState<RogueDeath>();
+            SwitchState<RogueDeath>(true);
         }
     }
 
@@ -38,13 +38,17 @@ namespace Characters.Enemies.Rogue
     {
         public override void EnterState()
         {
-            BorderManager.Instance.DecreaseAggroCounter();
+            FightManager.Instance.DecreaseAggroCounter();
             Context.AutoMovement.ResetState();
             Context.AutoMovement.UnlockRotation();
 
             Context.Hurtbox.Disable();
             Context.Animator.SetTrigger("death");
             Context.Destroyable.DestroyLater();
+        }
+
+        protected override void SwitchState<TState>(bool ignoreValidness = false)
+        {
         }
     }
 
@@ -57,7 +61,7 @@ namespace Characters.Enemies.Rogue
             const float aggroDistance = 8f;
             if (Vector3.Distance(position, player) < aggroDistance)
             {
-                BorderManager.Instance.IncreaseAggroCounter();
+                FightManager.Instance.IncreaseAggroCounter();
                 SwitchState<RoguePursue>();
             }
         }
@@ -169,7 +173,7 @@ namespace Characters.Enemies.Rogue
             }
             else if (value < 0.8f)
             {
-                SwitchState<RogueThrust>();
+                SwitchState<RogueWaitBeforeThrust>();
             }
             else
             {
@@ -184,6 +188,22 @@ namespace Characters.Enemies.Rogue
             Context.VelocityMovement.Stop();
             Context.AutoMovement.ResetState();
             Context.AutoMovement.UnlockRotation();
+        }
+    }
+
+    public class RogueWaitBeforeThrust : RogueBaseState
+    {
+        private Timer _timer;
+
+        public override void EnterState()
+        {
+            Context.VelocityMovement.Stop();
+            _timer = Timer.Start(Random.Range(0.2f, 1f), () => SwitchState<RogueThrust>());   
+        }
+
+        public override void UpdateState()
+        {
+            _timer?.Tick(Time.deltaTime);
         }
     }
 
@@ -377,7 +397,7 @@ namespace Characters.Enemies.Rogue
             Context.AutoMovement.UnlockRotation();
             Context.Animator.SetBool("is-staggered", true);
             const float airStaggerTime = 3f;
-            _timer = Timer.Start(airStaggerTime, SwitchState<RoguePursue>);
+            _timer = Timer.Start(airStaggerTime, () => SwitchState<RoguePursue>());
         }
 
         public override void UpdateState()

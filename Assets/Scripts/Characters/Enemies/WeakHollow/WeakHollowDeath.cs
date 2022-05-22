@@ -6,10 +6,14 @@ namespace Characters.Enemies.WeakHollow
     {
         public override void EnterState()
         {
-            BorderManager.Instance.DecreaseAggroCounter();
+            FightManager.Instance.DecreaseAggroCounter();
             Context.AnimatorComponent.SetTrigger("death");
 
             Context.Destroyable.DestroyLater();
+        }
+
+        protected override void SwitchState<TState>(bool ignoreValidness = false)
+        {
         }
     }
 }

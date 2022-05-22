@@ -13,6 +13,9 @@ namespace Core.Levels
         [SerializeField] private Vector3 playerPositionOffset = new Vector3(1, 0, 0);
 
         [SerializeField] private float litDelay;
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip litSound;
+        [SerializeField] private AudioClip ambientSound;
 
         private void Awake()
         {
@@ -36,6 +39,9 @@ namespace Core.Levels
 
             var main = fireEffect.main;
             main.prewarm = true;
+            audioSource.loop = true;
+            audioSource.clip = ambientSound;
+            audioSource.Play();
             fireEffect.Play();
         }
 
@@ -66,9 +72,23 @@ namespace Core.Levels
         private IEnumerator PlayParticlesAfter(float time)
         {
             yield return new WaitForSeconds(time);
+            if (audioSource != null && litSound != null)
+            {
+                audioSource.loop = false;
+                audioSource.PlayOneShot(litSound);
+            }
             if (fireEffect != null)
             {
                 fireEffect.Play();
+            }
+
+            yield return new WaitForSeconds(time);
+            
+            if (audioSource != null && ambientSound != null)
+            {
+                audioSource.loop = true;
+                audioSource.clip = ambientSound;
+                audioSource.Play();
             }
         }
 

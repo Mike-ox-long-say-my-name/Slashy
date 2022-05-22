@@ -260,6 +260,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 651394936}
     m_Modifications:
+    - target: {fileID: 1291941180453913559, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444589674762333079, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212442061333843246, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6214003598158112243, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7959246242116411941, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
       propertyPath: m_fontSize
       value: 30
@@ -375,6 +391,60 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7959246243930344900, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
   m_PrefabInstance: {fileID: 870069270}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1335224787
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1335224791}
+  - component: {fileID: 1335224790}
+  - component: {fileID: 1335224788}
+  m_Layer: 0
+  m_Name: ZoneMusic (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &1335224788
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335224787}
+  m_Enabled: 1
+--- !u!114 &1335224790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335224787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6b8b3acca725474fad29b1373ea70cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chillMusic: {fileID: 8300000, guid: 903b9154710345849a821cd00d3ad29a, type: 3}
+  fightMusic: {fileID: 8300000, guid: 8cf35333f126ab241bb78221d8b0ae3d, type: 3}
+--- !u!4 &1335224791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335224787}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1791277962
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +567,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2106715904}
   - component: {fileID: 2106715903}
-  - component: {fileID: 2106715902}
   - component: {fileID: 2106715905}
   m_Layer: 0
   m_Name: Main Camera
@@ -506,14 +575,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &2106715902
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106715901}
-  m_Enabled: 1
 --- !u!20 &2106715903
 Camera:
   m_ObjectHideFlags: 0
@@ -873,6 +934,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8973596512845570301, guid: 46d1a83970034d64fb4ba02adb324da5, type: 3}
       propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973596512845570301, guid: 46d1a83970034d64fb4ba02adb324da5, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973596512845570301, guid: 46d1a83970034d64fb4ba02adb324da5, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973596512845570301, guid: 46d1a83970034d64fb4ba02adb324da5, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973596512845570301, guid: 46d1a83970034d64fb4ba02adb324da5, type: 3}
+      propertyPath: m_Colors.m_ColorMultiplier
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8973596512845570301, guid: 46d1a83970034d64fb4ba02adb324da5, type: 3}

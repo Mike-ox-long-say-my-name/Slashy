@@ -18,13 +18,13 @@ namespace Characters.Enemies.Boss
         public override void OnStaggered(HitInfo info)
         {
             Context.AttackExecutorHelper.InterruptAllRunning();
-            SwitchState<BossStaggered>();
+            SwitchState<BossStaggered>(true);
         }
 
         public override void OnDeath(HitInfo info)
         {
             Context.AttackExecutorHelper.InterruptAllRunning();
-            SwitchState<BossDeath>();
+            SwitchState<BossDeath>(true);
         }
     }
 
@@ -34,8 +34,12 @@ namespace Characters.Enemies.Boss
         {
             Debug.Log("He's dead");
             Context.BossEvents.Died?.Invoke();
-            BorderManager.Instance.DecreaseAggroCounter();
+            FightManager.Instance.DecreaseAggroCounter();
             Context.Destroyable.DestroyLater();
+        }
+
+        protected override void SwitchState<TState>(bool ignoreValidness = false)
+        {
         }
     }
 
@@ -56,7 +60,7 @@ namespace Characters.Enemies.Boss
 
         private void OnTimeout()
         {
-            SwitchState<BossPursue>();
+            SwitchState<BossWaitAfterAttack>();
             // TODO
         }
     }
@@ -69,7 +73,7 @@ namespace Characters.Enemies.Boss
             if (distance < 10f)
             {
                 Context.BossEvents.FightStarted?.Invoke();
-                BorderManager.Instance.IncreaseAggroCounter();
+                FightManager.Instance.IncreaseAggroCounter();
                 SwitchState<BossPursue>();
             }
         }
@@ -90,12 +94,14 @@ namespace Characters.Enemies.Boss
                 return;
             }
 
-            SwitchState<BossPursue>();
+            SwitchState<BossWaitAfterAttack>();
         }
     }
 
     public class BossPursue : BossBaseState
     {
+        private float _pursueTime;
+
         public override void EnterState()
         {
             Context.Animator.SetBool("is-walking", true);
@@ -105,24 +111,31 @@ namespace Characters.Enemies.Boss
             Context.AutoMovement.MoveTo(player);
             Context.AutoMovement.LockRotationOn(player);
             Context.AutoMovement.SetTargetReachedEpsilon(2.5f);
+            Context.AutoMovement.SetSpeedMultiplier(Random.Range(1f, 1.8f));
+
+            _pursueTime = 0;
+        }
+
+        public override void UpdateState()
+        {
+            _pursueTime += Time.deltaTime;
+
+            if (_pursueTime > 3)
+            {
+                if (Random.value < 0.4f)
+                {
+                    SwitchState<BossJumpAttackStart>();
+                }
+                else
+                {
+                    SwitchState<BossPrepareSpikeStrike>();
+                }
+            }
         }
 
         private void OnTargetReached()
         {
-            var value = Random.value;
-            // TODO: чето адекватное сделать
-            if (value < 0.3f)
-            {
-                SwitchState<BossPrepareSpikeStrike>();
-            }
-            else if (value < 0.6f)
-            {
-                SwitchState<BossHorizontalSwing>();
-            }
-            else
-            {
-                SwitchState<BossJumpAttackStart>();
-            }
+            SwitchState<BossWaitBeforeAttack>();
         }
 
         public override void ExitState()
@@ -179,7 +192,7 @@ namespace Characters.Enemies.Boss
             }
             else
             {
-                SwitchState<BossPursue>();
+                SwitchState<BossWaitAfterAttack>();
             }
         }
     }
@@ -230,7 +243,55 @@ namespace Characters.Enemies.Boss
                 return;
             }
 
-            SwitchState<BossPursue>();
+            SwitchState<BossWaitAfterAttack>();
+        }
+    }
+
+    public class BossWaitAfterAttack : BossBaseState
+    {
+        private Timer _timer;
+
+        public override void EnterState()
+        {
+            _timer = Timer.Start(Random.Range(0.2f, 1f), () => SwitchState<BossPursue>());
+        }
+
+        public override void UpdateState()
+        {
+            _timer?.Tick(Time.deltaTime);
+        }
+    }
+
+    public class BossWaitBeforeAttack : BossBaseState
+    {
+        private Timer _timer;
+
+        public override void EnterState()
+        {
+            _timer = Timer.Start(Random.Range(0.05f, 0.2f), RandomAttack);
+        }
+
+        public override void UpdateState()
+        {
+            _timer?.Tick(Time.deltaTime);
+        }
+
+        private void RandomAttack()
+        {
+            var value = Random.value;
+            // TODO: чето адекватное сделать
+            if (value < 0.3f)
+            {
+                SwitchState<BossPrepareSpikeStrike>();
+            }
+            else if (value < 0.6f)
+            {
+                SwitchState<BossHorizontalSwing>();
+            }
+            else
+            {
+                SwitchState<BossJumpAttackStart>();
+            }
         }
     }
 

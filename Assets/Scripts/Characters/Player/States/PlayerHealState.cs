@@ -21,25 +21,14 @@ namespace Characters.Player.States
                     Context.PlayerConfig.ActiveHealRate,
                     Context.PlayerConfig.HealStaminaConsumption)
                 );
-        }
 
-        public override void OnStaggered(HitInfo info)
-        {
-            StopHealing();
-            base.OnStaggered(info);
-        }
-
-        public override void OnDeath(HitInfo info)
-        {
-            StopHealing();
-            base.OnDeath(info);
+            Context.HealSource.Play();
         }
 
         public override void UpdateState()
         {
             if (Context.Input.MoveInput.sqrMagnitude > 0)
             {
-                StopHealing();
                 SwitchState<PlayerGroundedState>();
             }
 
@@ -78,6 +67,8 @@ namespace Characters.Player.States
         {
             Context.Animator.SetBool("is-healing", false);
             StopHealing();
+            
+            Context.HealSource.Stop();
         }
 
         private void StopHealing()

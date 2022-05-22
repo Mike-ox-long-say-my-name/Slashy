@@ -36,7 +36,7 @@ namespace Characters.Enemies.WeakHollow
             Context.AutoMovement.SetMaxMoveTime(3f);
 
             var retreatTime = GetRandomRetreatTime();
-            _timer = Timer.Start(retreatTime, SwitchState<WeakHollowPursue>);
+            _timer = Timer.Start(retreatTime, () => SwitchState<WeakHollowPursue>());
         }
 
         private Timer _timer;

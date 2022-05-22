@@ -14,7 +14,7 @@ namespace Characters.Enemies.WeakHollow
                 return;
             }
 
-            BorderManager.Instance.IncreaseAggroCounter();
+            FightManager.Instance.IncreaseAggroCounter();
             SwitchState<WeakHollowPursue>();
         }
     }

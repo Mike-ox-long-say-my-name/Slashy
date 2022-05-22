@@ -1,7 +1,5 @@
-﻿using System;
-using Core.Levels;
+﻿using Core.Levels;
 using Core.Player;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;

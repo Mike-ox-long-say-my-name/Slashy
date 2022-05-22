@@ -15,7 +15,7 @@ namespace Characters.Enemies.ExplodingHollow
             Context.Character.Balance.Frozen = true;
 
             Context.Animator.SetTrigger("charge");
-            _prepareTimer = Timer.Start(Context.ChargeTime, SwitchState<ExplodingHollowRunning>);
+            _prepareTimer = Timer.Start(Context.ChargeTime, () => SwitchState<ExplodingHollowRunning>());
         }
 
         public override void UpdateState()

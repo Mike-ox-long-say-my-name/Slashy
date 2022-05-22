@@ -9,6 +9,10 @@ namespace Characters.Player.States
 {
     public class PlayerDeathState : PlayerBaseState
     {
+        protected override void SwitchState<TState>(bool ignoreValidness = false)
+        {
+        }
+
         public override void OnDeath(HitInfo info)
         {
         }
@@ -34,7 +38,7 @@ namespace Characters.Player.States
             BlackScreenManager.Instance.Blackout(time);
             yield return new WaitForSeconds(time);
             
-            BorderManager.Instance.ResetAggroCounter();
+            FightManager.Instance.ResetAggroCounter();
             PlayerManager.Instance.PlayedDeadSequenceEnded?.Invoke();
         }
 

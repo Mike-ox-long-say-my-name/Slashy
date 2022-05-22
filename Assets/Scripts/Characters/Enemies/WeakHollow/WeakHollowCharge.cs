@@ -12,10 +12,10 @@ namespace Characters.Enemies.WeakHollow
             Context.AnimatorComponent.SetBool("is-charging", true);
 
             var time = Random.Range(2.5f, 4.5f);
-            _timer = Timer.Start(time, SwitchState<WeakHollowConfused>);
+            _timer = Timer.Start(time, () => SwitchState<WeakHollowConfused>());
 
             Context.AutoMovement.SetSpeedMultiplier(2);
-            Context.AutoMovement.MoveTo(Context.VelocityMovement.BaseMovement.Transform);
+            Context.AutoMovement.MoveTo(Context.PlayerInfo.Transform);
         }
 
         private Timer _timer;

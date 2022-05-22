@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6056060677774660052}
   - component: {fileID: 7418597499886861069}
   - component: {fileID: 4327539068661993240}
+  - component: {fileID: 307596899117875565}
   m_Layer: 0
   m_Name: chair2
   m_TagString: Untagged
@@ -190,6 +191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9668e66d5132c4b91fbcbc41f0eed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  breakSoundSource: {fileID: 0}
+  brokenObject: {fileID: 0}
   destroyed:
     m_PersistentCalls:
       m_Calls:
@@ -218,6 +221,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxValue: 40
+--- !u!114 &307596899117875565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3192924453606795692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55739a39e7b1394d992fa1928f01043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3192924454314435029
 GameObject:
   m_ObjectHideFlags: 0

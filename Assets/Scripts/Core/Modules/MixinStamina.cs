@@ -43,10 +43,25 @@ namespace Core.Modules
                     return _stamina;
                 }
 
-                _stamina = new StaminaResource(MaxValue);
+                _stamina = new CustomStamina(MaxValue);
                 _lastValue = _stamina.Value;
                 _stamina.ValueChanged += OnValueChanged;
                 return _stamina;
+            }
+        }
+
+        private class CustomStamina : StaminaResource
+        {
+            public CustomStamina(float maxStamina) : base(maxStamina)
+            {
+            }
+
+            public override void Spend(float amount)
+            {
+                if (FightManager.Instance.IsFighting)
+                {
+                    base.Spend(amount);
+                }
             }
         }
 

@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8756cd93c6d90014b848434de8b5916d, type: 3}
   m_Name: ShownHints
   m_EditorClassIdentifier: 
+  resetOnQuit: 0
   <Move>k__BackingField: 0
   <Dash>k__BackingField: 0
   <Jump>k__BackingField: 0
   <Heal>k__BackingField: 0
   <LightAttack>k__BackingField: 0
   <StrongAttack>k__BackingField: 0
+  <Save>k__BackingField: 0

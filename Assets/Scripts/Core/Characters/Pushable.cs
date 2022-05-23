@@ -53,6 +53,7 @@ namespace Core.Characters
 
         private void ApplyVelocity()
         {
+            _pushVelocity.y = -1;
             _baseMovement.Move(_pushVelocity * Time.deltaTime);
         }
     }

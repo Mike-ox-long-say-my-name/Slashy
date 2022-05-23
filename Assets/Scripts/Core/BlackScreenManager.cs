@@ -19,6 +19,7 @@ namespace Core
             });
             GameLoader.Instance.StartingNewGame.AddListener(_ => SetScreenAlpha(1));
             GameLoader.Instance.LoadingExitedLevel.AddListener(_ => SetScreenAlpha(1));
+            GameLoader.Instance.GameCompleted.AddListener(() => SetScreenAlpha(0));
         }
 
         public void Blackout(float time)

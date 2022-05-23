@@ -97,7 +97,6 @@ namespace Characters.Player
 
         private void OnMove(InputAction.CallbackContext context)
         {
-            ResetBufferedInput();
             MoveInput = context.ReadValue<Vector2>();
         }
 
@@ -128,6 +127,7 @@ namespace Characters.Player
         private void OnHeal(InputAction.CallbackContext context)
         {
             ResetBufferedInput();
+            MoveInput = Vector2.zero;
             IsHealPressedTrigger.SetFor(healInputWaitTime);
         }
 

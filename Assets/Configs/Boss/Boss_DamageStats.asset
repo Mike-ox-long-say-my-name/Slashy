@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss_DamageStats
   m_EditorClassIdentifier: 
   <DamageStats>k__BackingField:
-    <BaseDamage>k__BackingField: 25
+    <BaseDamage>k__BackingField: 20
     <BaseBalanceDamage>k__BackingField: 15
     <BaseStaggerTime>k__BackingField: 0.3
     <BasePushTime>k__BackingField: 0.2

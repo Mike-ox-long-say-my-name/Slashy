@@ -17,6 +17,7 @@ namespace Core
         [SerializeField] private UnityEvent<string> startingNewGame;
         [SerializeField] private UnityEvent<string> loadedLevel;
         [SerializeField] private UnityEvent<string> loadedExitedLevel;
+        [SerializeField] private UnityEvent gameCompleted;
 
         [SerializeField] private string newGameScene;
         [SerializeField] private string menuScene;
@@ -29,6 +30,7 @@ namespace Core
         public UnityEvent<string> LoadedLevel => loadedLevel;
         public UnityEvent<string> LoadedExitedLevel => loadedExitedLevel;
         public UnityEvent<string> LoadingExitedLevel => loadingExitedLevel;
+        public UnityEvent GameCompleted => gameCompleted;
 
         public bool HasAnyGameProgress => !string.IsNullOrEmpty(respawnData.RespawnLevel);
 
@@ -141,6 +143,13 @@ namespace Core
         {
             var activeScene = SceneManager.GetActiveScene();
             return activeScene.IsValid() ? activeScene.name : null;
+        }
+
+        public void CompleteGame()
+        {
+            GameCompleted?.Invoke();
+            bonfireData.ResetBitmask();
+            LoadMenu();
         }
     }
 }

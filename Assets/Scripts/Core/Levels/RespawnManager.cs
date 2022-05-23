@@ -14,8 +14,15 @@ namespace Core.Levels
         {
             GameLoader.Instance.StartingNewGame.AddListener(OnStartingNewGame);
             GameLoader.Instance.LoadedExitedLevel.AddListener(OnLoadedExitedLevel);
+            GameLoader.Instance.GameCompleted.AddListener(OnGameCompleted);
             PlayerManager.Instance.PlayedDeadSequenceEnded.AddListener(Respawn);
             PlayerManager.Instance.PlayerLoaded.AddListener(OnPlayerLoaded);
+        }
+
+        private void OnGameCompleted()
+        {
+            respawnData.RespawnLevel = string.Empty;
+            respawnData.RespawnPosition = defaultRespawnPosition;
         }
 
         private void OnLoadedExitedLevel(string arg0)

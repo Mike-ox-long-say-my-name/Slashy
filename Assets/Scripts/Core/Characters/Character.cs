@@ -6,14 +6,14 @@ using Core.Utilities;
 
 namespace Core.Characters
 {
-    public class Character : ICharacter
+    public sealed class Character : ICharacter
     {
         public Team Team { get; set; }
 
-        public event Action<ICharacter, HitInfo> HitReceived;
-        public event Action<ICharacter, HitInfo> Staggered;
-        public event Action<ICharacter, HitInfo> Dead;
-        public event Action<ICharacter> RecoveredFromStagger;
+        public event Action<HitInfo> HitReceived;
+        public event Action<HitInfo> Staggered;
+        public event Action<HitInfo> Dead;
+        public event Action RecoveredFromStagger;
         
         public bool CanDie { get; set; } = true;
 
@@ -41,7 +41,7 @@ namespace Core.Characters
             HitReceiver = hitReceiver;
 
             hitReceiver.HitReceived += ProcessHit;
-            _staggerTimer.Timeout += () => RecoveredFromStagger?.Invoke(this);
+            _staggerTimer.Timeout += () => RecoveredFromStagger?.Invoke();
         }
 
         ~Character()
@@ -67,11 +67,11 @@ namespace Core.Characters
             {
                 Balance.Recover(Balance.MaxValue);
                 _staggerTimer.Start(info.StaggerTime);
-                Staggered?.Invoke(this, info);
+                Staggered?.Invoke(info);
             }
             else
             {
-                HitReceived?.Invoke(this, info);
+                HitReceived?.Invoke(info);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Core.Characters
             return CanDie && Health.IsDepleted();
         }
 
-        protected virtual void Die(HitInfo info)
+        private void Die(HitInfo info)
         {
             if (IsDead)
             {
@@ -95,7 +95,7 @@ namespace Core.Characters
             }
 
             IsDead = true;
-            Dead?.Invoke(this, info);
+            Dead?.Invoke(info);
         }
 
         public void Tick(float deltaTime)

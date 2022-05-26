@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Miscellaneous
 {
-    [RequireComponent(typeof(MixinDestroyable))]
+    [RequireComponent(typeof(DestroyHelper))]
     [RequireComponent(typeof(MixinHittable))]
     public class BreakableGrass : MonoBehaviour
     {
@@ -35,7 +35,7 @@ namespace Miscellaneous
                 additional.SetActive(true);
             }
 
-            var destroyable = GetComponent<MixinDestroyable>();
+            var destroyable = GetComponent<DestroyHelper>();
             destroyable.Destroy();
         }
     }

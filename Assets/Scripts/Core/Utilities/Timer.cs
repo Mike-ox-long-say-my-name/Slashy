@@ -9,7 +9,7 @@ namespace Core.Utilities
         public float TimeRemained { get; private set; }
 
         private float _baseTime;
-        public bool IsRepeating { get; private set; }
+        public bool IsRepeating { get; set; }
 
         public event Action Timeout;
 

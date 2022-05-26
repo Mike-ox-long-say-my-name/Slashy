@@ -14,7 +14,7 @@ namespace Characters.Enemies.States
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(MixinVelocityMovement))]
     [RequireComponent(typeof(MixinCharacter))]
-    [RequireComponent(typeof(MixinDestroyable))]
+    [RequireComponent(typeof(DestroyHelper))]
     public abstract class EnemyStateMachine<T> : MonoBehaviour, IStateHolder<T> where T : class, IStateHolder<T>
     {
         public EnemyBaseState<T> CurrentState { get; set; }
@@ -24,10 +24,10 @@ namespace Characters.Enemies.States
         public IVelocityMovement VelocityMovement { get; private set; }
         public IBaseMovement BaseMovement => VelocityMovement.BaseMovement;
         public IHurtbox Hurtbox { get; private set; }
-        public MixinDestroyable Destroyable { get; private set; }
+        public DestroyHelper Destroyable { get; private set; }
 
         public IPlayer PlayerInfo => PlayerManager.Instance.PlayerInfo;
-        public IPlayerCharacter Player => PlayerInfo.Player;
+        public IPlayerCharacter Player => PlayerInfo.PlayerCharacter;
 
         public Vector3 PlayerPosition => PlayerInfo.VelocityMovement.BaseMovement.Transform.position;
 
@@ -40,7 +40,7 @@ namespace Characters.Enemies.States
             Animator = GetComponent<Animator>();
             VelocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
-            Destroyable = GetComponent<MixinDestroyable>();
+            Destroyable = GetComponent<DestroyHelper>();
 
             var character = Character = GetComponent<MixinCharacter>().Character;
             character.HitReceived += (_, info) => CurrentState.OnHitReceived(info);

@@ -38,7 +38,7 @@ namespace Characters.Enemies.Rogue
     {
         public override void EnterState()
         {
-            FightManager.Instance.DecreaseAggroCounter();
+            AggroListener.Instance.DecreaseAggroCounter();
             Context.AutoMovement.ResetState();
             Context.AutoMovement.UnlockRotation();
 
@@ -61,7 +61,7 @@ namespace Characters.Enemies.Rogue
             const float aggroDistance = 8f;
             if (Vector3.Distance(position, player) < aggroDistance)
             {
-                FightManager.Instance.IncreaseAggroCounter();
+                AggroListener.Instance.IncreaseAggroCounter();
                 SwitchState<RoguePursue>();
             }
         }

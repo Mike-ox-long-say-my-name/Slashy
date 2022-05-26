@@ -19,14 +19,14 @@ namespace UI.Menu
 
         private void OnEnable()
         {
-            var actions = PlayerActionsProxy.Instance.Actions;
+            var actions = PlayerBindings.Instance.Actions;
             actions.UI.Enable();
             actions.UI.Menu.performed += OnMenuPressed;
         }
 
         private void OnDisable()
         {
-            var proxy = PlayerActionsProxy.TryGetInstance();
+            var proxy = PlayerBindings.TryGetInstance();
             if (proxy == null)
             {
                 return;

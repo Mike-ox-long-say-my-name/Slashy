@@ -4,36 +4,8 @@ using UnityEngine.Events;
 
 namespace Core.Player
 {
-    public class PlayerManager : PublicSingleton<PlayerManager>
+    public class PlayerManager
     {
-        private IPlayer _playerInfo;
-
-        public IPlayer PlayerInfo
-        {
-            get
-            {
-                if ((Object)_playerInfo != null)
-                {
-                    return _playerInfo;
-                }
-
-                var playerObject = GameObject.FindGameObjectWithTag("Player");
-                if (playerObject == null)
-                {
-                    return null;
-                }
-
-                _playerInfo = playerObject.GetComponent<IPlayer>();
-                if (_playerInfo == null)
-                {
-                    Debug.LogError($"Player does not implement {nameof(IPlayer)}.\n" +
-                                   "Maybe there is multiple players on scene", this);
-                }
-
-                return _playerInfo;
-            }
-        }
-        
         [SerializeField] private UnityEvent playerLoaded;
         [SerializeField] private UnityEvent playedDeadSequenceStarted;
         [SerializeField] private UnityEvent playedDeadSequenceEnded;

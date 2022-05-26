@@ -39,7 +39,7 @@ namespace Core.Characters
             }
         }
 
-        protected BaseResource(float maxValue, float startValue)
+        private BaseResource(float maxValue, float startValue)
         {
             MaxValue = maxValue;
             Value = startValue;

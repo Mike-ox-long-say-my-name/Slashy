@@ -10,7 +10,7 @@ namespace Core.Levels
 
         private void Start()
         {
-            BackgroundMusicManager.Instance.SetMusic(chillMusic, fightMusic);
+            BackgroundMusicPlayer.Instance.SetMusic(chillMusic, fightMusic);
         }
     }
 }

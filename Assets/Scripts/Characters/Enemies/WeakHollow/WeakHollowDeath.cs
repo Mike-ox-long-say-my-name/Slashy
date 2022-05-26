@@ -6,7 +6,7 @@ namespace Characters.Enemies.WeakHollow
     {
         public override void EnterState()
         {
-            FightManager.Instance.DecreaseAggroCounter();
+            AggroListener.Instance.DecreaseAggroCounter();
             Context.AnimatorComponent.SetTrigger("death");
 
             Context.Destroyable.DestroyLater();

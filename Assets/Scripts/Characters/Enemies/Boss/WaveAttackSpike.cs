@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Characters.Enemies.Boss
 {
-    [RequireComponent(typeof(MixinDestroyable))]
+    [RequireComponent(typeof(DestroyHelper))]
     public class WaveAttackSpike : MonoBehaviour
     {
         [SerializeField] private MonoAbstractAttackExecutor attackExecutor;
@@ -15,12 +15,12 @@ namespace Characters.Enemies.Boss
         [SerializeField] private float animationTime;
         [SerializeField] private Transform spike;
 
-        private MixinDestroyable _destroyable;
+        private DestroyHelper _destroyable;
         private IAttackbox _attackbox;
 
         private void Awake()
         {
-            _destroyable = GetComponent<MixinDestroyable>();
+            _destroyable = GetComponent<DestroyHelper>();
             _attackbox = GetComponentInChildren<MonoAttackbox>().Attackbox;
         }
 

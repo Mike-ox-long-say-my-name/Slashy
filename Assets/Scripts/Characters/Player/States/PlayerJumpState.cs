@@ -6,7 +6,7 @@ namespace Characters.Player.States
         {
             base.EnterState();
             
-            Context.Player.Stamina.Spend(Context.PlayerConfig.JumpStaminaCost);
+            Context.PlayerCharacter.Stamina.Spend(Context.PlayerConfig.JumpStaminaCost);
             Context.JumpHandler.Jump();
             Context.JumpSource.Play();
         }

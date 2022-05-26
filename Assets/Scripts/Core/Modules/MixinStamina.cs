@@ -58,7 +58,7 @@ namespace Core.Modules
 
             public override void Spend(float amount)
             {
-                if (FightManager.Instance.IsFighting)
+                if (AggroListener.Instance.IsFighting)
                 {
                     base.Spend(amount);
                 }

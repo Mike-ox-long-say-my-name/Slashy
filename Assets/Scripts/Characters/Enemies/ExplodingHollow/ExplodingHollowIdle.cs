@@ -9,7 +9,7 @@ namespace Characters.Enemies.ExplodingHollow
         {
             if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < Context.AggroDistance)
             {
-                FightManager.Instance.IncreaseAggroCounter();
+                AggroListener.Instance.IncreaseAggroCounter();
                 SwitchState<ExplodingHollowPursue>();
             }
         }

@@ -21,12 +21,12 @@ namespace Characters.Player.States
 
         public override void UpdateState()
         {
-            var healthRegenAmount = Context.Player.Character.Health.MaxValue / AnimationTime * 2;
-            var staminaRegenAmount = Context.Player.Stamina.MaxValue / AnimationTime * 2;
+            var healthRegenAmount = Context.PlayerCharacter.Character.Health.MaxValue / AnimationTime * 2;
+            var staminaRegenAmount = Context.PlayerCharacter.Stamina.MaxValue / AnimationTime * 2;
 
             var deltaTime = Time.deltaTime;
-            Context.Player.Character.Health.Recover(healthRegenAmount * deltaTime);
-            Context.Player.Stamina.Recover(staminaRegenAmount * deltaTime);
+            Context.PlayerCharacter.Character.Health.Recover(healthRegenAmount * deltaTime);
+            Context.PlayerCharacter.Stamina.Recover(staminaRegenAmount * deltaTime);
             _touchTimer.Tick(deltaTime);
         }
 

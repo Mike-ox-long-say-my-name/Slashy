@@ -11,7 +11,7 @@ namespace Characters.Enemies.Boss
             if (distance < 10f)
             {
                 Context.BossEvents.FightStarted?.Invoke();
-                FightManager.Instance.IncreaseAggroCounter();
+                AggroListener.Instance.IncreaseAggroCounter();
                 SwitchState<BossPursue>();
             }
         }

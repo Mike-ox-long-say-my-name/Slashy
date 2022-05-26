@@ -38,7 +38,7 @@ namespace Characters.Player.States
             BlackScreenManager.Instance.Blackout(time);
             yield return new WaitForSeconds(time);
             
-            FightManager.Instance.ResetAggroCounter();
+            AggroListener.Instance.ResetAggroCounter();
             PlayerManager.Instance.PlayedDeadSequenceEnded?.Invoke();
         }
 

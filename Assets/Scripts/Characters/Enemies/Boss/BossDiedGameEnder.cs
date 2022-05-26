@@ -30,7 +30,7 @@ namespace Characters.Enemies.Boss
 
             yield return new WaitForSeconds(blackoutTime);
             
-            FightManager.Instance.ResetAggroCounter();
+            AggroListener.Instance.ResetAggroCounter();
             GameLoader.Instance.CompleteGame();
         }
     }

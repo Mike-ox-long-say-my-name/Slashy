@@ -15,7 +15,7 @@ namespace Characters.Player.States
             Context.Animator.SetBool("is-dashing", true);
             Context.DashSource.Play();
 
-            Context.Player.Stamina.Spend(Context.PlayerConfig.DashStaminaCost);
+            Context.PlayerCharacter.Stamina.Spend(Context.PlayerConfig.DashStaminaCost);
             var input = Context.Input.MoveInput;
             Context.VelocityMovement.BaseMovement.Rotate(input.x);
             var direction = new Vector3(input.x, 0, input.y);

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Characters.Enemies.Boss
 {
     [RequireComponent(typeof(MixinMovementBase))]
-    [RequireComponent(typeof(MixinDestroyable))]
+    [RequireComponent(typeof(DestroyHelper))]
     public class WaveAttackWalker : MonoBehaviour
     {
         private IBaseMovement _movement;
@@ -16,12 +16,12 @@ namespace Characters.Enemies.Boss
         private Action<Vector3> _moved;
         private Vector3 _direction;
 
-        private MixinDestroyable _destroyable;
+        private DestroyHelper _destroyable;
 
         private void Awake()
         {
             _movement = GetComponent<MixinMovementBase>().BaseMovement;
-            _destroyable = GetComponent<MixinDestroyable>();
+            _destroyable = GetComponent<DestroyHelper>();
             _destroyable.DestroyLater();
         }
 

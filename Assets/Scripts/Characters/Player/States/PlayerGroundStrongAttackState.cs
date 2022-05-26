@@ -13,7 +13,7 @@ namespace Characters.Player.States
             Context.VelocityMovement.Stop();
 
             Context.Animator.SetTrigger("strong-attack");
-            Context.Player.Stamina.Spend(Context.PlayerConfig.FirstStrongAttackStaminaCost);
+            Context.PlayerCharacter.Stamina.Spend(Context.PlayerConfig.FirstStrongAttackStaminaCost);
             
             _shouldContinueAttack = false;
 
@@ -31,7 +31,7 @@ namespace Characters.Player.States
                     BaseBalanceDamage = 0
                 },
                 Multipliers = DamageMultipliers.One,
-                Source = HitSource.AsCharacter(Context.Player.Character)
+                Source = HitSource.AsCharacter(Context.PlayerCharacter.Character)
             };
             Context.HitReceiver.ReceiveHit(selfHit);
         }
@@ -40,7 +40,7 @@ namespace Characters.Player.States
         {
             if (result.WasCompleted && _shouldContinueAttack)
             {
-                Context.Player.Stamina.Spend(Context.PlayerConfig.SecondStrongAttackStaminaCost);
+                Context.PlayerCharacter.Stamina.Spend(Context.PlayerConfig.SecondStrongAttackStaminaCost);
                 Context.SecondStrongAttack.StartAttack(AttackEndedSecond);
             }
             else
@@ -51,7 +51,7 @@ namespace Characters.Player.States
 
         public override void UpdateState()
         {
-            if (!_shouldContinueAttack && Context.Player.HasStamina() && Context.Input.IsStrongAttackPressed)
+            if (!_shouldContinueAttack && Context.PlayerCharacter.HasStamina() && Context.Input.IsStrongAttackPressed)
             {
                 Context.Animator.SetTrigger("strong-attack");
                 _shouldContinueAttack = true;

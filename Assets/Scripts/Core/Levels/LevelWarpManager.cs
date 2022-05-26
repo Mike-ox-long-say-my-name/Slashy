@@ -77,7 +77,7 @@ namespace Core.Levels
         {
             PlayerManager.Instance.PlayerLoaded.AddListener(OnPlayerLoaded);
 
-            var player = playerInfo.Player;
+            var player = playerInfo.PlayerCharacter;
             _transferData = new PlayerTransferData
             {
                 Health = player.Character.Health.Value,

@@ -59,7 +59,7 @@ namespace Characters.Player.States
 
         private IPlayerCharacter _player;
 
-        public IPlayerCharacter Player
+        public IPlayerCharacter PlayerCharacter
         {
             get
             {
@@ -114,26 +114,26 @@ namespace Characters.Player.States
         public bool ShouldLightAttack => CanLightAttack
                                               && LightAttackRecoveryLock.IsUnlocked
                                               && AttackExecutorHelper.IsAllIdle()
-                                              && Player.HasStamina()
+                                              && PlayerCharacter.HasStamina()
                                               && Input.IsLightAttackPressed;
 
         public bool ShouldStrongAttack => CanStrongAttack
                                               && AttackExecutorHelper.IsAllIdle()
-                                              && Player.HasStamina()
+                                              && PlayerCharacter.HasStamina()
                                               && Input.IsStrongAttackPressed;
 
         public bool ShouldDash => CanDash
                                        && DashRecoveryLock.IsUnlocked
                                        && Input.IsDashPressed
-                                       && Player.HasStamina();
+                                       && PlayerCharacter.HasStamina();
 
         public bool ShouldJump => CanJump
                                        && Input.IsJumpPressed
-                                       && Player.HasStamina();
+                                       && PlayerCharacter.HasStamina();
 
         public bool ShouldHeal => CanHeal
                                   && Input.IsHealPressed
-                                  && Player.HasStamina();
+                                  && PlayerCharacter.HasStamina();
 
         public Vector3? WarpPosition { get; set; } = null;
 
@@ -174,7 +174,7 @@ namespace Characters.Player.States
                 HasDashEffectController = false;
             }
 
-            var character = Player.Character;
+            var character = PlayerCharacter.Character;
             character.HitReceived += (_, info) => CurrentState.OnHitReceived(info);
             character.Staggered += (_, info) => CurrentState.OnStaggered(info);
             character.Dead += (_, info) => CurrentState.OnDeath(info);
@@ -207,7 +207,7 @@ namespace Characters.Player.States
 
         private void Start()
         {
-            // Для корректного определения того, что игрок на земле при загрузке
+            // Р”Р»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РѕРїСЂРµРґРµР»РµРЅРёСЏ С‚РѕРіРѕ, С‡С‚Рѕ РёРіСЂРѕРє РЅР° Р·РµРјР»Рµ РїСЂРё Р·Р°РіСЂСѓР·РєРµ
             VelocityMovement.BaseMovement.Move(Vector3.down * 0.2f);
 
             var startState = VelocityMovement.BaseMovement.IsGrounded
@@ -218,7 +218,7 @@ namespace Characters.Player.States
             CurrentState.EnterState();
             CurrentState.UpdateState();
 
-            // Разогревочный
+            // Р Р°Р·РѕРіСЂРµРІРѕС‡РЅС‹Р№
             VelocityMovement.BaseMovement.Move(new Vector3(0.01f, -0.01f, 0));
 
             BlackScreenManager.Instance.Whiteout(BlackScreenManager.Instance.DefaultTime);
@@ -237,7 +237,7 @@ namespace Characters.Player.States
             }
             if (Keyboard.current.pKey.wasPressedThisFrame)
             {
-                Player.Character.Kill();
+                PlayerCharacter.Character.Kill();
             }
         }
     }

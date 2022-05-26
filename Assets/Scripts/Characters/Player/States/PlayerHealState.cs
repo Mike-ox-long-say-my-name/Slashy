@@ -17,7 +17,7 @@ namespace Characters.Player.States
 
             _healRoutine = Context.StartCoroutine(
                 HealRoutine(
-                    Context.Player,
+                    Context.PlayerCharacter,
                     Context.PlayerConfig.ActiveHealRate,
                     Context.PlayerConfig.HealStaminaConsumption)
                 );

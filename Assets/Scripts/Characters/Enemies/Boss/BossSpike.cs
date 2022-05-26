@@ -6,16 +6,16 @@ using UnityEngine;
 namespace Characters.Enemies.Boss
 {
     [RequireComponent(typeof(MixinDamageSource))]
-    [RequireComponent(typeof(MixinDestroyable))]
+    [RequireComponent(typeof(DestroyHelper))]
     public class BossSpike : MonoBehaviour
     {
         [SerializeField] private MonoAbstractAttackExecutor strikeAttackExecutor;
 
-        private MixinDestroyable _destroyable;
+        private DestroyHelper _destroyable;
 
         private void Awake()
         {
-            _destroyable = GetComponent<MixinDestroyable>();
+            _destroyable = GetComponent<DestroyHelper>();
         }
 
         public void StrikeFromGround()

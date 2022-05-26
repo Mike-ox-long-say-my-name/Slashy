@@ -6,19 +6,14 @@ namespace Core.Player.Interfaces
 {
     public interface IPlayer
     {
-        IPlayerCharacter Player { get; }
-
+        IPlayerCharacter PlayerCharacter { get; }
         IVelocityMovement VelocityMovement { get; }
-        IAutoPlayerInput Input { get; }
-
         Animator Animator { get; }
         IHurtbox Hurtbox { get; }
-
-        bool IsFrozen { get; set; }
         Transform Transform { get; }
-
-        MixinPlayerCapabilities Capabilities { get; }
-
         GameObject PlayerObject { get; }
+
+        void Freeze();
+        void Unfreeze();
     }
 }

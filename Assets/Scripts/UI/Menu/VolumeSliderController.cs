@@ -15,7 +15,7 @@ namespace UI.Menu
         private void Start()
         {
             _isInitializing = true;
-            var manager = AudioManager.Instance;
+            var manager = VolumeControlService.Instance;
             soundSlider.value = manager.SoundVolume * soundSlider.maxValue;
             musicSlider.value = manager.MusicVolume * musicSlider.maxValue;
             _isInitializing = false;
@@ -27,7 +27,7 @@ namespace UI.Menu
             {
                 return;
             }
-            AudioManager.Instance.SetSoundVolume(amount / soundSlider.maxValue);
+            VolumeControlService.Instance.SetSoundVolume(amount / soundSlider.maxValue);
         }
 
         public void SetMusicVolume(float amount)
@@ -36,7 +36,7 @@ namespace UI.Menu
             {
                 return;
             }
-            AudioManager.Instance.SetMusicVolume(amount / musicSlider.maxValue);
+            VolumeControlService.Instance.SetMusicVolume(amount / musicSlider.maxValue);
         }
     }
 }

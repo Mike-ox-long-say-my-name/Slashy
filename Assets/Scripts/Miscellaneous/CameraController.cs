@@ -28,7 +28,7 @@ namespace Miscellaneous
 
         private float _followVelocity;
 
-        // Спасибо классно работает
+        // РЎРїР°СЃРёР±Рѕ РєР»Р°СЃСЃРЅРѕ СЂР°Р±РѕС‚Р°РµС‚
         private const int WarmFirstMoves = 5;
         private int _firstMovesRemained;
 
@@ -37,7 +37,7 @@ namespace Miscellaneous
             var position = transform.position;
 
             var targetX = target.position.x;
-            var availableX = BorderManager.Instance.GetAvailableCameraX(Camera, targetX, minBorderDistance);
+            var availableX = BorderService.Instance.GetAvailableCameraX(Camera, targetX, minBorderDistance);
             var bordered = !Mathf.Approximately(availableX, targetX);
             var smoothTime = bordered ? followSmoothTimeWhenBordered : followSmoothTime;
 
@@ -49,7 +49,7 @@ namespace Miscellaneous
         private void SetPosition(float x)
         {
             var position = transform.position;
-            var availableX = BorderManager.Instance.GetAvailableCameraX(Camera, x, minBorderDistance);
+            var availableX = BorderService.Instance.GetAvailableCameraX(Camera, x, minBorderDistance);
             transform.position = new Vector3(availableX, position.y, position.z);
         }
 

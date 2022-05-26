@@ -9,10 +9,10 @@ namespace Core.Characters.Interfaces
     {
         Team Team { get; set; }
 
-        event Action<ICharacter, HitInfo> HitReceived;
-        event Action<ICharacter, HitInfo> Staggered;
-        event Action<ICharacter> RecoveredFromStagger;
-        event Action<ICharacter, HitInfo> Dead;
+        event Action<HitInfo> HitReceived;
+        event Action<HitInfo> Staggered;
+        event Action<HitInfo> Dead;
+        event Action RecoveredFromStagger;
 
         IResource Health { get; }
         IResource Balance { get; }

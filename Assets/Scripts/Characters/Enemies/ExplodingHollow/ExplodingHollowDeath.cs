@@ -7,7 +7,7 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            FightManager.Instance.DecreaseAggroCounter();
+            AggroListener.Instance.DecreaseAggroCounter();
 
             Context.Hurtbox.Disable();
             Context.Animator.SetTrigger("death");

@@ -7,8 +7,7 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            Context.VelocityMovement.Stop();
-            Context.Animator.SetTrigger("attack");
+            Context.Animator.PlayPunchAnimation();
 
             Context.PunchAttack.StartAttack(result =>
             {
@@ -21,29 +20,24 @@ namespace Characters.Enemies.ExplodingHollow
 
         public override void OnDeath(HitInfo info)
         {
-            if (Context.PunchAttack.IsAttacking)
-            {
-                Context.PunchAttack.InterruptAttack();
-            }
+            Context.AttackExecutorHelper.InterruptAllRunning();
             base.OnDeath(info);
         }
 
         public override void OnStaggered(HitInfo info)
         {
-            if (Context.PunchAttack.IsAttacking)
-            {
-                Context.PunchAttack.InterruptAttack();
-            }
+            Context.AttackExecutorHelper.InterruptAllRunning();
             base.OnStaggered(info);
         }
 
         public override void OnHitReceived(HitInfo info)
         {
             var source = info.Source;
-            if (source.Character is {Team: Team.Player} && Context.PunchAttack.IsAttacking)
+            if (source.Character is { Team: Team.Player } && Context.PunchAttack.IsAttacking)
             {
-                Context.PunchAttack.InterruptAttack();
+                Context.AttackExecutorHelper.InterruptAllRunning();
             }
+
             base.OnHitReceived(info);
         }
     }

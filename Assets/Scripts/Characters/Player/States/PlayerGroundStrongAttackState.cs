@@ -6,22 +6,18 @@ namespace Characters.Player.States
 {
     public class PlayerGroundStrongAttackState : PlayerBaseGroundedState
     {
-        private bool _shouldContinueAttack;
-
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
 
-            Context.Animator.SetTrigger("strong-attack");
-            Context.PlayerCharacter.Stamina.Spend(Context.PlayerConfig.FirstStrongAttackStaminaCost);
-            
-            _shouldContinueAttack = false;
+            Context.Animator.PlayFirstGroundHeavyAttack();
+            Context.ResourceSpender.SpendFor(PlayerResourceAction.FirstHeavyAttack);
 
-            SelfHit();
-            Context.FirstStrongAttack.StartAttack(AttackEndedFirst);
+            InflictSelfHit();
+            Context.FirstStrongAttack.StartAttack(OnFirstAttackEnded);
         }
 
-        private void SelfHit()
+        private void InflictSelfHit()
         {
             var selfHit = new HitInfo
             {
@@ -31,42 +27,41 @@ namespace Characters.Player.States
                     BaseBalanceDamage = 0
                 },
                 Multipliers = DamageMultipliers.One,
-                Source = HitSource.AsCharacter(Context.PlayerCharacter.Character)
+                Source = HitSource.AsCharacter(Context.Character)
             };
             Context.HitReceiver.ReceiveHit(selfHit);
         }
 
-        private void AttackEndedFirst(AttackResult result)
+        private void OnFirstAttackEnded(AttackResult result)
         {
-            if (result.WasCompleted && _shouldContinueAttack)
+            if (ShouldEndCombo(result))
             {
-                Context.PlayerCharacter.Stamina.Spend(Context.PlayerConfig.SecondStrongAttackStaminaCost);
-                Context.SecondStrongAttack.StartAttack(AttackEndedSecond);
+                OnWholeAttackEnded(result);
+                return;
             }
-            else
-            {
-                AttackEndedSecond(result);
-            }
+
+            Context.ResourceSpender.SpendFor(PlayerResourceAction.SecondHeavyAttack);
+            Context.Animator.PlaySecondGroundHeavyAttack();
+            Context.SecondStrongAttack.StartAttack(OnSecondAttackEnded);
         }
 
-        public override void UpdateState()
+        private bool ShouldEndCombo(AttackResult result)
         {
-            if (!_shouldContinueAttack && Context.PlayerCharacter.HasStamina() && Context.Input.IsStrongAttackPressed)
-            {
-                Context.Animator.SetTrigger("strong-attack");
-                _shouldContinueAttack = true;
-            }
+            return !result.WasCompleted ||
+                   !Context.ResourceSpender.HasEnoughResourcesFor(PlayerResourceAction.SecondHeavyAttack) ||
+                   !Context.Input.IsStrongAttackPressed;
         }
 
-        private void AttackEndedSecond(AttackResult result)
+        private void OnSecondAttackEnded(AttackResult result)
+        {
+            OnWholeAttackEnded(result);
+        }
+
+        private void OnWholeAttackEnded(AttackResult result)
         {
             if (result.WasCompleted)
             {
                 SwitchState<PlayerGroundedState>();
-            }
-            else
-            {
-                Context.Animator.ResetTrigger("strong-attack");
             }
         }
     }

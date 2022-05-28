@@ -7,11 +7,15 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void UpdateState()
         {
-            if (Vector3.Distance(Context.PlayerPosition, Context.transform.position) < Context.AggroDistance)
+            var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(),
+                Context.transform.position.WithZeroY());
+            if (distance > Context.AggroDistance)
             {
-                AggroListener.Instance.IncreaseAggroCounter();
-                SwitchState<ExplodingHollowPursue>();
+                return;
             }
+
+            Context.Aggro();
+            SwitchState<ExplodingHollowPursue>();
         }
     }
 }

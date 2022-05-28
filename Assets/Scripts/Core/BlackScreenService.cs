@@ -8,8 +8,8 @@ namespace Core
         private readonly BlackScreenServiceContainer _container;
         private readonly CoroutineContext _alphaChangeRoutine;
 
-        public BlackScreenService(BlackScreenServiceContainer container, IGameLoader gameLoader,
-            ICoroutineRunner coroutineRunner)
+        public BlackScreenService(ICoroutineRunner coroutineRunner, IGameLoader gameLoader,
+            BlackScreenServiceContainer container)
         {
             _container = container;
             _alphaChangeRoutine = coroutineRunner.GetEmptyContext();
@@ -19,16 +19,27 @@ namespace Core
             void SubscribeToGameLoaderEvents()
             {
                 gameLoader.Exiting += _ => StopAlphaChange();
-                gameLoader.StartingNewGame += _ => SetScreenAlpha(1);
-                gameLoader.LoadingExitedLevel += _ => SetScreenAlpha(1);
+                gameLoader.StartingNewGame += _ => OnLoadedLevel();
+                gameLoader.LoadingExitedLevel += _ => OnLoadedLevel();
+                gameLoader.LoadedLevel += _ => OnLoadedLevel();
                 gameLoader.GameCompleted += () => SetScreenAlpha(0);
             }
+        }
+
+        private void OnLoadedLevel()
+        {
+            SetScreenAlpha(1);
+            Whiteout();
         }
 
         private void StopAlphaChange()
         {
             _alphaChangeRoutine?.Stop();
         }
+
+        public void Blackout() => Blackout(_container.DefaultTime);
+
+        public void Whiteout() => Whiteout(_container.DefaultTime);
 
         public void Blackout(float time)
         {

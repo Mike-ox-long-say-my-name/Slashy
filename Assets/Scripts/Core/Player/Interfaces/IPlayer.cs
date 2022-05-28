@@ -1,19 +1,26 @@
-﻿using Core.Attacking.Interfaces;
+﻿using System;
+using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
+using Core.Levels;
 using UnityEngine;
 
 namespace Core.Player.Interfaces
 {
     public interface IPlayer
     {
-        IPlayerCharacter PlayerCharacter { get; }
+        ICharacter Character { get; }
+        IResource Stamina { get; }
         IVelocityMovement VelocityMovement { get; }
-        Animator Animator { get; }
         IHurtbox Hurtbox { get; }
         Transform Transform { get; }
-        GameObject PlayerObject { get; }
+        GameObject Object { get; }
 
         void Freeze();
         void Unfreeze();
+        event Action TouchedBonfire;
+        event Action<Vector3> StartedWarping;
+        
+        void StartWarp(Vector3 target);
+        void EndWarp(Vector3 target);
     }
 }

@@ -7,7 +7,7 @@ namespace Characters.Enemies.Boss
     {
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("horizontal-swing");
+            Context.Animator.PlaySwingAnimation();
             Context.HorizontalSwingExecutor.StartAttack(OnAttackEnded);
         }
 

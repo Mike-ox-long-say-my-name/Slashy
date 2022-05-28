@@ -33,8 +33,9 @@ namespace Core.Modules
 
         private IResource _stamina;
         private float _lastValue;
+        private IAggroListener _aggroListener;
 
-        public IResource Stamina
+        private IResource Stamina
         {
             get
             {
@@ -43,7 +44,8 @@ namespace Core.Modules
                     return _stamina;
                 }
 
-                _stamina = new CustomStamina(MaxValue);
+                _aggroListener = Container.Get<IAggroListener>();
+                _stamina = new CustomStamina(_aggroListener, MaxValue);
                 _lastValue = _stamina.Value;
                 _stamina.ValueChanged += OnValueChanged;
                 return _stamina;
@@ -52,13 +54,16 @@ namespace Core.Modules
 
         private class CustomStamina : StaminaResource
         {
-            public CustomStamina(float maxStamina) : base(maxStamina)
+            private readonly IAggroListener _aggroListener;
+
+            public CustomStamina(IAggroListener aggroListener, float maxStamina) : base(maxStamina)
             {
+                _aggroListener = aggroListener;
             }
 
             public override void Spend(float amount)
             {
-                if (AggroListener.Instance.IsFighting)
+                if (_aggroListener.IsFighting)
                 {
                     base.Spend(amount);
                 }
@@ -76,6 +81,7 @@ namespace Core.Modules
                 {
                     delayTime += emptyStaminaAdditionalDelay;
                 }
+
                 _delayTimer.Start(delayTime);
             }
 

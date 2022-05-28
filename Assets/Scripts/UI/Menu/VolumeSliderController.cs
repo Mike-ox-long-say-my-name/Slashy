@@ -10,33 +10,43 @@ namespace UI.Menu
         [SerializeField] private Slider soundSlider;
         [SerializeField] private Slider musicSlider;
 
-        private bool _isInitializing = true;
+        private bool _isInitialized;
+        private IVolumeControlService _volumeControl;
 
-        private void Start()
+        private void Awake()
         {
-            _isInitializing = true;
-            var manager = VolumeControlService.Instance;
-            soundSlider.value = manager.SoundVolume * soundSlider.maxValue;
-            musicSlider.value = manager.MusicVolume * musicSlider.maxValue;
-            _isInitializing = false;
+            Construct();
+            SetSavedValues();
+            _isInitialized = true;
+        }
+
+        private void Construct()
+        {
+            _volumeControl = Container.Get<IVolumeControlService>();
+        }
+
+        private void SetSavedValues()
+        {
+            soundSlider.maxValue = _volumeControl.MaxVolumeValue;
+            musicSlider.maxValue = _volumeControl.MaxVolumeValue;
+            soundSlider.value = _volumeControl.SoundVolume;
+            musicSlider.value = _volumeControl.MusicVolume;
         }
 
         public void SetSoundVolume(float amount)
         {
-            if (_isInitializing)
+            if (_isInitialized)
             {
-                return;
+                _volumeControl.SetSoundVolume(Mathf.RoundToInt(amount));
             }
-            VolumeControlService.Instance.SetSoundVolume(amount / soundSlider.maxValue);
         }
 
         public void SetMusicVolume(float amount)
         {
-            if (_isInitializing)
+            if (_isInitialized)
             {
-                return;
+                _volumeControl.SetMusicVolume(Mathf.RoundToInt(amount));
             }
-            VolumeControlService.Instance.SetMusicVolume(amount / musicSlider.maxValue);
         }
     }
 }

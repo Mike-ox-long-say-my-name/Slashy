@@ -12,14 +12,14 @@ namespace Characters.Enemies.WeakHollow
 
         public override void OnStaggered(HitInfo info)
         {
-            Context.InterruptActiveAttack();
+            Context.AttackExecutorHelper.InterruptAllRunning();
             Context.LastHitInfo = info;
             SwitchState<WeakHollowStagger>(true);
         }
 
         public override void OnDeath(HitInfo info)
         {
-            Context.InterruptActiveAttack();
+            Context.AttackExecutorHelper.InterruptAllRunning();
             Context.LastHitInfo = info;
             SwitchState<WeakHollowDeath>(true);
         }

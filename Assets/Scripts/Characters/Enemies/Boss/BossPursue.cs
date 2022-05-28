@@ -11,9 +11,9 @@ namespace Characters.Enemies.Boss
 
         public override void EnterState()
         {
-            Context.Animator.SetBool("is-walking", true);
+            Context.Animator.StartWalkAnimation();
 
-            var player = Context.PlayerInfo.Transform;
+            var player = Context.Player.Transform;
             Context.AutoMovement.TargetReached += OnTargetReached;
             Context.AutoMovement.MoveTo(player);
             Context.AutoMovement.LockRotationOn(player);
@@ -55,7 +55,7 @@ namespace Characters.Enemies.Boss
 
         public override void ExitState()
         {
-            Context.Animator.SetBool("is-walking", false);
+            Context.Animator.EndWalkAnimation();
 
             Context.VelocityMovement.Stop();
             Context.AutoMovement.ResetState();

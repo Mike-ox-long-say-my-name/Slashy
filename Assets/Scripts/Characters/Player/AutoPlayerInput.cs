@@ -22,6 +22,7 @@ namespace Characters.Player
         private TimedTrigger _isLightAttackPressedTrigger;
         private TimedTrigger _isHealPressedTrigger;
         private TimedTrigger _isStrongAttackPressedTrigger;
+        private PlayerBindings _playerBindings;
 
         public bool IsJumpPressed => _isJumpPressedTrigger.IsSet;
         public bool IsDashPressed => _isDashPressedTrigger.IsSet;
@@ -35,7 +36,7 @@ namespace Characters.Player
 
         private void SubscribeToInput()
         {
-            var actions = PlayerBindings.Instance.Actions;
+            var actions = _playerBindings.Actions;
             actions.Player.Enable();
             actions.Player.Jump.performed += OnJump;
             actions.Player.Dash.performed += OnDash;
@@ -50,7 +51,7 @@ namespace Characters.Player
 
         private void UnsubscribeFromInput()
         {
-            var actions = Container.Get<PlayerBindings>();
+            var actions = _playerBindings.Actions;
             actions.Player.Jump.performed -= OnJump;
             actions.Player.Dash.performed -= OnDash;
             actions.Player.Heal.performed -= OnHeal;
@@ -69,6 +70,8 @@ namespace Characters.Player
             _isLightAttackPressedTrigger = _triggerFactory.Create();
             _isHealPressedTrigger = _triggerFactory.Create();
             _isStrongAttackPressedTrigger = _triggerFactory.Create();
+
+            _playerBindings = Container.Get<PlayerBindings>();
         }
 
         private void OnEnable()
@@ -123,7 +126,6 @@ namespace Characters.Player
         private void OnHeal(InputAction.CallbackContext context)
         {
             ResetBufferedInput();
-            MoveInput = Vector2.zero;
             _isHealPressedTrigger.SetFor(healInputWaitTime);
         }
 

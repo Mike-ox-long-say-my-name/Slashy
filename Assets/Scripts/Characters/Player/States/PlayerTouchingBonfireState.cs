@@ -1,5 +1,3 @@
-using Core.Characters.Interfaces;
-using Core.Player;
 using Core.Utilities;
 using UnityEngine;
 
@@ -12,28 +10,40 @@ namespace Characters.Player.States
 
         public override void EnterState()
         {
-            Context.VelocityMovement.Stop();
-            Context.Animator.SetBool("is-saving", true);
+            AdjustToAnimation();
+            Context.BonfireToTouch = null;
 
-            PlayerManager.Instance.PlayerTouchedBonfire?.Invoke();
+            Context.Animator.StartBonfireAnimation();
+            Context.OnTouchedBonfire();
+
             _touchTimer = Timer.Start(AnimationTime, () => SwitchState<PlayerGroundedState>());
+        }
+
+        private void AdjustToAnimation()
+        {
+            var bonfire = Context.BonfireToTouch;
+            var bonfirePositionX = bonfire.transform.position.x;
+            var animationPosition = bonfire.GetPlayerAnimationPosition();
+
+            Context.BaseMovement.SetPosition(animationPosition);
+            Context.BaseMovement.Rotate(bonfirePositionX - animationPosition.x);
         }
 
         public override void UpdateState()
         {
-            var healthRegenAmount = Context.PlayerCharacter.Character.Health.MaxValue / AnimationTime * 2;
-            var staminaRegenAmount = Context.PlayerCharacter.Stamina.MaxValue / AnimationTime * 2;
+            var healthRegenAmount = Context.Character.Health.MaxValue / AnimationTime * 2;
+            var staminaRegenAmount = Context.Stamina.MaxValue / AnimationTime * 2;
 
             var deltaTime = Time.deltaTime;
-            Context.PlayerCharacter.Character.Health.Recover(healthRegenAmount * deltaTime);
-            Context.PlayerCharacter.Stamina.Recover(staminaRegenAmount * deltaTime);
+            Context.Character.Health.Recover(healthRegenAmount * deltaTime);
+            Context.Stamina.Recover(staminaRegenAmount * deltaTime);
             _touchTimer.Tick(deltaTime);
         }
 
         public override void ExitState()
         {
             Context.Hurtbox.Enable();
-            Context.Animator.SetBool("is-saving", false);
+            Context.Animator.EndBonfireAnimation();
         }
     }
 }

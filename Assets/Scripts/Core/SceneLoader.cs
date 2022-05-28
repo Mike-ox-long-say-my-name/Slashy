@@ -4,15 +4,17 @@ using UnityEngine.SceneManagement;
 
 namespace Core
 {
-    public class SceneLoader
+    public class SceneLoader : ISceneLoader
     {
         private const string ScenesPath = "Scenes";
 
         public event Action<string> SceneLoaded;
+        public event Action<string> SceneUnloading;
+        public event Action<string> SceneUnloaded;
 
         public string CurrentSceneName { get; private set; }
 
-        public static void SetActive(string name)
+        public void SetActive(string name)
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(name));
         }
@@ -20,25 +22,20 @@ namespace Core
         public void LoadScene(string name)
         {
             CurrentSceneName = name;
-
-            var path = GetScenePath(name);
-            var scene = SceneManager.GetSceneByName(name);
-            if (scene.isLoaded)
-            {
-                return;
-            }
-            SceneManager.LoadScene(path, LoadSceneMode.Additive);
-            SceneLoaded?.Invoke(name);
+            var operation = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+            operation.completed += _ => SceneLoaded?.Invoke(name);
         }
 
-        private string GetScenePath(string name)
+        private static string GetScenePath(string name)
         {
             return Path.Combine(ScenesPath, name);
         }
 
         public void UnloadScene(string name)
         {
-            SceneManager.UnloadSceneAsync(name);
+            SceneUnloading?.Invoke(name);
+            var operation = SceneManager.UnloadSceneAsync(name);
+            operation.completed += _ => SceneUnloaded?.Invoke(name);
         }
 
         public void ReplaceLastScene(string name)

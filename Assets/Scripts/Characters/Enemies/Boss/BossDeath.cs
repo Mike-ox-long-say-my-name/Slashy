@@ -4,9 +4,9 @@
     {
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("death");
+            Context.Animator.PlayDeathAnimation();
             Context.BossEvents.Died?.Invoke();
-            Context.Destroyable.DestroyLater();
+            Context.DestroyHelper.DestroyLater();
         }
 
         protected override void SwitchState<TState>(bool ignoreValidness = false)

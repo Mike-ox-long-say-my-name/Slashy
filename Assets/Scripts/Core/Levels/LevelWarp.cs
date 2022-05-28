@@ -1,4 +1,5 @@
-﻿using Core.Player.Interfaces;
+﻿using System;
+using Core.Player.Interfaces;
 using UnityEngine;
 
 namespace Core.Levels
@@ -10,28 +11,49 @@ namespace Core.Levels
         [SerializeField] private Vector3 startTargetPosition;
 
         private bool _entered = false;
+        private ILevelWarper _levelWarper;
 
-        public void OnTriggered(Collider other)
+        private void Awake()
         {
-            if (_entered || !LevelWarpManager.Instance.CanInitiateWarp || other.GetComponent<IPlayer>() == null)
-            {
-                return;
-            }
-
-            _entered = true;
-            var target = GetTargetPosition();
-            var info = new LevelWarpInfo(levelWarp, startPosition, startTargetPosition);
-            LevelWarpManager.Instance.InitiateWarp(target, info);
-        }
-
-        private Vector3 GetTargetPosition()
-        {
-            return transform.position.WithZeroY();
+            Construct();
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(GetTargetPosition(), 0.3f);
+        }
+
+        public void OnTriggered(Collider other)
+        {
+            if (ShouldInitiateWarp(other))
+            {
+                InitiateWarp();
+            }
+        }
+
+        private void Construct()
+        {
+            _levelWarper = Container.Get<ILevelWarper>();
+        }
+
+        private void InitiateWarp()
+        {
+            _entered = true;
+            
+            var target = GetTargetPosition();
+            var info = new LevelWarpInfo(levelWarp, startPosition, startTargetPosition);
+
+            _levelWarper.InitiateWarp(target, info);
+        }
+
+        private bool ShouldInitiateWarp(Collider other)
+        {
+            return !_entered && _levelWarper.CanInitiateWarp && other.GetComponent<IPlayer>() != null;
+        }
+
+        private Vector3 GetTargetPosition()
+        {
+            return transform.position.WithZeroY();
         }
     }
 }

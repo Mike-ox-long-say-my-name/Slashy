@@ -1,5 +1,4 @@
 using Core.Attacking;
-using Core.Characters.Interfaces;
 
 namespace Characters.Enemies.ExplodingHollow
 {
@@ -7,10 +6,7 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            Context.VelocityMovement.Stop();
-
-            Context.Animator.SetTrigger("explode");
-
+            Context.Animator.PlayExplodeAnimation();
             Context.ExplosionAttack.StartAttack(_ => SwitchState<ExplodingHollowDeath>());
         }
 
@@ -24,7 +20,7 @@ namespace Characters.Enemies.ExplodingHollow
 
         public override void OnDeath(HitInfo info)
         {
-            Context.ExplosionAttack.InterruptAttack();
+            Context.AttackExecutorHelper.InterruptAllRunning();
             base.OnDeath(info);
         }
     }

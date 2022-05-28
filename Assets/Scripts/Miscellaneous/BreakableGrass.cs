@@ -1,3 +1,4 @@
+using System;
 using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
@@ -12,7 +13,6 @@ namespace Miscellaneous
     {
         [SerializeField] private AudioSource breakSoundSource;
         [SerializeField] private GameObject brokenGrass;
-        [SerializeField] private GameObject additional;
 
         private void Awake()
         {
@@ -29,11 +29,6 @@ namespace Miscellaneous
         {
             brokenGrass.SetActive(true);
             breakSoundSource.Play();
-
-            if (additional != null)
-            {
-                additional.SetActive(true);
-            }
 
             var destroyable = GetComponent<DestroyHelper>();
             destroyable.Destroy();

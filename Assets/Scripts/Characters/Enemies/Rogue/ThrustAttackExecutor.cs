@@ -1,7 +1,7 @@
-﻿using Core.Attacking;
+﻿using Core;
+using Core.Attacking;
 using Core.Attacking.Mono;
 using Core.Modules;
-using Core.Player;
 
 namespace Characters.Enemies.Rogue
 {
@@ -10,8 +10,10 @@ namespace Characters.Enemies.Rogue
         protected override void ConfigureExecutor(AnimationAttackExecutor executor)
         {
             var movement = GetComponentInParent<MixinVelocityMovement>().VelocityMovement;
+            var lazyPlayer = Container.Get<IPlayerFactory>().GetLazyPlayer();
+
             var handler =
-                new TargetLockedAttackHandler(PlayerManager.Instance.PlayerInfo.Transform, movement)
+                new TargetLockedAttackHandler(lazyPlayer.Value.Transform, movement)
                 {
                     MoveOnAttack = 1,
                     RotateOnAttack = true

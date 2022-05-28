@@ -15,8 +15,8 @@ namespace Core.Attacking
             EventHandler = new DefaultAttackEventHandler();
         }
 
-        public AnimationAttackExecutor(ICoroutineHost host, IAttackbox attackbox)
-            : base(host, attackbox)
+        public AnimationAttackExecutor(ICoroutineRunner coroutineRunner, IAttackbox attackbox)
+            : base(coroutineRunner, attackbox)
         {
         }
 

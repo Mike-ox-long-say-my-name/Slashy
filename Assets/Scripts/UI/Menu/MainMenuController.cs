@@ -1,6 +1,5 @@
 ﻿using Core;
 using Settings;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,36 +7,45 @@ namespace UI.Menu
 {
     public class MainMenuController : MonoBehaviour
     {
-        private IMenu _mainMenu;
-        private IMenu _settingsMenu;
+        [SerializeField] private MainMenu mainMenu;
+        [SerializeField] private SettingsMenu settingsMenu;
+        
+        private PlayerBindings _bindings;
+        private IGameLoader _gameLoader;
+
+        private void Reset()
+        {
+            mainMenu = GetComponentInChildren<MainMenu>();
+            settingsMenu = GetComponentInChildren<SettingsMenu>();
+        }
 
         private void Awake()
         {
-            _mainMenu = FindObjectOfType<MainMenu>();
-            _settingsMenu = FindObjectOfType<SettingsMenu>();
+            Construct();
+        }
+
+        private void Construct()
+        {
+            _gameLoader = Container.Get<IGameLoader>();
+            _bindings = Container.Get<PlayerBindings>();
         }
 
         private void OnEnable()
         {
-            var actions = PlayerBindings.Instance.Actions;
+            var actions = _bindings.Actions;
             actions.UI.Enable();
             actions.UI.Menu.performed += OnMenuPressed;
         }
 
         private void OnDisable()
         {
-            var proxy = PlayerBindings.TryGetInstance();
-            if (proxy == null)
-            {
-                return;
-            }
-            var actions = proxy.Actions;
+            var actions = _bindings.Actions;
             actions.UI.Menu.performed -= OnMenuPressed;
         }
 
         private void OnMenuPressed(InputAction.CallbackContext context)
         {
-            if (_settingsMenu.IsShown)
+            if (settingsMenu.IsShown)
             {
                 CloseSettingsMenu();
             }
@@ -45,28 +53,28 @@ namespace UI.Menu
 
         public void ShowSettingsMenu()
         {
-            _mainMenu.ShowSubMenu(_settingsMenu);
+            mainMenu.ShowSubMenu(settingsMenu);
         }
 
         public void CloseSettingsMenu()
         {
-            _settingsMenu.Close();
+            settingsMenu.Close();
         }
 
         public void ContinuePlaying()
         {
-            GameLoader.Instance.LoadGame();
+            _gameLoader.LoadGame();
         }
 
         public void StartNewGame()
         {
-            GameLoader.Instance.LoadNewGame();
+            _gameLoader.LoadNewGame();
         }
 
         public void ExitGame()
         {
 #if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif

@@ -9,7 +9,7 @@ namespace Characters.Enemies.Boss
 
         public override void EnterState()
         {
-            Context.Animator.SetBool("is-staggered", true);
+            Context.Animator.StartStaggerAnimation();
             const float staggerTime = 3.5f;
             _timer = Timer.Start(staggerTime, OnTimeout);
         }
@@ -26,7 +26,7 @@ namespace Characters.Enemies.Boss
 
         public override void ExitState()
         {
-            Context.Animator.SetBool("is-staggered", false);
+            Context.Animator.EndStaggerAnimation();
         }
     }
 }

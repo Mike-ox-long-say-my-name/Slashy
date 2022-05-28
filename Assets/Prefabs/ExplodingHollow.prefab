@@ -498,15 +498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ece35e635cbe542b93e564d800113d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  enableHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  endAttack:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &3066889887753010697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,7 +972,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c3fc7157347af479969729b4fec26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+  attackbox: {fileID: 256627415584427052}
+  animationEvents: {fileID: 5751375299981566709}
 --- !u!82 &7909203303555245341
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1393,6 +1386,30 @@ PrefabInstance:
     - target: {fileID: 1675241024713477479, guid: a381b26f01c3b3240817097f8d5a443f, type: 3}
       propertyPath: m_Name
       value: ChargeBurnEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960162123710614749, guid: a381b26f01c3b3240817097f8d5a443f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.b
+      value: 0.07822875
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960162123710614749, guid: a381b26f01c3b3240817097f8d5a443f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.g
+      value: 0.019312933
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960162123710614749, guid: a381b26f01c3b3240817097f8d5a443f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.r
+      value: 0.5849056
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960162123710614749, guid: a381b26f01c3b3240817097f8d5a443f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0.22882815
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960162123710614749, guid: a381b26f01c3b3240817097f8d5a443f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 0.21800464
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960162123710614749, guid: a381b26f01c3b3240817097f8d5a443f, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.6509434
       objectReference: {fileID: 0}
     - target: {fileID: 8679950916452598957, guid: a381b26f01c3b3240817097f8d5a443f, type: 3}
       propertyPath: m_RootOrder

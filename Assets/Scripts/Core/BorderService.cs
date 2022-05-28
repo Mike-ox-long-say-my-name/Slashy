@@ -11,8 +11,9 @@ namespace Core
 
         public BorderService(IObjectLocator objectLocator, IAggroListener aggroListener, IPlayerFactory playerFactory)
         {
-            _borders = objectLocator.FindAll<Border>();
-            _player = playerFactory.GetLazy();
+            _borders = objectLocator.FindAll<Border>().OrderBy(border => border.PositionX).ToArray();
+            
+            _player = playerFactory.GetLazyPlayer();
 
             aggroListener.FightStarted += EnableAggroBorders;
             aggroListener.FightEnded += DisableAggroBorders;

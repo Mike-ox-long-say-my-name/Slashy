@@ -10,11 +10,9 @@ namespace Characters.Enemies.ExplodingHollow
 
         public override void EnterState()
         {
-            //Context.VelocityMovement.Stop();
-
             Context.Character.Balance.Frozen = true;
 
-            Context.Animator.SetTrigger("charge");
+            Context.Animator.PlayChargeAnimation();
             _prepareTimer = Timer.Start(Context.ChargeTime, () => SwitchState<ExplodingHollowRunning>());
         }
 

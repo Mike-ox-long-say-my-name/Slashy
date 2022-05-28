@@ -1,4 +1,3 @@
-using System.Collections;
 using Core;
 using Core.Levels;
 using UnityEngine;
@@ -7,90 +6,58 @@ namespace Characters.Player.States
 {
     public class PlayerGroundedState : PlayerBaseGroundedState
     {
-        private bool _locked;
-
         public override void EnterState()
         {
-            _locked = false;
             Context.AttackedThisAirTime = false;
-        }
-
-        private IEnumerator MoveToBonfireRoutine(Bonfire bonfire)
-        {
-            Context.Hurtbox.Disable();
-
-            var bonfirePosition = bonfire.transform.position.WithZeroY();
-            var animationPosition = bonfire.GetPlayerAnimationPosition();
-            yield return MoveToRoutine(animationPosition);
-            Context.VelocityMovement.BaseMovement.Rotate(bonfirePosition.x - Context.Transform.position.x);
-
-            SwitchState<PlayerTouchingBonfireState>();
-        }
-
-        private IEnumerator MoveToRoutine(Vector3 position)
-        {
-            var movement = Context.VelocityMovement;
-            var player = movement.BaseMovement.Transform;
-
-            while (Vector3.Distance(player.position.WithZeroY(), position) > 0.1f)
-            {
-                var direction = (position - player.position).normalized;
-                movement.Move(direction);
-                yield return null;
-            }
-
-            movement.BaseMovement.SetPosition(position);
         }
 
         public override void UpdateState()
         {
-            if (_locked)
-            {
-                return;
-            }
-
-            if (Context.WarpPosition != null)
-            {
-                _locked = true;
-                Context.StartCoroutine(MoveToWarpRoutine(Context.WarpPosition.Value));
-                return;
-            }
-
-            HandleControl();
-
-            Context.Animator.SetBool("is-walking", Context.Input.MoveInput.sqrMagnitude > 0);
+            ApplyMoveInput();
+            SetWalkAnimationBasedOnInput();
 
             CheckStateSwitch();
         }
 
-        private IEnumerator MoveToWarpRoutine(Vector3 position)
+        private void SetWalkAnimationBasedOnInput()
         {
-            Context.Hurtbox.Disable();
-
-            yield return MoveToRoutine(position);
-
-            LevelWarpManager.Instance.PlayerReady();
+            var isWalking = Context.Input.MoveInput.sqrMagnitude > 0;
+            var animator = Context.Animator;
+            if (isWalking)
+            {
+                animator.StartWalkAnimation();
+            }
+            else
+            {
+                animator.EndWalkAnimation();
+            }
         }
 
         public override void OnInteracted()
         {
-            var mask = InteractionMask.Any;
-            if (_locked)
-            {
-                mask ^= InteractionMask.Bonfire;
-            }
-
-            var result = Context.Interactor.TryInteract(mask);
+            var result = Context.Interactor.TryInteract(InteractionMask.Any);
             if (result.Type != InteractionType.TouchedBonfire)
             {
                 return;
             }
 
-            _locked = true;
-            Context.StartCoroutine(MoveToBonfireRoutine((Bonfire)result.Sender));
+            Context.BonfireToTouch = (Bonfire)result.Sender;
+            SwitchState<PlayerMovingToFromExternalEvent>();
         }
 
-        protected virtual void CheckStateSwitch()
+        public override void OnWarpStarted(Vector3 target)
+        {
+            base.OnWarpStarted(target);
+            SwitchState<PlayerMovingToFromExternalEvent>();
+        }
+
+        public override void OnWarpEnded(Vector3 target)
+        {
+            base.OnWarpEnded(target);
+            SwitchState<PlayerMovingToFromExternalEvent>();
+        }
+
+        private void CheckStateSwitch()
         {
             if (!Context.VelocityMovement.BaseMovement.IsGrounded)
             {

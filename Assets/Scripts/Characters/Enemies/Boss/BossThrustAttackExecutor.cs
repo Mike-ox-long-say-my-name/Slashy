@@ -1,11 +1,9 @@
-﻿using System;
-using Core;
+﻿using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
 using Core.Modules;
-using Core.Player;
 using UnityEngine;
 
 namespace Characters.Enemies.Boss
@@ -63,8 +61,8 @@ namespace Characters.Enemies.Boss
         protected override void ConfigureExecutor(AnimationAttackExecutor executor)
         {
             var movement = GetComponentInParent<MixinVelocityMovement>().VelocityMovement;
-            var player = PlayerManager.Instance.PlayerInfo.Transform;
-            executor.EventHandler = _handler = new CustomHandler(player, movement);
+            var lazyPlayer = Container.Get<IPlayerFactory>().GetLazyPlayer();
+            executor.EventHandler = _handler = new CustomHandler(lazyPlayer.Value.Transform, movement);
         }
 
         public void SetMaxDashDistance(float distance)

@@ -6,8 +6,8 @@ namespace Core
 {
     public class GameLoader : IGameLoader
     {
-        [SerializeField] private RespawnData respawnData;
-        [SerializeField] private BonfireSaveData bonfireData;
+        private readonly RespawnData _respawnData;
+        private readonly BonfireSaveData _bonfireData;
 
         private const string NewGameScene = "Temple"; 
         private const string MenuScene = "MenuScene";
@@ -20,34 +20,37 @@ namespace Core
         public event SceneCallback LoadingExitedLevel;
         public event Action GameCompleted;
 
-        public bool HasAnyGameProgress => !string.IsNullOrEmpty(respawnData.RespawnLevel);
+        public bool HasAnyGameProgress => !string.IsNullOrEmpty(_respawnData.RespawnLevel);
 
-        private readonly SceneLoader _sceneLoader;
+        private readonly ISceneLoader _sceneLoader;
 
-        public GameLoader()
+        public GameLoader(ISceneLoader sceneLoader, SaveDataContainer saveDataContainer)
         {
-            _sceneLoader = Container.Get<SceneLoader>();
+            _sceneLoader = sceneLoader;
+            _respawnData = saveDataContainer.RespawnData;
+            _bonfireData = saveDataContainer.BonfireSaveData;
         }
 
         public void LoadLevel(string levelName)
         {
             LoadingLevel?.Invoke(levelName);
-            _sceneLoader.LoadScene(levelName);
+            _sceneLoader.ReplaceLastScene(levelName);
             LoadedLevel?.Invoke(levelName);
         }
 
         public void LoadGame()
         {
-            var exitedLevel = respawnData.RespawnLevel;
+            var exitedLevel = _respawnData.RespawnLevel;
             
             LoadingExitedLevel?.Invoke(exitedLevel);
-            _sceneLoader.LoadScene(exitedLevel);
+            _sceneLoader.ReplaceLastScene(exitedLevel);
             LoadedExitedLevel?.Invoke(exitedLevel);
         }
 
         public void LoadNewGame()
         {
-            bonfireData.ResetBitmask();
+            _bonfireData.ResetBitmask();
+            _respawnData.ResetData();
 
             StartingNewGame?.Invoke(NewGameScene);
             LoadLevel(NewGameScene);
@@ -56,13 +59,16 @@ namespace Core
         public void LoadMenu()
         {
             Exiting?.Invoke(_sceneLoader.CurrentSceneName);
-            _sceneLoader.LoadScene(MenuScene);
+            _sceneLoader.ReplaceLastScene(MenuScene);
         }
 
         public void CompleteGame()
         {
             GameCompleted?.Invoke();
-            bonfireData.ResetBitmask();
+            
+            _bonfireData.ResetBitmask();
+            _respawnData.ResetData();
+            
             LoadMenu();
         }
     }

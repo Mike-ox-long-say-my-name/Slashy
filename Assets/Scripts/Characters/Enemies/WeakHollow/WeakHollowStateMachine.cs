@@ -23,7 +23,7 @@ namespace Characters.Enemies.WeakHollow
         public bool TryToSurroundPlayer => tryToSurroundPlayer;
 
         public HitInfo LastHitInfo { get; set; }
-        public Animator AnimatorComponent { get; private set; }
+        public WeakHollowAnimator Animator { get; private set; }
 
         public IAttackExecutor PunchAttackExecutor => punchAttack.GetExecutor();
         public IAutoMovement AutoMovement { get; private set; }
@@ -31,7 +31,10 @@ namespace Characters.Enemies.WeakHollow
         protected override void Awake()
         {
             base.Awake();
-            AnimatorComponent = GetComponent<Animator>();
+
+            var baseAnimator = GetComponent<Animator>();
+            Animator = new WeakHollowAnimator(baseAnimator);
+
             AutoMovement = GetComponent<MixinAutoMovement>().AutoMovement;
         }
 
@@ -40,14 +43,6 @@ namespace Characters.Enemies.WeakHollow
             var state = new WeakHollowIdle();
             state.Init(this);
             return state;
-        }
-
-        public void InterruptActiveAttack()
-        {
-            if (PunchAttackExecutor.IsAttacking)
-            {
-                PunchAttackExecutor.InterruptAttack();
-            }
         }
     }
 }

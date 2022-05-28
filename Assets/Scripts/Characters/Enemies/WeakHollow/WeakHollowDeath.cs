@@ -6,10 +6,9 @@ namespace Characters.Enemies.WeakHollow
     {
         public override void EnterState()
         {
-            AggroListener.Instance.DecreaseAggroCounter();
-            Context.AnimatorComponent.SetTrigger("death");
-
-            Context.Destroyable.DestroyLater();
+            Context.Deaggro();
+            Context.Animator.PlayDeathAnimation();
+            Context.DestroyHelper.DestroyLater();
         }
 
         protected override void SwitchState<TState>(bool ignoreValidness = false)

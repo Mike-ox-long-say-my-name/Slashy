@@ -25,7 +25,7 @@ namespace Core.Modules
             }
         }
 
-        private void Awake()
+        private void Start()
         {
             // Прогревочный
             BaseMovement.Move(new Vector3(0.01f, -0.5f, 0));

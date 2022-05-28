@@ -1,3 +1,4 @@
+using System;
 using Core.Attacking.Interfaces;
 using Core.Utilities;
 using UnityEngine;
@@ -10,15 +11,31 @@ namespace Core.Attacking.Mono
 
         private AudioSource _audioSource;
         private AnimationAttackExecutor _executor;
+        private ICoroutineRunner _coroutineRunner;
+
+        [SerializeField] private MonoAttackbox attackbox;
+        [SerializeField] private AttackAnimationEvents animationEvents;
+
+        private void Reset()
+        {
+            attackbox = GetComponentInChildren<MonoAttackbox>();
+            animationEvents = GetComponentInParent<AttackAnimationEvents>();
+        }
 
         private void Awake()
         {
-            _audioSource = GetComponent<AudioSource>();
+            Construct();
         }
 
         public override IAttackExecutor GetExecutor()
         {
             return _executor ??= CreateExecutor();
+        }
+
+        private void Construct()
+        {
+            _audioSource = GetComponent<AudioSource>();
+            _coroutineRunner = Container.Get<ICoroutineRunner>();
         }
 
         protected virtual void ConfigureExecutor(AnimationAttackExecutor executor)
@@ -28,45 +45,40 @@ namespace Core.Attacking.Mono
 
         private AnimationAttackExecutor CreateExecutor()
         {
-            var attackbox = GetComponentInChildren<MonoAttackbox>().Attackbox;
+            var nativeAttackbox = attackbox.Attackbox;
 
-            var executor = new AnimationAttackExecutor(this.ToCoroutineHost(), attackbox);
-            attackbox.Hit += (hit) =>
-            {
-                executor.RegisterHit(hit);
-            };
+            var executor = new AnimationAttackExecutor(_coroutineRunner, nativeAttackbox);
 
             ConfigureExecutor(executor);
+            SubscribeToDispatcher(executor);
 
-            var dispatcher = GetComponentInParent<MixinAttackAnimationEventDispatcher>();
-            SubscribeToDispatcher(dispatcher, executor);
             return executor;
         }
 
-        private void SubscribeToDispatcher(MixinAttackAnimationEventDispatcher dispatcher, AnimationAttackExecutor executor)
+        private void SubscribeToDispatcher(AnimationAttackExecutor executor)
         {
-            dispatcher.EnableHitbox.AddListener(() =>
+            animationEvents.EnableHitbox += () =>
             {
                 if (executor.IsAttacking)
                 {
                     executor.OnEnableHitbox();
                     TryPlaySound(attackSound);
                 }
-            });
-            dispatcher.DisableHitbox.AddListener(() =>
+            };
+            animationEvents.DisableHitbox += () =>
             {
                 if (executor.IsAttacking)
                 {
                     executor.OnDisableHitbox();
                 }
-            });
-            dispatcher.EndAttack.AddListener(() =>
+            };
+            animationEvents.AnimationEnded += () =>
             {
                 if (executor.IsAttacking)
                 {
                     executor.OnAnimationEnded();
                 }
-            });
+            };
         }
 
         private void TryPlaySound(AudioClip sound)

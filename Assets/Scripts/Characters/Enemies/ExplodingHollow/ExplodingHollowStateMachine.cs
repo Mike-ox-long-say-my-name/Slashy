@@ -24,7 +24,7 @@ namespace Characters.Enemies.ExplodingHollow
 
         public IAttackExecutor ExplosionAttack => explosionMonoAttackHandler.GetExecutor();
         public IAttackExecutor PunchAttack => punchMonoAttack.GetExecutor();
-        
+
         public float DotTickInterval => dotTickInterval;
         public IPushable Pushable { get; private set; }
 
@@ -32,6 +32,7 @@ namespace Characters.Enemies.ExplodingHollow
 
         public bool WasHitByPlayer { get; set; }
         public DamageStats DamageStats { get; private set; }
+        public ExplodingHollowAnimator Animator { get; private set; }
 
         protected override EnemyBaseState<ExplodingHollowStateMachine> StartState()
         {
@@ -44,20 +45,11 @@ namespace Characters.Enemies.ExplodingHollow
         {
             base.Awake();
 
+            var baseAnimator = GetComponent<Animator>();
+            Animator = new ExplodingHollowAnimator(baseAnimator);
+            
             Pushable = GetComponent<MixinPushable>().Pushable;
             DamageStats = GetComponent<MixinDamageSource>().DamageStats;
-
-            if (punchMonoAttack == null)
-            {
-                Debug.LogWarning("Punch Attack Executor is not assigned", this);
-                enabled = false;
-            }
-
-            if (explosionMonoAttackHandler == null)
-            {
-                Debug.LogWarning("Explosion Attack Executor is not assigned", this);
-                enabled = false;
-            }
         }
     }
 }

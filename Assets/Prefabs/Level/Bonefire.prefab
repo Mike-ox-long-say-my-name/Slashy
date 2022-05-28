@@ -164,6 +164,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d47f942a1e24444851f6b879e937a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initiallyInteractable: 0
+  returnType: 2
+  mask: 2
   id: 0
   data: {fileID: 11400000, guid: 9559e800722e9364db2d1c1a5af5d22c, type: 2}
   fireEffect: {fileID: 4177447193141604079}
@@ -185,6 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reactOnlyOnPlayer: 0
   enter:
     m_PersistentCalls:
       m_Calls:

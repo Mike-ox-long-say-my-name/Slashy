@@ -1,10 +1,12 @@
+using UnityEngine;
+
 namespace Characters.Player.States
 {
     public class PlayerFallState : PlayerAirboneState
     {
         public override void UpdateState()
         {
-            HandleControl();
+            ApplyMoveInput();
 
             CheckStateSwitch();
         }
@@ -21,6 +23,12 @@ namespace Characters.Player.States
                 Context.Input.ResetBufferedInput();
                 SwitchState<PlayerAirLightAttackState>();
             }
+        }
+
+        public override void OnWarpStarted(Vector3 target)
+        {
+            base.OnWarpStarted(target);
+            SwitchState<PlayerMovingToFromExternalEvent>();
         }
     }
 }

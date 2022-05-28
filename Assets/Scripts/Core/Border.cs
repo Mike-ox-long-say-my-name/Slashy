@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Core
@@ -8,7 +7,7 @@ namespace Core
     {
         [SerializeField] private bool isAggroBorder = false;
 
-        [SerializeField, HideInInspector] private BoxCollider borderCollider;
+        [SerializeField] private BoxCollider borderCollider;
         
         public bool IsAggroBorder => isAggroBorder;
 

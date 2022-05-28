@@ -6,7 +6,7 @@ namespace Characters.Enemies.Boss
     {
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("jump-end");
+            Context.Animator.PlayJumpEndAnimation();
             Context.JumpAttackExecutor.StartAttack(OnAttackEnded);
         }
 

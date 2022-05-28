@@ -8,13 +8,13 @@ namespace Characters.Enemies.WeakHollow
         public override void UpdateState()
         {
             var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(),
-                Context.BaseMovement.Transform.position.WithZeroY());
-            if (!(distance < 6))
+                Context.transform.position.WithZeroY());
+            if (distance > 6)
             {
                 return;
             }
-
-            AggroListener.Instance.IncreaseAggroCounter();
+                
+            Context.Aggro();
             SwitchState<WeakHollowPursue>();
         }
     }

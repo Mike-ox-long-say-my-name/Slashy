@@ -19,13 +19,13 @@ namespace Characters.Player.States
             {
                 Context.StopCoroutine(_recoverFromStaggerFallRoutine);
             }
+
             base.OnDeath(info);
         }
 
         public override void EnterState()
         {
-            Context.Animator.SetBool("is-staggered", true);
-
+            Context.Animator.StartStaggerAnimation();
             Context.Input.ResetBufferedInput();
         }
 
@@ -36,17 +36,28 @@ namespace Characters.Player.States
 
         public override void ExitState()
         {
-            Context.Animator.SetBool("is-staggered", false);
+            Context.Animator.EndStaggerAnimation();
         }
 
         private void CheckStateSwitch()
         {
-            if (Context.VelocityMovement.BaseMovement.IsGrounded && _recoverFromStaggerFallRoutine == null)
+            if (!DidLand())
             {
-                Context.VelocityMovement.Stop();
-                _recoverFromStaggerFallRoutine =
-                    Context.StartCoroutine(RecoverFromStaggerFall(Context.PlayerConfig.StaggerFallTime));
+                return;
             }
+            Context.VelocityMovement.Stop();
+            StartRecovery();
+        }
+
+        private void StartRecovery()
+        {
+            _recoverFromStaggerFallRoutine =
+                Context.StartCoroutine(RecoverFromStaggerFall(Context.PlayerConfig.StaggerFallTime));
+        }
+
+        private bool DidLand()
+        {
+            return Context.VelocityMovement.BaseMovement.IsGrounded && _recoverFromStaggerFallRoutine == null;
         }
 
         private IEnumerator RecoverFromStaggerFall(float recoveryTime)

@@ -22,14 +22,14 @@ namespace Characters.Enemies.WeakHollow
 
         private static float GetRandomRetreatTime()
         {
-            return Random.Range(1f, 3f);
+            return Random.Range(0.5f, 2f);
         }
 
         public override void EnterState()
         {
-            Context.AnimatorComponent.SetBool("is-walking", true);
+            Context.Animator.StartWalkAnimation();
 
-            Context.AutoMovement.LockRotationOn(Context.PlayerInfo.Transform);
+            Context.AutoMovement.LockRotationOn(Context.Player.Transform);
 
             SetRandomSpeedMultiplier();
             SetRandomRetreatOffset();
@@ -59,7 +59,7 @@ namespace Characters.Enemies.WeakHollow
             Context.AutoMovement.ResetSpeedMultiplier();
             Context.AutoMovement.UnlockRotation();
             Context.VelocityMovement.Stop();
-            Context.AnimatorComponent.SetBool("is-walking", false);
+            Context.Animator.EndWalkAnimation();
         }
     }
 }

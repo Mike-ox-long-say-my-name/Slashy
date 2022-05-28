@@ -6,6 +6,7 @@ using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Characters.Mono;
 using Core.Modules;
+using PlasticGui.WorkspaceWindow.Topbar;
 using UnityEngine;
 
 namespace Characters.Enemies.Boss
@@ -26,10 +27,11 @@ namespace Characters.Enemies.Boss
         public float MaxDashDistance => maxDashDistance;
 
         public MixinBossEventDispatcher BossEvents { get; private set; }
-        public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
         public IAutoMovement AutoMovement { get; private set; }
         public IJumpHandler JumpHandler { get; private set; }
 
+
+        public BossAnimator Animator { get; private set; }
         public IAttackExecutor SpikeStrikeExecutor => spikeStrikeExecutor.GetExecutor();
         public IAttackExecutor HorizontalSwingExecutor => horizontalSwingExecutor.GetExecutor();
         public IAttackExecutor JumpAttackExecutor => jumpAttackExecutor.GetExecutor();
@@ -53,8 +55,10 @@ namespace Characters.Enemies.Boss
         {
             base.Awake();
 
+            var baseAnimator = GetComponent<Animator>();
+            Animator = new BossAnimator(baseAnimator);
+
             BossEvents = GetComponent<MixinBossEventDispatcher>();
-            AttackExecutorHelper = GetComponent<MixinAttackExecutorHelper>();
             AutoMovement = GetComponent<MixinAutoMovement>().AutoMovement;
             JumpHandler = GetComponent<MixinJumpHandler>().JumpHandler;
         }

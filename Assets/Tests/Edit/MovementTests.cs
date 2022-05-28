@@ -89,13 +89,16 @@ namespace Tests.Edit
                 MinVelocity = -20
             };
             movement.Tick(10);
-            Assert.True(mock.Position == new Vector3(0, -5, 0));
+            Assert.AreEqual(new Vector3(0, -0.5f, 0), mock.Position);
         }
 
         [Test]
         public void CharacterMovement_ClampsVelocity()
         {
-            var mock = new MockBaseMovement();
+            var mock = new MockBaseMovement()
+            {
+                IsGrounded = false
+            };
             var movement = new VelocityMovement(mock)
             {
                 MinVelocity = -20,
@@ -105,7 +108,7 @@ namespace Tests.Edit
             movement.Tick(10000);
             mock.Position = Vector3.zero;
             movement.Tick(10);
-            Assert.True(mock.Position == new Vector3(0, -200, 0));
+            Assert.AreEqual(new Vector3(0, -200, 0), mock.Position);
         }
 
         [Test]
@@ -124,7 +127,7 @@ namespace Tests.Edit
             movement.Tick(1);
             movement.Velocity = Vector3.zero;
             movement.Tick(1);
-            Assert.True(mock.Position == new Vector3(10, 0, 0));
+            Assert.AreEqual(new Vector3(10, 0, 0), mock.Position);
         }
     }
 }

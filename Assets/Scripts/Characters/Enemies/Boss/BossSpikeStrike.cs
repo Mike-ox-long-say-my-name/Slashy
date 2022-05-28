@@ -7,7 +7,7 @@ namespace Characters.Enemies.Boss
     {
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("spike-strike");
+            Context.Animator.PlaySpikeStrikeAnimation();
             Context.SpikeStrikeExecutor.StartAttack(OnAttackEnded);
         }
 

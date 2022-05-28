@@ -2,18 +2,6 @@ using UnityEngine;
 
 namespace Core
 {
-    public class BackgroundMusicAudioSourceContainer : MonoBehaviour
-    {
-        [SerializeField] private AudioSource source;
-
-        public AudioSource Source => source;
-    }
-
-    public interface IBackgroundMusicPlayer
-    {
-        void SetMusic(AudioClip chill, AudioClip fight);
-    }
-
     public class BackgroundMusicPlayer : IBackgroundMusicPlayer
     {
         private readonly BackgroundMusicAudioSourceContainer _musicAudioSourceContainer;

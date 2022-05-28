@@ -1,22 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.Audio;
 
 namespace Core
 {
-    public class VolumeControlServiceContainer : MonoBehaviour
-    {
-        [SerializeField] private AudioMixer audioMixer;
-        public AudioMixer AudioMixer => audioMixer;
-    }
-
-    public interface IVolumeControlService
-    {
-        void SetMusicVolume(int value);
-        void SetSoundVolume(int value);
-    }
-
     public class VolumeControlService : IVolumeControlService
     {
+        public int MaxVolumeValue => 10;
+        public int SoundVolume { get; private set; }
+        public int MusicVolume { get; private set; }
+
         private readonly VolumeControlServiceContainer _container;
         private const string SoundVolumeParam = "SoundVolume";
         private const string MusicVolumeParam = "MusicVolume";
@@ -37,9 +28,17 @@ namespace Core
             SetMusicVolume(music);
         }
 
-        public void SetMusicVolume(int value) => SetVolume(MusicVolumeParam, value);
+        public void SetMusicVolume(int value)
+        {
+            SetVolume(MusicVolumeParam, value);
+            MusicVolume = value;
+        }
 
-        public void SetSoundVolume(int value) => SetVolume(SoundVolumeParam, value);
+        public void SetSoundVolume(int value)
+        {
+            SetVolume(SoundVolumeParam, value);
+            SoundVolume = value;
+        }
 
         private void SetVolume(string param, int value)
         {
@@ -54,15 +53,15 @@ namespace Core
             PlayerPrefs.SetInt(param, value);
         }
 
-        private static float ConvertRawVolumeToDB(float amount)
+        private float ConvertRawVolumeToDB(float amount)
         {
-            var linear = amount / 10;
+            var linear = amount / MaxVolumeValue;
             if (Mathf.Approximately(linear, 0))
             {
                 return -144;
             }
 
-            return 20 * Mathf.Log10(linear);
+            return 40 * Mathf.Log10(linear);
         }
     }
 }

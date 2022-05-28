@@ -2,47 +2,40 @@ using UnityEngine;
 
 namespace Core.Characters
 {
-    public interface ICharacterAnimator
-    {
-        void StartWalkAnimation();
-        void StopWalkAnimation();
-        void StartHurtAnimation();
-        void StopHurtAnimation();
-        void PlayDeathAnimation();
-    }
-
     public class CharacterAnimator : ICharacterAnimator
     {
-        private readonly Animator _baseAnimator;
+        private readonly Animator _animator;
+        private static readonly int IsWalking = Animator.StringToHash("is-walking");
+        private static readonly int IsAirbone = Animator.StringToHash("is-airbone");
+        private static readonly int IsStaggered = Animator.StringToHash("is-staggered");
+        private static readonly int IsDead = Animator.StringToHash("death");
 
-        public CharacterAnimator(Animator baseAnimator)
+        public CharacterAnimator(Animator animator)
         {
-            _baseAnimator = baseAnimator;
+            _animator = animator;
         }
 
-        public void StartWalkAnimation()
+        public void StartWalkAnimation() => SetCustomBool(IsWalking, true);
+
+        public void EndWalkAnimation() => SetCustomBool(IsWalking, false);
+        public void StartAirboneAnimation() => SetCustomBool(IsAirbone, true);
+
+        public void EndAirboneAnimation() => SetCustomBool(IsAirbone, false);
+
+        public void StartStaggerAnimation() => SetCustomBool(IsStaggered, true);
+
+        public void EndStaggerAnimation() => SetCustomBool(IsStaggered, false);
+
+        public void PlayDeathAnimation() => SetCustomBool(IsDead, true);
+
+        public void SetCustomTrigger(int hash)
         {
-            _baseAnimator.SetBool("is-walking", true);
+            _animator.SetTrigger(hash);
         }
 
-        public void StopWalkAnimation()
+        public void SetCustomBool(int hash, bool value)
         {
-            _baseAnimator.SetBool("is-walking", false);
-        }
-
-        public void StartHurtAnimation()
-        {
-            _baseAnimator.SetBool("is-staggered", true);
-        }
-
-        public void StopHurtAnimation()
-        {
-            _baseAnimator.SetBool("is-staggered", false);
-        }
-
-        public void PlayDeathAnimation()
-        {
-            _baseAnimator.SetTrigger("death");
+            _animator.SetBool(hash, value);
         }
     }
 }

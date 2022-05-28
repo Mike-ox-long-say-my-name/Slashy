@@ -10,7 +10,7 @@ namespace Characters.Enemies.Boss
 
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("prepare-spike-strike");
+            Context.Animator.PlayPrepareSpikeStrikeAnimation();
             Context.VelocityMovement.Stop();
 
             _timer = Timer.Start(Context.SpikeStrikePrepareTime, OnTimeout);

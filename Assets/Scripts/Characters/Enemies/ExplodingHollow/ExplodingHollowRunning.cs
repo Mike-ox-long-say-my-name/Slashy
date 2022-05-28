@@ -12,7 +12,7 @@ namespace Characters.Enemies.ExplodingHollow
         {
             _dotTimer = Timer.Start(Context.DotTickInterval, SelfHit, true);
 
-            Context.Animator.SetTrigger("charge-end");
+            Context.Animator.PlayChargeEndAnimation();
             if (Context.ChargeBurnParticles != null)
             {
                 Context.ChargeBurnParticles.Play();

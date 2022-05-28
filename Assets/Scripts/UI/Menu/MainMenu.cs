@@ -18,7 +18,8 @@ namespace UI.Menu
             }
             else
             {
-                continueButton.interactable = GameLoader.Instance.HasAnyGameProgress;
+                var gameLoader = Container.Get<IGameLoader>();
+                continueButton.interactable = gameLoader.HasAnyGameProgress;
             }
             base.Start();
         }

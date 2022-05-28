@@ -7,5 +7,11 @@ namespace Core.Levels
     {
         [field: SerializeField] public Vector3 RespawnPosition { get; set; }
         [field: SerializeField] public string RespawnLevel { get; set; }
+
+        public void ResetData()
+        {
+            RespawnPosition = Vector3.zero;
+            RespawnLevel = string.Empty;
+        }
     }
 }

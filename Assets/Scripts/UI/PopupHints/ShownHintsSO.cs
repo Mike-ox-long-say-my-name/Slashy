@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI.PopupHints
@@ -6,29 +7,17 @@ namespace UI.PopupHints
     public class ShownHintsSO : ScriptableObject
     {
         [SerializeField] private bool resetOnQuit = true;
+        [SerializeField] private List<PopupHintType> shownHints;
 
-        [field: Header("Hints")]
-        [field: SerializeField] public bool Move { get; set; }
-        [field: SerializeField] public bool Dash { get; set; }
-        [field: SerializeField] public bool Jump { get; set; }
-        [field: SerializeField] public bool Heal { get; set; }
-        [field: SerializeField] public bool LightAttack { get; set; }
-        [field: SerializeField] public bool StrongAttack { get; set; }
-        [field: SerializeField] public bool Save { get; set; }
-
+        public void MarkAsShown(PopupHintType hintType) => shownHints.Add(hintType);
+        public void MarkAsNotShown(PopupHintType hintType) => shownHints.Remove(hintType);
+        
         private void OnDisable()
         {
-            if (!resetOnQuit)
+            if (resetOnQuit)
             {
-                return;
+                shownHints.Clear();
             }
-
-            Move = false;
-            Dash = false;
-            Jump = false;
-            Heal = false;
-            LightAttack = false;
-            StrongAttack = false;
         }
     }
 }

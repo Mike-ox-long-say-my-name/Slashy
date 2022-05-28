@@ -29,8 +29,8 @@ namespace Characters.Enemies.ExplodingHollow
         {
             private readonly AttackData _data;
 
-            public ExplosionAttack(AttackData data, ICoroutineHost host, IAttackbox attackbox)
-                : base(host, attackbox)
+            public ExplosionAttack(AttackData data, ICoroutineRunner coroutineRunner, IAttackbox attackbox)
+                : base(coroutineRunner, attackbox)
             {
                 _data = data;
             }
@@ -69,24 +69,33 @@ namespace Characters.Enemies.ExplodingHollow
                 var deltaDistance = config.FireRowLength / config.FiresPerRow;
 
                 var angle = 0f;
-                for (int i = 0; i < config.FireRows; i++)
+                CreateFireRows();
+
+                void CreateFireRows()
                 {
-                    var distance = config.BaseOffsetDistance;
-                    var direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
-
-                    for (int j = 0; j < config.FiresPerRow; j++)
+                    for (var i = 0; i < config.FireRows; i++)
                     {
-                        var fireObject = Instantiate(config.BloodFirePrefab,
-                            _data.Transform.position + groundOffset + direction * distance,
-                            Quaternion.identity);
+                        var distance = config.BaseOffsetDistance;
+                        var direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
 
-                        var lifeTime = Random.Range(config.MinFireLifeTime, config.MaxFireLifeTime);
-                        fireObject.GetComponent<GroundBloodFire>().Fire(lifeTime);
+                        CreateFiresRow();
+                        angle += deltaAngle;
 
-                        distance += deltaDistance;
+                        void CreateFiresRow()
+                        {
+                            for (var j = 0; j < config.FiresPerRow; j++)
+                            {
+                                var fireObject = Instantiate(config.BloodFirePrefab,
+                                    _data.Transform.position + groundOffset + direction * distance,
+                                    Quaternion.identity);
+
+                                var lifeTime = Random.Range(config.MinFireLifeTime, config.MaxFireLifeTime);
+                                fireObject.GetComponent<GroundBloodFire>().Fire(lifeTime);
+
+                                distance += deltaDistance;
+                            }
+                        }
                     }
-
-                    angle += deltaAngle;
                 }
             }
         }
@@ -121,7 +130,8 @@ namespace Characters.Enemies.ExplodingHollow
             };
 
             var attackbox = GetComponentInChildren<MonoAttackbox>().Attackbox;
-            return new ExplosionAttack(attackData, this.ToCoroutineHost(), attackbox);
+            var coroutineRunner = Container.Get<ICoroutineRunner>();
+            return new ExplosionAttack(attackData, coroutineRunner, attackbox);
         }
     }
 }

@@ -1,17 +1,19 @@
+using System;
+using Configs.Player;
 using Core;
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
+using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Characters.Mono;
+using Core.Levels;
 using Core.Modules;
-using Core.Player;
 using Core.Player.Interfaces;
 using Core.Utilities;
 using Effects;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using PlayerConfig = Configs.Player.PlayerConfig;
 
 namespace Characters.Player.States
 {
@@ -22,81 +24,69 @@ namespace Characters.Player.States
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(MixinJumpHandler))]
     [RequireComponent(typeof(MixinHittable))]
-    [RequireComponent(typeof(MixinPlayerCapabilities))]
-    [RequireComponent(typeof(MixinAttackExecutorHelper))]
-    [RequireComponent(typeof(MixinInteractor))]
     public class PlayerStateMachine : MonoBehaviour, IPlayer
     {
         public PlayerBaseState CurrentState { get; set; }
 
-        [Space]
-        [Header("Attacks")]
-        [SerializeField] private MonoAbstractAttackExecutor lightAttackFirst;
+        [Space] [Header("Attacks")] [SerializeField]
+        private MonoAbstractAttackExecutor lightAttackFirst;
+
         [SerializeField] private MonoAbstractAttackExecutor lightAttackSecond;
         [SerializeField] private MonoAbstractAttackExecutor lightAirboneAttack;
         [SerializeField] private MonoAbstractAttackExecutor firstStrongAttack;
         [SerializeField] private MonoAbstractAttackExecutor secondStrongAttack;
 
-        [Space]
-        [Header("Sounds")]
-        [SerializeField] private AudioSource jumpSource;
-        [SerializeField] private AudioSource healSource;
-        [SerializeField] private AudioSource dashSource;
+        [Space] [Header("Sounds")] [SerializeField]
+        private AudioSource jumpAudioSource;
 
-        [Space]
-        [SerializeField] private PlayerConfig playerConfig;
+        [SerializeField] private AudioSource healAudioSource;
+        [SerializeField] private AudioSource dashAudioSource;
 
-        public AudioSource JumpSource => jumpSource;
-        public AudioSource HealSource => healSource;
-        public AudioSource DashSource => dashSource;
+        [Space] [SerializeField] private PlayerConfig playerConfig;
+
+        public AudioSource JumpAudioSource => jumpAudioSource;
+        public AudioSource HealAudioSource => healAudioSource;
+        public AudioSource DashAudioSource => dashAudioSource;
 
         public bool IsInvincible { get; set; }
-        public bool IsJumping => CurrentState.GetType() == typeof(PlayerJumpState);
-        public bool IsDashing => CurrentState.GetType() == typeof(PlayerDashState);
-        public bool IsFalling => CurrentState.GetType() == typeof(PlayerFallState);
-        public bool IsStaggered => CurrentState.GetType() == typeof(PlayerAirboneStaggerState)
-                                            || CurrentState.GetType() == typeof(PlayerGroundStaggerState);
-
-        private IPlayerCharacter _player;
-
-        public IPlayerCharacter PlayerCharacter
-        {
-            get
-            {
-                if (_player != null)
-                {
-                    return _player;
-                }
-
-                var character = GetComponent<MixinCharacter>().Character;
-                var stamina = GetComponent<MixinStamina>().Stamina;
-                _player = new PlayerCharacter(character, stamina);
-                return _player;
-            }
-        }
 
         public OwningLock DashRecoveryLock { get; } = new OwningLock();
-        public OwningLock LightAttackRecoveryLock { get; } = new OwningLock();
-
-        public bool CanDash => Capabilities.CanDash;
-        public bool CanJump => Capabilities.CanJump;
-        public bool CanLightAttack => Capabilities.CanLightAttack;
-        public bool CanStrongAttack => Capabilities.CanStrongAttack;
-        public bool CanHeal => Capabilities.CanHeal;
 
         public Transform Transform => transform;
+        public ICharacter Character { get; private set; }
+        public IResource Stamina { get; private set; }
         public IVelocityMovement VelocityMovement { get; private set; }
+        public IBaseMovement BaseMovement => VelocityMovement.BaseMovement;
         public SpriteRenderer SpriteRenderer { get; private set; }
         public DashCloneEffectController DashEffectController { get; private set; }
-        public Animator Animator { get; private set; }
+        public IPlayerAnimator Animator { get; private set; }
         public IHurtbox Hurtbox { get; private set; }
-        public bool IsFrozen { get; set; }
         public IAutoPlayerInput Input { get; private set; }
         public IJumpHandler JumpHandler { get; private set; }
-        public MixinPlayerCapabilities Capabilities { get; private set; }
-        public MixinAttackExecutorHelper AttackExecutorHelper { get; private set; }
-        public MixinInteractor Interactor { get; private set; }
-        public GameObject PlayerObject => gameObject;
+        public AttackExecutorHelper AttackExecutorHelper { get; private set; }
+        public Interactor Interactor { get; private set; }
+        public GameObject Object => gameObject;
+        public bool IsFrozen { get; set; }
+
+        public void Freeze()
+        {
+            IsFrozen = true;
+        }
+
+        public void Unfreeze()
+        {
+            IsFrozen = false;
+        }
+
+        public Bonfire BonfireToTouch { get; set; }
+        public event Action TouchedBonfire;
+        public event Action<Vector3> StartedWarping;
+
+        public void StartWarp(Vector3 position) => OnStartedWarping(position);
+
+        public void EndWarp(Vector3 target) => OnEndedWarping(target);
+
+        private void OnEndedWarping(Vector3 target) => CurrentState.OnWarpEnded(target);
 
         public IAttackExecutor FirstLightAttack => lightAttackFirst.GetExecutor();
         public IAttackExecutor SecondLightAttack => lightAttackSecond.GetExecutor();
@@ -106,122 +96,102 @@ namespace Characters.Player.States
 
         public PlayerConfig PlayerConfig => playerConfig;
 
-        public bool HasDashEffectController { get; private set; } = true;
+        public bool HasDashEffectController => true;
 
         public bool AttackedThisAirTime { get; set; }
         public IHitReceiver HitReceiver { get; private set; }
 
-        public bool ShouldLightAttack => CanLightAttack
-                                              && LightAttackRecoveryLock.IsUnlocked
-                                              && AttackExecutorHelper.IsAllIdle()
-                                              && PlayerCharacter.HasStamina()
-                                              && Input.IsLightAttackPressed;
+        public bool ShouldLightAttack => AttackExecutorHelper.IsAllIdle()
+                                         && Stamina.HasAny()
+                                         && Input.IsLightAttackPressed;
 
-        public bool ShouldStrongAttack => CanStrongAttack
-                                              && AttackExecutorHelper.IsAllIdle()
-                                              && PlayerCharacter.HasStamina()
-                                              && Input.IsStrongAttackPressed;
+        public bool ShouldStrongAttack => AttackExecutorHelper.IsAllIdle()
+                                          && Stamina.HasAny()
+                                          && Input.IsStrongAttackPressed;
 
-        public bool ShouldDash => CanDash
-                                       && DashRecoveryLock.IsUnlocked
-                                       && Input.IsDashPressed
-                                       && PlayerCharacter.HasStamina();
+        public bool ShouldDash => DashRecoveryLock.IsUnlocked
+                                  && Input.IsDashPressed
+                                  && Stamina.HasAny();
 
-        public bool ShouldJump => CanJump
-                                       && Input.IsJumpPressed
-                                       && PlayerCharacter.HasStamina();
+        public bool ShouldJump => Input.IsJumpPressed
+                                  && Stamina.HasAny();
 
-        public bool ShouldHeal => CanHeal
-                                  && Input.IsHealPressed
-                                  && PlayerCharacter.HasStamina();
+        public bool ShouldHeal => Input.IsHealPressed
+                                  && Stamina.HasAny();
 
-        public Vector3? WarpPosition { get; set; } = null;
+        public Vector3? WarpPosition { get; set; }
+        public Vector3 Position => Transform.position;
+        public IPlayerActionResourceSpender ResourceSpender { get; private set; }
+        public IPlayerDeathSequencePlayer DeathSequencePlayer { get; private set; }
 
         private void Awake()
         {
+            Character = GetComponent<MixinCharacter>().Character;
+            Stamina = GetComponent<MixinStamina>().Resource;
             Input = GetComponent<IAutoPlayerInput>();
             VelocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
 
             SpriteRenderer = GetComponent<SpriteRenderer>();
-            Animator = GetComponent<Animator>();
             DashEffectController = GetComponentInChildren<DashCloneEffectController>();
             HitReceiver = GetComponent<MixinHittable>().HitReceiver;
 
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
             JumpHandler = GetComponent<MixinJumpHandler>().JumpHandler;
-            Capabilities = GetComponent<MixinPlayerCapabilities>();
-            AttackExecutorHelper = GetComponent<MixinAttackExecutorHelper>();
-            Interactor = GetComponent<MixinInteractor>();
 
-            if (lightAttackFirst == null)
-            {
-                Debug.LogWarning("Light Attack First is not assigned", this);
-                enabled = false;
-            }
-            if (lightAttackSecond == null)
-            {
-                Debug.LogWarning("Light Attack Second is not assigned", this);
-                enabled = false;
-            }
-            if (lightAirboneAttack == null)
-            {
-                Debug.LogWarning("Light Airbone Attack is not assigned", this);
-                enabled = false;
-            }
-            if (DashEffectController == null)
-            {
-                Debug.LogWarning("Dash Clone Effect Controller not found", this);
-                HasDashEffectController = false;
-            }
+            Construct();
 
-            var character = PlayerCharacter.Character;
-            character.HitReceived += (_, info) => CurrentState.OnHitReceived(info);
-            character.Staggered += (_, info) => CurrentState.OnStaggered(info);
-            character.Dead += (_, info) => CurrentState.OnDeath(info);
-            character.RecoveredFromStagger += _ => CurrentState.OnStaggerEnded();
-
-            Input.Interacted += () => CurrentState.OnInteracted();
-
-            PlayerManager.Instance.PlayerLoaded?.Invoke();
-        }
-
-        private void OnEnable()
-        {
-            PlayerManager.Instance.StartedWarping.AddListener(OnStartedWarping);
-        }
-
-        private void OnDisable()
-        {
-            var manager = PlayerManager.TryGetInstance();
-            if (manager == null)
-            {
-                return;
-            }
-            manager.StartedWarping?.RemoveListener(OnStartedWarping);
-        }
-
-        private void OnStartedWarping(Vector3 position)
-        {
-            CurrentState.OnWarp(position);
+            SubscribeToCharacterEvents();
+            SubscribeToInputInteraction();
         }
 
         private void Start()
         {
-            // Для корректного определения того, что игрок на земле при загрузке
-            VelocityMovement.BaseMovement.Move(Vector3.down * 0.2f);
-
-            var startState = VelocityMovement.BaseMovement.IsGrounded
-                ? new PlayerGroundedState() : (PlayerBaseState)new PlayerFallState();
-            startState.Init(this);
-
-            CurrentState = startState;
+            if (WarpPosition.HasValue)
+            {
+                CurrentState = new PlayerMovingToFromExternalEvent();
+            }
+            else
+            {
+                var startState = BaseMovement.IsGrounded
+                    ? new PlayerGroundedState()
+                    : (PlayerBaseState)new PlayerFallState();
+                startState.Init(this);
+            
+                CurrentState = startState;
+            }
+            
             CurrentState.EnterState();
-            CurrentState.UpdateState();
+        }
 
-            // Разогревочный
-            VelocityMovement.BaseMovement.Move(new Vector3(0.01f, -0.01f, 0));
+        private void Construct()
+        {
+            var baseAnimator = GetComponent<Animator>();
+            Animator = new PlayerAnimator(baseAnimator);
+            DeathSequencePlayer = Container.Get<IPlayerDeathSequencePlayer>();
 
-            BlackScreenManager.Instance.Whiteout(BlackScreenManager.Instance.DefaultTime);
+            ResourceSpender = new PlayerActionResourceSpender(playerConfig, Character.Health, Stamina);
+            AttackExecutorHelper = new AttackExecutorHelper(
+                GetComponentsInChildren<MonoAbstractAttackExecutor>());
+            Interactor = new Interactor(Container.Get<IInteractionService>());
+        }
+
+        private void SubscribeToInputInteraction()
+        {
+            Input.Interacted += () => CurrentState.OnInteracted();
+        }
+
+        private void SubscribeToCharacterEvents()
+        {
+            Character.HitReceived += info => CurrentState.OnHitReceived(info);
+            Character.Staggered += info => CurrentState.OnStaggered(info);
+            Character.Dead += info => CurrentState.OnDeath(info);
+            Character.RecoveredFromStagger += () => CurrentState.OnStaggerEnded();
+        }
+
+        private void OnStartedWarping(Vector3 position)
+        {
+            StartedWarping?.Invoke(position);
+            CurrentState.OnWarpStarted(position);
         }
 
         private void Update()
@@ -231,14 +201,25 @@ namespace Characters.Player.States
                 CurrentState.UpdateState();
             }
 
+            HandleMiscInput();
+        }
+
+        private void HandleMiscInput()
+        {
             if (Keyboard.current.iKey.wasPressedThisFrame)
             {
                 print(CurrentState);
             }
+
             if (Keyboard.current.pKey.wasPressedThisFrame)
             {
-                PlayerCharacter.Character.Kill();
+                Character.Kill();
             }
+        }
+
+        public void OnTouchedBonfire()
+        {
+            TouchedBonfire?.Invoke();
         }
     }
 }

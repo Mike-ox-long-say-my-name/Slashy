@@ -1,4 +1,5 @@
-﻿using Core.Utilities;
+﻿using System;
+using Core.Utilities;
 using UnityEngine;
 
 namespace Core
@@ -37,7 +38,12 @@ namespace Core
             {
                 return;
             }
-            _timerRunner.CreateTimer();
-        }   
+            _destroyTimer.Start(time);
+        }
+
+        private void OnDestroy()
+        {
+            _timerRunner.RemoveTimer(_destroyTimer);
+        }
     }
 }

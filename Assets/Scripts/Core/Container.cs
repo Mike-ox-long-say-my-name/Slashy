@@ -55,8 +55,8 @@ namespace Core
 
         private static void InitializeSceneLoader()
         {
-            Add<SceneLoader>(ServiceLifetime.Singleton);
-            var sceneLoader = Get<SceneLoader>();
+            Add<ISceneLoader, SceneLoader>(ServiceLifetime.Singleton);
+            var sceneLoader = Get<ISceneLoader>();
             sceneLoader.SceneLoaded += _ => SetPerSceneServicesDirty();
         }
 
@@ -74,6 +74,11 @@ namespace Core
         public static void AddSingletonInstance<T>(T instance) where T : class
         {
             Services[typeof(T)] = new ServiceDescription(() => instance, ServiceLifetime.Singleton);
+        }
+
+        public static void AddSingletonInstance<TInterface, TClass>(TClass instance) where TClass : class, TInterface
+        {
+            Services[typeof(TInterface)] = new ServiceDescription(() => instance, ServiceLifetime.Singleton);
         }
 
         public static void Add<T>(ServiceLifetime lifetime = ServiceLifetime.PerObject) where T : class, new()

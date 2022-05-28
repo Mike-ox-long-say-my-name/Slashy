@@ -1,9 +1,9 @@
-﻿using Core.Attacking;
+﻿using Core;
+using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
 using Core.Modules;
-using Core.Player;
 using UnityEngine;
 
 namespace Characters.Enemies.Rogue
@@ -26,8 +26,10 @@ namespace Characters.Enemies.Rogue
         protected override void ConfigureExecutor(AnimationAttackExecutor executor)
         {
             var movement = GetComponentInParent<MixinVelocityMovement>().VelocityMovement;
+            var lazyPlayer = Container.Get<IPlayerFactory>().GetLazyPlayer();
+
             executor.EventHandler =
-                new CustomHandler(PlayerManager.Instance.PlayerInfo.Transform, movement)
+                new CustomHandler(lazyPlayer.Value.Transform, movement)
                 {
                     MoveOnAttack = 0.4f,
                     RotateOnAttack = true

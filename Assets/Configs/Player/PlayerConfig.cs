@@ -9,7 +9,6 @@ namespace Configs.Player
         [field: Header("Attacks")]
         [field: SerializeField, Min(0)] public float LightAttackFirstStaminaCost { get; private set; } = 0;
         [field: SerializeField, Min(0)] public float LightAttackSecondStaminaCost { get; private set; } = 0;
-        [field: SerializeField, Min(0)] public float LightAttackRecovery { get; private set; } = 0.1f;
         [field: SerializeField, Min(0)] public float LightAirAttackStaminaCost { get; private set; } = 10;
         [field: SerializeField, Min(0)] public float FirstStrongAttackStaminaCost { get; private set; } = 20;
         [field: SerializeField, Min(0)] public float SecondStrongAttackStaminaCost { get; private set; } = 20;
@@ -34,7 +33,8 @@ namespace Configs.Player
 
         [field: Space]
         [field: Header("Heal")]
-        [field: SerializeField, Min(0)] public float ActiveHealRate { get; private set; } = 10f;
-        [field: SerializeField, Min(0)] public float HealStaminaConsumption { get; private set; } = 10f;
+        [field: SerializeField, Min(0)] public float HealPerTick { get; private set; } = 10f;
+        [field: SerializeField, Min(0)] public float HealStaminaConsumptionPerTick { get; private set; } = 10f;
+        [field: SerializeField, Min(0)] public float HealTickInterval { get; private set; } = 0.6f;
     }
 }

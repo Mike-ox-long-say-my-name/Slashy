@@ -7,12 +7,12 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            Context.Animator.SetBool("is-staggered", true);
+            Context.Animator.StartStaggerAnimation();
         }
 
         public override void ExitState()
         {
-            Context.Animator.SetBool("is-staggered", false);
+            Context.Animator.EndStaggerAnimation();
         }
 
         public override void OnStaggerEnded()

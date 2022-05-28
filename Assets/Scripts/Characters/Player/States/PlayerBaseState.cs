@@ -7,14 +7,14 @@ namespace Characters.Player.States
     public abstract class PlayerBaseState
     {
         protected PlayerStateMachine Context { get; private set; }
-        protected bool IsValidState { get; private set; } = true;
+        private bool IsValidState { get; set; } = true;
 
         public void Init(PlayerStateMachine context)
         {
             Context = context;
         }
 
-        protected virtual void HandleControl()
+        protected virtual void ApplyMoveInput()
         {
             var input = Context.Input.MoveInput;
             var move = new Vector3(input.x, 0, input.y);
@@ -78,9 +78,14 @@ namespace Characters.Player.States
             return GetType().Name;
         }
 
-        public virtual void OnWarp(Vector3 position)
+        public virtual void OnWarpStarted(Vector3 target)
         {
-            Context.WarpPosition = position;
+            Context.WarpPosition = target;
+        }
+
+        public virtual void OnWarpEnded(Vector3 target)
+        {
+            Context.WarpPosition = target;
         }
     }
 }

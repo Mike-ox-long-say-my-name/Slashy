@@ -7,13 +7,16 @@ namespace Characters.Enemies.Boss
     {
         public override void UpdateState()
         {
-            var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(), Context.transform.position.WithZeroY());
-            if (distance < 10f)
+            var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(),
+                Context.transform.position.WithZeroY());
+            if (distance > 10f)
             {
-                Context.BossEvents.FightStarted?.Invoke();
-                AggroListener.Instance.IncreaseAggroCounter();
-                SwitchState<BossPursue>();
+                return;
             }
+
+            Context.Aggro();
+            Context.BossEvents.FightStarted?.Invoke();
+            SwitchState<BossPursue>();
         }
     }
 }

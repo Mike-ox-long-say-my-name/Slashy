@@ -6,21 +6,20 @@ namespace Characters.Player.States
         {
             base.EnterState();
             
-            Context.PlayerCharacter.Stamina.Spend(Context.PlayerConfig.JumpStaminaCost);
+            Context.ResourceSpender.SpendFor(PlayerResourceAction.Jump);
             Context.JumpHandler.Jump();
-            Context.JumpSource.Play();
+            Context.JumpAudioSource.Play();
         }
 
         public override void UpdateState()
         {
-            HandleControl();
-
+            ApplyMoveInput();
             CheckStateSwitch();
         }
 
-        public virtual void CheckStateSwitch()
+        private void CheckStateSwitch()
         {
-            if (Context.VelocityMovement.BaseMovement.IsGrounded)
+            if (Context.BaseMovement.IsGrounded)
             {
                 SwitchState<PlayerGroundedState>();
             }

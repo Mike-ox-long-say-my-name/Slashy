@@ -1,6 +1,4 @@
-﻿using Core.Attacking;
-using Core.Characters.Interfaces;
-using Core.Player.Interfaces;
+﻿using Core.Characters.Interfaces;
 using System.Collections;
 using UnityEngine;
 
@@ -13,16 +11,16 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
-            Context.Animator.SetBool("is-healing", true);
+            Context.Animator.StartHealAnimation();
 
             _healRoutine = Context.StartCoroutine(
                 HealRoutine(
-                    Context.PlayerCharacter,
-                    Context.PlayerConfig.ActiveHealRate,
-                    Context.PlayerConfig.HealStaminaConsumption)
-                );
+                    Context.Character.Health,
+                    Context.PlayerConfig.HealPerTick,
+                    Context.PlayerConfig.HealTickInterval)
+            );
 
-            Context.HealSource.Play();
+            Context.HealAudioSource.Play();
         }
 
         public override void UpdateState()
@@ -65,10 +63,9 @@ namespace Characters.Player.States
 
         public override void ExitState()
         {
-            Context.Animator.SetBool("is-healing", false);
             StopHealing();
-            
-            Context.HealSource.Stop();
+            Context.Animator.EndHealAnimation();
+            Context.HealAudioSource.Stop();
         }
 
         private void StopHealing()
@@ -82,13 +79,15 @@ namespace Characters.Player.States
             _healRoutine = null;
         }
 
-        private IEnumerator HealRoutine(IPlayerCharacter player, float healRate, float staminaConsumptionRate)
+        private IEnumerator HealRoutine(IResource health, float healPerTick, float tickInterval)
         {
-            while (player.Character.Health.Value < player.Character.Health.MaxValue && player.HasStamina())
+            while (health.Value < health.MaxValue &&
+                   Context.ResourceSpender.HasEnoughResourcesFor(PlayerResourceAction.HealTick))
             {
-                player.Character.Health.Recover(healRate * Time.deltaTime);
-                player.Stamina.Spend(staminaConsumptionRate * Time.deltaTime);
-                yield return null;
+                yield return new WaitForSeconds(tickInterval);
+
+                health.Recover(healPerTick);
+                Context.ResourceSpender.SpendFor(PlayerResourceAction.HealTick);
             }
 
             SwitchState<PlayerGroundedState>();

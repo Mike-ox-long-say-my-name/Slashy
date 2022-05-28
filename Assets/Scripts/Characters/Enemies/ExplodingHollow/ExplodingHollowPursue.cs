@@ -1,3 +1,4 @@
+using Core;
 using UnityEngine;
 
 namespace Characters.Enemies.ExplodingHollow
@@ -6,20 +7,20 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            Context.Animator.SetBool("is-walking", true);
+            Context.Animator.StartWalkAnimation();
         }
 
         public override void ExitState()
         {
-            Context.Animator.SetBool("is-walking", false);
+            Context.Animator.EndWalkAnimation();
         }
 
         public override void UpdateState()
         {
-            var player = Context.PlayerPosition;
-            var self = Context.transform.position;
+            var player = Context.PlayerPosition.WithZeroY();
+            var self = Context.transform.position.WithZeroY();
             var direction = player - self;
-            direction.y = 0;
+            
             if (direction.magnitude > 1.2f)
             {
                 direction.Normalize();

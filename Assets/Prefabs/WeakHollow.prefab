@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackbox: {fileID: 6989843185296828068}
+  animationEvents: {fileID: 3269522402792392829}
 --- !u!82 &2005704509964619671
 AudioSource:
   m_ObjectHideFlags: 0
@@ -371,15 +373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ece35e635cbe542b93e564d800113d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  enableHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  endAttack:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5683846623224745880
 MonoBehaviour:
   m_ObjectHideFlags: 0

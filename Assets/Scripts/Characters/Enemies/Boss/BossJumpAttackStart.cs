@@ -8,7 +8,7 @@ namespace Characters.Enemies.Boss
 
         public override void EnterState()
         {
-            Context.Animator.SetTrigger("jump-start");
+            Context.Animator.PlayJumpStartAnimation();
             Context.Character.Balance.Frozen = true;
 
             Context.VelocityMovement.Stop();

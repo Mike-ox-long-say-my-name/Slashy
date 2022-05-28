@@ -12,10 +12,15 @@ namespace Characters.Player.States
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
-            Context.Animator.SetBool("is-dashing", true);
-            Context.DashSource.Play();
+            Context.Animator.StartDashAnimation();
+            Context.DashAudioSource.Play();
 
-            Context.PlayerCharacter.Stamina.Spend(Context.PlayerConfig.DashStaminaCost);
+            Context.ResourceSpender.SpendFor(PlayerResourceAction.Dash);
+            DashTowardsInputDirection();
+        }
+
+        private void DashTowardsInputDirection()
+        {
             var input = Context.Input.MoveInput;
             Context.VelocityMovement.BaseMovement.Rotate(input.x);
             var direction = new Vector3(input.x, 0, input.y);
@@ -24,7 +29,7 @@ namespace Characters.Player.States
 
         public override void ExitState()
         {
-            Context.Animator.SetBool("is-dashing", false);
+            Context.Animator.EndDashAnimation();
             Context.StartCoroutine(RecoverFromDashRoutine(Context.PlayerConfig.DashRecovery));
         }
 
@@ -78,12 +83,22 @@ namespace Characters.Player.States
 
         private void ApplyInvincibilityLogic(float fraction)
         {
-            if (!Context.IsInvincible && fraction >= Context.PlayerConfig.DashInvincibilityStart &&
-                fraction < Context.PlayerConfig.DashInvincibilityEnd)
+            bool ShouldDisableInvincibility()
+            {
+                return Context.IsInvincible && fraction >= Context.PlayerConfig.DashInvincibilityEnd;
+            }
+
+            bool ShouldEnableInvincibility()
+            {
+                return !Context.IsInvincible && fraction >= Context.PlayerConfig.DashInvincibilityStart &&
+                       fraction < Context.PlayerConfig.DashInvincibilityEnd;
+            }
+
+            if (ShouldEnableInvincibility())
             {
                 EnableInvincibility();
             }
-            else if (Context.IsInvincible && fraction >= Context.PlayerConfig.DashInvincibilityEnd)
+            else if (ShouldDisableInvincibility())
             {
                 DisableInvincibility();
             }

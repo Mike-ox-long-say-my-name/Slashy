@@ -4,9 +4,9 @@ namespace Settings
 {
     public class PlayerBindings
     {
-        public PlayerInputActions Actions { get; private set; }
+        public PlayerInputActions Actions { get; }
 
-        protected override void Awake()
+        public PlayerBindings()
         {
             Actions = new PlayerInputActions();
         }

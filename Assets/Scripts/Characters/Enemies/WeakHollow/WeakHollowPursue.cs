@@ -9,20 +9,19 @@ namespace Characters.Enemies.WeakHollow
     {
         public override void EnterState()
         {
-            var player = Context.PlayerInfo.Transform;
+            var player = Context.Player.Transform;
             Context.AutoMovement.LockRotationOn(player);
-            Context.AnimatorComponent.SetBool("is-walking", true);
+            Context.Animator.StartWalkAnimation();
 
             var offset = Context.TryToSurroundPlayer ? GetRandomOffset() : Vector3.zero;
             Context.AutoMovement.MoveToWithOffset(player, offset);
             Context.AutoMovement.SetTargetReachedEpsilon(1);
-            // TODO: keep distance
-            Context.AutoMovement.TargetReached += () => SwitchState<WeakHollowCharge>();
+            Context.AutoMovement.TargetReached += () => SwitchState<WeakHollowRun>();
         }
 
         private static Vector3 GetRandomOffset()
         {
-            var distance = Random.Range(2f, 6f);
+            var distance = Random.Range(1f, 3f);
             var offsetXY = Random.insideUnitCircle.normalized * distance;
             return new Vector3(offsetXY.x, 0, offsetXY.y);
         }
@@ -31,7 +30,7 @@ namespace Characters.Enemies.WeakHollow
         {
             if (Vector3.Distance(Context.PlayerPosition.WithZeroY(), Context.transform.position.WithZeroY()) > 6)
             {
-                SwitchState<WeakHollowCharge>();
+                SwitchState<WeakHollowRun>();
             }
         }
 
@@ -40,7 +39,7 @@ namespace Characters.Enemies.WeakHollow
             Context.VelocityMovement.Stop();
             Context.AutoMovement.UnlockRotation();
             Context.AutoMovement.ResetState();
-            Context.AnimatorComponent.SetBool("is-walking", false);
+            Context.Animator.EndWalkAnimation();
         }
     }
 }

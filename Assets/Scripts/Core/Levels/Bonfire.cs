@@ -1,10 +1,9 @@
-using Core.Player;
 using System.Collections;
 using UnityEngine;
 
 namespace Core.Levels
 {
-    public class Bonfire : MonoBehaviour, IInteractable
+    public class Bonfire : AbstractInteractable
     {
         [SerializeField] private int id;
         [SerializeField] private BonfireSaveData data;
@@ -16,9 +15,14 @@ namespace Core.Levels
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip litSound;
         [SerializeField] private AudioClip ambientSound;
+        
+        private LazyPlayer _player;
+        private IRespawnController _respawnController;
 
         private void Awake()
         {
+            Construct();
+            
             if (data == null)
             {
                 Debug.LogWarning("Bonfire data is null");
@@ -45,10 +49,19 @@ namespace Core.Levels
             fireEffect.Play();
         }
 
+        private void Construct()
+        {
+            var playerFactory = Container.Get<IPlayerFactory>();
+            _player = playerFactory.GetLazyPlayer();
+
+            _respawnController = Container.Get<IRespawnController>();
+        }
+
         private void OnTouchedBonfire()
         {
             StartCoroutine(PlayParticlesAfter(litDelay));
-            PlayerManager.Instance.PlayerTouchedBonfire.RemoveListener(OnTouchedBonfire);
+            
+            _player.Value.TouchedBonfire -= OnTouchedBonfire;
         }
 
         public Vector3 GetRespawnPosition()
@@ -65,27 +78,44 @@ namespace Core.Levels
         {
             data.SetStatus(id, true);
 
-            RespawnManager.Instance.UpdateRespawnData(this);
-            PlayerManager.Instance.PlayerTouchedBonfire.AddListener(OnTouchedBonfire);
+            _respawnController.UpdateRespawnData(this);
+            _player.Value.TouchedBonfire += OnTouchedBonfire;
         }
 
         private IEnumerator PlayParticlesAfter(float time)
         {
             yield return new WaitForSeconds(time);
-            if (audioSource != null && litSound != null)
+            PlayLitSound();
+            PlayLitParticles();
+
+            yield return new WaitForSeconds(time);
+
+            PlayAmbientSound();
+
+            void PlayLitSound()
             {
+                if (audioSource == null || litSound == null)
+                {
+                    return;
+                }
                 audioSource.loop = false;
                 audioSource.PlayOneShot(litSound);
             }
-            if (fireEffect != null)
+
+            void PlayLitParticles()
             {
-                fireEffect.Play();
+                if (fireEffect != null)
+                {
+                    fireEffect.Play();
+                }
             }
 
-            yield return new WaitForSeconds(time);
-            
-            if (audioSource != null && ambientSound != null)
+            void PlayAmbientSound()
             {
+                if (audioSource == null || ambientSound == null)
+                {
+                    return;
+                }
                 audioSource.loop = true;
                 audioSource.clip = ambientSound;
                 audioSource.Play();
@@ -98,13 +128,10 @@ namespace Core.Levels
             Gizmos.DrawSphere(GetPlayerAnimationPosition(), 0.2f);
         }
 
-        public bool IsInteractable { get; set; } = false;
-        public InteractionMask Mask => InteractionMask.Bonfire;
-
-        public InteractionResult Interact()
+        protected override object InteractInternal()
         {
             TouchBonfire();
-            return new InteractionResult(InteractionType.TouchedBonfire, this);
+            return this;
         }
     }
 }

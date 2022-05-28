@@ -9,7 +9,7 @@ namespace Characters.Enemies.WeakHollow
 
         public override void EnterState()
         {
-            Context.AnimatorComponent.SetBool("is-staggered", true);
+            Context.Animator.StartStaggerAnimation();
             _timer = Timer.Start(Context.LastHitInfo.StaggerTime, Timeout);
         }
 
@@ -32,7 +32,7 @@ namespace Characters.Enemies.WeakHollow
 
         public override void ExitState()
         {
-            Context.AnimatorComponent.SetBool("is-staggered", false);
+            Context.Animator.EndStaggerAnimation();
         }
     }
 }

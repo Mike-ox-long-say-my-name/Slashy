@@ -15,6 +15,11 @@ namespace Core
                 IsCreated = true;
                 Value = player;
             });
+            playerFactory.PlayerDestroyed += () =>
+            {
+                IsCreated = false;
+                Value = null;
+            };
         }
     }
 }

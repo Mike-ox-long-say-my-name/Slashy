@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackbox: {fileID: 390948261866963857}
+  animationEvents: {fileID: 390948260618534443}
 --- !u!82 &7775150328800849979
 AudioSource:
   m_ObjectHideFlags: 0
@@ -242,7 +244,6 @@ GameObject:
   - component: {fileID: 390948260618534441}
   - component: {fileID: 390948260618534440}
   - component: {fileID: 390948260618534455}
-  - component: {fileID: 390948260618534452}
   - component: {fileID: 390948260618534453}
   - component: {fileID: 390948260618534456}
   - component: {fileID: 390948260618534459}
@@ -360,15 +361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ece35e635cbe542b93e564d800113d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  enableHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  endAttack:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!143 &390948260618534454
 CharacterController:
   m_ObjectHideFlags: 0
@@ -537,18 +529,6 @@ MonoBehaviour:
   hasSource: 1
   isEnvironmental: 0
   damageStats: {fileID: 11400000, guid: 5e6be9150e383dc4dba0c5859b196532, type: 2}
---- !u!114 &390948260618534452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 390948260618534439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74a0f1e91e8f3be4c9fdd44fd1aa7c7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &390948260618534453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -802,6 +782,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackbox: {fileID: 390948261565519348}
+  animationEvents: {fileID: 390948260618534443}
 --- !u!82 &2342291408574609355
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1271,6 +1253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackbox: {fileID: 3724704308065825746}
+  animationEvents: {fileID: 390948260618534443}
 --- !u!82 &6364780543681009090
 AudioSource:
   m_ObjectHideFlags: 0

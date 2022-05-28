@@ -6,8 +6,7 @@ namespace Characters.Enemies.WeakHollow
     {
         public override void EnterState()
         {
-            //Context.VelocityMovement.Stop();
-            Context.AnimatorComponent.SetTrigger("attack");
+            Context.Animator.PlayPunchAnimation();
             Context.PunchAttackExecutor.StartAttack(result =>
             {
                 if (result.WasInterrupted)

@@ -1,55 +1,60 @@
-﻿using Core;
+﻿using System;
+using Core;
+using JetBrains.Annotations;
 using Settings;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace UI.Menu
 {
     public class InGameMenuController : MonoBehaviour
     {
-        [SerializeField] private UnityEvent menuOpened;
-        [SerializeField] private UnityEvent menuClosed;
+        [SerializeField] private InGameMainMenu mainMenu;
+        [SerializeField] private SettingsMenu settingsMenu;
+        
+        private PlayerBindings _bindings;
+        private IGameLoader _gameLoader;
 
-        private IMenu _mainMenu;
-        private IMenu _settingsMenu;
+        public event Action MenuClosed;
+        public event Action MenuOpened;
 
-        public UnityEvent MenuClosed => menuClosed;
-
-        public UnityEvent MenuOpened => menuOpened;
+        private void Reset()
+        {
+            mainMenu = GetComponentInChildren<InGameMainMenu>();
+            settingsMenu = GetComponentInChildren<SettingsMenu>();
+        }
 
         private void Awake()
         {
-            _mainMenu = GetComponentInChildren<InGameMainMenu>();
-            _settingsMenu = GetComponentInChildren<SettingsMenu>();
+            Construct();
+        }
+
+        private void Construct()
+        {
+            _gameLoader = Container.Get<IGameLoader>();
+            _bindings = Container.Get<PlayerBindings>();
         }
 
         private void OnEnable()
         {
-            var actions = PlayerBindings.Instance.Actions;
+            var actions = _bindings.Actions;
             actions.UI.Enable();
             actions.UI.Menu.performed += OnMenuPressed;
         }
 
         private void OnDisable()
         {
-            var proxy = PlayerBindings.TryGetInstance();
-            if (proxy == null)
-            {
-                return;
-            }
-
-            var actions = proxy.Actions;
+            var actions = _bindings.Actions;
             actions.UI.Menu.performed -= OnMenuPressed;
         }
 
         private void OnMenuPressed(InputAction.CallbackContext context)
         {
-            if (_settingsMenu.IsShown)
+            if (settingsMenu.IsShown)
             {
                 CloseSettingsMenu();
             }
-            else if (_mainMenu.IsShown)
+            else if (mainMenu.IsShown)
             {
                 CloseMainMenu();
             }
@@ -59,28 +64,30 @@ namespace UI.Menu
             }
         }
 
+        [UsedImplicitly]
         public void ShowMainMenu()
         {
-            _mainMenu.Show();
+            mainMenu.Show();
             RestrictPlayerInput();
             MenuOpened?.Invoke();
         }
 
         public void ShowSettingsMenu()
         {
-            _mainMenu.ShowSubMenu(_settingsMenu);
+            mainMenu.ShowSubMenu(settingsMenu);
         }
 
+        [UsedImplicitly]
         public void CloseMainMenu()
         {
-            _mainMenu.Close();
+            mainMenu.Close();
             AllowPlayerInput();
             MenuClosed?.Invoke();
         }
 
         public void CloseSettingsMenu()
         {
-            _settingsMenu.Close();
+            settingsMenu.Close();
         }
 
         public void ContinuePlaying()
@@ -90,18 +97,18 @@ namespace UI.Menu
 
         public void ExitToMainMenu()
         {
-            GameLoader.Instance.LoadMenu();
+            _gameLoader.LoadMenu();
         }
 
-        private static void RestrictPlayerInput()
+        private void RestrictPlayerInput()
         {
-            var actions = PlayerBindings.Instance.Actions;
+            var actions = _bindings.Actions;
             actions.Player.Fire.Disable();
         }
 
-        private static void AllowPlayerInput()
+        private void AllowPlayerInput()
         {
-            var actions = PlayerBindings.Instance.Actions;
+            var actions = _bindings.Actions;
             actions.Player.Fire.Enable();
         }
     }

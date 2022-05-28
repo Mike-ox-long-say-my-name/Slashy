@@ -9,13 +9,14 @@ namespace Core.Attacking
 {
     public abstract class AttackExecutor : IAttackExecutor
     {
-        private Coroutine _runningAttack;
+        private readonly CoroutineContext _runningAttack;
         private Action<AttackResult> _attackEnded;
 
-        protected ICoroutineHost Host { get; }
+        private ICoroutineRunner CoroutineRunner { get; }
+        
         protected IAttackbox Attackbox { get; }
 
-        public bool IsAttacking => _runningAttack != null;
+        public bool IsAttacking { get; private set; }
 
         private readonly List<IHurtbox> _hits = new List<IHurtbox>();
 
@@ -24,13 +25,17 @@ namespace Core.Attacking
             _hits.Add(hit);
         }
 
-        protected AttackExecutor(ICoroutineHost host, IAttackbox attackbox)
+        protected AttackExecutor(ICoroutineRunner coroutineRunner, IAttackbox attackbox)
         {
-            Guard.NotNull(host);
+            Guard.NotNull(coroutineRunner);
             Guard.NotNull(attackbox);
             
-            Host = host;
+            CoroutineRunner = coroutineRunner;
             Attackbox = attackbox;
+
+            Attackbox.Hit += RegisterHit;
+
+            _runningAttack = CoroutineRunner.GetEmptyContext();
         }
 
         public virtual void InterruptAttack()
@@ -41,7 +46,7 @@ namespace Core.Attacking
                 return;
             }
             
-            Host.Stop(_runningAttack);
+            _runningAttack.Stop();
             OnAttackEnded(true);
         }
 
@@ -53,8 +58,9 @@ namespace Core.Attacking
                 return;
             }
 
+            IsAttacking = true;
             _attackEnded = attackEnded;
-            _runningAttack = Host.Start(ExecuteInternal());
+            _runningAttack.Start(ExecuteInternal());
         }
 
         private IEnumerator ExecuteInternal()
@@ -68,10 +74,13 @@ namespace Core.Attacking
 
         protected virtual void OnAttackEnded(bool interrupted)
         {
-            _runningAttack = null;
-            var temp = _attackEnded;
+            IsAttacking = false;
+            var previousAttackEndedCallback = _attackEnded;
             _attackEnded = null;
-            temp?.Invoke(new AttackResult(_hits, !interrupted));
+
+            var attackResult = new AttackResult(_hits, !interrupted);
+            previousAttackEndedCallback?.Invoke(attackResult);
+            
             _hits.Clear();
         }
     }

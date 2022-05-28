@@ -4,7 +4,7 @@ namespace Characters.Enemies.States
 {
     public abstract class EnemyBaseState<TContext> where TContext : class, IStateHolder<TContext>
     {
-        protected bool IsValidState { get; private set; } = true;
+        private bool IsValidState { get; set; } = true;
         protected TContext Context { get; private set; }
 
         public void Init(TContext context)

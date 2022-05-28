@@ -5,51 +5,66 @@ using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
 using Core.Characters.Mono;
 using Core.Modules;
-using Core.Player;
 using Core.Player.Interfaces;
 using UnityEngine;
 
 namespace Characters.Enemies.States
 {
-    [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(MixinVelocityMovement))]
     [RequireComponent(typeof(MixinCharacter))]
     [RequireComponent(typeof(DestroyHelper))]
     public abstract class EnemyStateMachine<T> : MonoBehaviour, IStateHolder<T> where T : class, IStateHolder<T>
     {
         public EnemyBaseState<T> CurrentState { get; set; }
-
-        public Animator Animator { get; private set; }
         public ICharacter Character { get; private set; }
         public IVelocityMovement VelocityMovement { get; private set; }
         public IBaseMovement BaseMovement => VelocityMovement.BaseMovement;
         public IHurtbox Hurtbox { get; private set; }
-        public DestroyHelper Destroyable { get; private set; }
+        public DestroyHelper DestroyHelper { get; private set; }
+        public AttackExecutorHelper AttackExecutorHelper { get; private set; }
+        private IAggroListener _aggroListener;
+        public IPlayer Player => _lazyPlayer.Value;
+        private LazyPlayer _lazyPlayer;
 
-        public IPlayer PlayerInfo => PlayerManager.Instance.PlayerInfo;
-        public IPlayerCharacter Player => PlayerInfo.PlayerCharacter;
+        public Vector3 PlayerPosition => Player.Transform.position;
 
-        public Vector3 PlayerPosition => PlayerInfo.VelocityMovement.BaseMovement.Transform.position;
+        public void Aggro() => _aggroListener.IncreaseAggroCounter();
 
-        public HitInfo LastHit { get; set; }
+        public void Deaggro() => _aggroListener.DecreaseAggroCounter();
 
         protected abstract EnemyBaseState<T> StartState();
 
         protected virtual void Awake()
         {
-            Animator = GetComponent<Animator>();
+            Construct();
+            SubscribeToCharacterEvents();
+        }
+
+        private void Construct()
+        {
             VelocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
-            Destroyable = GetComponent<DestroyHelper>();
+            DestroyHelper = GetComponent<DestroyHelper>();
 
-            var character = Character = GetComponent<MixinCharacter>().Character;
-            character.HitReceived += (_, info) => CurrentState.OnHitReceived(info);
-            character.Staggered += (_, info) => CurrentState.OnStaggered(info);
-            character.Dead += (_, info) => CurrentState.OnDeath(info);
-            character.RecoveredFromStagger += _ => CurrentState.OnStaggerEnded();
+            AttackExecutorHelper = new AttackExecutorHelper(
+                GetComponentsInChildren<MonoAbstractAttackExecutor>());
+            _lazyPlayer = Container.Get<IPlayerFactory>().GetLazyPlayer();
+            _aggroListener = Container.Get<IAggroListener>();
+        }
 
+        private void Start()
+        {
             CurrentState = StartState();
             CurrentState.EnterState();
+        }
+
+        private void SubscribeToCharacterEvents()
+        {
+            var character = Character = GetComponent<MixinCharacter>().Character;
+            character.HitReceived += info => CurrentState.OnHitReceived(info);
+            character.Staggered += info => CurrentState.OnStaggered(info);
+            character.Dead += info => CurrentState.OnDeath(info);
+            character.RecoveredFromStagger += () => CurrentState.OnStaggerEnded();
         }
 
         protected virtual void Update()

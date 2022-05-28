@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Core
 {
@@ -12,10 +11,14 @@ namespace Core
 
         public bool IsFighting => _aggroCounter > 0;
 
+        public AggroListener(ISceneLoader sceneLoader)
+        {
+            sceneLoader.SceneUnloading += _ => ResetAggroCounter();
+        }
+
         public void IncreaseAggroCounter()
         {
-            _aggroCounter++;
-            if (_aggroCounter == 1)
+            if (_aggroCounter++ == 0)
             {
                 FightStarted?.Invoke();
             }
@@ -23,8 +26,7 @@ namespace Core
 
         public void DecreaseAggroCounter()
         {
-            _aggroCounter--;
-            if (_aggroCounter == 0)
+            if (--_aggroCounter == 0)
             {
                 FightEnded?.Invoke();
             }

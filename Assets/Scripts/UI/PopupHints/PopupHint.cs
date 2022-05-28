@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace UI.PopupHints
 {
-    [RequireComponent(typeof(AbstractInteractable))]
     [RequireComponent(typeof(RectTransform))]
-    public class PopupHint : MonoBehaviour
+    public class PopupHint : AbstractInteractable
     {
         private RectTransform _transform;
 
@@ -14,12 +13,10 @@ namespace UI.PopupHints
         [SerializeField, Min(0.01f)] private float appearTime = 0.55f;
 
         private bool _isShown = false;
-        private AbstractInteractable _interactable;
 
         private void Awake()
         {
             _transform = GetComponent<RectTransform>();
-            _interactable = GetComponent<AbstractInteractable>();
         }
 
         public void Show()
@@ -29,7 +26,7 @@ namespace UI.PopupHints
                 return;
             }
 
-            _interactable.MakeInteractable();
+            MakeInteractable();
             _isShown = true;
             StartCoroutine(MoveRoutine(appearMove, appearTime));
         }
@@ -41,7 +38,7 @@ namespace UI.PopupHints
                 return;
             }
 
-            _interactable.MakeUninteractable();
+            MakeUninteractable();
             _isShown = false;
             StartCoroutine(MoveRoutine(-appearMove, appearTime));
         }
@@ -57,6 +54,12 @@ namespace UI.PopupHints
                 _transform.anchoredPosition = startPosition + moveStep;
                 yield return null;
             }
+        }
+
+        protected override object InteractInternal()
+        {
+            Hide();
+            return this;
         }
     }
 }

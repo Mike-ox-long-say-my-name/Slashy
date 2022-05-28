@@ -1,13 +1,10 @@
-﻿using System;
-using UnityEngine;
-
-namespace Core
+﻿namespace Core
 {
     public class Interactor
     {
-        private readonly InteractionService _interactionService;
+        private readonly IInteractionService _interactionService;
 
-        public Interactor(InteractionService interactionService)
+        public Interactor(IInteractionService interactionService)
         {
             _interactionService = interactionService;
         }

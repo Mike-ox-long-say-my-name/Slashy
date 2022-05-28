@@ -2,7 +2,6 @@
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
-using Core.Utilities;
 using System.Collections;
 using UnityEngine;
 
@@ -21,7 +20,8 @@ namespace Characters.Enemies.Boss
             public GameObject SpriteObject { get; set; }
             public AttackboxGroup AttackboxGroup { get; set; }
 
-            public CustomExecutor(ICoroutineHost host, IAttackbox attackbox) : base(host, attackbox)
+            public CustomExecutor(ICoroutineRunner coroutineRunner, IAttackbox attackbox) : base(coroutineRunner,
+                attackbox)
             {
             }
 
@@ -53,7 +53,8 @@ namespace Characters.Enemies.Boss
         private CustomExecutor CreateExecutor()
         {
             var attackbox = GetComponentInChildren<MonoAttackbox>().Attackbox;
-            return new CustomExecutor(this.ToCoroutineHost(), attackbox)
+            var coroutineRunner = Container.Get<ICoroutineRunner>();
+            return new CustomExecutor(coroutineRunner, attackbox)
             {
                 StrikeDelay = strikeDelay,
                 LingerTime = lingerTime,

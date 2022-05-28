@@ -12,7 +12,9 @@ namespace Characters.Player.States
         {
             Context.VelocityMovement.Stop();
             Context.Animator.StartHealAnimation();
-
+            
+            PreventStaminaRecoveryBeforeFirstTick();
+            
             _healRoutine = Context.StartCoroutine(
                 HealRoutine(
                     Context.Character.Health,
@@ -21,6 +23,11 @@ namespace Characters.Player.States
             );
 
             Context.HealAudioSource.Play();
+        }
+
+        private void PreventStaminaRecoveryBeforeFirstTick()
+        {
+            Context.Stamina.Spend(0.1f);
         }
 
         public override void UpdateState()

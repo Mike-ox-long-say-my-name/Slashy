@@ -7,7 +7,7 @@ namespace Characters.Enemies.ExplodingHollow
         public override void EnterState()
         {
             Context.Animator.PlayExplodeAnimation();
-            Context.ExplosionAttack.StartAttack(_ => SwitchState<ExplodingHollowDeath>());
+            Context.ExplosionAttack.StartAttack(_ => Context.Character.Kill());
         }
 
         public override void OnHitReceived(HitInfo info)

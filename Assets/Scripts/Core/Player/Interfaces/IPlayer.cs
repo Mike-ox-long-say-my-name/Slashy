@@ -1,7 +1,6 @@
 ﻿using System;
 using Core.Attacking.Interfaces;
 using Core.Characters.Interfaces;
-using Core.Levels;
 using UnityEngine;
 
 namespace Core.Player.Interfaces

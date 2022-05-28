@@ -7,7 +7,6 @@ namespace Characters.Enemies.Rogue
     {
         public override void EnterState()
         {
-            Context.Deaggro();
             Context.AutoMovement.ResetState();
             Context.AutoMovement.UnlockRotation();
 

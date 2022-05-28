@@ -1,3 +1,4 @@
+using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Characters.Player.States
@@ -29,6 +30,18 @@ namespace Characters.Player.States
         {
             base.OnWarpStarted(target);
             SwitchState<PlayerMovingToFromExternalEvent>();
+        }
+
+        public override void OnWarpEnded(Vector3 target)
+        {
+            base.OnWarpStarted(target);
+            SwitchState<PlayerMovingToFromExternalEvent>();
+        }
+
+        public override void ExitState()
+        {
+            base.ExitState();
+            Context.VelocityMovement.Stop();
         }
     }
 }

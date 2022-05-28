@@ -13,8 +13,8 @@ namespace Characters.Enemies.Rogue
             Context.Animator.StartJumpAwayAnimation();
 
             var jumpLocation = GetRandomJumpLocation();
-            // Прогревочный
-            Context.VelocityMovement.Move((jumpLocation - Context.transform.position).normalized);
+            PrewarmVelocityMovement(jumpLocation);
+            
             Context.JumpHandler.Jump();
             _updatePassed = false;
 
@@ -25,6 +25,11 @@ namespace Characters.Enemies.Rogue
             Context.AutoMovement.LockRotationOn(Context.Player.Transform);
             Context.AutoMovement.SetMaxMoveTime(1);
             Context.AutoMovement.SetSpeedMultiplier(1);
+        }
+
+        private void PrewarmVelocityMovement(Vector3 jumpLocation)
+        {
+            Context.VelocityMovement.Move((jumpLocation - Context.transform.position).normalized);
         }
 
         public override void UpdateState()

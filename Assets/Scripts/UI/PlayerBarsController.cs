@@ -1,4 +1,3 @@
-using System;
 using Core;
 using Core.Player.Interfaces;
 using UnityEngine;

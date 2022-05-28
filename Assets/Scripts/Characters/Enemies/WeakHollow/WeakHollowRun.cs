@@ -1,5 +1,4 @@
-﻿using Core;
-using Core.Characters;
+﻿using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Utilities;
 using UnityEngine;

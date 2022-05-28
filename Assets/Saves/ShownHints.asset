@@ -13,10 +13,4 @@ MonoBehaviour:
   m_Name: ShownHints
   m_EditorClassIdentifier: 
   resetOnQuit: 0
-  <Move>k__BackingField: 0
-  <Dash>k__BackingField: 0
-  <Jump>k__BackingField: 0
-  <Heal>k__BackingField: 0
-  <LightAttack>k__BackingField: 0
-  <StrongAttack>k__BackingField: 0
-  <Save>k__BackingField: 0
+  shownHints: 00000000010000000200000003000000040000000500000006000000

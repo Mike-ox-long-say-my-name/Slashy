@@ -174,6 +174,8 @@ GameObject:
   - component: {fileID: 2896380458805542614}
   - component: {fileID: 2732408567960383763}
   - component: {fileID: 7058735154589523031}
+  - component: {fileID: 575200502970450804}
+  - component: {fileID: 9028157720543030916}
   m_Layer: 7
   m_Name: WeakHollow
   m_TagString: Untagged
@@ -640,6 +642,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTakenSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+--- !u!114 &575200502970450804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5683846623224745878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f818e7944da24ee89c4020f9bc82184c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroDistance: 6
+--- !u!114 &9028157720543030916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5683846623224745878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dbda2cb1d2e4771b6d02fd535b31d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementBase: {fileID: 8331946589894511492}
+  character: {fileID: 7394336175500129625}
+  aggro: {fileID: 575200502970450804}
 --- !u!1 &5683846623377792470
 GameObject:
   m_ObjectHideFlags: 0

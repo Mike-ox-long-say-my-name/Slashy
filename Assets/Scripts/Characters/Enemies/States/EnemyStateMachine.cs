@@ -2,6 +2,7 @@
 using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
+using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Characters.Mono;
 using Core.Modules;
@@ -22,15 +23,11 @@ namespace Characters.Enemies.States
         public IHurtbox Hurtbox { get; private set; }
         public DestroyHelper DestroyHelper { get; private set; }
         public AttackExecutorHelper AttackExecutorHelper { get; private set; }
-        private IAggroListener _aggroListener;
+        public MixinAggro AggroModule { get; private set; }
         public IPlayer Player => _lazyPlayer.Value;
         private LazyPlayer _lazyPlayer;
 
         public Vector3 PlayerPosition => Player.Transform.position;
-
-        public void Aggro() => _aggroListener.IncreaseAggroCounter();
-
-        public void Deaggro() => _aggroListener.DecreaseAggroCounter();
 
         protected abstract EnemyBaseState<T> StartState();
 
@@ -45,11 +42,12 @@ namespace Characters.Enemies.States
             VelocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
             DestroyHelper = GetComponent<DestroyHelper>();
+            AggroModule = GetComponent<MixinAggro>();
+            AggroModule.Aggroed += () => CurrentState.OnAggroed();
 
             AttackExecutorHelper = new AttackExecutorHelper(
                 GetComponentsInChildren<MonoAbstractAttackExecutor>());
             _lazyPlayer = Container.Get<IPlayerFactory>().GetLazyPlayer();
-            _aggroListener = Container.Get<IAggroListener>();
         }
 
         private void Start()
@@ -63,7 +61,11 @@ namespace Characters.Enemies.States
             var character = Character = GetComponent<MixinCharacter>().Character;
             character.HitReceived += info => CurrentState.OnHitReceived(info);
             character.Staggered += info => CurrentState.OnStaggered(info);
-            character.Dead += info => CurrentState.OnDeath(info);
+            character.Died += info =>
+            {
+                AggroModule.Deaggro();
+                CurrentState.OnDeath(info);
+            };
             character.RecoveredFromStagger += () => CurrentState.OnStaggerEnded();
         }
 

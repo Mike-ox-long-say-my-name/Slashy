@@ -82,7 +82,7 @@ namespace Miscellaneous
 
             if (_firstMovesRemained > 0)
             {
-                SetPositionX(anchor.position.x);
+                SetPositionX(anchor.position.x, false);
                 _firstMovesRemained--;
             }
             else

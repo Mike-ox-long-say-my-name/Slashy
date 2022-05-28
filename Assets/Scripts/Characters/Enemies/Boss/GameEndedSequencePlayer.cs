@@ -11,13 +11,16 @@ namespace Characters.Enemies.Boss
         private const float BlackoutTime = 5f;
 
         private readonly ICoroutineRunner _coroutineRunner;
+        private readonly IGameLoader _gameLoader;
         private readonly IBlackScreenService _blackScreenService;
 
         public event Action GameEndSequenceEnded;
 
-        public GameEndedSequencePlayer(ICoroutineRunner coroutineRunner, IBlackScreenService blackScreenService)
+        public GameEndedSequencePlayer(ICoroutineRunner coroutineRunner, IGameLoader gameLoader,
+            IBlackScreenService blackScreenService)
         {
             _coroutineRunner = coroutineRunner;
+            _gameLoader = gameLoader;
             _blackScreenService = blackScreenService;
         }
 
@@ -34,6 +37,8 @@ namespace Characters.Enemies.Boss
 
             yield return new WaitForSeconds(BlackoutTime);
             GameEndSequenceEnded?.Invoke();
+            
+            _gameLoader.CompleteGame();
         }
     }
 }

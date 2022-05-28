@@ -61,5 +61,9 @@ namespace Characters.Enemies.States
         {
             return GetType().Name;
         }
+
+        public virtual void OnAggroed()
+        {
+        }
     }
 }

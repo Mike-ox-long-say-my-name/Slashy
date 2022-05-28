@@ -1,6 +1,4 @@
-﻿using Core;
-
-namespace Settings
+﻿namespace Settings
 {
     public class PlayerBindings
     {

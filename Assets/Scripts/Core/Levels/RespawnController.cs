@@ -1,3 +1,4 @@
+using System;
 using Core.Player.Interfaces;
 using UnityEngine;
 
@@ -78,7 +79,13 @@ namespace Core.Levels
 
         private void StartRespawn()
         {
+            if (_isRespawning)
+            {
+                return;
+            }
+
             _isRespawning = true;
+            Respawning?.Invoke();
             var level = string.IsNullOrEmpty(_respawnData.RespawnLevel)
                 ? _sceneLoader.CurrentSceneName
                 : _respawnData.RespawnLevel;
@@ -90,5 +97,7 @@ namespace Core.Levels
             _respawnData.RespawnLevel = _sceneLoader.CurrentSceneName;
             _respawnData.RespawnPosition = bonfire.GetRespawnPosition();
         }
+
+        public event Action Respawning;
     }
 }

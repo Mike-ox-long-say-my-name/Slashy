@@ -1,5 +1,4 @@
-using Core.Characters;
-using Core.Characters.Mono;
+using Core;
 using UnityEngine;
 
 namespace UI
@@ -7,19 +6,15 @@ namespace UI
     public class BossBarsController : MonoBehaviour
     {
         [SerializeField] private ResourceBar healthBar;
-        [SerializeField] private MixinBossEventDispatcher bossEvents;
-        [SerializeField] private MixinCharacter bossCharacter;
 
-        private void OnEnable()
-        {
-            bossEvents.FightStarted.AddListener(OnFightStarted);
-            bossEvents.Died.AddListener(OnDied);
-        }
+        private BossMarker _boss;
 
-        private void OnDisable()
+        private void Start()
         {
-            bossEvents.FightStarted.RemoveListener(OnFightStarted);
-            bossEvents.Died.RemoveListener(OnDied);
+            _boss = FindObjectOfType<BossMarker>();
+            var events = _boss.BossEvents;
+            events.FightStarted.AddListener(OnFightStarted);
+            events.Died.AddListener(OnDied);
         }
 
         private void OnDied()
@@ -29,9 +24,11 @@ namespace UI
 
         private void OnFightStarted()
         {
+            var character = _boss.Character.Character;
             healthBar.gameObject.SetActive(true);
-            bossCharacter.Character.Health.ValueChanged += healthBar.OnResourceValueChanged;
-            bossCharacter.Character.Health.ForceRaiseEvent();
+
+            character.Health.ValueChanged += healthBar.OnResourceValueChanged;
+            character.Health.ForceRaiseEvent();
         }
     }
 }

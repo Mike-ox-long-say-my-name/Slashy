@@ -10,7 +10,7 @@ namespace Characters.Enemies.Rogue
 
         public override void EnterState()
         {
-            var waitTime = Random.Range(0.3f, 1.7f);
+            var waitTime = Random.Range(0.3f, 1f);
             _waitTimer = Timer.Start(waitTime, OnTimeout);
         }
 

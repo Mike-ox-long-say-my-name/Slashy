@@ -4,11 +4,6 @@ using Object = UnityEngine.Object;
 
 namespace Core
 {
-    public interface IUiFactory
-    {
-        GameObject CreateUi(UiType uiType);
-    }
-
     public class UiFactory : IUiFactory
     {
         private const string LevelUiWithBossBar = "LevelUiWithBossBar";
@@ -50,10 +45,5 @@ namespace Core
                 _ => throw new ArgumentOutOfRangeException(nameof(uiType), uiType, null)
             };
         }
-    }
-
-    public enum UiType
-    {
-        Default, WithBossBar, WithHints
     }
 }

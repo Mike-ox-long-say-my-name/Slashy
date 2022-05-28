@@ -29,9 +29,13 @@ namespace Characters.Enemies.Rogue
 
             _direction = (targetPosition.WithZeroY() - Context.transform.position.WithZeroY()).normalized;
 
-            // Прогревочный
-            Context.VelocityMovement.Move(_direction * Multiplier);
+            PrewarmVelocityMovement();
             Context.JumpHandler.Jump();
+        }
+
+        private void PrewarmVelocityMovement()
+        {
+            Context.VelocityMovement.Move(_direction * Multiplier);
         }
 
         private Vector3 GetPredictedPlayerMovement(float multiplier)

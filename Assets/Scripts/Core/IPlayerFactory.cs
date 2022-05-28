@@ -1,6 +1,5 @@
 using System;
 using Core.Player.Interfaces;
-using UnityEngine;
 
 namespace Core
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Levels;
+using UI.PopupHints;
 using UnityEngine;
 
 namespace Core
@@ -8,9 +9,12 @@ namespace Core
     {
         private readonly RespawnData _respawnData;
         private readonly BonfireSaveData _bonfireData;
+        private readonly ShownHintsSO _shownHints;
 
-        private const string NewGameScene = "Temple"; 
+        private const string NewGameScene = "Temple";
         private const string MenuScene = "MenuScene";
+
+        private const string GameStartedPrefName = "GameStarted";
 
         public event SceneCallback Exiting;
         public event SceneCallback LoadingLevel;
@@ -20,7 +24,7 @@ namespace Core
         public event SceneCallback LoadingExitedLevel;
         public event Action GameCompleted;
 
-        public bool HasAnyGameProgress => !string.IsNullOrEmpty(_respawnData.RespawnLevel);
+        public bool HasAnyGameProgress => PlayerPrefs.GetInt(GameStartedPrefName, 0) == 1;
 
         private readonly ISceneLoader _sceneLoader;
 
@@ -29,6 +33,7 @@ namespace Core
             _sceneLoader = sceneLoader;
             _respawnData = saveDataContainer.RespawnData;
             _bonfireData = saveDataContainer.BonfireSaveData;
+            _shownHints = saveDataContainer.ShownHints;
         }
 
         public void LoadLevel(string levelName)
@@ -41,7 +46,7 @@ namespace Core
         public void LoadGame()
         {
             var exitedLevel = _respawnData.RespawnLevel;
-            
+
             LoadingExitedLevel?.Invoke(exitedLevel);
             _sceneLoader.ReplaceLastScene(exitedLevel);
             LoadedExitedLevel?.Invoke(exitedLevel);
@@ -49,11 +54,19 @@ namespace Core
 
         public void LoadNewGame()
         {
-            _bonfireData.ResetBitmask();
-            _respawnData.ResetData();
+            PlayerPrefs.SetInt(GameStartedPrefName, 1);
+
+            ResetSavedData();
 
             StartingNewGame?.Invoke(NewGameScene);
             LoadLevel(NewGameScene);
+        }
+
+        private void ResetSavedData()
+        {
+            _bonfireData.ResetBitmask();
+            _respawnData.ResetData();
+            _shownHints.ResetShownHints();
         }
 
         public void LoadMenu()
@@ -65,10 +78,9 @@ namespace Core
         public void CompleteGame()
         {
             GameCompleted?.Invoke();
-            
-            _bonfireData.ResetBitmask();
-            _respawnData.ResetData();
-            
+
+            PlayerPrefs.SetInt(GameStartedPrefName, 0);
+            ResetSavedData();
             LoadMenu();
         }
     }

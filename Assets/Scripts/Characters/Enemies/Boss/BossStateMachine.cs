@@ -1,12 +1,10 @@
 ﻿using Characters.Enemies.States;
-using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters;
 using Core.Characters.Interfaces;
 using Core.Characters.Mono;
 using Core.Modules;
-using PlasticGui.WorkspaceWindow.Topbar;
 using UnityEngine;
 
 namespace Characters.Enemies.Boss
@@ -23,6 +21,7 @@ namespace Characters.Enemies.Boss
         [SerializeField, Range(0, 1)] private float spikeStrikeRepeatChance;
         [SerializeField] private float maxDashDistance = 7f;
         [SerializeField, Range(0, 1)] private float thrustAfterSwingChance = 0.25f;
+        [SerializeField] private int maxSpikeStrikesInRow = 3;
 
         public float MaxDashDistance => maxDashDistance;
 
@@ -30,7 +29,7 @@ namespace Characters.Enemies.Boss
         public IAutoMovement AutoMovement { get; private set; }
         public IJumpHandler JumpHandler { get; private set; }
 
-
+        public int MaxSpikeStrikesInRow => maxSpikeStrikesInRow;
         public BossAnimator Animator { get; private set; }
         public IAttackExecutor SpikeStrikeExecutor => spikeStrikeExecutor.GetExecutor();
         public IAttackExecutor HorizontalSwingExecutor => horizontalSwingExecutor.GetExecutor();

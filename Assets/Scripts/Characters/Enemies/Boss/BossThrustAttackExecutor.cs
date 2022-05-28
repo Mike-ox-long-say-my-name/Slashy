@@ -14,6 +14,7 @@ namespace Characters.Enemies.Boss
         {
             private readonly Transform _target;
             private readonly IVelocityMovement _movement;
+            private Vector3 _aimPosition;
 
             public float? MoveOnAttack { get; set; }
 
@@ -35,12 +36,16 @@ namespace Characters.Enemies.Boss
                 var baseMovement = _movement.BaseMovement;
 
                 var self = baseMovement.Transform.position.WithZeroY();
-                var target = _target.position.WithZeroY();
 
-                var direction = (target - self).normalized;
-                var distance = Vector3.Distance(target, self);
+                var direction = (_aimPosition - self).normalized;
+                var distance = Vector3.Distance(_aimPosition, self);
 
                 baseMovement.Move(direction * Mathf.Min(maxDistance, distance));
+            }
+
+            public void AimAtPlayer()
+            {
+                _aimPosition = _target.position.WithZeroY();
             }
 
             public override void HandleEnableHitbox(IAnimationAttackExecutorContext context)
@@ -63,6 +68,8 @@ namespace Characters.Enemies.Boss
             var movement = GetComponentInParent<MixinVelocityMovement>().VelocityMovement;
             var lazyPlayer = Container.Get<IPlayerFactory>().GetLazyPlayer();
             executor.EventHandler = _handler = new CustomHandler(lazyPlayer.Value.Transform, movement);
+            var animationEvents = GetComponentInParent<BossAnimationEvents>();
+            animationEvents.AimSpike.AddListener(_handler.AimAtPlayer);
         }
 
         public void SetMaxDashDistance(float distance)

@@ -18,6 +18,8 @@ namespace Core.Levels
         
         private LazyPlayer _player;
         private IRespawnController _respawnController;
+        private IEnemyFactory _enemyFactory;
+        private IAmbushResetter _ambushResetter;
 
         private void Awake()
         {
@@ -53,7 +55,8 @@ namespace Core.Levels
         {
             var playerFactory = Container.Get<IPlayerFactory>();
             _player = playerFactory.GetLazyPlayer();
-
+            _enemyFactory = Container.Get<IEnemyFactory>();
+            _ambushResetter = Container.Get<IAmbushResetter>(); 
             _respawnController = Container.Get<IRespawnController>();
         }
 
@@ -61,7 +64,16 @@ namespace Core.Levels
         {
             StartCoroutine(PlayParticlesAfter(litDelay));
             
+            RespawnEnemies();
+            _ambushResetter.ResetAll();
+            
             _player.Value.TouchedBonfire -= OnTouchedBonfire;
+        }
+
+        private void RespawnEnemies()
+        {
+            _enemyFactory.DestroyAllCreated();
+            _enemyFactory.CreateAllAliveAtEnemyMarkersOnLevel();
         }
 
         public Vector3 GetRespawnPosition()

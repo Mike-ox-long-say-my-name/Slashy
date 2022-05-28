@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 810887256119684261}
   - component: {fileID: 810887256119684258}
   - component: {fileID: 810887256119684284}
-  - component: {fileID: 810887256119684287}
   - component: {fileID: 810887256119684286}
   - component: {fileID: 810887256119684275}
   - component: {fileID: 810887256119684272}
@@ -141,13 +140,15 @@ GameObject:
   - component: {fileID: 810887256119684256}
   - component: {fileID: 4846279547468239159}
   - component: {fileID: 4215846997922956845}
+  - component: {fileID: 2125379645156519390}
+  - component: {fileID: 7294643355956830290}
   m_Layer: 7
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &810887256119684257
 Transform:
   m_ObjectHideFlags: 0
@@ -376,18 +377,6 @@ MonoBehaviour:
   hasSource: 1
   isEnvironmental: 0
   damageStats: {fileID: 11400000, guid: 3e5249eef31c6f64b9ed4001066ed85c, type: 2}
---- !u!114 &810887256119684287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 810887256119684268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74a0f1e91e8f3be4c9fdd44fd1aa7c7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &810887256119684286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +494,7 @@ MonoBehaviour:
   spikeStrikePrepareTime: 0.8
   spikeStrikeRepeatChance: 0.6
   maxDashDistance: 7
-  thrustAfterSwingChance: 0.25
+  thrustAfterSwingChance: 0.4
 --- !u!114 &810887256119684251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,15 +525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ed6cbade75c4db4c889490f899dd98a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  enableHitbox:
-    m_PersistentCalls:
-      m_Calls: []
-  endAttack:
-    m_PersistentCalls:
-      m_Calls: []
   aimSpike:
     m_PersistentCalls:
       m_Calls: []
@@ -657,6 +637,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTakenSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+--- !u!114 &2125379645156519390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810887256119684268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f818e7944da24ee89c4020f9bc82184c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroDistance: 10
+--- !u!114 &7294643355956830290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810887256119684268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dbda2cb1d2e4771b6d02fd535b31d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementBase: {fileID: 810887256119684282}
+  character: {fileID: 810887256119684261}
+  aggro: {fileID: 2125379645156519390}
 --- !u!1 &810887256160428518
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,6 +710,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackbox: {fileID: 810887254988130175}
+  animationEvents: {fileID: 810887256119684256}
 --- !u!1 &810887256905214619
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,6 +834,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+  attackbox: {fileID: 3327050447812372899}
+  animationEvents: {fileID: 810887256119684256}
   spikePrefab: {fileID: 1880342162250738586, guid: 67a596defac27264083a2142304b47d1, type: 3}
   groundOffset: -1
 --- !u!82 &5813814902404792282
@@ -968,6 +980,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+  attackbox: {fileID: 3327050448797129772}
+  animationEvents: {fileID: 810887256119684256}
   attackData: {fileID: 11400000, guid: b1d25a0a2af6d4249ad7fd805c58bfea, type: 2}
 --- !u!82 &654322212877361992
 AudioSource:
@@ -1297,8 +1311,6 @@ GameObject:
   - component: {fileID: 3327050448797129773}
   - component: {fileID: 3327050448797129774}
   - component: {fileID: 3327050448797129775}
-  - component: {fileID: 3327050448797129762}
-  - component: {fileID: 3327050448797129761}
   m_Layer: 9
   m_Name: Hirbox
   m_TagString: Untagged
@@ -1331,7 +1343,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 4, z: 6}
+  m_Size: {x: 4, y: 4, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3327050448797129772
 MonoBehaviour:
@@ -1393,33 +1405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8893d5f4bb2f3bd40a675df1193ce353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multipliers: {fileID: 11400000, guid: dc8965c0964643d4d9a1e90c977fc960, type: 2}
---- !u!65 &3327050448797129762
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3327050448797129769}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3, y: 4, z: 4}
-  m_Center: {x: 3, y: 0, z: 0}
---- !u!65 &3327050448797129761
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3327050448797129769}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3, y: 4, z: 4}
-  m_Center: {x: -3, y: 0, z: 0}
+  multipliers: {fileID: 11400000, guid: c8ece668a94a5ed4a8e4068508cd0d34, type: 2}
 --- !u!1 &3327050448861356402
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,6 +1452,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackbox: {fileID: 3327050448003625126}
+  animationEvents: {fileID: 810887256119684256}
 --- !u!82 &7366458870281448599
 AudioSource:
   m_ObjectHideFlags: 0

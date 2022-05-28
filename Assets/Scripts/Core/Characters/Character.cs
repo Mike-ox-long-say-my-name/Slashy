@@ -12,7 +12,7 @@ namespace Core.Characters
 
         public event Action<HitInfo> HitReceived;
         public event Action<HitInfo> Staggered;
-        public event Action<HitInfo> Dead;
+        public event Action<HitInfo> Died;
         public event Action RecoveredFromStagger;
         
         public bool CanDie { get; set; } = true;
@@ -95,7 +95,7 @@ namespace Core.Characters
             }
 
             IsDead = true;
-            Dead?.Invoke(info);
+            Died?.Invoke(info);
         }
 
         public void Tick(float deltaTime)

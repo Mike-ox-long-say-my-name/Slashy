@@ -45,7 +45,6 @@ namespace Core
 
             BindPlayerFactory();
             BindPlayerBindings();
-            BindBackgroundMusicPlayer();
             BindVolumeControlService();
 
             BindBlackScreenService();
@@ -54,6 +53,20 @@ namespace Core
 
             BindRespawnController();
             BindLevelWarper();
+        }
+
+        private static void BindPerSceneServices()
+        {
+            BindBackgroundMusicPlayer();
+            BindPopupHintController();
+            BindAggroListener();
+            BindEnemyFactory();
+            BindUiFactory();
+            BindInteractionService();
+            BindBorderService();
+            BindAmbushResetter();
+            
+            AddPopupHintContainer();
         }
 
         private static void AddMonoBehaviourSingletons()
@@ -94,8 +107,9 @@ namespace Core
             Container.Add<IGameEndedSequencePlayer>(() =>
             {
                 var coroutineRunner = Container.Get<ICoroutineRunner>();
+                var gameLoader = Container.Get<IGameLoader>();
                 var blackScreenService = Container.Get<IBlackScreenService>();
-                return new GameEndedSequencePlayer(coroutineRunner, blackScreenService);
+                return new GameEndedSequencePlayer(coroutineRunner, gameLoader, blackScreenService);
             }, ServiceLifetime.Singleton);
         }
 
@@ -171,25 +185,12 @@ namespace Core
                 var container = Container.Get<BackgroundMusicAudioSourceContainer>();
                 var aggroListener = Container.Get<IAggroListener>();
                 return new BackgroundMusicPlayer(container, aggroListener);
-            }, ServiceLifetime.Singleton);
+            }, ServiceLifetime.PerScene);
         }
 
         private static void AddBackgroundMusicContainer()
         {
             AddSingletonFromScene<BackgroundMusicAudioSourceContainer>();
-        }
-
-        private static void BindPerSceneServices()
-        {
-            BindPopupHintController();
-            BindAggroListener();
-            BindEnemyFactory();
-            BindUiFactory();
-            BindInteractionService();
-            BindBorderService();
-            BindAmbushResetter();
-            
-            AddPopupHintContainer();
         }
 
         private static void BindAmbushResetter()
@@ -220,7 +221,8 @@ namespace Core
             Container.Add<IEnemyFactory>(() =>
             {
                 var objectLocator = Container.Get<IObjectLocator>();
-                return new EnemyFactory(objectLocator);
+                var respawnController = Container.Get<IRespawnController>();
+                return new EnemyFactory(objectLocator, respawnController);
             }, ServiceLifetime.PerScene);
         }
 
@@ -250,7 +252,7 @@ namespace Core
             {
                 var sceneLoader = Container.Get<ISceneLoader>();
                 return new AggroListener(sceneLoader);
-            }, ServiceLifetime.Singleton);
+            }, ServiceLifetime.PerScene);
         }
 
         private static void BindPlayerFactory()

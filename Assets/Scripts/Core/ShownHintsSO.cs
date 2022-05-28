@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core;
 using UnityEngine;
 
 namespace UI.PopupHints
@@ -9,15 +10,22 @@ namespace UI.PopupHints
         [SerializeField] private bool resetOnQuit = true;
         [SerializeField] private List<PopupHintType> shownHints;
 
+        public bool IsShown(PopupHintType hintType) => shownHints.Contains(hintType);
+        
         public void MarkAsShown(PopupHintType hintType) => shownHints.Add(hintType);
         public void MarkAsNotShown(PopupHintType hintType) => shownHints.Remove(hintType);
-        
+
         private void OnDisable()
         {
             if (resetOnQuit)
             {
-                shownHints.Clear();
+                ResetShownHints();
             }
+        }
+
+        public void ResetShownHints()
+        {
+            shownHints.Clear();
         }
     }
 }

@@ -1,12 +1,9 @@
-﻿using Core;
-
-namespace Characters.Enemies.WeakHollow
+﻿namespace Characters.Enemies.WeakHollow
 {
     public class WeakHollowDeath : WeakHollowBaseState
     {
         public override void EnterState()
         {
-            Context.Deaggro();
             Context.Animator.PlayDeathAnimation();
             Context.DestroyHelper.DestroyLater();
         }

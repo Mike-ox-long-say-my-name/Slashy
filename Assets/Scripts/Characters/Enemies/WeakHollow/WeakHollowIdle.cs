@@ -9,12 +9,16 @@ namespace Characters.Enemies.WeakHollow
         {
             var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(),
                 Context.transform.position.WithZeroY());
-            if (distance > 6)
+            if (distance > Context.AggroModule.AggroDistance)
             {
                 return;
             }
                 
-            Context.Aggro();
+            Context.AggroModule.Aggro();
+        }
+
+        public override void OnAggroed()
+        {
             SwitchState<WeakHollowPursue>();
         }
     }

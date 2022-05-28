@@ -75,10 +75,7 @@ namespace Characters.Player.States
 
         private void TickDashEffectController(float timeStep)
         {
-            if (Context.HasDashEffectController)
-            {
-                Context.DashEffectController.Tick(Context.transform, Context.SpriteRenderer.sprite, timeStep);
-            }
+            Context.DashEffectController.Tick(Context.transform, Context.SpriteRenderer.sprite, timeStep);
         }
 
         private void ApplyInvincibilityLogic(float fraction)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Environmemnt
+namespace Environment
 {
     [RequireComponent(typeof(SpriteRenderer))]
     [DefaultExecutionOrder(10)]
@@ -29,10 +29,11 @@ namespace Environmemnt
 
         private void LateUpdate()
         {
-            var delta = _camera.position - _lastCameraPosition;
+            var position = _camera.position;
+            var delta = position - _lastCameraPosition;
             _spriteRenderer.transform.position += new Vector3(delta.x * weight, delta.y * weight, 0);
 
-            _lastCameraPosition = _camera.position;
+            _lastCameraPosition = position;
         }
     }
 }

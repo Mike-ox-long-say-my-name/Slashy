@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 
-namespace Environmemnt
+namespace Environment
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class ResizeToFitScreen : MonoBehaviour
     {
         private SpriteRenderer _spriteRenderer;
-
+        private Camera _camera;
         private void Awake()
         {
-            if (Camera.main == null)
+            _camera = Camera.main;
+            
+            if (_camera == null)
             {
                 Debug.LogWarning("Camera not found", this);
                 return;
@@ -20,14 +22,16 @@ namespace Environmemnt
             
         }
 
-        public void ResizeSpriteToScreen()
+        private void ResizeSpriteToScreen()
         {
             transform.localScale = new Vector3(1, 1, 1);
 
-            var width = _spriteRenderer.sprite.bounds.size.x;
-            var height = _spriteRenderer.sprite.bounds.size.y;
+            var sprite = _spriteRenderer.sprite;
+            var width = sprite.bounds.size.x;
+            var height = sprite.bounds.size.y;
 
-            var worldScreenHeight = Camera.main.orthographicSize * 2.0f;
+            var worldScreenHeight = _camera.orthographicSize * 2.0f;
+            
             var worldScreenWidth = worldScreenHeight / Screen.height * Screen.width;
 
             var scale = transform.localScale;

@@ -34,11 +34,11 @@ namespace Characters.Enemies.Boss
             }
 
             var value = Random.value;
-            if (value < 0.4f)
+            if (value < 0.2f)
             {
                 SwitchState<BossJumpAttackStart>();
             }
-            else if (value < 0.7f && Context.MaxDashDistance >= Vector3.Distance(Context.transform.position, Context.PlayerPosition))
+            else if (value < 0.7f && CanReachPlayerWithDashAttack())
             {
                 SwitchState<BossThrustWithDash>();
             }
@@ -46,6 +46,11 @@ namespace Characters.Enemies.Boss
             {
                 SwitchState<BossPrepareSpikeStrike>();
             }
+        }
+
+        private bool CanReachPlayerWithDashAttack()
+        {
+            return Context.MaxDashDistance >= Vector3.Distance(Context.transform.position, Context.PlayerPosition);
         }
 
         private void OnTargetReached()

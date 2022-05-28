@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Characters;
+﻿using Core.Characters;
 using Core.Characters.Interfaces;
 using UnityEngine;
 
@@ -27,7 +26,11 @@ namespace Core.Modules
 
         private void Start()
         {
-            // Прогревочный
+            PrewarmMovementAndForceGroundCheck();
+        }
+
+        private void PrewarmMovementAndForceGroundCheck()
+        {
             BaseMovement.Move(new Vector3(0.01f, -0.5f, 0));
             BaseMovement.Move(new Vector3(-0.01f, -0.5f, 0));
         }

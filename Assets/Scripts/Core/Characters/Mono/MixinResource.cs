@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Characters.Interfaces;
+﻿using Core.Characters.Interfaces;
 using UnityEngine;
 
 namespace Core.Characters.Mono

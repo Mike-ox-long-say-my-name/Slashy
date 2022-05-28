@@ -251,6 +251,8 @@ GameObject:
   - component: {fileID: 390948260618534457}
   - component: {fileID: 4201457971907795351}
   - component: {fileID: 5077378735574408288}
+  - component: {fileID: 4563284292428234341}
+  - component: {fileID: 1133279098957220214}
   m_Layer: 7
   m_Name: Rogue
   m_TagString: Untagged
@@ -736,6 +738,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTakenSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+--- !u!114 &4563284292428234341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390948260618534439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f818e7944da24ee89c4020f9bc82184c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroDistance: 8
+--- !u!114 &1133279098957220214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390948260618534439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dbda2cb1d2e4771b6d02fd535b31d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementBase: {fileID: 390948260618534449}
+  character: {fileID: 390948260618534446}
+  aggro: {fileID: 4563284292428234341}
 --- !u!1 &390948260657476461
 GameObject:
   m_ObjectHideFlags: 0

@@ -57,7 +57,7 @@ namespace Core
         {
             Add<ISceneLoader, SceneLoader>(ServiceLifetime.Singleton);
             var sceneLoader = Get<ISceneLoader>();
-            sceneLoader.SceneLoaded += _ => SetPerSceneServicesDirty();
+            sceneLoader.SceneUnloaded += _ => SetPerSceneServicesDirty();
         }
 
         private static void SetPerSceneServicesDirty()

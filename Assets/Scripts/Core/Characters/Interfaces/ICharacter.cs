@@ -11,7 +11,7 @@ namespace Core.Characters.Interfaces
 
         event Action<HitInfo> HitReceived;
         event Action<HitInfo> Staggered;
-        event Action<HitInfo> Dead;
+        event Action<HitInfo> Died;
         event Action RecoveredFromStagger;
 
         IResource Health { get; }

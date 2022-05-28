@@ -26,12 +26,18 @@ namespace Core
 
         public void Enable()
         {
-            borderCollider.enabled = true;
+            if (borderCollider)
+            {
+                borderCollider.enabled = true;
+            }
         }
 
         public void Disable()
         {
-            borderCollider.enabled = false;
+            if(borderCollider)
+            {
+                borderCollider.enabled = false;
+            }
         }
 
         private void OnDrawGizmos()

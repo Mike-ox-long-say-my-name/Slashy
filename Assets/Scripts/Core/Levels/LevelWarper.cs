@@ -1,5 +1,4 @@
-﻿using Core.Player.Interfaces;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core.Levels
 {
@@ -9,9 +8,8 @@ namespace Core.Levels
         private readonly IGameLoader _gameLoader;
         private readonly IBlackScreenService _blackScreenService;
         private readonly IPlayerFactory _playerFactory;
-        private IPlayer _player;
 
-        private const float LoadDelay = 3;
+        private const float LoadDelay = 2;
 
         public LevelWarper(ICoroutineRunner coroutineRunner, IGameLoader gameLoader,
             IBlackScreenService blackScreenService, IPlayerFactory playerFactory)
@@ -20,10 +18,6 @@ namespace Core.Levels
             _gameLoader = gameLoader;
             _blackScreenService = blackScreenService;
             _playerFactory = playerFactory;
-
-            playerFactory.WhenPlayerAvailable(player => _player = player);
-
-            _gameLoader.LoadedLevel += _ => OnNextLevelLoaded();
         }
 
         public bool CanInitiateWarp { get; private set; } = true;
@@ -37,27 +31,25 @@ namespace Core.Levels
 
             CanInitiateWarp = false;
 
-            _player.StartWarp(position);
+            var player = _playerFactory.GetLazyPlayer().Value;
+            player.StartWarp(position);
 
             _blackScreenService.Blackout(LoadDelay);
             _coroutineRunner.RunAfter(() => LoadNextLevel(info), LoadDelay);
         }
 
-        private void OnNextLevelLoaded()
+        public void ConfirmWarpEnd()
         {
-            if (!IsWarping)
-            {
-                return;
-            }
+            var player = _playerFactory.GetLazyPlayer().Value;
+            player.EndWarp(_transferData.WarpTargetPosition);
             
-            _player.EndWarp(_transferData.WarpTargetPosition);
             _blackScreenService.Whiteout(LoadDelay);
-            _coroutineRunner.RunAfter(() => CanInitiateWarp = true, LoadDelay);
+            _coroutineRunner.RunAfter(() => CanInitiateWarp = true, LoadDelay / 2);
         }
 
         private void LoadNextLevel(LevelWarpInfo info)
         {
-            var player = _player;
+            var player = _playerFactory.GetLazyPlayer().Value;
             _transferData = new PlayerTransferData
             {
                 CreationInfo = new PlayerCreationInfo
@@ -70,7 +62,6 @@ namespace Core.Levels
                 WarpTargetPosition = info.StartMoveTarget
             };
 
-            
             _gameLoader.LoadLevel(info.LevelName);
         }
 

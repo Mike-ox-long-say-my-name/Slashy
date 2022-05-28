@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Player.Interfaces;
+﻿using Core.Player.Interfaces;
 using UnityEngine;
 
 namespace Core.Levels

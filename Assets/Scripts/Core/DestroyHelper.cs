@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Utilities;
+﻿using Core.Utilities;
 using UnityEngine;
 
 namespace Core

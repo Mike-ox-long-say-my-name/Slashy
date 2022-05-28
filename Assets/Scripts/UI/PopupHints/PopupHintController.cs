@@ -1,4 +1,5 @@
 using System.Linq;
+using Core;
 using UnityEngine;
 
 namespace UI.PopupHints
@@ -15,16 +16,31 @@ namespace UI.PopupHints
 
         public void ShowHint(PopupHintType hintType)
         {
-            var desc = _hintContainer.HintDescriptions
-                .FirstOrDefault(desc => desc.type == hintType);
+            if (IsShown(hintType))
+            {
+                return;
+            }
+            
+            var desc = GetHintDescription(hintType);
             if (desc.popupHint == null)
             {
                 Debug.LogError($"Where is not hint for type {hintType}");
                 return;
             }
-
+            
             HideOpenedHintIfAny();
             ShowHintFromDescription(desc);
+        }
+
+        private PopupHintDescription GetHintDescription(PopupHintType hintType)
+        {
+            return _hintContainer.HintDescriptions
+                .FirstOrDefault(desc => desc.type == hintType);
+        }
+
+        private bool IsShown(PopupHintType hintType)
+        {
+            return _hintContainer.ShownHints.IsShown(hintType);
         }
 
         private void ShowHintFromDescription(PopupHintDescription desc)

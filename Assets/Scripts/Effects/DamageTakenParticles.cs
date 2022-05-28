@@ -1,7 +1,5 @@
 using Core.Attacking;
 using Core.Attacking.Interfaces;
-using Core.Characters.Interfaces;
-using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Effects
@@ -43,15 +41,15 @@ namespace Effects
             var offsetX = Random.Range(0, maxPositionOffset.x) + baseXOffset;
             var offsetY = Random.Range(0, maxPositionOffset.y);
 
-            // Направление по Y влияет на угол полета крови
+            // РќР°РїСЂР°РІР»РµРЅРёРµ РїРѕ Y РІР»РёСЏРµС‚ РЅР° СѓРіРѕР» РїРѕР»РµС‚Р° РєСЂРѕРІРё
             var direction = (transform.position - source.position);
             direction.y = Random.Range(-maxYDirectionOffset, maxYDirectionOffset);
             direction.Normalize();
 
             var shape = bloodParticleSystem.shape;
-            // Смещаем по X в сторону от получения удара
+            // РЎРјРµС‰Р°РµРј РїРѕ X РІ СЃС‚РѕСЂРѕРЅСѓ РѕС‚ РїРѕР»СѓС‡РµРЅРёСЏ СѓРґР°СЂР°
             offsetX *= -Mathf.Sign(direction.x);
-            // Смещаем по Y в сторону выбранного направления
+            // РЎРјРµС‰Р°РµРј РїРѕ Y РІ СЃС‚РѕСЂРѕРЅСѓ РІС‹Р±СЂР°РЅРЅРѕРіРѕ РЅР°РїСЂР°РІР»РµРЅРёСЏ
             offsetY *= -Mathf.Sign(direction.y);
 
             shape.position = new Vector3(offsetX, offsetY, 0);

@@ -3,7 +3,6 @@ using Core;
 using Core.Attacking;
 using Core.Attacking.Mono;
 using Core.Modules;
-using Core.Player;
 
 namespace Characters.Enemies.Boss
 {

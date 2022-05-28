@@ -43,6 +43,7 @@ namespace Characters.Player.States
         [SerializeField] private AudioSource dashAudioSource;
 
         [Space] [SerializeField] private PlayerConfig playerConfig;
+        private ILevelWarper _levelWarper;
 
         public AudioSource JumpAudioSource => jumpAudioSource;
         public AudioSource HealAudioSource => healAudioSource;
@@ -96,8 +97,6 @@ namespace Characters.Player.States
 
         public PlayerConfig PlayerConfig => playerConfig;
 
-        public bool HasDashEffectController => true;
-
         public bool AttackedThisAirTime { get; set; }
         public IHitReceiver HitReceiver { get; private set; }
 
@@ -124,6 +123,7 @@ namespace Characters.Player.States
         public IPlayerActionResourceSpender ResourceSpender { get; private set; }
         public IPlayerDeathSequencePlayer DeathSequencePlayer { get; private set; }
 
+
         private void Awake()
         {
             Character = GetComponent<MixinCharacter>().Character;
@@ -146,21 +146,18 @@ namespace Characters.Player.States
 
         private void Start()
         {
-            if (WarpPosition.HasValue)
-            {
-                CurrentState = new PlayerMovingToFromExternalEvent();
-            }
-            else
-            {
-                var startState = BaseMovement.IsGrounded
-                    ? new PlayerGroundedState()
-                    : (PlayerBaseState)new PlayerFallState();
-                startState.Init(this);
-            
-                CurrentState = startState;
-            }
-            
+            var startState = BaseMovement.IsGrounded
+                ? new PlayerGroundedState()
+                : (PlayerBaseState)new PlayerFallState();
+            startState.Init(this);
+            CurrentState = startState;
+
             CurrentState.EnterState();
+
+            if (_levelWarper.IsWarping)
+            {
+                _levelWarper.ConfirmWarpEnd();
+            }
         }
 
         private void Construct()
@@ -173,6 +170,8 @@ namespace Characters.Player.States
             AttackExecutorHelper = new AttackExecutorHelper(
                 GetComponentsInChildren<MonoAbstractAttackExecutor>());
             Interactor = new Interactor(Container.Get<IInteractionService>());
+
+            _levelWarper = Container.Get<ILevelWarper>();
         }
 
         private void SubscribeToInputInteraction()
@@ -184,7 +183,7 @@ namespace Characters.Player.States
         {
             Character.HitReceived += info => CurrentState.OnHitReceived(info);
             Character.Staggered += info => CurrentState.OnStaggered(info);
-            Character.Dead += info => CurrentState.OnDeath(info);
+            Character.Died += info => CurrentState.OnDeath(info);
             Character.RecoveredFromStagger += () => CurrentState.OnStaggerEnded();
         }
 

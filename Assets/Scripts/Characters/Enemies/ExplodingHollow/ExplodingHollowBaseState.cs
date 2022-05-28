@@ -13,21 +13,23 @@ namespace Characters.Enemies.ExplodingHollow
 
         public override void OnHitReceived(HitInfo info)
         {
-            if (info.Source.Character.Team != Team.Player)
+            if (!(info.Source.Character is { Team: Team.Player }))
             {
                 return;
             }
+
             Context.WasHitByPlayer = true;
             SwitchState<ExplodingHollowCharging>();
         }
 
         public override void OnStaggered(HitInfo info)
         {
-            if (info.Source.Character.Team != Team.Player)
+            if (!(info.Source.Character is { Team: Team.Player }))
             {
                 SwitchState<ExplodingHollowStagger>(true);
                 return;
             }
+
             Context.WasHitByPlayer = true;
             SwitchState<ExplodingHollowCharging>();
         }

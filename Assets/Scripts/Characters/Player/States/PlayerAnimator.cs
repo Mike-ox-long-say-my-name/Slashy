@@ -10,6 +10,7 @@ namespace Characters.Player.States
         private static readonly int LightAttack1 = Animator.StringToHash("attack");
         private static readonly int StrongAttack2 = Animator.StringToHash("strong-attack2");
         private static readonly int LightAttack2 = Animator.StringToHash("attack2");
+        private static readonly int AirAttack = Animator.StringToHash("air-attack");
         private static readonly int IsHealing = Animator.StringToHash("is-healing");
         private static readonly int IsDashing = Animator.StringToHash("is-dashing");
 
@@ -23,7 +24,7 @@ namespace Characters.Player.States
 
         public void PlayFirstGroundLightAttack() => SetCustomTrigger(LightAttack1);
         public void PlaySecondGroundLightAttack() => SetCustomTrigger(LightAttack2);
-        public void PlayAirLightAttack() => SetCustomTrigger(LightAttack1);
+        public void PlayAirLightAttack() => SetCustomTrigger(AirAttack);
         public void PlayFirstGroundHeavyAttack() => SetCustomTrigger(StrongAttack1);
         public void PlaySecondGroundHeavyAttack() => SetCustomTrigger(StrongAttack2);
 

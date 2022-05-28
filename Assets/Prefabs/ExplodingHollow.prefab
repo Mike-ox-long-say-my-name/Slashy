@@ -283,6 +283,8 @@ GameObject:
   - component: {fileID: 8050184428421153232}
   - component: {fileID: 2240468405837939910}
   - component: {fileID: 5652158184003028504}
+  - component: {fileID: 5730519717145244274}
+  - component: {fileID: 569077581147469799}
   m_Layer: 7
   m_Name: ExplodingHollow
   m_TagString: Untagged
@@ -742,6 +744,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTakenSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+--- !u!114 &5730519717145244274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3201571642360292638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f818e7944da24ee89c4020f9bc82184c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroDistance: 7
+--- !u!114 &569077581147469799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3201571642360292638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dbda2cb1d2e4771b6d02fd535b31d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementBase: {fileID: 8452813565976610454}
+  character: {fileID: 3201571642360292635}
+  aggro: {fileID: 5730519717145244274}
 --- !u!1 &3201571642714666846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,6 +1207,18 @@ PrefabInstance:
     - target: {fileID: 5568606263013152957, guid: 2aeb566858bb4e745a332178e226b8e6, type: 3}
       propertyPath: ShapeModule.sphericalDirectionAmount
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568606263013152957, guid: 2aeb566858bb4e745a332178e226b8e6, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.b
+      value: 0.19883847
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568606263013152957, guid: 2aeb566858bb4e745a332178e226b8e6, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.g
+      value: 0.11921501
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568606263013152957, guid: 2aeb566858bb4e745a332178e226b8e6, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.r
+      value: 0.4433962
       objectReference: {fileID: 0}
     - target: {fileID: 5568606263013152957, guid: 2aeb566858bb4e745a332178e226b8e6, type: 3}
       propertyPath: InitialModule.startLifetime.minMaxState

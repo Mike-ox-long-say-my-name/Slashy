@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Core.Modules
+﻿namespace Core.Modules
 {
     public interface IJumpHandler
     {

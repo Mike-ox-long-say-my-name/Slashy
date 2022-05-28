@@ -15,7 +15,7 @@ namespace Core
             var levelWarper = Container.Get<ILevelWarper>();
 
             uiFactory.CreateUi(levelUiType);
-            enemyFactory.CreateAllOnLevelAtEnemyMarkers();
+            enemyFactory.CreateAllAliveAtEnemyMarkersOnLevel();
 
             if (levelWarper.IsWarping)
             {

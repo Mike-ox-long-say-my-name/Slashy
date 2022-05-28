@@ -14,7 +14,11 @@ namespace Characters.Enemies.ExplodingHollow
                 return;
             }
 
-            Context.Aggro();
+            Context.AggroModule.Aggro();
+        }
+
+        public override void OnAggroed()
+        {
             SwitchState<ExplodingHollowPursue>();
         }
     }

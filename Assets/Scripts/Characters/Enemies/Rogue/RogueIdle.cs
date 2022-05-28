@@ -11,12 +11,16 @@ namespace Characters.Enemies.Rogue
             var position = Context.transform.position.WithZeroY();
 
             var distance = Vector3.Distance(position, player);
-            if (distance > 8f)
+            if (distance > Context.AggroModule.AggroDistance)
             {
                 return;
             }
 
-            Context.Aggro();
+            Context.AggroModule.Aggro();
+        }
+
+        public override void OnAggroed()
+        {
             SwitchState<RoguePursue>();
         }
     }

@@ -1,5 +1,4 @@
 using Characters.Enemies.States;
-using Core;
 
 namespace Characters.Enemies.ExplodingHollow
 {
@@ -7,7 +6,6 @@ namespace Characters.Enemies.ExplodingHollow
     {
         public override void EnterState()
         {
-            Context.Deaggro();
             Context.Hurtbox.Disable();
             Context.Animator.PlayDeathAnimation();
             Context.DestroyHelper.DestroyLater();

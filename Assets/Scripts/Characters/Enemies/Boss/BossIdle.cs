@@ -9,12 +9,16 @@ namespace Characters.Enemies.Boss
         {
             var distance = Vector3.Distance(Context.PlayerPosition.WithZeroY(),
                 Context.transform.position.WithZeroY());
-            if (distance > 10f)
+            if (distance > Context.AggroModule.AggroDistance)
             {
                 return;
             }
 
-            Context.Aggro();
+            Context.AggroModule.Aggro();
+        }
+
+        public override void OnAggroed()
+        {
             Context.BossEvents.FightStarted?.Invoke();
             SwitchState<BossPursue>();
         }

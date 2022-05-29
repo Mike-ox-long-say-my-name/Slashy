@@ -15,10 +15,17 @@ namespace Core
         private EnemyMarker[] _enemyMarkers;
         private readonly List<EnemyMarker> _createdEnemyMarkers = new List<EnemyMarker>();
 
-        public EnemyFactory(IObjectLocator objectLocator, IRespawnController respawnController)
+        public EnemyFactory(IObjectLocator objectLocator, IGameLoader gameLoader, IRespawnController respawnController)
         {
             _objectLocator = objectLocator;
+            gameLoader.Exited += OnExited;
             respawnController.Respawning += OnRespawning;
+        }
+
+        private void OnExited()
+        {
+            _createdEnemyMarkers.Clear();
+            DeadEnemies.Clear();
         }
 
         private static void OnRespawning()
@@ -37,13 +44,13 @@ namespace Core
             {
                 var enemy = Object.Instantiate(enemyMarker.Enemy);
                 var movement = enemy.MovementBase.BaseMovement;
-                
+
                 movement.SetPosition(enemyMarker.Position);
                 movement.Rotate(enemyMarker.Rotation);
                 enemyMarker.OnCreated(enemy);
 
                 enemy.Character.Character.Died += _ => OnEnemyDied(enemyMarker);
-                
+
                 _createdEnemyMarkers.Add(enemyMarker);
             }
         }
@@ -67,11 +74,23 @@ namespace Core
         {
             foreach (var enemyMarker in _createdEnemyMarkers)
             {
-                Object.Destroy(enemyMarker.CreatedEnemy);
+                var createdEnemy = enemyMarker.CreatedEnemy;
+                if (createdEnemy)
+                {
+                    enemyMarker.CreatedEnemy.Aggro.Deaggro();
+                    Object.Destroy(enemyMarker.CreatedEnemy.gameObject);
+                }
                 DeadEnemies.Remove(enemyMarker.Position);
             }
+
             _createdEnemyMarkers.Clear();
             EnemiesDestroyed?.Invoke();
+        }
+
+        public void RecreateAllEnemiesOnLevel()
+        {
+            DestroyAllCreated();
+            CreateAllAliveAtEnemyMarkersOnLevel();
         }
 
         public event Action EnemiesDestroyed;

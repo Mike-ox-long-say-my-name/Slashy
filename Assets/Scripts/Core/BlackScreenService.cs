@@ -19,10 +19,10 @@ namespace Core
             void SubscribeToGameLoaderEvents()
             {
                 gameLoader.Exiting += _ => StopAlphaChange();
+                gameLoader.Exited += () => SetScreenAlpha(0);
                 gameLoader.StartingNewGame += _ => OnLoadedLevel();
                 gameLoader.LoadingExitedLevel += _ => OnLoadedLevel();
                 gameLoader.LoadedLevel += _ => OnLoadedLevel();
-                gameLoader.GameCompleted += () => SetScreenAlpha(0);
             }
         }
 

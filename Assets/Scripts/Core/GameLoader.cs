@@ -11,8 +11,8 @@ namespace Core
         private readonly BonfireSaveData _bonfireData;
         private readonly ShownHintsSO _shownHints;
 
-        private const string NewGameScene = "Temple";
-        private const string MenuScene = "MenuScene";
+        private static readonly string NewGameScene = LevelLibrary.GetLevel(0);
+        private const string MenuScene = LevelLibrary.Menu;
 
         private const string GameStartedPrefName = "GameStarted";
 
@@ -23,6 +23,7 @@ namespace Core
         public event SceneCallback LoadedExitedLevel;
         public event SceneCallback LoadingExitedLevel;
         public event Action GameCompleted;
+        public event Action Exited;
 
         public bool HasAnyGameProgress => PlayerPrefs.GetInt(GameStartedPrefName, 0) == 1;
 
@@ -57,7 +58,7 @@ namespace Core
             PlayerPrefs.SetInt(GameStartedPrefName, 1);
 
             ResetSavedData();
-
+            
             StartingNewGame?.Invoke(NewGameScene);
             LoadLevel(NewGameScene);
         }
@@ -73,6 +74,7 @@ namespace Core
         {
             Exiting?.Invoke(_sceneLoader.CurrentSceneName);
             _sceneLoader.ReplaceLastScene(MenuScene);
+            Exited?.Invoke();
         }
 
         public void CompleteGame()

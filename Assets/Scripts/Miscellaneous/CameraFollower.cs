@@ -63,14 +63,20 @@ namespace Miscellaneous
             return _borderService.GetAvailableCameraX(followingCamera, desiredX, minBorderDistance);
         }
 
-        private void Awake()
+        private void Start()
         {
+            _borderService = Container.Get<IBorderService>();
+            
             if (instantFirstMoves)
             {
                 _firstMovesRemained = WarmFirstMoves;
             }
-
-            _borderService = Container.Get<IBorderService>();
+            if (!hasCamera || !hasAnchor)
+            {
+                return;
+            }
+            
+            SetPositionX(anchor.position.x);
         }
 
         private void LateUpdate()
@@ -82,7 +88,7 @@ namespace Miscellaneous
 
             if (_firstMovesRemained > 0)
             {
-                SetPositionX(anchor.position.x, false);
+                SetPositionX(anchor.position.x);
                 _firstMovesRemained--;
             }
             else

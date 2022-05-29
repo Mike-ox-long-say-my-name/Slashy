@@ -7,14 +7,17 @@ namespace UI
     {
         [SerializeField] private ResourceBar healthBar;
 
-        private BossMarker _boss;
+        private BossMarker _bossMarker;
 
-        private void Start()
+        private void Awake()
         {
-            _boss = FindObjectOfType<BossMarker>();
-            var events = _boss.BossEvents;
-            events.FightStarted.AddListener(OnFightStarted);
-            events.Died.AddListener(OnDied);
+            _bossMarker = FindObjectOfType<BossMarker>();
+            _bossMarker.Created += boss =>
+            {
+                var events = _bossMarker.BossEvents;
+                events.FightStarted.AddListener(OnFightStarted);
+                events.Died.AddListener(OnDied);
+            };
         }
 
         private void OnDied()
@@ -24,7 +27,7 @@ namespace UI
 
         private void OnFightStarted()
         {
-            var character = _boss.Character.Character;
+            var character = _bossMarker.Character.Character;
             healthBar.gameObject.SetActive(true);
 
             character.Health.ValueChanged += healthBar.OnResourceValueChanged;

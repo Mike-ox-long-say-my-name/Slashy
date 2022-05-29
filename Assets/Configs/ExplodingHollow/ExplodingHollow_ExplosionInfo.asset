@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ExplodingHollow_ExplosionInfo
   m_EditorClassIdentifier: 
   bloodFirePrefab: {fileID: 8586173863565596272, guid: c61b4dfba2b618e468d99969f797a7a5, type: 3}
-  explosionSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  explosionSound: {fileID: 8300000, guid: c446fc444c9534440a5788adb63f85a7, type: 3}
   fireRows: 6
   firesPerRow: 3
   fireRowLength: 3

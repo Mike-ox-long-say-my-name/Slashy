@@ -22,7 +22,7 @@ namespace Core.Attacking
         {
         }
 
-        public void HandleAttackEnd(IAnimationAttackExecutorContext context, bool interrupted)
+        public virtual void HandleAttackEnd(IAnimationAttackExecutorContext context, bool interrupted)
         {
             context.Attackbox.Disable();
         }

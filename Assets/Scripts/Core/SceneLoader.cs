@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using UnityEngine.SceneManagement;
 
 namespace Core
@@ -22,13 +21,15 @@ namespace Core
         public void LoadScene(string name)
         {
             CurrentSceneName = name;
+            var scene = SceneManager.GetSceneByName(name);
+            if (scene.isLoaded)
+            {
+                SceneLoaded?.Invoke(name);
+                return;
+            }
+            
             var operation = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
             operation.completed += _ => SceneLoaded?.Invoke(name);
-        }
-
-        private static string GetScenePath(string name)
-        {
-            return Path.Combine(ScenesPath, name);
         }
 
         public void UnloadScene(string name)

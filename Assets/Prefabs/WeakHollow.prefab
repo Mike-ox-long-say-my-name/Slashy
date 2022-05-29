@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c3fc7157347af479969729b4fec26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackSound: {fileID: 0}
   attackbox: {fileID: 6989843185296828068}
   animationEvents: {fileID: 3269522402792392829}
 --- !u!82 &2005704509964619671
@@ -545,7 +545,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791e9ec2925538d46b56e64657bbe94b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageTakenSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+  damageTakenSound: {fileID: 8300000, guid: 7176e5001a454594fa70863d525e9e01, type: 3}
 --- !u!114 &575200502970450804
 MonoBehaviour:
   m_ObjectHideFlags: 0

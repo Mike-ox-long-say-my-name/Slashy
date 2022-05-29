@@ -7,11 +7,5 @@ namespace Core
     {
         [SerializeField] private AudioMixer audioMixer;
         public AudioMixer AudioMixer => audioMixer;
-
-        private void Start()
-        {
-            // Пре инициализация
-            Container.Get<IVolumeControlService>();
-        }
     }
 }

@@ -1624,7 +1624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1171822277591580997, guid: ff6d1b22ba1a22e41a6a5bc91c215149, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 213.7
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 1171822277591580997, guid: ff6d1b22ba1a22e41a6a5bc91c215149, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1632,7 +1632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1171822277591580997, guid: ff6d1b22ba1a22e41a6a5bc91c215149, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -3.65
       objectReference: {fileID: 0}
     - target: {fileID: 1171822277591580997, guid: ff6d1b22ba1a22e41a6a5bc91c215149, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3654,8 +3654,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: ZoneMusic
       objectReference: {fileID: 0}
+    - target: {fileID: 3859548517454737148, guid: 3f2aeb81b5baf164c8b0d9e85cfaa274, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3859548517454737151, guid: 3f2aeb81b5baf164c8b0d9e85cfaa274, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f2aeb81b5baf164c8b0d9e85cfaa274, type: 3}
+--- !u!1 &590143049 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3859548517454737148, guid: 3f2aeb81b5baf164c8b0d9e85cfaa274, type: 3}
+  m_PrefabInstance: {fileID: 590143048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &590143050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590143049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c125739f42644169be21c7ff06b077c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &592259930
 GameObject:
   m_ObjectHideFlags: 0
@@ -13077,7 +13102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1185488181813753583, guid: cd963afab9ce0b444af7ec6f2a17b10f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.25
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd963afab9ce0b444af7ec6f2a17b10f, type: 3}
@@ -14090,7 +14115,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 1, z: 2.34}
+  m_Size: {x: 4.2, y: 1, z: 2.34}
   m_Center: {x: 0.20325238, y: 0, z: 0}
 --- !u!65 &7509330883434708944
 BoxCollider:
@@ -14103,7 +14128,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 1, z: 1}
+  m_Size: {x: 4.4, y: 1, z: 1}
   m_Center: {x: 0.17729625, y: 0, z: 0}
 --- !u!4 &7509330883434708945
 Transform:

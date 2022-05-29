@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using System;
+using Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ namespace UI.Menu
 
         protected override void Start()
         {
+            Cursor.visible = true;
             if (continueButton == null)
             {
                 Debug.LogWarning("Continue button is not assigned", this);
@@ -22,6 +24,11 @@ namespace UI.Menu
                 continueButton.interactable = gameLoader.HasAnyGameProgress;
             }
             base.Start();
+        }
+
+        private void OnDisable()
+        {
+            Cursor.visible = false;
         }
     }
 }

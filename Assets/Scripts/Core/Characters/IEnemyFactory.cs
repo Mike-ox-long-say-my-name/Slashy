@@ -7,5 +7,6 @@ namespace Core
         void CreateAllAliveAtEnemyMarkersOnLevel();
         void DestroyAllCreated();
         event Action EnemiesDestroyed;
+        void RecreateAllEnemiesOnLevel();
     }
 }

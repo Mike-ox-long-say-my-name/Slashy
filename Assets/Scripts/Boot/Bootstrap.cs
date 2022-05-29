@@ -19,11 +19,20 @@ namespace Core
 
             _sceneLoader = Container.Get<ISceneLoader>();
             _sceneLoader.SceneLoaded += OnSceneLoaded;
+            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         private void Start()
         {
+            PreInitializeServices();
             _sceneLoader.LoadScene(afterLoadScene);
+        }
+
+        private static void PreInitializeServices()
+        {
+            Container.Get<IRespawnController>();
         }
 
         private void OnSceneLoaded(string scene)
@@ -221,8 +230,9 @@ namespace Core
             Container.Add<IEnemyFactory>(() =>
             {
                 var objectLocator = Container.Get<IObjectLocator>();
+                var gameLoader = Container.Get<IGameLoader>();
                 var respawnController = Container.Get<IRespawnController>();
-                return new EnemyFactory(objectLocator, respawnController);
+                return new EnemyFactory(objectLocator, gameLoader, respawnController);
             }, ServiceLifetime.PerScene);
         }
 

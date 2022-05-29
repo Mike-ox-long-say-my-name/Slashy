@@ -8,13 +8,14 @@ using UnityEngine;
 
 namespace Characters.Player
 {
-    public class PlayerLightAttackExecutor : MonoAnimationAttackExecutor
+    public class PlayerAttackExecutor : MonoAnimationAttackExecutor
     {
         private struct AttackContext
         {
             public IAutoPlayerInput Input { get; set; }
             public IBaseMovement BaseMovement { get; set; }
             public float MoveDistance { get; set; }
+            public float TimeScaleOnHit { get; set; }
         }
 
         private class AttackEventHandler : DefaultAttackEventHandler
@@ -28,6 +29,8 @@ namespace Characters.Player
 
             public override void HandleEnableHitbox(IAnimationAttackExecutorContext context)
             {
+                _canSlowTime = true;
+                context.Attackbox.Hit += SlowTimeOnHit;
                 base.HandleEnableHitbox(context);
 
                 var inputX = _attackContext.Input.MoveInput.x;
@@ -36,8 +39,35 @@ namespace Characters.Player
                 var direction = _attackContext.BaseMovement.Transform.right;
                 _attackContext.BaseMovement.Move(direction * _attackContext.MoveDistance);
             }
+
+            public override void HandleDisableHitbox(IAnimationAttackExecutorContext context)
+            {
+                context.Attackbox.Hit -= SlowTimeOnHit;
+                base.HandleEnableHitbox(context);
+                Time.timeScale = 1f;
+            }
+
+            private bool _canSlowTime = false;
+            
+            private void SlowTimeOnHit(IHurtbox obj)
+            {
+                if (!_canSlowTime)
+                {
+                    return;
+                }
+
+                _canSlowTime = false;
+                Time.timeScale = _attackContext.TimeScaleOnHit;
+            }
+
+            public override void HandleAttackEnd(IAnimationAttackExecutorContext context, bool _)
+            {
+                Time.timeScale = 1f;
+                base.HandleAttackEnd(context, _);
+            }
         }
 
+        [SerializeField, Min(0)] private float timeScaleOnHit = 1;
         [SerializeField, Min(0)] private float moveDistance = 0.4f;
 
         protected override void ConfigureExecutor(AnimationAttackExecutor executor)
@@ -48,7 +78,8 @@ namespace Characters.Player
             {
                 Input = playerInput,
                 BaseMovement = movement,
-                MoveDistance = moveDistance
+                MoveDistance = moveDistance,
+                TimeScaleOnHit = timeScaleOnHit
             };
             executor.EventHandler = new AttackEventHandler(context);
         }

@@ -21,5 +21,6 @@ namespace Core
         void LoadNewGame();
         void LoadMenu();
         void CompleteGame();
+        event Action Exited;
     }
 }

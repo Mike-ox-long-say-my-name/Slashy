@@ -41,7 +41,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -172,9 +172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
   attackbox: {fileID: 812809746819271581}
   animationEvents: {fileID: 7804759398765068738}
+  timeScaleOnHit: 1
   moveDistance: 0.4
 --- !u!82 &8272730496656636426
 AudioSource:
@@ -186,7 +187,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -537,9 +538,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
   attackbox: {fileID: 812809748012681078}
   animationEvents: {fileID: 7804759398765068738}
+  timeScaleOnHit: 1
   moveDistance: 0.4
 --- !u!82 &6260269524099945461
 AudioSource:
@@ -551,7 +553,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1042,8 +1044,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxValue: 120
   recoverySpeed: 40
-  staminaRecoveryDelay: 1
-  emptyStaminaAdditionalDelay: 1
+  staminaRecoveryDelay: 0.75
+  emptyStaminaAdditionalDelay: 0.25
 --- !u!114 &3601891726258351005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1160,7 +1162,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1256,7 +1258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791e9ec2925538d46b56e64657bbe94b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageTakenSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+  damageTakenSound: {fileID: 8300000, guid: e8535f7682149d1459b71319fd990d1f, type: 3}
 --- !u!1 &812809748674757408
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,9 +1380,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
   attackbox: {fileID: 3631501505420631333}
   animationEvents: {fileID: 7804759398765068738}
+  timeScaleOnHit: 0.5
   moveDistance: 0.4
 --- !u!82 &8587957634256381492
 AudioSource:
@@ -1394,8 +1397,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.7
+  m_Pitch: 0.75
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -1403,9 +1406,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 5
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1629,7 +1632,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1869,7 +1872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c3fc7157347af479969729b4fec26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
   attackbox: {fileID: 6037228690400032685}
   animationEvents: {fileID: 7804759398765068738}
 --- !u!82 &3183283722015208668
@@ -1882,7 +1885,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2056,7 +2059,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
-  m_audioClip: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2187,9 +2190,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  attackSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
   attackbox: {fileID: 7984197318734365773}
   animationEvents: {fileID: 7804759398765068738}
+  timeScaleOnHit: 0.5
   moveDistance: 0.4
 --- !u!82 &7522978777678794801
 AudioSource:
@@ -2203,8 +2207,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.7
+  m_Pitch: 0.75
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -2212,9 +2216,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 5
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -2484,6 +2488,14 @@ PrefabInstance:
     - target: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5522834053020818671, guid: df1c45140ee7c1944b9320ebfc3cdb33, type: 3}
       propertyPath: m_LocalPosition.x

@@ -56,7 +56,7 @@ namespace Characters.Enemies.Boss
                 {
                     MoveTowardsTarget(MoveOnAttack.Value);
                 }
-
+            
                 base.HandleEnableHitbox(context);
             }
         }

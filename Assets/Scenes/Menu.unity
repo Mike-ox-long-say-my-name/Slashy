@@ -330,8 +330,40 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2573356448073292924, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2573356448073292924, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2573356448073292924, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2573356448073292924, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5444589674762333079, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103628649080895644, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103628649080895644, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103628649080895644, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6103628649080895644, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6212442061333843246, guid: 3bf9d8304abfe3d419ad02ab2f2a9c8f, type: 3}
@@ -479,8 +511,9 @@ GameObject:
   - component: {fileID: 1335224791}
   - component: {fileID: 1335224790}
   - component: {fileID: 1335224788}
+  - component: {fileID: 1335224789}
   m_Layer: 0
-  m_Name: ZoneMusic (2)
+  m_Name: ZoneMusic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -494,6 +527,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335224787}
   m_Enabled: 1
+--- !u!114 &1335224789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335224787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c125739f42644169be21c7ff06b077c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1335224790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,7 +551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b8b3acca725474fad29b1373ea70cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chillMusic: {fileID: 8300000, guid: 903b9154710345849a821cd00d3ad29a, type: 3}
+  chillMusic: {fileID: 8300000, guid: ee01a5b5b02b6bc41ab4eb29ced9c75e, type: 3}
   fightMusic: {fileID: 8300000, guid: 8cf35333f126ab241bb78221d8b0ae3d, type: 3}
 --- !u!4 &1335224791
 Transform:

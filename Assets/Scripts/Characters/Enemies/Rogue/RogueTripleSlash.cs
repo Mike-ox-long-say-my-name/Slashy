@@ -40,7 +40,7 @@ namespace Characters.Enemies.Rogue
             }
             else
             {
-                SwitchState<RogueThrust>();
+                SwitchState<RogueWaitBeforeThrust>();
             }
         }
 

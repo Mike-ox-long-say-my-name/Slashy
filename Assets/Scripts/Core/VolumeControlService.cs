@@ -9,23 +9,14 @@ namespace Core
         public int MusicVolume { get; private set; }
 
         private readonly VolumeControlServiceContainer _container;
+        private readonly int _defaultVolume;
         private const string SoundVolumeParam = "SoundVolume";
         private const string MusicVolumeParam = "MusicVolume";
 
         public VolumeControlService(VolumeControlServiceContainer container, int defaultVolume = 5)
         {
             _container = container;
-
-            ReadPlayerPrefs(defaultVolume);
-        }
-
-        private void ReadPlayerPrefs(int defaultVolume)
-        {
-            var sound = PlayerPrefs.GetInt(SoundVolumeParam, defaultVolume);
-            var music = PlayerPrefs.GetInt(MusicVolumeParam, defaultVolume);
-
-            SetSoundVolume(sound);
-            SetMusicVolume(music);
+            _defaultVolume = defaultVolume;
         }
 
         public void SetMusicVolume(int value)
@@ -38,6 +29,15 @@ namespace Core
         {
             SetVolume(SoundVolumeParam, value);
             SoundVolume = value;
+        }
+
+        public void InitializeFromPlayerPrefs()
+        {
+            var sound = PlayerPrefs.GetInt(SoundVolumeParam, _defaultVolume);
+            var music = PlayerPrefs.GetInt(MusicVolumeParam, _defaultVolume);
+
+            SetSoundVolume(sound);
+            SetMusicVolume(music);
         }
 
         private void SetVolume(string param, int value)

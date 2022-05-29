@@ -21,6 +21,8 @@ namespace Core.Levels
         private IEnemyFactory _enemyFactory;
         private IAmbushResetter _ambushResetter;
 
+        public bool IsLit => data.IsLit(id);
+
         private void Awake()
         {
             Construct();
@@ -31,8 +33,7 @@ namespace Core.Levels
                 return;
             }
 
-            var isLit = data.IsLit(id);
-            if (!isLit)
+            if (!IsLit)
             {
                 return;
             }
@@ -64,16 +65,10 @@ namespace Core.Levels
         {
             StartCoroutine(PlayParticlesAfter(litDelay));
             
-            RespawnEnemies();
+            _enemyFactory.RecreateAllEnemiesOnLevel();
             _ambushResetter.ResetAll();
             
             _player.Value.TouchedBonfire -= OnTouchedBonfire;
-        }
-
-        private void RespawnEnemies()
-        {
-            _enemyFactory.DestroyAllCreated();
-            _enemyFactory.CreateAllAliveAtEnemyMarkersOnLevel();
         }
 
         public Vector3 GetRespawnPosition()

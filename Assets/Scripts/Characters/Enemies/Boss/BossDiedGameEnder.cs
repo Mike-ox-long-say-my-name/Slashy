@@ -10,12 +10,11 @@ namespace Characters.Enemies.Boss
         private void Awake()
         {
             Construct();
-        }
-
-        private void Start()
-        {
-            var boss = FindObjectOfType<BossMarker>().BossEvents;
-            boss.Died.AddListener(OnBossDied);
+            var bossMarker = FindObjectOfType<BossMarker>();
+            bossMarker.Created += boss =>
+            {
+                bossMarker.BossEvents.Died.AddListener(OnBossDied);
+            };
         }
 
         private void Construct()

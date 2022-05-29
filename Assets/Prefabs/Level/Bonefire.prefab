@@ -9,13 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6355438904983161088}
+  - component: {fileID: 7740615754443334283}
   m_Layer: 0
   m_Name: Hint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6355438904983161088
 Transform:
   m_ObjectHideFlags: 0
@@ -31,6 +32,22 @@ Transform:
   m_Father: {fileID: 1792072655868191051}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7740615754443334283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661255451142104417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86427f975014443fb6df9b089c57c127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bonfire: {fileID: 1792072655868191053}
+  spriteRenderer: {fileID: 84869750221517185}
+  litColor: {r: 0.627451, g: 0.627451, b: 0.627451, a: 1}
+  unlitColor: {r: 0.8509804, g: 0.3137255, b: 0.10980392, a: 1}
 --- !u!1 &1792072654416455894
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,8 +191,8 @@ MonoBehaviour:
   playerPositionOffset: {x: 1, y: -0.5, z: 0}
   litDelay: 0.5
   audioSource: {fileID: 5278459681080182656}
-  litSound: {fileID: 8300000, guid: 80934d4d4566c27418d0ee8210a8222c, type: 3}
-  ambientSound: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  litSound: {fileID: 8300000, guid: 9c658f3d09785544e88712c004769d9b, type: 3}
+  ambientSound: {fileID: 8300000, guid: 7abefb98420b40343b45def0ed849b64, type: 3}
 --- !u!114 &1792072655868191054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff245f737d09d40ac06f157abda233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reactOnlyOnPlayer: 0
+  reactOnlyOnPlayer: 1
   enter:
     m_PersistentCalls:
       m_Calls:
@@ -204,10 +221,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 661255451142104417}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 7740615754443334283}
+        m_TargetAssemblyTypeName: UI.BonfireKeyHint, UI
+        m_MethodName: Show
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -234,10 +251,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 661255451142104417}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 7740615754443334283}
+        m_TargetAssemblyTypeName: UI.BonfireKeyHint, UI
+        m_MethodName: Hide
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -455,7 +472,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5171962978765634184}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -489,7 +506,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -4139171969301696922, guid: ed67d553294884b4f8538a6163e5ba7f, type: 3}
-  m_Color: {r: 0.627451, g: 0.627451, b: 0.627451, a: 1}
+  m_Color: {r: 0.8490566, g: 0.31468487, b: 0.108134575, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -521,6 +538,10 @@ PrefabInstance:
     - target: {fileID: 1772947027361204691, guid: 58e909404c5fc8847b3e317c4bb6e453, type: 3}
       propertyPath: m_Name
       value: BonfireLit
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772947027361204691, guid: 58e909404c5fc8847b3e317c4bb6e453, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5530748343271604087, guid: 58e909404c5fc8847b3e317c4bb6e453, type: 3}
       propertyPath: prewarm

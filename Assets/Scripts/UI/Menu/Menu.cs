@@ -52,6 +52,7 @@ namespace UI.Menu
         public virtual void ShowSubMenu(IMenu subMenu)
         {
             Close();
+            Cursor.visible = true;
             subMenu.Show(this);
         }
 

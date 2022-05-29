@@ -11,7 +11,7 @@ namespace UI.Menu
     {
         [SerializeField] private InGameMainMenu mainMenu;
         [SerializeField] private SettingsMenu settingsMenu;
-        
+
         private PlayerBindings _bindings;
         private IGameLoader _gameLoader;
 
@@ -67,6 +67,7 @@ namespace UI.Menu
         [UsedImplicitly]
         public void ShowMainMenu()
         {
+            Cursor.visible = true;
             mainMenu.Show();
             RestrictPlayerInput();
             MenuOpened?.Invoke();
@@ -80,6 +81,7 @@ namespace UI.Menu
         [UsedImplicitly]
         public void CloseMainMenu()
         {
+            Cursor.visible = false;
             mainMenu.Close();
             AllowPlayerInput();
             MenuClosed?.Invoke();
@@ -104,12 +106,14 @@ namespace UI.Menu
         {
             var actions = _bindings.Actions;
             actions.Player.Fire.Disable();
+            actions.Player.Fire2.Disable();
         }
 
         private void AllowPlayerInput()
         {
             var actions = _bindings.Actions;
             actions.Player.Fire.Enable();
+            actions.Player.Fire2.Enable();
         }
     }
 }

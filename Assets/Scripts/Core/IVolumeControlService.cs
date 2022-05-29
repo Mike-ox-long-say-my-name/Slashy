@@ -8,5 +8,6 @@ namespace Core
         
         void SetMusicVolume(int value);
         void SetSoundVolume(int value);
+        void InitializeFromPlayerPrefs();
     }
 }

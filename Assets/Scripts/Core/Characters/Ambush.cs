@@ -36,7 +36,7 @@ namespace Core
                 return;
             }
 
-            var createdEnemy = enemyMarker.CreatedEnemy.gameObject;
+            var createdEnemy = enemyMarker.CreatedEnemy;
             if (createdEnemy == null)
             {
                 // Не должно произойти
@@ -48,7 +48,7 @@ namespace Core
 
             PlayAmbushSound();
 
-            createdEnemy.SetActive(true);
+            createdEnemy.gameObject.SetActive(true);
 
             postAmbushObject.SetActive(true);
             _isActivated = true;

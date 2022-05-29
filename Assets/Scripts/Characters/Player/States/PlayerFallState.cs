@@ -16,6 +16,7 @@ namespace Characters.Player.States
         {
             if (Context.VelocityMovement.BaseMovement.IsGrounded)
             {
+                Context.VelocityMovement.Stop();
                 SwitchState<PlayerGroundedState>();
             }
             else if (Context.ShouldLightAttack
@@ -36,12 +37,6 @@ namespace Characters.Player.States
         {
             base.OnWarpStarted(target);
             SwitchState<PlayerMovingToFromExternalEvent>();
-        }
-
-        public override void ExitState()
-        {
-            base.ExitState();
-            Context.VelocityMovement.Stop();
         }
     }
 }

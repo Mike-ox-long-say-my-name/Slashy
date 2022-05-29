@@ -11,7 +11,7 @@ namespace Characters.Enemies.Rogue
         {
             Context.AutoMovement.UnlockRotation();
             Context.Animator.StartStaggerAnimation();
-            const float airStaggerTime = 3f;
+            const float airStaggerTime = 1.5f;
             _timer = Timer.Start(airStaggerTime, () => SwitchState<RoguePursue>());
         }
 

@@ -58,7 +58,6 @@ GameObject:
   - component: {fileID: 1423925501597462164}
   - component: {fileID: 6384738353415062968}
   - component: {fileID: 5236310799234912856}
-  - component: {fileID: 3760873337114867745}
   m_Layer: 5
   m_Name: BaseMouseHint
   m_TagString: Untagged
@@ -137,38 +136,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e359bf45dd4b7cd4ab30a46ff6978c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appearMove: {x: 0, y: 500}
-  appearTime: 0.25
---- !u!114 &3760873337114867745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423925501597462166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 871fbdfb84bcf2f4382a1702795d7a43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   initiallyInteractable: 0
   returnType: 0
   mask: 0
-  interacted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5236310799234912856}
-        m_TargetAssemblyTypeName: UI.PopupHints.PopupHint, UI
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  appearMove: {x: 0, y: 500}
+  appearTime: 0.25
 --- !u!1 &2149917759993942534
 GameObject:
   m_ObjectHideFlags: 0

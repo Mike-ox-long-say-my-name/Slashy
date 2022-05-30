@@ -23,6 +23,8 @@ namespace Characters.Enemies.Rogue
 
         public override void EnterState()
         {
+            EnsureInCorrectAnimationState();
+
             Context.Animator.StartWalkAnimation();
             Context.AutoMovement.LockRotationOn(Context.Player.Transform);
             Context.AutoMovement.TargetReached += OnTargetReached;
@@ -30,6 +32,13 @@ namespace Characters.Enemies.Rogue
             SetRandomSpeedMultiplier();
             SetRandomRetreatTarget();
             Context.AutoMovement.SetMaxMoveTime(1.5f);
+        }
+
+        private void EnsureInCorrectAnimationState()
+        {
+            // Тут какие-то шоколадки
+            Context.Animator.EndJumpAtAnimation();
+            Context.Animator.EndJumpAwayAnimation();
         }
 
         private void OnTargetReached()

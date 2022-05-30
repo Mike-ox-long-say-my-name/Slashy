@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LightAttackFirstStaminaCost>k__BackingField: 15
   <LightAttackSecondStaminaCost>k__BackingField: 17
-  <LightAttackRecovery>k__BackingField: 0
   <LightAirAttackStaminaCost>k__BackingField: 25
   <FirstStrongAttackStaminaCost>k__BackingField: 30
   <SecondStrongAttackStaminaCost>k__BackingField: 35
@@ -27,5 +26,7 @@ MonoBehaviour:
   <DashInvincibilityStart>k__BackingField: 0.1
   <DashInvincibilityEnd>k__BackingField: 0.8
   <DashStaminaCost>k__BackingField: 10
-  <ActiveHealRate>k__BackingField: 13
-  <HealStaminaConsumption>k__BackingField: 15
+  <HealPerTick>k__BackingField: 10
+  <HealStaminaConsumptionPerTick>k__BackingField: 10
+  <HealTickInterval>k__BackingField: 0.6
+  <HealTickPurityCost>k__BackingField: 3

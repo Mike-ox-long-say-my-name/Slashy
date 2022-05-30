@@ -146,7 +146,6 @@ GameObject:
   - component: {fileID: 8150699739189621442}
   - component: {fileID: 4198748199945247214}
   - component: {fileID: 3059292579043626510}
-  - component: {fileID: 6264112177882997879}
   m_Layer: 5
   m_Name: BasePopupHint
   m_TagString: Untagged
@@ -224,34 +223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e359bf45dd4b7cd4ab30a46ff6978c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initiallyInteractable: 0
+  returnType: 0
+  mask: 0
   appearMove: {x: 0, y: 0}
   appearTime: 0.55
---- !u!114 &6264112177882997879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8150699739189621440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 871fbdfb84bcf2f4382a1702795d7a43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isInteractable: 0
-  returnType: 0
-  interacted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3059292579043626510}
-        m_TargetAssemblyTypeName: UI.PopupHints.PopupHint, UI
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2

@@ -36,5 +36,6 @@ namespace Configs.Player
         [field: SerializeField, Min(0)] public float HealPerTick { get; private set; } = 10f;
         [field: SerializeField, Min(0)] public float HealStaminaConsumptionPerTick { get; private set; } = 10f;
         [field: SerializeField, Min(0)] public float HealTickInterval { get; private set; } = 0.6f;
+        [field: SerializeField, Min(0)] public float HealTickPurityCost { get; private set; } = 2.5f;
     }
 }

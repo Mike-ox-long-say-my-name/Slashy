@@ -1,4 +1,5 @@
-﻿using Core.Attacking;
+﻿using System;
+using Core.Attacking;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters.Interfaces;
@@ -43,8 +44,8 @@ namespace Characters.Player
             public override void HandleDisableHitbox(IAnimationAttackExecutorContext context)
             {
                 context.Attackbox.Hit -= SlowTimeOnHit;
+                ReturnToDefaultTimeScale();
                 base.HandleEnableHitbox(context);
-                Time.timeScale = 1f;
             }
 
             private bool _canSlowTime = false;
@@ -62,7 +63,7 @@ namespace Characters.Player
 
             public override void HandleAttackEnd(IAnimationAttackExecutorContext context, bool _)
             {
-                Time.timeScale = 1f;
+                ReturnToDefaultTimeScale();
                 base.HandleAttackEnd(context, _);
             }
         }
@@ -82,6 +83,16 @@ namespace Characters.Player
                 TimeScaleOnHit = timeScaleOnHit
             };
             executor.EventHandler = new AttackEventHandler(context);
+        }
+
+        private void OnDisable()
+        {
+            ReturnToDefaultTimeScale();
+        }
+
+        private static void ReturnToDefaultTimeScale()
+        {
+            Time.timeScale = 1f;
         }
     }
 }

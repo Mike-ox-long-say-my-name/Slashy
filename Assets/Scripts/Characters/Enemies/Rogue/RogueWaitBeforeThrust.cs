@@ -11,7 +11,7 @@ namespace Characters.Enemies.Rogue
         public override void EnterState()
         {
             Context.VelocityMovement.Stop();
-            _timer = Timer.Start(Random.Range(0.2f, 1f), () => SwitchState<RogueThrust>());
+            _timer = Timer.Start(Random.Range(0.2f, 0.6f), () => SwitchState<RogueThrust>());
         }
 
         public override void UpdateState()

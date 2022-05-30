@@ -8,6 +8,8 @@ namespace Characters.Player.States
     {
         public override void EnterState()
         {
+            Context.PurityDamageScaler.OverrideMultipliers(Context.Purity);
+
             Context.VelocityMovement.Stop();
 
             Context.Animator.PlayFirstGroundHeavyAttack();

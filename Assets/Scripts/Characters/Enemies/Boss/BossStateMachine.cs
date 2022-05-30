@@ -1,4 +1,6 @@
 ﻿using Characters.Enemies.States;
+using Characters.Player;
+using Core;
 using Core.Attacking.Interfaces;
 using Core.Attacking.Mono;
 using Core.Characters;
@@ -28,13 +30,13 @@ namespace Characters.Enemies.Boss
         public MixinBossEventDispatcher BossEvents { get; private set; }
         public IAutoMovement AutoMovement { get; private set; }
         public IJumpHandler JumpHandler { get; private set; }
-
+        public IPlayerAwareness PlayerAwareness { get; private set; }
         public int MaxSpikeStrikesInRow => maxSpikeStrikesInRow;
         public BossAnimator Animator { get; private set; }
         public IAttackExecutor SpikeStrikeExecutor => spikeStrikeExecutor.GetExecutor();
         public IAttackExecutor HorizontalSwingExecutor => horizontalSwingExecutor.GetExecutor();
         public IAttackExecutor JumpAttackExecutor => jumpAttackExecutor.GetExecutor();
-
+    
         public BossThrustAttackExecutor ThrustAttackConfigurator => thrustAttackExecutor;
         public IAttackExecutor ThrustAttackExecutor => thrustAttackExecutor.GetExecutor();
 
@@ -54,6 +56,8 @@ namespace Characters.Enemies.Boss
         {
             base.Awake();
 
+            PlayerAwareness = Container.Get<IPlayerAwareness>();
+            
             var baseAnimator = GetComponent<Animator>();
             Animator = new BossAnimator(baseAnimator);
 

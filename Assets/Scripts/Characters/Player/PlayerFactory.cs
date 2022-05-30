@@ -84,6 +84,7 @@ namespace Core
             _player.Character.Health.Value = creationInfo.Health;
             _player.Character.Balance.Value = creationInfo.Balance;
             _player.Stamina.Value = creationInfo.Stamina;
+            _player.Purity.Value = creationInfo.Purity;
             var movement = _player.VelocityMovement.BaseMovement;
             movement.SetPosition(creationInfo.Position);
         }

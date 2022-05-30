@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Core.Characters
 {
+    
     public class MixinAggro : MonoBehaviour
     {
         [SerializeField] private float aggroDistance;

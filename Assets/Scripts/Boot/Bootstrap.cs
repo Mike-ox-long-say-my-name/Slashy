@@ -1,4 +1,5 @@
 ﻿using Characters.Enemies.Boss;
+using Characters.Player;
 using Core.Levels;
 using Settings;
 using UI.PopupHints;
@@ -74,8 +75,14 @@ namespace Core
             BindInteractionService();
             BindBorderService();
             BindAmbushResetter();
+            BindPlayerAwareness();
             
             AddPopupHintContainer();
+        }
+
+        private static void BindPlayerAwareness()
+        {
+            Container.Add<IPlayerAwareness, PlayerAwareness>(ServiceLifetime.PerScene);
         }
 
         private static void AddMonoBehaviourSingletons()

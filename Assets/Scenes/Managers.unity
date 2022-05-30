@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d5bfca1d7148acb13323b9d938599d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  afterLoadScene: Menu
+  afterLoadScene: BossArena
 --- !u!1 &871980165
 GameObject:
   m_ObjectHideFlags: 0

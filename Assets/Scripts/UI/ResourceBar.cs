@@ -15,7 +15,7 @@ namespace UI
         [SerializeField, Min(0)] private float fillAnimationTickInterval = 0.05f;
         [SerializeField, Range(0, 1)] private float fillAnimationStartDelay = 0.15f;
 
-        private bool _firstAnimationHappened = false;
+        private bool _firstAnimationHappened;
         private float _maxFill;
 
         private void Awake()
@@ -23,48 +23,54 @@ namespace UI
             _maxFill = frontLayerImage.fillAmount;
         }
 
-        private Coroutine _middleLayerAnimation;
+        private Coroutine _animationRoutine;
 
         public void OnResourceValueChanged(IResource resource)
         {
-            if (_middleLayerAnimation != null)
+            if (_animationRoutine != null)
             {
-                StopCoroutine(_middleLayerAnimation);
+                StopCoroutine(_animationRoutine);
             }
 
             var fraction = resource.Value / resource.MaxValue * _maxFill;
 
-            middleLayerImage.fillAmount = frontLayerImage.fillAmount;
-            frontLayerImage.fillAmount = fraction;
-
             if (!_firstAnimationHappened && firstChangeNoAnimation)
             {
                 middleLayerImage.fillAmount = fraction;
+                frontLayerImage.fillAmount = fraction;
+                _firstAnimationHappened = true;
+                return;
+            }
+
+            if (fraction < middleLayerImage.fillAmount)
+            {
+                middleLayerImage.fillAmount = frontLayerImage.fillAmount;
+                frontLayerImage.fillAmount = fraction;
+                _animationRoutine =
+                    StartCoroutine(MiddleLayerAnimation(middleLayerImage, 
+                        fraction, fillAnimationStartDelay));
             }
             else
             {
-                _middleLayerAnimation = StartCoroutine(MiddleLayerAnimation(fraction));
+                frontLayerImage.fillAmount = middleLayerImage.fillAmount;
+                middleLayerImage.fillAmount = fraction;
+                _animationRoutine =
+                    StartCoroutine(MiddleLayerAnimation(frontLayerImage, 
+                        fraction, 0));
             }
-            _firstAnimationHappened = true;
         }
 
-        private IEnumerator MiddleLayerAnimation(float targetFill)
+        private IEnumerator MiddleLayerAnimation(Image target, float targetFill, float delay)
         {
-            if (Mathf.Approximately(fillAnimationPerTick, 0))
-            {
-                yield break;
-            }
+            yield return new WaitForSeconds(delay);
 
-            if (fillAnimationStartDelay > 0)
+            var fill = target.fillAmount;
+            var sign = Mathf.Sign(targetFill - fill);
+            while (!Mathf.Approximately(fill, targetFill))
             {
-                yield return new WaitForSeconds(fillAnimationStartDelay);
-            }
-
-            var fill = middleLayerImage.fillAmount;
-            while (fill > targetFill)
-            {
-                fill = Mathf.Max(targetFill, fill - fillAnimationPerTick);
-                middleLayerImage.fillAmount = fill;
+                fill = Mathf.Clamp(fill + fillAnimationPerTick * sign, Mathf.Min(fill, targetFill),
+                    Mathf.Max(fill, targetFill));
+                target.fillAmount = fill;
                 yield return new WaitForSeconds(fillAnimationTickInterval);
             }
         }

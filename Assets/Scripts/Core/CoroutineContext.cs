@@ -27,7 +27,7 @@ namespace Core
 
         public void Stop()
         {
-            if (_coroutine == null)
+            if (_coroutine == null || !_runner)
             {
                 return;
             }

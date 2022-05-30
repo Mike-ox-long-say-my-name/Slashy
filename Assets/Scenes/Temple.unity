@@ -5753,7 +5753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c3bd0358c74adf9710fdb89e8885c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spreadPerSecond: 3
+  spreadPerSecond: 0.1
   sharedAggro:
   - {fileID: 313900094}
   - {fileID: 1594444856}

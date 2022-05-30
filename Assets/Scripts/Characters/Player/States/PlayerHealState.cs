@@ -94,6 +94,7 @@ namespace Characters.Player.States
                 yield return new WaitForSeconds(tickInterval);
 
                 health.Recover(healPerTick);
+                Context.Purity.Spend(Context.PlayerConfig.HealTickPurityCost);
                 Context.ResourceSpender.SpendFor(PlayerResourceAction.HealTick);
             }
 

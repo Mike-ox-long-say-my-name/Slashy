@@ -26,6 +26,7 @@ namespace Characters.Enemies.States
         public MixinAggro AggroModule { get; private set; }
         public IPlayer Player => _lazyPlayer.Value;
         private LazyPlayer _lazyPlayer;
+        private bool _bufferAggroed;
 
         public Vector3 PlayerPosition => Player.Transform.position;
 
@@ -43,7 +44,17 @@ namespace Characters.Enemies.States
             Hurtbox = GetComponentInChildren<MonoHurtbox>().Hurtbox;
             DestroyHelper = GetComponent<DestroyHelper>();
             AggroModule = GetComponent<MixinAggro>();
-            AggroModule.Aggroed += () => CurrentState.OnAggroed();
+            AggroModule.Aggroed += () =>
+            {
+                if (CurrentState != null)
+                {
+                    CurrentState.OnAggroed();
+                }
+                else
+                {
+                    _bufferAggroed = true;
+                }
+            };
 
             AttackExecutorHelper = new AttackExecutorHelper(
                 GetComponentsInChildren<MonoAbstractAttackExecutor>());
@@ -54,6 +65,11 @@ namespace Characters.Enemies.States
         {
             CurrentState = StartState();
             CurrentState.EnterState();
+            if (_bufferAggroed)
+            {
+                CurrentState.OnAggroed();
+                _bufferAggroed = false;
+            }
         }
 
         private void SubscribeToCharacterEvents()

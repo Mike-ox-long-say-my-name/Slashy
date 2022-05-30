@@ -6,6 +6,7 @@ namespace Characters.Enemies.Boss
     {
         public override void EnterState()
         {
+            Context.PlayerAwareness.PostDangerEvent();
             Context.Animator.PlayThrustAnimation();
             Context.ThrustAttackExecutor.StartAttack(OnAttackEnded);
             Context.ThrustAttackConfigurator.SetMaxDashDistance(Context.MaxDashDistance);

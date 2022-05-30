@@ -1,4 +1,5 @@
-﻿using Core.Characters.Mono;
+﻿using System;
+using Core.Characters.Mono;
 using UnityEngine;
 
 namespace Core.Attacking.Mono
@@ -8,12 +9,19 @@ namespace Core.Attacking.Mono
         [SerializeField] private MonoDamageMultipliers multipliers;
 
         private MixinDamageSource _damageSource;
+        private DamageMultipliers _damageMultipliers;
+
+        public void OverrideMultipliers(DamageMultipliers overridenMultipliers)
+        {
+            _damageMultipliers = overridenMultipliers;
+        }
 
         private MixinDamageSource GetDamageSource()
         {
             if (_damageSource == null)
             {
                 _damageSource = GetComponentInParent<MixinDamageSource>();
+                _damageMultipliers = multipliers.DamageMultipliers;
             }
 
             return _damageSource;
@@ -25,7 +33,7 @@ namespace Core.Attacking.Mono
             var hitInfo = new HitInfo
             {
                 DamageStats = source.DamageStats,
-                Multipliers = multipliers.DamageMultipliers,
+                Multipliers = _damageMultipliers,
                 Source = new HitSource
                 {
                     IsEnvironmental = source.IsEnvironmental,

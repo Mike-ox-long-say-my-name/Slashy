@@ -13,7 +13,6 @@ using Core.Player.Interfaces;
 using Core.Utilities;
 using Effects;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Characters.Player.States
 {
@@ -56,6 +55,7 @@ namespace Characters.Player.States
         public Transform Transform => transform;
         public ICharacter Character { get; private set; }
         public IResource Stamina { get; private set; }
+        public IResource Purity { get; private set; }
         public IVelocityMovement VelocityMovement { get; private set; }
         public IBaseMovement BaseMovement => VelocityMovement.BaseMovement;
         public SpriteRenderer SpriteRenderer { get; private set; }
@@ -67,6 +67,7 @@ namespace Characters.Player.States
         public AttackExecutorHelper AttackExecutorHelper { get; private set; }
         public Interactor Interactor { get; private set; }
         public GameObject Object => gameObject;
+        public PurityDamageScaler PurityDamageScaler { get; private set; }
         public bool IsFrozen { get; set; }
 
         public void Freeze()
@@ -128,8 +129,10 @@ namespace Characters.Player.States
         {
             Character = GetComponent<MixinCharacter>().Character;
             Stamina = GetComponent<MixinStamina>().Resource;
+            Purity = GetComponent<MixinPurity>().Resource;
             Input = GetComponent<IAutoPlayerInput>();
             VelocityMovement = GetComponent<MixinVelocityMovement>().VelocityMovement;
+            PurityDamageScaler = GetComponent<PurityDamageScaler>();
 
             SpriteRenderer = GetComponent<SpriteRenderer>();
             DashEffectController = GetComponentInChildren<DashCloneEffectController>();
@@ -198,21 +201,6 @@ namespace Characters.Player.States
             if (!IsFrozen)
             {
                 CurrentState.UpdateState();
-            }
-
-            HandleMiscInput();
-        }
-
-        private void HandleMiscInput()
-        {
-            if (Keyboard.current.iKey.wasPressedThisFrame)
-            {
-                print(CurrentState);
-            }
-
-            if (Keyboard.current.pKey.wasPressedThisFrame)
-            {
-                Character.Kill();
             }
         }
 

@@ -33,10 +33,14 @@ namespace Characters.Player.States
         {
             var healthRegenAmount = Context.Character.Health.MaxValue / AnimationTime * 2;
             var staminaRegenAmount = Context.Stamina.MaxValue / AnimationTime * 2;
+            var purityRegenAmount = Context.Purity.MaxValue / AnimationTime * 2;
 
             var deltaTime = Time.deltaTime;
+            
             Context.Character.Health.Recover(healthRegenAmount * deltaTime);
             Context.Stamina.Recover(staminaRegenAmount * deltaTime);
+            Context.Purity.Recover(purityRegenAmount * deltaTime);
+
             _touchTimer.Tick(deltaTime);
         }
 

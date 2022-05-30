@@ -57,6 +57,7 @@ namespace Core.Levels
                     Health = player.Character.Health.Value,
                     Balance = player.Character.Balance.Value,
                     Stamina = player.Stamina.Value,
+                    Purity = player.Purity.Value,
                     Position = info.StartPosition,
                 },
                 WarpTargetPosition = info.StartMoveTarget

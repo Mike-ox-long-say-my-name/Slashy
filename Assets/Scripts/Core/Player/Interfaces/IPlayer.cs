@@ -9,6 +9,7 @@ namespace Core.Player.Interfaces
     {
         ICharacter Character { get; }
         IResource Stamina { get; }
+        IResource Purity { get; }
         IVelocityMovement VelocityMovement { get; }
         IHurtbox Hurtbox { get; }
         Transform Transform { get; }

@@ -3,56 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Player.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/ExplodingHollow/ExplodingHollow_ExplosionInfo.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/ExplodingHollow/ExplodingHollow_ExplosionInfo.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Boss.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Boss.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chair.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chair.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chair2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chair2.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ExplodingHollow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ExplodingHollow.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/GroundBloodFire.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/GroundBloodFire.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level/Bonefire.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Level/Bonefire.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level/torch.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Level/torch.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/PlayerMarker.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/PlayerMarker.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Rogue.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Rogue.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/WeakHollow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/WeakHollow.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ZoneMusic.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ZoneMusic.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Saves/ExitData.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Saves/ExitData.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/BossArena.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/BossArena.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Forest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Forest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Managers.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Managers.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MenuScene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MenuScene.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Temple.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Temple.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boot/Boot.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boot/Boot.asmdef" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boot/Bootstrap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boot/Bootstrap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossDiedGameEnder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossDiedGameEnder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustAttackExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustAttackExecutor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueAirStagger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueAirStagger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueTripleSlash.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueTripleSlash.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerLightAttackExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerAttackExecutor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerLightAttackExecutor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerAttackExecutor.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerFallState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerFallState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Attacking/DefaultAttackEventHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Attacking/DefaultAttackEventHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/BlackScreenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/BlackScreenService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/Ambush.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/Ambush.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/EnemyFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/EnemyFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/IEnemyFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/IEnemyFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/GameLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/GameLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IGameLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/IGameLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IVolumeControlService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/IVolumeControlService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Levels/Bonfire.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Levels/Bonfire.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/SceneLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/SceneLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/VolumeControlService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/VolumeControlService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/VolumeControlServiceContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/VolumeControlServiceContainer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Miscellaneous/CameraFollower.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Miscellaneous/CameraFollower.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/BossBarsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/BossBarsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Menu/InGameMenuController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Menu/InGameMenuController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Menu/MainMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Menu/MainMenu.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Menu/Menu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Menu/Menu.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,28 +11,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/351e49e2a5bf4fd6beabb458ce2255f3ff600/0e/138b5acc/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/0c/b2ab89de/List`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/0e/e254b4fc/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/16/abdde9b5/Type.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/3b/c6867c3f/SynchronizationContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/89/824017c6/Thread.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/8c/989ccd7d/RuntimeType.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/93/a9613148/Activator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/92bddbda4b494bc3af8aafa72a59c39676e90/50/1913adfd/Error.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/db7f68c084e842d98504c53b2b4dd3db13ca00/e4/ee55ba80/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/db7f68c084e842d98504c53b2b4dd3db13ca00/e9/42f842a6/SetupCoroutine.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/db7f68c084e842d98504c53b2b4dd3db13ca00/ef/01d8c027/Scene.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/db7f68c084e842d98504c53b2b4dd3db13ca00/f3/692d36d2/UnitySynchronizationContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Boot/Bootstrap.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/AutoPlayerInput.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Tests/Runtime/NestedLayout/SceneWithNestedLayoutElementsLoads.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/BonfireKeyHint.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Settings/PlayerBindings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Boot/Bootstrap.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.rider@3.0.14/Rider/Editor/RiderScriptEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.3.0/InputSystem/Actions/InputAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/AutoPlayerInput.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework@1.1.31/UnityEditor.TestRunner/TestRunner/EditModeRunner.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Tests/Runtime/NestedLayout/SceneWithNestedLayoutElementsLoads.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Settings/PlayerBindings.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -97,17 +35,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="rider.run.widget.enabled.cache" value="false" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="$PROJECT_DIR$/../SlashyBuilds/windows_prepre_release2\Slashy.exe" />
@@ -135,10 +68,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="27936">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="27936" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -169,6 +102,7 @@
       <workItem from="1653745339576" duration="1609000" />
       <workItem from="1653747202727" duration="12945000" />
       <workItem from="1653806993195" duration="16044000" />
+      <workItem from="1653904124765" duration="62000" />
     </task>
     <servers />
   </component>
@@ -187,14 +121,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Core/BorderService.cs</url>
           <line>65</line>
-          <properties documentPath="C:\Users\matve\Slashy\Assets\Scripts\Core\BorderService.cs" initialLine="65" containingFunctionPresentation="method 'GetSurroundingBorders'">
-            <startOffsets>
-              <option value="2125" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2161" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\matve\Slashy\Assets\Scripts\Core\BorderService.cs" initialLine="65" containingFunctionPresentation="method 'GetSurroundingBorders'" />
           <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>

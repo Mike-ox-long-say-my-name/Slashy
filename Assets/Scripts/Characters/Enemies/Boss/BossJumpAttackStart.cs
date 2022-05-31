@@ -1,4 +1,5 @@
 ﻿using Core.Characters.Interfaces;
+using UnityEngine;
 
 namespace Characters.Enemies.Boss
 {
@@ -12,9 +13,23 @@ namespace Characters.Enemies.Boss
             Context.Character.Balance.Frozen = true;
 
             Context.VelocityMovement.Stop();
+
+            Context.VelocityMovement.AutoResetVelocity = false;
+            if (Random.value < 0.4f)
+            {
+                PrewarmMovementToPlayerDirection();
+            }
+
             Context.JumpHandler.Jump();
 
             _updated = false;
+        }
+
+        private void PrewarmMovementToPlayerDirection()
+        {
+            var direction = (Context.PlayerPosition - Context.transform.position);
+            var distance = direction.magnitude;
+            Context.VelocityMovement.Move(direction.normalized * Mathf.Pow(distance, 0.3f));
         }
 
         public override void UpdateState()
@@ -29,6 +44,7 @@ namespace Characters.Enemies.Boss
 
         public override void ExitState()
         {
+            Context.VelocityMovement.AutoResetVelocity = true;
             Context.Character.Balance.Frozen = false;
         }
     }

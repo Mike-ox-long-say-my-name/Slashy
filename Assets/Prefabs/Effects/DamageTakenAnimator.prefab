@@ -99,7 +99,7 @@ MonoBehaviour:
   minTransparency: 0.3
   maxTransparency: 0.9
   baseFlashColor: {r: 1, g: 1, b: 1, a: 1}
-  zeroHpColor: {r: 0.9150943, g: 0.21927728, b: 0.27200556, a: 1}
+  zeroHpColor: {r: 1, g: 0, b: 0.073446274, a: 1}
   changeColorBasedOnHealth: 1
   maskSpriteRenderer: {fileID: 0}
   spriteMask: {fileID: 0}

@@ -637,7 +637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791e9ec2925538d46b56e64657bbe94b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageTakenSound: {fileID: 8300000, guid: 7176e5001a454594fa70863d525e9e01, type: 3}
+  damageTakenSound: {fileID: 8300000, guid: 4cea4430408c13146850753666ef2a1d, type: 3}
 --- !u!114 &2125379645156519390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,7 +711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e58e35159c05e0c4bbea3e47d650a8cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
+  attackSound: {fileID: 8300000, guid: e3d2cd97b2b7bb3459f73436fa69e5bc, type: 3}
   attackbox: {fileID: 810887254988130175}
   animationEvents: {fileID: 810887256119684256}
 --- !u!82 &1759535488873000378
@@ -735,7 +735,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 5
+  MaxDistance: 15
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -949,7 +949,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 1
+  m_Pitch: 0.8
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -1332,7 +1332,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 11, y: 3, z: 6}
+  m_Size: {x: 10, y: 3, z: 6}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3327050448003625126
 MonoBehaviour:
@@ -1424,7 +1424,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3327050448797129769}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.19, z: 0}
+  m_LocalPosition: {x: 0, y: -1.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3327050447686796495}
@@ -1441,7 +1441,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 4, z: 4}
+  m_Size: {x: 3, y: 1, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3327050448797129772
 MonoBehaviour:
@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce481dd000b31a47aa85b64e9b5a1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
+  attackSound: {fileID: 8300000, guid: e3d2cd97b2b7bb3459f73436fa69e5bc, type: 3}
   attackbox: {fileID: 3327050448003625126}
   animationEvents: {fileID: 810887256119684256}
 --- !u!82 &7366458870281448599
@@ -1669,7 +1669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6439476025216424924, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.61
       objectReference: {fileID: 0}
     - target: {fileID: 6439476025216424924, guid: 6a4e381d03428dc4f88a8db768c31557, type: 3}
       propertyPath: m_LocalPosition.z

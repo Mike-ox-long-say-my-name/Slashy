@@ -4,47 +4,33 @@
     <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/Boss/boss.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/Boss/boss.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/Boss/thrust.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/Boss/thrust.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/expl_hol_animator.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/ExplodingHollow/expl_hol_animator.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/Rogue/rogue-animator.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/Rogue/rogue-animator.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/WeakHollow/weak-hollow-anim.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/WeakHollow/weak-hollow-anim.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/player/player.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/player/player.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/Player/PlayerConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/Player/PlayerConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/Player/Player_ActionConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/Player/Player_ActionConfig.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Chair-Destroy.ogg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Chair-Destroy.ogg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Chair-Destroy.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Chair-Destroy.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Hit.ogg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Hit.ogg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Hit.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Hit.ogg.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Strike.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Strike.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Strike.mp3.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Strike.mp3.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/TakingDamage.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/TakingDamage.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/TakingDamage.mp3.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/TakingDamage.mp3.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Boss.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Boss.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chair.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chair.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chair2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chair2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Effects/DamageTakenAnimator.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Effects/DamageTakenAnimator.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ExplodingHollow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ExplodingHollow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Grass.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Grass.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level/torch.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Level/torch.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UI/PopupHints/BaseHint.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/UI/PopupHints/BaseHint.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UI/PopupHints/BaseMouseHint.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/UI/PopupHints/BaseMouseHint.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UI/PopupHints/BasePopupHint.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/UI/PopupHints/BasePopupHint.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UI/PopupHints/MoveHint.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/UI/PopupHints/MoveHint.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/BaseLevelUi.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/BaseLevelUi.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/LevelUiWithBossBar.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/LevelUiWithBossBar.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/LevelUiWithHints.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/LevelUiWithHints.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Rogue.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Rogue.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/WeakHollow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/WeakHollow.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Forest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Forest.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Managers.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Managers.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Temple.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Temple.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boot/Bootstrap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boot/Bootstrap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossStateMachine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossStateMachine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boot/CheatBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boot/CheatBoard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossAnimator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossAnimator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossJumpAttackStart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossJumpAttackStart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossSpikeStrikePrepareExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossSpikeStrikePrepareExecutor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustStationary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustStationary.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustWithDash.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustWithDash.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueRetreat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueRetreat.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueWaitAfterJumpAttack.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueWaitAfterJumpAttack.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueWaitBeforeThrust.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Rogue/RogueWaitBeforeThrust.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/States/EnemyStateMachine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/States/EnemyStateMachine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerAttackExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerAttackExecutor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerGroundStrongAttackState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerGroundStrongAttackState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerHealState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerHealState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerStateMachine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerStateMachine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerTouchingBonfireState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/States/PlayerTouchingBonfireState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Attacking/Mono/MixinHitInfoContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Attacking/Mono/MixinHitInfoContainer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/AggroGroup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/AggroGroup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/MixinAggro.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Characters/MixinAggro.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/CoroutineContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/CoroutineContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Levels/LevelWarper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Levels/LevelWarper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Player/Interfaces/IPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Player/Interfaces/IPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/PlayerCreationInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/PlayerCreationInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/PlayerBarsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PlayerBarsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/ResourceBar.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/ResourceBar.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/AdjustTransparencyWhenOverlapWithPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/AdjustTransparencyWhenOverlapWithPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/notify.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/UI/notify.png.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,8 +38,6 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/351e49e2a5bf4fd6beabb458ce2255f3ff600/0e/138b5acc/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/0c/b2ab89de/List`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/0e/e254b4fc/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
@@ -91,19 +75,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Discover.Launch.Via.Unity": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.46033993",
-    "nodejs_package_manager_path": "npm",
-    "rider.run.widget.enabled.cache": "false",
-    "settings.editor.selected.configurable": "Inspections-C++",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.46033993&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Inspections-C++&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="$PROJECT_DIR$/../SlashyBuilds/windows_prepre_release2\Slashy.exe" />
@@ -131,10 +115,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="27220">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="27220" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -166,7 +150,8 @@
       <workItem from="1653747202727" duration="12945000" />
       <workItem from="1653806993195" duration="17031000" />
       <workItem from="1653838218782" duration="1851000" />
-      <workItem from="1653900310688" duration="9272000" />
+      <workItem from="1653900310688" duration="9874000" />
+      <workItem from="1654009455340" duration="2569000" />
     </task>
     <servers />
   </component>

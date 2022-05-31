@@ -12,12 +12,16 @@ namespace Core
         private LazyPlayer _player;
         private IEnemyFactory _enemyFactory;
 
-        private bool _godModeEnabled;
         private ISceneLoader _sceneLoader;
+        
+        private static bool _godModeEnabled;
         private static bool _isCheatsEnabled;
 
         private static float _startHSpeed = -1;
         private static float _startVSpeed = -1;
+        
+        private static float _currentHSpeed;
+        private static float _currentVSpeed;
 
         [SerializeField] private string cheatsEnableCombination = "slashycb";
 
@@ -65,19 +69,17 @@ namespace Core
                 return;
             }
 
-            if (_remainedCombination.Peek() == obj)
-            {
-                _remainedCombination.Pop();
-                if (_remainedCombination.Count == 0)
-                {
-                    Cursor.visible = true;
-                    Debug.Log("Cheats enabled.");
-                    _isCheatsEnabled = true;
-                }
-            }
-            else
+            if (_remainedCombination.Peek() != obj)
             {
                 ResetCombination();
+            }
+
+            _remainedCombination.Pop();
+            if (_remainedCombination.Count == 0)
+            {
+                Cursor.visible = true;
+                Debug.Log("Cheats enabled.");
+                _isCheatsEnabled = true;
             }
         }
 
@@ -138,14 +140,14 @@ namespace Core
             {
                 _gameLoader.CompleteGame();
             }
-            
+
             GUILayout.Space(10);
 
             if (GUILayout.Button("Disable Cheats"))
             {
                 SetGodModeState(false);
                 SetPlayerSpeed(_startHSpeed, _startVSpeed);
-                
+
                 _isCheatsEnabled = false;
 
                 Cursor.visible = false;
@@ -179,6 +181,8 @@ namespace Core
 
             _player.Value.VelocityMovement.HorizontalSpeed = hspeed;
             _player.Value.VelocityMovement.VerticalSpeed = vspeed;
+            _currentHSpeed = hspeed;
+            _currentVSpeed = vspeed;
         }
     }
 }

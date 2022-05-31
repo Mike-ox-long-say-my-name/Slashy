@@ -9,7 +9,7 @@ namespace UI
     public class AdjustTransparencyWhenOverlapWithPlayer : MonoBehaviour
     {
         [SerializeField] private Image adjustedImage;
-        [SerializeField] private new Camera camera;
+        [SerializeField] private Camera camera;
         [SerializeField] private Vector2 playerExtents;
         [SerializeField] private RectTransform rectTransform;
         [SerializeField] private float overlappedAlpha = 0.3f;

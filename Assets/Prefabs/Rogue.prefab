@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c3fc7157347af479969729b4fec26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
+  attackSound: {fileID: 8300000, guid: e3d2cd97b2b7bb3459f73436fa69e5bc, type: 3}
   attackbox: {fileID: 390948261866963857}
   animationEvents: {fileID: 390948260618534443}
 --- !u!82 &7775150328800849979
@@ -69,9 +69,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 6
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -104,7 +104,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -685,7 +685,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -737,7 +737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791e9ec2925538d46b56e64657bbe94b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageTakenSound: {fileID: 8300000, guid: 7176e5001a454594fa70863d525e9e01, type: 3}
+  damageTakenSound: {fileID: 8300000, guid: 4cea4430408c13146850753666ef2a1d, type: 3}
 --- !u!114 &4563284292428234341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,7 +811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfddd174881d62f4d904689dced4d0cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
+  attackSound: {fileID: 8300000, guid: e3d2cd97b2b7bb3459f73436fa69e5bc, type: 3}
   attackbox: {fileID: 390948261565519348}
   animationEvents: {fileID: 390948260618534443}
 --- !u!82 &2342291408574609355
@@ -835,9 +835,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 6
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -870,7 +870,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1282,7 +1282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c9dec2de09f51c4c8e81dd4796a72b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
+  attackSound: {fileID: 8300000, guid: e3d2cd97b2b7bb3459f73436fa69e5bc, type: 3}
   attackbox: {fileID: 3724704308065825746}
   animationEvents: {fileID: 390948260618534443}
 --- !u!82 &6364780543681009090
@@ -1306,9 +1306,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 6
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1341,7 +1341,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.3
       inSlope: 0
       outSlope: 0
       tangentMode: 0

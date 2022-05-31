@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
+  attackSound: {fileID: 8300000, guid: e3d2cd97b2b7bb3459f73436fa69e5bc, type: 3}
   attackbox: {fileID: 812809746819271581}
   animationEvents: {fileID: 7804759398765068738}
   timeScaleOnHit: 1
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8d65f76fa4ad44789f961e3d8db665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
+  attackSound: {fileID: 8300000, guid: e3d2cd97b2b7bb3459f73436fa69e5bc, type: 3}
   attackbox: {fileID: 812809748012681078}
   animationEvents: {fileID: 7804759398765068738}
   timeScaleOnHit: 1
@@ -1167,7 +1167,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1720,8 +1720,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3625043607559282579, guid: 045b15ec09bba42448d89db77fa6f20a, type: 3}
-  m_Color: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 3ad1503436d29114db0217fb7a352b67, type: 3}
+  m_Color: {r: 0.6698113, g: 0.11058204, b: 0.11058204, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2008,10 +2008,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
-  m_audioClip: {fileID: 8300000, guid: d8dbef1fa568b944eaf1197a50eda3ae, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ee4195473eced5d4f8fa0e725358d8c1, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 2.5
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -2139,7 +2139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c3fc7157347af479969729b4fec26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 8300000, guid: 5f564b11bc7d4db40a081d086e701550, type: 3}
+  attackSound: {fileID: 8300000, guid: e3d2cd97b2b7bb3459f73436fa69e5bc, type: 3}
   attackbox: {fileID: 6037228690400032685}
   animationEvents: {fileID: 7804759398765068738}
 --- !u!82 &3183283722015208668

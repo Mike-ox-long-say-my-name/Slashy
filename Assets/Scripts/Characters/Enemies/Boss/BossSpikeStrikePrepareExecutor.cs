@@ -34,6 +34,7 @@ namespace Characters.Enemies.Boss
             {
                 var spike = Instantiate(Spike, _target, Quaternion.identity);
                 spike.StrikeFromGround();
+                base.HandleEnableHitbox(context);
             }
         }
 

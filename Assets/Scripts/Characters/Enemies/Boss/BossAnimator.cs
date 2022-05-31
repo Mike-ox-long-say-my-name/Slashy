@@ -6,6 +6,7 @@ namespace Characters.Enemies.Boss
     public class BossAnimator : CharacterAnimator
     {
         private static readonly int Thrust = Animator.StringToHash("thrust");
+        private static readonly int ThrustWithDash = Animator.StringToHash("thrust-dash");
         private static readonly int SpikeStrike = Animator.StringToHash("spike-strike");
         private static readonly int PrepareSpikeStrike = Animator.StringToHash("prepare-spike-strike");
         private static readonly int JumpStart = Animator.StringToHash("jump-start");
@@ -16,7 +17,8 @@ namespace Characters.Enemies.Boss
         {
         }
 
-        public void PlayThrustAnimation() => SetCustomTrigger(Thrust);
+        public void PlayThrustNoDashAnimation() => SetCustomTrigger(Thrust);
+        public void PlayThrustWithDashAnimation() => SetCustomTrigger(ThrustWithDash);
         public void PlaySwingAnimation() => SetCustomTrigger(Swing);
 
         public void PlaySpikeStrikeAnimation() => SetCustomTrigger(SpikeStrike);

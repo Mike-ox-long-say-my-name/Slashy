@@ -3,34 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f50dd82a-bf56-4b6d-b301-5e4a01cb2907" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slashy/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemies/Boss/boss.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemies/Boss/boss.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Chair-Destroy.ogg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Chair-Destroy.ogg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Chair-Destroy.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Chair-Destroy.ogg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Hit.ogg" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Hit.ogg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Hit.ogg.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Hit.ogg.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Strike.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Strike.mp3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/Strike.mp3.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/Strike.mp3.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/TakingDamage.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/TakingDamage.mp3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/Sounds/TakingDamage.mp3.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Audio/Sounds/TakingDamage.mp3.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Boss.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Boss.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chair.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chair.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chair2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chair2.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Effects/DamageTakenAnimator.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Effects/DamageTakenAnimator.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ExplodingHollow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ExplodingHollow.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Grass.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Grass.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level/torch.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Level/torch.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Rogue.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Rogue.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/WeakHollow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/WeakHollow.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Managers.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Managers.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boot/CheatBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boot/CheatBoard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossAnimator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossAnimator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossJumpAttackStart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossJumpAttackStart.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossSpikeStrikePrepareExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossSpikeStrikePrepareExecutor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustStationary.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustStationary.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustWithDash.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Boss/BossThrustWithDash.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/AdjustTransparencyWhenOverlapWithPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/AdjustTransparencyWhenOverlapWithPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/UI/notify.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/UI/notify.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +125,7 @@
       <workItem from="1653806993195" duration="17031000" />
       <workItem from="1653838218782" duration="1851000" />
       <workItem from="1653900310688" duration="9874000" />
-      <workItem from="1654009455340" duration="3248000" />
+      <workItem from="1654009455340" duration="3740000" />
     </task>
     <servers />
   </component>

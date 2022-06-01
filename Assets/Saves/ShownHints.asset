@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ShownHints
   m_EditorClassIdentifier: 
   resetOnQuit: 0
-  shownHints: 00000000010000000200000003000000040000000500000006000000
+  shownHints: 

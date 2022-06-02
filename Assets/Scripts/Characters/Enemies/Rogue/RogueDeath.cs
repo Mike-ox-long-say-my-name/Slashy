@@ -11,8 +11,18 @@ namespace Characters.Enemies.Rogue
             Context.AutoMovement.UnlockRotation();
 
             Context.Hurtbox.Disable();
+            HackAnimations();
             Context.Animator.PlayDeathAnimation();
             Context.DestroyHelper.DestroyLater();
+        }
+
+        private void HackAnimations()
+        {
+            Context.Animator.EndJumpAtAnimation();
+            Context.Animator.EndJumpAwayAnimation();
+            Context.Animator.EndAirboneAnimation();
+            Context.Animator.EndStaggerAnimation();
+            Context.Animator.EndWalkAnimation();
         }
 
         protected override void SwitchState<TState>(bool ignoreValidness = false)

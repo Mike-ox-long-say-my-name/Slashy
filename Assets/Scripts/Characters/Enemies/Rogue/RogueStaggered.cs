@@ -6,17 +6,18 @@ namespace Characters.Enemies.Rogue
     {
         public override void EnterState()
         {
+            Context.Character.Balance.Frozen = true;
             Context.Animator.StartStaggerAnimation();
         }
 
         public override void OnStaggerEnded()
         {
             var value = Random.value;
-            if (value < 0.2f)
+            if (value < 0.4f)
             {
-                SwitchState<RogueThrust>();
+                SwitchState<RogueJumpAway>();
             }
-            else if (value < 0.5f)
+            else if (value < 0.65f)
             {
                 SwitchState<RoguePursue>();
             }
@@ -28,6 +29,7 @@ namespace Characters.Enemies.Rogue
 
         public override void ExitState()
         {
+            Context.Character.Balance.Frozen = false;
             Context.Animator.EndStaggerAnimation();
         }
     }

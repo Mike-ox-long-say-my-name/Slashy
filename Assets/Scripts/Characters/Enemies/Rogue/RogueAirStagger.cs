@@ -9,6 +9,7 @@ namespace Characters.Enemies.Rogue
 
         public override void EnterState()
         {
+            Context.Character.Balance.Frozen = true;
             Context.AutoMovement.UnlockRotation();
             Context.Animator.StartStaggerAnimation();
             const float airStaggerTime = 1.5f;
@@ -22,6 +23,7 @@ namespace Characters.Enemies.Rogue
 
         public override void ExitState()
         {
+            Context.Character.Balance.Frozen = false;
             Context.Animator.EndStaggerAnimation();
         }
     }

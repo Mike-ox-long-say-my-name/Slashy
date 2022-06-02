@@ -1689,7 +1689,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2505702003183646237}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -1747,7 +1747,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actualIcon: {fileID: 5816539628646524397}
   transparentCopy: {fileID: 2126308802605788556}
-  go: 0
 --- !u!1 &2885798573794695910
 GameObject:
   m_ObjectHideFlags: 0
@@ -2025,7 +2024,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -302004206140252368, guid: 89d5d7fee7e7ce549abfa324177e2139, type: 2}
-  m_audioClip: {fileID: 8300000, guid: ee4195473eced5d4f8fa0e725358d8c1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f203bd5e641d98e4c8ce317d23b24aa3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2149,7 +2148,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5460557553072523241}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
